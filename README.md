@@ -39,8 +39,13 @@ Este repositório está organizado como segue, qualquer submissão de conteúdo 
 
 <code>
 ./
+
   README.md (Este documento)
+  
   LICENSE (Nossa licença - GPL 3.0)
+  
   gdanet/ (web app)
+  
   old/ (conteúdo antigo)
+
 </code>
