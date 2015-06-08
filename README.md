@@ -4,8 +4,6 @@ Olá, conheça a página de desenvolvimento do GDA.
 
 Estamos atualmente em fase de desenvolvimento, sendo assim, o conteúdo aqui disponível ainda não está disponibilizado para usuários. Porém se você quer participar do desenvolvimento ou acompanhar o andamento do nosso trabalho, leia o conteúdo desta página.
 
-Algumas informações:
-
 ## 1. Especificação
 Para o lançamento da versão Beta, este projeto deve possuir as seguintes funcionalidades:
 
