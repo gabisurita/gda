@@ -37,10 +37,10 @@ Nesta versão de desenvolvimento contamos com as seguintes ferramentas:
 ## 4. Organização deste repositório
 Este repositório está organizado como segue, qualquer submissão de conteúdo deve obedecer esta organização ou será descartada.
 
-'''
+<code>
 ./
   README.md (Este documento)
   LICENSE (Nossa licença - GPL 3.0)
   gdanet/ (web app)
   old/ (conteúdo antigo)
-'''
+</code>
