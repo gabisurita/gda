@@ -6,7 +6,7 @@ import codecs
 #import pickle
 
 #Raw = codecs.open("form.html", mode="r", encoding="utf-8").read()
-Raw = open("form.html").read()
+Raw = open("form.htt").read()
 Html = lxml.html.fromstring(Raw)
 
 Form = Html.xpath("//div[@class='ss-form-page']")
@@ -70,7 +70,7 @@ for Page in Form:
   Questionnaire.append(Group)
 
 
-OutTable = open("questionnaire.csv", "w")
+OutTable = open("questionnaire.txt", "w")
 
 for i in Questionnaire:
   for j in i:

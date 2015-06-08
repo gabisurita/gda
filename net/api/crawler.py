@@ -3,7 +3,11 @@ import requests
 #import HTMLParser
 import lxml.html
 import codecs
+
+import sys
+sys.path.append("..")
 from models import *
+
 #import cookielib, urllib2
 
 
@@ -12,7 +16,7 @@ def OfferingFeeder():
   CreateDB()
   S = sessionmaker(bind=DB)()
   
-  RawHtml = codecs.open("oferecimentos/1s2015.html", mode="r", encoding="utf-8").read()
+  RawHtml = codecs.open("oferecimentos/1s2015.htt", mode="r", encoding="utf-8").read()
 
   Html = lxml.html.fromstring(RawHtml)
   
