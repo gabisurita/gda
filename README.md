@@ -27,7 +27,7 @@ Nesta versão de desenvolvimento contamos com as seguintes ferramentas:
 
 * [Google Forms](https://docs.google.com/forms/d/1kVaQlGR9AQPtNVwuB56Hqzo8EzI-fpofSHnAO8TEa1M/edit), utilizado na prototipagem do formulário
 * [Web.py](https://github.com/webpy/webpy) *framework web* em linguagem Python
-* [SQLalchemy](http://www.sqlalchemy.org/), ferramenta para desenvolvimento de bancos de dados com suporte à ORM (mapeamento relacional de objetos)
+* [SQLalchemy](http://www.sqlalchemy.org/), ferramenta para bancos de dados com suporte à ORM (mapeamento relacional de objetos)
 * [LXML](http://lxml.de/), biblioteca para processamento de HTML e XML
 * [Requests](http://docs.python-requests.org/en/latest), biblioteca para requisições HTTP 
 * [Bootstrap](http://getbootstrap.com), famosa biblioteca de **front-end**
