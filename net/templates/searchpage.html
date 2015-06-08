@@ -1,0 +1,64 @@
+$def with (Form, Render)
+
+$ S = sessionmaker(bind=DB)()
+
+$ TeachersList = S.query(Teacher).order_by(Teacher.name)
+
+
+<!DOCTYPE html>
+<html>
+  <head>
+    $:Render.includes()
+    <title>$BaseTitle - Busca de Docentes</title>
+  </head>  
+  <body>
+    <!-- Fixed navbar -->
+    $:Render.navbar()
+    <!-- Begin page content -->
+    <div class="container">
+      <div class="col-sm-7">
+        <h2>Busca de Docentes</h2>
+        <div id="docentes">
+          <input type="text" class="search" placeholder="Busca">
+<!--          <span class="input-group-btn">-->
+<!--            <button class="btn btn-default" type="button"></button>-->
+<!--          </span>-->
+          <table class="searchtable">
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>Instituto</th>
+              </tr>
+            </thead>
+            <tbody class="list">
+            $for Line in TeachersList:
+              $ Name = Line.name
+              $ URL = Line.EncodeURL()
+              <tr>
+                <td>
+                  <p class="nome"><a href="$URL">$Name</a></p>
+                </td>
+                <td>
+                  <p class="instituto"><a href="$URL">FEEC</a></p>
+                </td>
+              </tr>
+            </tbody>
+          </table>        
+        </div>
+        <script>
+          var options = {
+            valueNames: ['nome']
+          };
+          var userList = new List('docentes', options);
+        </script>   
+      </div>
+      
+      <div class="col-sm-4 blog-sidebar">
+        <div class="sidebar-module sidebar-module-inset">
+          <h3>Visão Geral</h3>
+        </div>
+      </div>
+    </div>
+    $:Render.footer()
+  </body>
+</html>

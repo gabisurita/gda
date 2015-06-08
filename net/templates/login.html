@@ -1,0 +1,8 @@
+$def with (Form, Render)
+
+$:Render.includes()
+<form name="main" method="post"> 
+  $if not Form.valid: 
+    <p class="error">Try again, AmeriCAN:</p>
+  $:Form.render()
+</form>

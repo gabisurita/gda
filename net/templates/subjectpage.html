@@ -1,0 +1,50 @@
+$def with (SubjectInst, Render)
+
+$ S = sessionmaker(bind=DB)()
+
+$ ThisOfferings = S.query(Offering).filter(Offering.subject == SubjectInst) #.order_by(Offering.semester.year, Offering.semester.sem)
+
+$ ThisTeachers = [Of.teacher for Of in ThisOfferings] 
+
+<!DOCTYPE html>
+<html>
+  <head>
+    $:Render.includes()
+    <title>$BaseTitle - $SubjectInst.code</title>
+  </head>  
+  <body>
+    <!-- Fixed navbar -->
+    $:Render.navbar()
+    <!-- Begin page content -->
+    <div class="container">
+      <div class="col-sm-8">
+        <h2>$SubjectInst.code</h2>
+        <h3>$SubjectInst.name</h3>
+        <p><b>Ementa: </b>$SubjectInst.summary</p>
+        <br>
+      </div>
+
+      <div class="col-sm-4 blog-sidebar">
+        <div class="sidebar-module sidebar-module-inset">
+          <h4>Oferecimentos</h4>
+          <ol class="list-unstyled">
+          $for Line in ThisOfferings:
+            $ URL = Line.EncodeURL()
+            $ Name = u'%sº Semestre de %s - Turma %s' % (Line.semester.sem, Line.semester.year, Line.code)
+            <li><a href="$URL">$Name</a></li>
+          </ol>
+        </div>
+        <div class="sidebar-module sidebar-module-inset">
+          <h4>Docentes</h4>
+          <ol class="list-unstyled">
+          $for Teacher in ThisTeachers:
+            $ Name = Teacher.name
+            $ URL = Teacher.EncodeURL()
+            <li><a href="$URL">$Name</a></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+    $:Render.footer()
+  </body>
+</html>

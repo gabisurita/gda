@@ -1,0 +1,38 @@
+$def with (TeacherInst, Render)
+
+$ S = sessionmaker(bind=DB)()
+
+$ ThisOfferings = S.query(Offering).filter(Offering.teacher == TeacherInst) #.order_by(Offering.semester.year, Offering.semester.sem)
+
+
+<!DOCTYPE html>
+<html>
+  <head>
+    $:Render.includes()
+    <title>$BaseTitle - $TeacherInst.name</title>
+  </head>  
+  <body>
+    <!-- Fixed navbar -->
+    $:Render.navbar()
+    <!-- Begin page content -->
+    <div class="container">
+      <div class="col-sm-8">
+        <h3>$TeacherInst.name</h3>
+        <br>
+      </div>
+
+      <div class="col-sm-4 blog-sidebar">
+        <div class="sidebar-module sidebar-module-inset">
+          <h4>Oferecimentos</h4>
+          <ol class="list-unstyled">
+          $for Line in ThisOfferings:
+            $ URL = Line.EncodeURL()
+            $ Name = u'%s %s - %ss%s' % (Line.subject.code, Line.code, Line.semester.sem, Line.semester.year)
+            <li><a href="$URL">$Name</a></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+    $:Render.footer()
+  </body>
+</html>
