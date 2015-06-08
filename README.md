@@ -1,4 +1,5 @@
-# gda
+# GDA Web App
+### GDA - Grupo de Avaliação Discente da Faculdade de Engenharia Elétrica e de Computação (FEEC) da Universidade de Campinas (Unicamp)
 Olá, conheça a página de desenvolvimento do GDA.
 
 Estamos atualmente em fase de desenvolvimento, sendo assim, o conteúdo aqui disponível ainda não está disponibilizado para usuários. Porém se você quer participar do desenvolvimento ou acompanhar o andamento do nosso trabalho, leia o conteúdo desta página.
