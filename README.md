@@ -34,13 +34,30 @@ Nesta versão de desenvolvimento contamos com as seguintes ferramentas:
 * [Bootstrap](http://getbootstrap.com), famosa biblioteca de *front-end*
 
 
+Para a execução local da Web App é necessário instalar:
+
+ 1. [Python 2.x](https://www.python.org)
+ 2. [Web.py](https://github.com/webpy/webpy)
+ 3. [SQLalchemy](http://www.sqlalchemy.org/)
+ 
+
 ## 4. Organização deste repositório
-Este repositório está organizado como segue, qualquer submissão de conteúdo deve obedecer esta organização ou será descartada.
+Este repositório está organizado como segue, qualquer submissão de conteúdo (commit) deve obedecer esta organização.
 
 ```
 ./
   README.md (Este documento)
   LICENSE (Nossa licença - GPL 3.0)
   gdanet/ (web app)
-  old/ (conteúdo antigo)
+   app.py (Aplicação Web, páginas)
+   models.py (Classes para ORM)
+   config.py (Configuração básica do servidor)
+   test.db (Banco de dados SQLite para testes)
+   templates/ (HTML das páginas de apresentação)
+   static/ (Conteúdo estático - img, css, etc)
+   sessions/ (armazena informações de login)
+   api/ (Aplicações secundárias - parsers, crawlers, etc)
+   
+  old/ (conteúdo antigo, pré versão web)
+  doc/ (qualquer documentação)
 ```
