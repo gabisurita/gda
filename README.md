@@ -31,8 +31,16 @@ Nesta versão de desenvolvimento contamos com as seguintes ferramentas:
 * [SQLalchemy](http://www.sqlalchemy.org/), ferramenta para bancos de dados com suporte à ORM (mapeamento relacional de objetos)
 * [LXML](http://lxml.de/), biblioteca para processamento de HTML e XML
 * [Requests](http://docs.python-requests.org/en/latest), biblioteca para requisições HTTP 
-* [Bootstrap](http://getbootstrap.com), famosa biblioteca de **front-end**
+* [Bootstrap](http://getbootstrap.com), famosa biblioteca de *front-end*
 
 
 ## 4. Organização deste repositório
-Este repositório está organizado como segue, qualquer submissão de conteúdo deve obedecer esta organização ou será descartada
+Este repositório está organizado como segue, qualquer submissão de conteúdo deve obedecer esta organização ou será descartada.
+
+'''
+./
+  README.md (Este documento)
+  LICENSE (Nossa licença - GPL 3.0)
+  gdanet/ (web app)
+  old/ (conteúdo antigo)
+'''
