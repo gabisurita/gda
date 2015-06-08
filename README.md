@@ -46,18 +46,18 @@ Este repositório está organizado como segue, qualquer submissão de conteúdo 
 
 ```
 ./
-  README.md (Este documento)
-  LICENSE (Nossa licença - GPL 3.0)
-  gdanet/ (web app)
-   app.py (Aplicação Web, páginas)
-   models.py (Classes para ORM)
-   config.py (Configuração básica do servidor)
-   test.db (Banco de dados SQLite para testes)
-   templates/ (HTML das páginas de apresentação)
-   static/ (Conteúdo estático - img, css, etc)
-   sessions/ (armazena informações de login)
-   api/ (Aplicações secundárias - parsers, crawlers, etc)
+   README.md (Este documento)
+   LICENSE (Nossa licença - GPL 3.0)
+   gdanet/ (web app)
+     app.py (Aplicação Web, páginas)
+     models.py (Classes para ORM)
+     config.py (Configuração básica do servidor)
+     test.db (Banco de dados SQLite para testes)
+     templates/ (HTML das páginas de apresentação)
+     static/ (Conteúdo estático - img, css, etc)
+     sessions/ (armazena informações de login)
+     api/ (Aplicações secundárias - parsers, crawlers, etc)
    
-  old/ (conteúdo antigo, pré versão web)
-  doc/ (qualquer documentação)
+   old/ (conteúdo antigo, pré versão web)
+   doc/ (qualquer documentação)
 ```
