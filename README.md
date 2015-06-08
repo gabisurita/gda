@@ -48,7 +48,7 @@ Este repositório está organizado como segue, qualquer submissão de conteúdo 
 ./
    README.md (Este documento)
    LICENSE (Nossa licença - GPL 3.0)
-   gdanet/ (web app)
+   net/ (web app)
      app.py (Aplicação Web, páginas)
      models.py (Classes para ORM)
      config.py (Configuração básica do servidor)
