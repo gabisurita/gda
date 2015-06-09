@@ -80,7 +80,7 @@ def Setup():
           if UserCall.password == Form['Senha'].value:
 #          if Caller.confirmed == Form['Senha']:
             Session.user_id = UserCall.id
-            return Session.user_id
+            raise web.seeother('/')
           else:
             return "Meh"
         else:
@@ -118,7 +118,7 @@ def Setup():
           if UserCall.password == Form['Senha'].value:
 #          if Caller.confirmed == Form['Senha']:
             Session.user_id = UserCall.id
-            return "Hi"
+            raise web.seeother('/')
           else:
             return "Meh"
         
@@ -136,7 +136,7 @@ def Setup():
     
     def GET(self):
       IsLogged()
-      return self.StudentInst.name
+      return Render.studentpage(self.StudentInst, Render)
         
 
   class TeacherPage:
@@ -160,7 +160,7 @@ def Setup():
     
     def GET(self):
       IsLogged()
-      return self.OfferingInst.id
+      return Render.offeringpage(self.OfferingInst, Render)
 
   
   class SearchTeacher:
@@ -190,7 +190,7 @@ def Setup():
   class IndexPage:
     def GET(self):
       IsLogged()
-      return "Home"
+      return Render.index(Render)
 
 
 

@@ -1,0 +1,18 @@
+$def with (OfferingInst, Render)
+
+
+<!DOCTYPE html>
+<html>
+  <head>
+    $:Render.includes()
+    <title>$BaseTitle - $OfferingInst.code</title>
+  </head>  
+  <body>
+    <!-- Fixed navbar -->
+    $:Render.navbar()
+    <!-- Begin page content -->
+    <div class="container">
+    </div>
+    $:Render.footer()
+  </body>
+</html>
