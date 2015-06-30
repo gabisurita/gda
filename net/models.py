@@ -82,6 +82,16 @@ class Offering(Base):
         str(self.code))).lower()
     
 
+  def EvaluationURL(self):
+    return ("/avaliar/%ss%s/%s%s" % (
+        str(self.semester.sem), 
+        str(self.semester.year),
+        str(self.subject.code),
+        str(self.code))).lower()
+    
+
+
+
 class Enrollment(Base):
   __tablename__ = "enrollment"
   

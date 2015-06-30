@@ -12,6 +12,9 @@ $def with (OfferingInst, Render)
     $:Render.navbar()
     <!-- Begin page content -->
     <div class="container">
+      <form method="GET" action="$:OfferingInst.EvaluationURL()">
+        <button class="btn btn-success" type="submit">Avaliar</button>
+      </form>
     </div>
     $:Render.footer()
   </body>

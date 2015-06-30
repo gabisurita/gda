@@ -1,12 +1,44 @@
-$def with (Form, Render)
+$def with (Form, Error, Render)
 
-$:Render.includes()
-<form name="main" method="post"> 
-  $if not Form.valid: 
-    <p class="error">Try again, AmeriCAN:</p>
-  $:Form.render()
-</form>
+<!DOCTYPE html>
+<html>
+  <head>
+    $:Render.includes()
+    <title>$BaseTitle - Login</title>
 
-<a href="/login"> Login </a>
-<br/>
-<a href="/registrar"> Registrar </a>
+  </head>  
+  <body>
+    $if Error != "":
+      <script>BootstrapDialog.show({type: BootstrapDialog.TYPE_DANGER, size: BootstrapDialog.SIZE_SMALL, title: 'Erro', message: '$:Error' });</script>
+    <!-- Begin page content -->
+    <div class="container login">
+      <div class="col-lg-9">
+        <h1> GDA </h1>
+      </div>
+      <div class="col-lg-3">
+        <form class="form-signin" method="POST" action="/login">
+          <h2 class="form-signin-heading">Login</h2>
+          <label for="RA" class="sr-only">RA</label>
+          <input type="text" class="form-control" placeholder="RA" name="RA" required autofocus>
+          <label for="Senha" class="sr-only">Senha</label>
+          <input type="password" class="form-control" placeholder="Senha" name="Senha" required>
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" value="remember-me"> Lembre-me
+            </label>
+          </div>
+          <button class="btn btn-primary btn-block" type="submit">Entrar</button>
+        </form>
+        
+        <a href="/login"> Login </a>
+        <br/>
+        <a href="/registrar"> Registrar </a>
+      </div>
+    </div>
+    $:Render.footer()
+  </body>
+</html>
+
+
+
+

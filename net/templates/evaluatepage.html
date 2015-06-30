@@ -1,4 +1,4 @@
-$def with (Render)
+$def with (OfferingInst, Render)
 
 $ S = sessionmaker(bind=DB)()
 
@@ -9,53 +9,17 @@ $ SubjectsList = S.query(Offering) #.order_by(Offering.subject.code)
 <html>
   <head>
     $:Render.includes()
+    <link rel="stylesheet" href="/static/form.css">
     <title>$BaseTitle - Busca de Oferecimentos</title>
   </head>  
   <body>
-    <script src="/static/multipage.js"></script>
     <!-- Fixed navbar -->
     $:Render.navbar()
     <!-- Begin page content -->
     <div class="container"> 
-      <div class="ss-form-container"><div class="ss-header-image-container"><div class="ss-header-image-image"><div class="ss-header-image-sizer"></div></div></div>
-      <div class="ss-top-of-page"><div class="ss-form-heading"><h1 class="ss-form-title" dir="ltr">A Disciplina</h1>
-
-
-      </div></div>
-      <div class="ss-form"><form action="https://docs.google.com/forms/d/1kVaQlGR9AQPtNVwuB56Hqzo8EzI-fpofSHnAO8TEa1M/formResponse" method="POST" id="ss-form" target="_self" onsubmit=""><ol role="list" class="ss-question-list" style="padding-left: 0">
-      <div class="ss-form-question errorbox-good" role="listitem">
-      <div dir="ltr" class="ss-item  ss-radio"><div class="ss-form-entry">
-      <label class="ss-q-item-label" for="entry_1290463030"><div class="ss-q-title">Você acha que a disciplina é necessária ao currículo?
-      </div>
-      <div class="ss-q-help ss-secondary-text" dir="ltr"></div></label>
-
-      <ul class="ss-choices" role="radiogroup" aria-label="Você acha que a disciplina é necessária ao currículo?  "><li class="ss-choice-item"><label><span class="ss-choice-item-control goog-inline-block"><input type="radio" name="entry.738827399" value="Sim" id="group_738827399_1" role="radio" class="ss-q-radio" aria-label="Sim"></span>
-      <span class="ss-choice-label">Sim</span>
-      </label></li> <li class="ss-choice-item"><label><span class="ss-choice-item-control goog-inline-block"><input type="radio" name="entry.738827399" value="Não" id="group_738827399_2" role="radio" class="ss-q-radio" aria-label="Não"></span>
-      <span class="ss-choice-label">Não</span>
-      </label></li></ul>
-      <div class="error-message" id="1290463030_errorMessage"></div>
-      <div class="required-message">Esta pergunta é obrigatória</div></div></div></div> <div class="ss-form-question errorbox-good" role="listitem">
-      <div dir="ltr" class="ss-item  ss-paragraph-text"><div class="ss-form-entry">
-      <label class="ss-q-item-label" for="entry_897625208"><div class="ss-q-title">Por quê?
-      </div>
-      <div class="ss-q-help ss-secondary-text" dir="ltr"></div></label>
-      <textarea name="entry.897625208" rows="8" cols="0" class="ss-q-long" id="entry_897625208" dir="auto" aria-label="Por quê?  "></textarea>
-      <div class="error-message" id="2062383793_errorMessage"></div>
-      <div class="required-message">Esta pergunta é obrigatória</div>
-      </div></div></div>
-      <input type="hidden" name="draftResponse" value="[,,&quot;347089838155498610&quot;]
-      ">
-      <input type="hidden" name="pageHistory" value="0">
-
-
-      <input type="hidden" name="fbzx" value="347089838155498610">
-
-      <div class="ss-item ss-navigate"><table id="navigation-table"><tbody><tr><td class="ss-form-entry goog-inline-block" id="navigation-buttons" dir="ltr">
-      <input type="submit" name="continue" value="Continuar »" id="ss-submit" class="jfk-button jfk-button-standard "></td>
-      </tr></tbody></table></div></ol></form></div>
-
+      $:Render.form(OfferingInst)
     </div>
     $:Render.footer()
+    <script src="/static/form.js"></script>
   </body>
 </html>

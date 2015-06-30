@@ -57,13 +57,13 @@ def Setup():
   class LoginPage:  
     def GET(self):
       Form = LoginForm
-      return Render.login(Form, Render)
+      return Render.login(Form, "", Render)
       
     def POST(self):
       Form = LoginForm
       
       if not Form.validates(): 
-        return Render.login(Form, Render)
+        return Render.login(Form, "Ocorreu um erro, tente novamente.", Render)
       
       else:
         S = sessionmaker(bind=DB)()
@@ -73,7 +73,7 @@ def Setup():
           StudentCall = StudentCall.one()
           UserCall = S.query(User).filter(User.student == StudentCall)
         else:
-          return "Boo"
+          return Render.login(Form, "Usuário não cadastrado.", Render)
           
         if UserCall.count():
           UserCall = UserCall.one()
@@ -82,9 +82,9 @@ def Setup():
             Session.user_id = UserCall.id
             raise web.seeother('/')
           else:
-            return "Meh"
+            return Render.login(Form, "Senha inválida", Render)
         else:
-          return "Boo"
+          return Render.login(Form, "Usuário não cadastrado.", Render)
 
 
   class RegisterPage:   
@@ -123,7 +123,15 @@ def Setup():
             return "Meh"
         
         else:
+          
+          Match = re.search(r'[\w.-]+@[\w.-]+.unicamp.br', Form['E-mail'].value)
+          
+          if not Form['E-mail'].value:
+            return "Meh"
+            
           UserCall = User(email = Form['E-mail'].value, password = Form['Senha'].value, student = StudentCall)
+#          web.sendmail('GDA', Form['E-mail'].value, 'subject', 'message')
+          
           S.add(UserCall)
           S.commit()
           UserCall = S.query(User).filter(User.student == StudentCall).one()      
@@ -169,7 +177,7 @@ def Setup():
       return Render.searchteacher(Render)
 
 
-  class SearchSubject:
+  class SearchSubject:  
     def GET(self):
       IsLogged()
       return Render.searchsubject(Render)
@@ -182,9 +190,16 @@ def Setup():
 
   
   class EvaluatePage:
+    OfferingInst = Offering()
+    
     def GET(self):
       IsLogged()
-      return Render.evaluatepage(Render)
+      return Render.evaluatepage(self.OfferingInst, Render)
+
+    def POST(self):
+      IsLogged()
+      Questions = [Field.split("=") for Field in web.data().split("&")]
+      return Questions
 
 
   class IndexPage:
@@ -198,9 +213,12 @@ def Setup():
   S = sessionmaker(bind=DB)()
   
   def Map(Inst, URL, AttMap = {}):
+    """ Map an object to an URL. """
+    
     globals()[URL] = type(URL, (Inst, object,), AttMap)
     App.add_mapping(URL.lower().replace(" ","_").decode("utf8"), URL)
     App.add_mapping(URL.lower().replace(" ","_").decode("utf8")+"/", URL)
+
 
 
   Map(IndexPage, "/")
@@ -209,7 +227,6 @@ def Setup():
   Map(SearchTeacher, "/docentes")  
   Map(SearchSubject, "/disciplinas")
   Map(SearchOffering, "/oferecimentos")
-  Map(EvaluatePage, "/avaliar")
   
   
   for Line in S.query(Student):
@@ -223,8 +240,10 @@ def Setup():
 
   for Line in S.query(Offering):
     Map(OfferingPage, Line.EncodeURL(), dict(OfferingInst = Line))
+    Map(EvaluatePage, Line.EvaluationURL(), dict(OfferingInst = Line))
     
-  
+       
+
   # Built-in static handler 
   if AppStaticHandler:
     for Dir in StaticDirs:

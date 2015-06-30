@@ -1,0 +1,38 @@
+0,0,Você acha que a disciplina é necessária ao currículo?,,radio,"[' Sim ', ' Não ']",[],[]
+0,1,Por que?,,textarea,,,
+1,0,Qual foi a sua dedicação extraclasse em horas semanais?,,radio,"[' Nenhuma ', ' Estudei nas vésperas de prova ', ' 0h - 2h ', ' 2h - 4h ', ' 4h ou mais ']",[],[]
+2,0,O número de créditos desta disciplina está adequado?,,radio,"[' Sim ', ' Não ']",[],[]
+3,0,O curso dado foi condizente com a ementa?,$:OfferingInst.subject.summary,radio,"[' Sim ', ' Não ']",[],[]
+3,1,Comente,Algum ponto não foi abordado? Algum ponto deveria ser incorporado à ementa?,textarea,,,
+4,0,Você colou nesta disciplina?,O questionário é totalmente anônimo. Mais de uma opção pode ser selecionada.,checkbox,"[' Sim, por desmotivação com a matéria, professor ou curso ', ' Sim, por preguiça de estudar ', ' Sim, por excesso de teoria e/ou fórmulas ', ' Sim, pois eu tinha outras para estudar ', ' Sim, pois era mais fácil passar colando do que estudando ', ' Sim, pois eu me sinto mais seguro ', ' Não, pois eu gostava e sabia da matéria ', ' Não, por questões éticas ', ' Não, pois não consegui ', ' Prefiro não me manifestar ']",[],[]
+5,0,Quais dos pré-requisitos foram realmente necessários?,Acrescente algum faltante.,checkbox,"[' $OfferingInst.GetReqList ', ' Outro: ']",[],[]
+6,0,A disciplina envolvia atividades de laboratório?,,radio,"[' Sim ', ' Não ']",[],[]
+7,0,Os equipamentos foram adequados?,,radio,"[' Sim ', ' Não ']",[],[]
+8,0,O laboratório e os equipamentos estavam acessíveis?,,radio,"[' Sim ', ' Não ']",[],[]
+9,0,Faltou algum equipamento?,,textarea,,,
+10,0,Teve relatório?,,radio,"[' Sim, em aula ', ' Sim, em casa ', ' Não ']",[],[]
+11,0,Tinha monitoria?,,radio,"[' Sim, PAD ', ' Sim, PED ', ' Sim, ambos ', ' Não ']",[],[]
+12,0,Você compareceu à monitoria?,,radio,"[' Sim ', ' Apenas em véspera de prova ', ' Não ']",[],[]
+13,0,A monitoria foi relevante ao seu aprendizado?,,radio,"[' Sim ', ' Mais ou menos ', ' Não ']",[],[]
+14,0,O professor e o monitor estavam em sintonia?,,radio,"[' Sim ', ' Mais ou menos ', ' Não ']",[],[]
+15,0,O monitor estava disponível a atendimento?,,radio,"[' Sim, apenas nos horários especificados ', ' Sim, inclusive em horas extras ', ' Não ']",[],[]
+16,0,Comente sobre a monitoria,,textarea,,,
+17,0,Deveria ter monitoria?,,radio,"[' Sim ', ' Não ']",[],[]
+18,0,Por que?,,textarea,,,
+19,0,Classifique o professor*Obrigatória,,table,"['Péssimo', 'Ruim', 'Médio', 'Bom', 'Excelente']","['Organização das aulas', 'Clareza e didática', 'Coerência nas avaliações', 'Prender a atenção', 'Bom humor e simpatia', 'Interesse por lecionar', 'Domínio da matéria']",[]
+20,0,O professor estava aberto a críticas e sugestões?,,radio,"[' Sim ', ' Não ']",[],[]
+21,0,O professor constrangiu algum aluno?,Ele elevou o tom de voz? Dividiu a turma em bons e maus alunos? Separou os alunos por nota?,radio,"[' Sim ', ' Não ']",[],[]
+21,1,Em qual situação?,,textarea,,,
+22,0,O professor incentivava a participação dos alunos em sala de aula?,,radio,"[' Sim, de maneira positiva ', ' Sim, de maneira inadequada ', ' Não ']",[],[]
+23,0,O professor intimidou os alunos quanto à avaliação?,Ele ameaçou fazer uma prova difícil?,radio,"[' Sim ', ' Não ']",[],[]
+24,0,Você faria novamente uma disciplina com este professor?,,radio,"[' Sim ', ' Indiferente ', ' Provavelmente não ', ' Não, sob hipótese alguma ']",[],[]
+25,0,A aula é relevante ao aprendizado?,,radio,"[' Sim ', ' Sim, apesar de eu não ter frequentado ', ' Não ']",[],[]
+26,0,O professor era assíduo?,,radio,"[' Sim ', ' Não ']",[],[]
+27,0,A bibliografia utilizada pelo professor foi adequada?,,radio,"[' Sim ', ' Não ']",[],[]
+27,1,Por quê?,,textarea,,,
+28,0,O professor poderia ter mostrado mais aplicações desta disciplina?,,radio,"[' Sim ', ' Não ']",[],[]
+28,1,Comente,,textarea,,,
+29,0,Cite qualidades positivas do professor e pontos a melhorar.,,textarea,,,
+30,0,Qual o nível de dificuldade desta disciplina?,,scale,"['1', '2', '3', '4', '5']",[],[]
+31,0,A dificuldade está inerente:,,scale,"['1', '2', '3', '4', '5']",[],[]
+32,0,Comentários e dicas para quem vai cursar esta disciplina.,,textarea,,,
