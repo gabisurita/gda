@@ -1,0 +1,19 @@
+$def with (Render)
+
+
+<!DOCTYPE html>
+<html>
+  <head>
+    $:Render.includes()
+    <title>$BaseTitle</title>
+  </head>  
+  <body>
+    <!-- Fixed navbar -->
+    $:Render.navbar()
+    <!-- Begin page content -->
+    <div class="container">
+	FAQ
+    </div>
+    $:Render.footer()
+  </body>
+</html>
