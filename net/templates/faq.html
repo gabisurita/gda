@@ -6,13 +6,36 @@ $def with (Render)
   <head>
     $:Render.includes()
     <title>$BaseTitle</title>
+    <script language="javascript" type="text/javascript">   /* Mover ??? */
+      function FaqResp(shID) {
+        if (document.getElementById(shID).style.display != 'block') {
+          document.getElementById(shID).style.display = 'block';
+        }
+        else {
+           document.getElementById(shID).style.display = 'none';
+        }
+      }
+    </script>
   </head>  
   <body>
     <!-- Fixed navbar -->
     $:Render.navbar()
     <!-- Begin page content -->
+    <!--    Pergunta e resposta, troque os id's, mantenha o sufixo 'Resp'
+      <div id="Pergunta1">  
+        <a href="#" class="FaqPerg" onclick="FaqResp('Pergunta1Resp');return false;">Pergunta</a>
+        <div class="FaqResp" id="Pergunta1Resp">
+          Resposta
+        </div>   
+      </div>   Fim Pergunta e resposta -->
     <div class="container">
-	FAQ
+    	<h1>FAQ</h1><br><br>
+    	<div id="Pergunta1">  
+        <a href="#" class="FaqPerg" onclick="FaqResp('Pergunta1Resp');return false;">Pergunta</a>
+        <div class="FaqResp" id="Pergunta1Resp">
+          Resposta
+        </div>
+      </div>      
     </div>
     $:Render.footer()
   </body>
