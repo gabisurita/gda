@@ -27,15 +27,39 @@ $def with (Render)
         <div class="FaqResp" id="Pergunta1Resp">
           Resposta
         </div>   
-      </div>   Fim Pergunta e resposta -->
+      </div> <!-- Fim Pergunta --> 
     <div class="container">
     	<h1>FAQ</h1><br><br>
-    	<div id="Pergunta1">  
-        <a href="#" class="FaqPerg" onclick="FaqResp('Pergunta1Resp');return false;">Pergunta</a>
-        <div class="FaqResp" id="Pergunta1Resp">
-          Resposta
+    	<div id="SobreGDA">  <!-- Inicio Pergunta -->
+        <a href="#" class="FaqPerg" onclick="FaqResp('SobreGDAResp');return false;">O que é o GDA?</a>
+        <div class="FaqResp" id="SobreGDAResp">
+          O GDA (Grupo Discente de Avaliação) é um dos mais importantes instrumentos de manifestação acadêmica dos alunos. Seu objetivo é monitorar a qualidade do curso e dos professores da Engenharia Elétrica da UNICAMP de acordo com o ponto de vista estudantil, contando, para isso, com o apoio do CABS. <br>
+          <div id="Oficial">  
+            <a href="#" class="FaqPerg" onclick="FaqResp('OficialResp');return false;">Essa avaliação é oficial?</a>
+            <div class="FaqResp" id="OficialResp">
+              Não. <br>
+            </div>   
+          </div> <!-- Fim Pergunta --> 
+          <div id="Trabalho">  
+            <a href="#" class="FaqPerg" onclick="FaqResp('TrabalhoResp');return false;">O que o GDA faz?</a>
+            <div class="FaqResp" id="TrabalhoResp">
+              O principal trabalho do GDA é colher informações sobre as disciplinas ministradas a cada semestre e torná-las acessíveis tanto ao corpo discente quanto ao docente. O fácil acesso não se limita apenas à disponibilidade dos dados recolhidos, mas também em apresentá-los analiticamente, visando a compreensão espontânea do leitor.
+            </div>   
+          </div> <!-- Fim Pergunta -->    
+          <div id="Diferenca">  
+            <a href="#" class="FaqPerg" onclick="FaqResp('DiferencaResp');return false;">Qual a diferença em relação à avaliação oficial?</a>
+            <div class="FaqResp" id="DiferencaResp">
+              A nossa avaliação se diferencia por avaliar o professor de maneira subjetiva, abrindo um maior espaço para o aluno poder criticar ou elogiar suas técnicas de ensino. Desta forma, o próprio professor pode saber onde está agradando ou não os seus alunos. Mesmo as questões objetivas contaram com uma dedicação extra para que as diversas características relevantes em um professor fossem abordadas.
+            </div>   
+          </div> <!-- Fim Pergunta -->
+          <div id="Ajuda">  
+            <a href="#" class="FaqPerg" onclick="FaqResp('AjudaResp');return false;">Como posso ajudar?</a>
+            <div class="FaqResp" id="AjudaResp">
+              As avaliações promovidas pelo GDA só são possíveis graças ao empenho e espírito voluntário de alguns alunos. Toda ajuda é bem-vinda! Para participar, entre em contato conosco: (forma de contato?)
+            </div>   
+          </div> <!-- Fim Pergunta -->         
         </div>
-      </div>      
+      </div> <!-- Fim Seção "O que é o GDA" -->    
     </div>
     $:Render.footer()
   </body>
