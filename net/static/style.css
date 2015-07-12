@@ -124,3 +124,12 @@ body {
   z-index: 2;
 }
 
+/* FAQ */
+
+.FaqPerg {
+  font-size: 20px;
+  font-weight: bold; }
+.FaqResp {
+  display: none;
+  padding-left: 20px; }
+

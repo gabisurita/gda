@@ -207,6 +207,10 @@ def Setup():
       IsLogged()
       return Render.index(Render)
 
+  class FaqPage:
+    def GET(self):
+      IsLogged()
+      return Render.faq(Render)
 
 
   # URL Mappings     
@@ -227,6 +231,7 @@ def Setup():
   Map(SearchTeacher, "/docentes")  
   Map(SearchSubject, "/disciplinas")
   Map(SearchOffering, "/oferecimentos")
+  Map(FaqPage, "/faq")
   
   
   for Line in S.query(Student):
