@@ -16,6 +16,9 @@ web.config.debug = False
 BaseTitle = "GDA"
 
 def Setup():
+  # Start DB
+  CreateDB()
+
   # Render the layouts
   Render = web.template.render('templates/', globals=globals(), cache=False)
 
@@ -32,6 +35,7 @@ def Setup():
         return True
     except AttributeError:
       raise web.seeother('/login')
+
 
   # Form Handdlers  
   LoginForm = web.form.Form(
@@ -188,7 +192,7 @@ def Setup():
       IsLogged()
       return Render.searchoffering(Render)
 
-  
+ 
   class EvaluatePage:
     OfferingInst = Offering()
     
@@ -198,19 +202,44 @@ def Setup():
 
     def POST(self):
       IsLogged()
-      Questions = [Field.split("=") for Field in web.data().split("&")]
-      return Questions
+      
+      QuestionsList = [Field.split("=") for Field in web.data().split("&")]
+      
+      QuestionsMap = {Q[0] : Q[1] for Q in QuestionsList}
+      
+      
 
-
-  class IndexPage:
+  class UploadFile:
     def GET(self):
       IsLogged()
-      return Render.index(Render)
+    def POST(self):
+      
+      IsLogged()
+              
 
+  def UploadURL(URL):
+    return URL + "/upload"
+
+      
+  class SubmitComment:
+    def GET(self):
+      IsLogged()
+
+  
+  def CommentURL(URL):
+    return URL + "/comment"
+
+  
   class FaqPage:
     def GET(self):
       IsLogged()
       return Render.faq(Render)
+
+  
+  class IndexPage:
+    def GET(self):
+      IsLogged()
+      return Render.index(Render)
 
 
   # URL Mappings     
@@ -222,7 +251,6 @@ def Setup():
     globals()[URL] = type(URL, (Inst, object,), AttMap)
     App.add_mapping(URL.lower().replace(" ","_").decode("utf8"), URL)
     App.add_mapping(URL.lower().replace(" ","_").decode("utf8")+"/", URL)
-
 
 
   Map(IndexPage, "/")
@@ -239,14 +267,20 @@ def Setup():
   
   for Line in S.query(Teacher):
     Map(TeacherPage, Line.EncodeURL(), dict(TeacherInst = Line))
+    Map(SubmitComment,CommentURL(Line.EncodeURL()), dict()) 
+#    Map(UploadFile,UploadURL(Line.EncodeURL()), dict()) 
 
   for Line in S.query(Subject):
     Map(SubjectPage, Line.EncodeURL(), dict(SubjectInst = Line))
+    Map(SubmitComment,CommentURL(Line.EncodeURL()), dict()) 
+    Map(UploadFile,UploadURL(Line.EncodeURL()), dict())
 
   for Line in S.query(Offering):
     Map(OfferingPage, Line.EncodeURL(), dict(OfferingInst = Line))
+#    Map(UploadFile,UploadURL(Line.EncodeURL()), dict())
+    Map(SubmitComment,CommentURL(Line.EncodeURL()), dict()) 
     Map(EvaluatePage, Line.EvaluationURL(), dict(OfferingInst = Line))
-    
+
        
 
   # Built-in static handler 

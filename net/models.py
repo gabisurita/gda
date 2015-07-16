@@ -123,8 +123,57 @@ class User(Base):
   student = relationship(Student)
 
 
+# TODO Add Timestamps
+
+class TeacherComment(Base):
+  __tablename__ = "teacher_comments"
+  
+  id = Column('teacher_comment_id', Integer, primary_key=True)
+  text = Column('text', String)
+  user_id = Column(Integer, ForeignKey('user.user_id'))
+  user = relationship(User)
+  teacher_id = Column(Integer, ForeignKey('teacher.teacher_id'))
+  teacher = relationship(Teacher)
+
+
+class OfferingComment(Base):
+  __tablename__ = "offering_comments"
+  
+  id = Column('offering_comment_id', Integer, primary_key=True)
+  text = Column('text', String)
+  user_id = Column(Integer, ForeignKey('user.user_id'))
+  user = relationship(User)
+  offering_id = Column(Integer, ForeignKey('offering.offering_id'))
+  offering = relationship(Offering)
+
+
+class SubjectComment(Base):
+  __tablename__ = "subject_comments"
+  
+  id = Column('subject_comment_id', Integer, primary_key=True)
+  text = Column('text', String)
+  user_id = Column(Integer, ForeignKey('user.user_id'))
+  user = relationship(User)
+  subject_id = Column(Integer, ForeignKey('subject.subject_id'))
+  subject = relationship(Subject)
+
+
+# TODO Add type (w. mimes) and Offering/Teacher support
+
+class FileUploads(Base):
+  __tablename__ = "file_uploads"
+  
+  id = Column('upload_id', Integer, primary_key=True)
+  filename = Column('filename', String)
+  user_id = Column(Integer, ForeignKey('user.user_id'))
+  user = relationship(User)
+  subject_id = Column(Integer, ForeignKey('subject.subject_id'))
+  subject = relationship(Subject)
+
+
 def CreateDB():
   Base.metadata.create_all(DB)
+
 
 
 
