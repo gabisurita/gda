@@ -4,6 +4,8 @@ $ S = sessionmaker(bind=DB)()
 
 $ ThisOfferings = S.query(Offering).filter(Offering.teacher == TeacherInst) #.order_by(Offering.semester.year, Offering.semester.sem)
 
+$ ThisComments = S.query(TeacherComment).filter(TeacherComment.teacher == TeacherInst) #.order_by(Offering.semester.year, Offering.semester.sem)
+
 
 <!DOCTYPE html>
 <html>
@@ -18,7 +20,8 @@ $ ThisOfferings = S.query(Offering).filter(Offering.teacher == TeacherInst) #.or
     <div class="container">
       <div class="col-sm-8">
         <h3>$TeacherInst.name</h3>
-        <br>
+        </br>
+        $:Render.comments(ThisComments)
       </div>
 
       <div class="col-sm-4 blog-sidebar">

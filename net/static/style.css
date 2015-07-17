@@ -124,6 +124,33 @@ body {
   z-index: 2;
 }
 
+
+
+/* Comments */
+
+.comment-box{
+  max-width: 500px;
+/*  margin: 0 auto;*/
+  position: relative;
+/*  display: inline-block;*/
+}
+
+.comment-box .comment-field{
+  margin-top:22px;
+  display: block;
+  width:80%;
+  float: left;
+}
+
+.comment-box .comment-submit{
+  display: block;
+  width:19%;
+  float: right;
+  padding: 16px 0px;;
+}
+
+
+
 /* FAQ */
 
 .FaqPerg {

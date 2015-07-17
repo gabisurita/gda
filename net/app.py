@@ -28,13 +28,22 @@ def Setup():
   # User session accounts handled by file  
   Session = web.session.Session(App, web.session.DiskStore('sessions'), initializer={})
   
-  # Define "Log in only" Area 
   def IsLogged():
+    """ Define secure (logged in only) area"""
     try:
       if Session.user_id:  
         return True
     except AttributeError:
       raise web.seeother('/login')
+
+
+  def POSTParse(RawPost):
+    """Parse POST Filds into dict."""
+    FieldList = [Field.split("=") for Field in RawPost.split("&")]      
+    FieldMap = {Q[0] : Q[1] for Q in FieldList}
+    
+    return FieldMap
+
 
 
   # Form Handdlers  
@@ -158,7 +167,30 @@ def Setup():
       IsLogged()
       return Render.teacherpage(self.TeacherInst, Render)
 
-  
+    def POST(self):
+      IsLogged()
+      Response = POSTParse(web.data())
+      
+      if Response.has_key("trigger"):
+        
+        LocDB = create_engine('sqlite:///test.db', echo=False)
+        LocS = sessionmaker(bind=LocDB)()
+        
+        if Response["trigger"] == "comment":
+          Me = LocS.query(User).filter(User.id == Session.user_id).one()
+          LocTeacher = LocS.query(Teacher).filter(Teacher.id == self.TeacherInst.id).one()
+          print Me
+          NewComment = TeacherComment(text=Response["text"], teacher = LocTeacher, user=Me)
+          LocS.add(NewComment)          
+          LocS.commit()
+          
+      else:
+        return "Invalid Response"
+        
+      return Render.teacherpage(self.TeacherInst, Render)
+    
+    
+    
   class SubjectPage:
     SubjectInst = Subject()
     
@@ -202,33 +234,8 @@ def Setup():
 
     def POST(self):
       IsLogged()
-      
-      QuestionsList = [Field.split("=") for Field in web.data().split("&")]
-      
-      QuestionsMap = {Q[0] : Q[1] for Q in QuestionsList}
-      
-      
-
-  class UploadFile:
-    def GET(self):
-      IsLogged()
-    def POST(self):
-      
-      IsLogged()
-              
-
-  def UploadURL(URL):
-    return URL + "/upload"
-
-      
-  class SubmitComment:
-    def GET(self):
-      IsLogged()
-
-  
-  def CommentURL(URL):
-    return URL + "/comment"
-
+      return POSTParse(web.data())
+       
   
   class FaqPage:
     def GET(self):
@@ -267,18 +274,12 @@ def Setup():
   
   for Line in S.query(Teacher):
     Map(TeacherPage, Line.EncodeURL(), dict(TeacherInst = Line))
-    Map(SubmitComment,CommentURL(Line.EncodeURL()), dict()) 
-#    Map(UploadFile,UploadURL(Line.EncodeURL()), dict()) 
 
   for Line in S.query(Subject):
     Map(SubjectPage, Line.EncodeURL(), dict(SubjectInst = Line))
-    Map(SubmitComment,CommentURL(Line.EncodeURL()), dict()) 
-    Map(UploadFile,UploadURL(Line.EncodeURL()), dict())
 
   for Line in S.query(Offering):
     Map(OfferingPage, Line.EncodeURL(), dict(OfferingInst = Line))
-#    Map(UploadFile,UploadURL(Line.EncodeURL()), dict())
-    Map(SubmitComment,CommentURL(Line.EncodeURL()), dict()) 
     Map(EvaluatePage, Line.EvaluationURL(), dict(OfferingInst = Line))
 
        

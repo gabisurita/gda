@@ -1,0 +1,19 @@
+$def with (ThisComments)
+
+<div class="comment-box">
+  <h3>Comentários</h3>
+  <form id="comment-form" action="" method="POST">
+    <input type="hidden" name="trigger" value="comment">
+    <textarea class="form-control comment-field" name="text"></textarea><br>
+    <input class="btn comment-submit" value="Enviar" type="submit">    
+  </form>
+  <div id="comment-listing">
+    $for Comment in ThisComments:
+      <div>
+        <b>$Comment.user.student.name</b><br/>
+        $Comment.text
+      </div>
+  </div>
+ 
+</div>
+  
