@@ -13,7 +13,9 @@ from config import *
 os.chdir(BaseDir)  
 web.config.debug = False  
 
+
 BaseTitle = "GDA"
+
 
 def Setup():
   # Start DB
@@ -28,13 +30,25 @@ def Setup():
   # User session accounts handled by file  
   Session = web.session.Session(App, web.session.DiskStore('sessions'), initializer={})
   
-  def IsLogged():
+  
+  def IsLogged(Redirect = True):
     """ Define secure (logged in only) area"""
     try:
-      if Session.user_id:  
+      print Session.user_id
+      if Session.user_id != False:  
         return True
+      else:
+        if Redirect:
+          raise web.seeother('/login')
+        else:
+          return False
+                
     except AttributeError:
-      raise web.seeother('/login')
+      if Redirect:
+        raise web.seeother('/login')
+      else:
+        return False
+
 
 
   def POSTParse(RawPost):
@@ -46,7 +60,7 @@ def Setup():
 
 
 
-  # Form Handdlers  
+  # Form Handlers  
   LoginForm = web.form.Form(
     web.form.Textbox('RA', web.form.notnull, Class="form-control"),
     web.form.Password('Senha', web.form.notnull, Class="form-control"),
@@ -69,8 +83,11 @@ def Setup():
   # Page classes (handlers)
   class LoginPage:  
     def GET(self):
-      Form = LoginForm
-      return Render.login(Form, "", Render)
+      if not IsLogged(Redirect = False):
+        Form = LoginForm
+        return Render.login(Form, "", Render)
+      else:
+        raise web.seeother('/')
       
     def POST(self):
       Form = LoginForm
@@ -102,8 +119,11 @@ def Setup():
 
   class RegisterPage:   
     def GET(self):
-      Form = RegisterForm()
-      return Render.login(Form, Render)
+      if not IsLogged(Redirect = False):
+        Form = RegisterForm()
+        return Render.login(Form, Render)
+      else:
+        raise web.seeother('/')
       
     def POST(self):
       Form = RegisterForm()
@@ -151,7 +171,14 @@ def Setup():
           Session.user_id = UserCall.id
           return "First, Hi"
 
-    
+  
+  # TODO Destroy Session
+  class LogoutPage:
+    def GET(self):
+      Session.user_id = False
+      raise web.seeother('/')
+      
+  
   class StudentPage:
     StudentInst = Student()
     
@@ -170,22 +197,7 @@ def Setup():
     def POST(self):
       IsLogged()
       Response = POSTParse(web.data())
-      
-      if Response.has_key("trigger"):
-        
-        LocDB = create_engine('sqlite:///test.db', echo=False)
-        LocS = sessionmaker(bind=LocDB)()
-        
-        if Response["trigger"] == "comment":
-          Me = LocS.query(User).filter(User.id == Session.user_id).one()
-          LocTeacher = LocS.query(Teacher).filter(Teacher.id == self.TeacherInst.id).one()
-          print Me
-          NewComment = TeacherComment(text=Response["text"], teacher = LocTeacher, user=Me)
-          LocS.add(NewComment)          
-          LocS.commit()
-          
-      else:
-        return "Invalid Response"
+      CommitComment(Response)
         
       return Render.teacherpage(self.TeacherInst, Render)
     
@@ -263,6 +275,7 @@ def Setup():
   Map(IndexPage, "/")
   Map(LoginPage, "/login")
   Map(RegisterPage, "/registrar")
+  Map(LogoutPage, "/logout")
   Map(SearchTeacher, "/docentes")  
   Map(SearchSubject, "/disciplinas")
   Map(SearchOffering, "/oferecimentos")
