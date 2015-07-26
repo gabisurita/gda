@@ -16,6 +16,14 @@ $ ThisComments = S.query(OfferingComment).filter(OfferingComment.offering == Off
     <!-- Begin page content -->
     <div class="container">
       <div class="col-sm-8">  
+        <h3><a class="black-link" href="$OfferingInst.subject.EncodeURL()">
+          $OfferingInst.subject.code 
+          $OfferingInst.code - 
+          $OfferingInst.subject.name
+        </a></h3>        
+        <h4><a class="black-link" href="$OfferingInst.teacher.EncodeURL()">
+          $OfferingInst.teacher.name
+        </a></h4>
         <form method="GET" action="$:OfferingInst.EvaluationURL()">
           <button class="btn btn-success" type="submit">Avaliar este oferecimento</button>
         </form>

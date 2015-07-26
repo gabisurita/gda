@@ -104,7 +104,13 @@ body {
   background-color: #eee;
 }
 
+.black-link {
+  color: inherit;
+}
 
+.black-link:hover {
+  color: inherit;
+}
 
 /*Login Page */
 
