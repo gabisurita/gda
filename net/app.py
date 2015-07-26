@@ -73,7 +73,7 @@ def Setup():
           NewComment = SubjectComment(text=Response["text"], subject = LocSubject, user=Me)
           
         if Inst.__class__ == Offering:
-          LocSubject = LocS.query(Offering).filter(Offering.id == Inst.id).one()
+          LocOffering = LocS.query(Offering).filter(Offering.id == Inst.id).one()
           NewComment = OfferingComment(text=Response["text"], offering = LocOffering, user=Me)
         
         try:          
@@ -86,6 +86,7 @@ def Setup():
 
     else:
       return "Invalid Response"
+
 
 
   # Form Handlers  
@@ -213,6 +214,7 @@ def Setup():
     def GET(self):
       IsLogged()
       return Render.studentpage(self.StudentInst, Render)
+
         
 
   class TeacherPage:
@@ -238,6 +240,14 @@ def Setup():
       IsLogged()
       return Render.subjectpage(self.SubjectInst, Render)
 
+    def POST(self):
+      IsLogged()
+      Response = POSTParse(web.data())
+      CommitComment(self.SubjectInst, Response)
+      
+      return Render.subjectpage(self.SubjectInst, Render)    
+    
+
 
   class OfferingPage:
     OfferingInst = Offering()
@@ -246,6 +256,14 @@ def Setup():
       IsLogged()
       return Render.offeringpage(self.OfferingInst, Render)
 
+    def POST(self):
+      IsLogged()
+      Response = POSTParse(web.data())
+      CommitComment(self.OfferingInst, Response)
+      
+      return Render.offeringpage(self.OfferingInst, Render)
+    
+    
   
   class SearchTeacher:
     def GET(self):
