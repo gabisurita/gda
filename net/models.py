@@ -136,6 +136,7 @@ class TeacherComment(Base):
   
   id = Column('teacher_comment_id', Integer, primary_key=True)
   text = Column('text', String)
+  anonymous = Column('anonymous', Boolean)
   user_id = Column(Integer, ForeignKey('user.user_id'))
   user = relationship(User)
   teacher_id = Column(Integer, ForeignKey('teacher.teacher_id'))
@@ -147,6 +148,7 @@ class OfferingComment(Base):
   
   id = Column('offering_comment_id', Integer, primary_key=True)
   text = Column('text', String)
+  anonymous = Column('anonymous', Boolean)
   user_id = Column(Integer, ForeignKey('user.user_id'))
   user = relationship(User)
   offering_id = Column(Integer, ForeignKey('offering.offering_id'))
@@ -158,6 +160,7 @@ class SubjectComment(Base):
   
   id = Column('subject_comment_id', Integer, primary_key=True)
   text = Column('text', String)
+  anonymous = Column('anonymous', Boolean)
   user_id = Column(Integer, ForeignKey('user.user_id'))
   user = relationship(User)
   subject_id = Column(Integer, ForeignKey('subject.subject_id'))

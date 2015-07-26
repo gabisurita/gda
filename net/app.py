@@ -50,7 +50,7 @@ def Setup():
   def POSTParse(RawPost):
     """Parse POST Filds into dict."""
     FieldList = [Field.split("=") for Field in RawPost.split("&")]      
-    FieldMap = {Q[0] : Q[1] for Q in FieldList}
+    FieldMap = {Q[0] : urllib.unquote(Q[1].replace("+"," ")).decode('utf8')  for Q in FieldList}
     
     return FieldMap
 
@@ -64,17 +64,21 @@ def Setup():
       if Response["trigger"] == "comment":
         Me = LocS.query(User).filter(User.id == Session.user_id).one()
         
+        if not Response.has_key("anonymous"):
+          Response["anonymous"] = False
+        
         if Inst.__class__ == Teacher:
           LocTeacher = LocS.query(Teacher).filter(Teacher.id == Inst.id).one()
-          NewComment = TeacherComment(text=Response["text"], teacher = LocTeacher, user=Me)
+          
+          NewComment = TeacherComment(text=Response["text"], teacher = LocTeacher, user=Me, anonymous=bool(Response["anonymous"]))
           
         if Inst.__class__ == Subject:
           LocSubject = LocS.query(Subject).filter(Subject.id == Inst.id).one()
-          NewComment = SubjectComment(text=Response["text"], subject = LocSubject, user=Me)
+          NewComment = SubjectComment(text=Response["text"], subject = LocSubject, user=Me, anonymous=bool(Response["anonymous"]))
           
         if Inst.__class__ == Offering:
           LocOffering = LocS.query(Offering).filter(Offering.id == Inst.id).one()
-          NewComment = OfferingComment(text=Response["text"], offering = LocOffering, user=Me)
+          NewComment = OfferingComment(text=Response["text"], offering = LocOffering, user=Me, anonymous=bool(Response["anonymous"]))
         
         try:          
           LocS.add(NewComment)          
