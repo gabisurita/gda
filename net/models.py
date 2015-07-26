@@ -1,10 +1,16 @@
+#!/usr/env/python
+#encoding:utf-8
+""" GDA Website Database Models."""
+
+from constants import *
+
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, ForeignKey, Integer, String, Boolean
 from sqlalchemy.orm import relationship, sessionmaker
 
 
-DB = create_engine('sqlite:///test.db', echo=False)
+DB = create_engine(SystemDB, echo=False)
 Base = declarative_base()  
 
 

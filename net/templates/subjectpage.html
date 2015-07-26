@@ -6,6 +6,9 @@ $ ThisOfferings = S.query(Offering).filter(Offering.subject == SubjectInst) #.or
 
 $ ThisTeachers = [Of.teacher for Of in ThisOfferings] 
 
+$ ThisComments = S.query(SubjectComment).filter(SubjectComment.subject == SubjectInst) #.order_by(Subject.semester.year, Offering.semester.sem)
+
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -22,6 +25,7 @@ $ ThisTeachers = [Of.teacher for Of in ThisOfferings]
         <h3>$SubjectInst.name</h3>
         <p><b>Ementa: </b>$SubjectInst.summary</p>
         <br>
+        $:Render.comments(ThisComments)
       </div>
 
       <div class="col-sm-4 blog-sidebar">

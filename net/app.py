@@ -2,19 +2,15 @@
 #encoding:utf-8
 """GDA Website."""
 
+from constants import *
+
 import web
 import os
 import codecs
 #import markdown
 import urllib
 from models import *
-from config import *
 
-os.chdir(BaseDir)  
-web.config.debug = False  
-
-
-BaseTitle = "GDA"
 
 
 def Setup():
@@ -58,6 +54,38 @@ def Setup():
     
     return FieldMap
 
+
+  def CommitComment(Inst, Response):
+    if Response.has_key("trigger"):
+      
+      LocDB = create_engine(UserDB, echo=False)
+      LocS = sessionmaker(bind=LocDB)()
+      
+      if Response["trigger"] == "comment":
+        Me = LocS.query(User).filter(User.id == Session.user_id).one()
+        
+        if Inst.__class__ == Teacher:
+          LocTeacher = LocS.query(Teacher).filter(Teacher.id == Inst.id).one()
+          NewComment = TeacherComment(text=Response["text"], teacher = LocTeacher, user=Me)
+          
+        if Inst.__class__ == Subject:
+          LocSubject = LocS.query(Subject).filter(Subject.id == Inst.id).one()
+          NewComment = SubjectComment(text=Response["text"], subject = LocSubject, user=Me)
+          
+        if Inst.__class__ == Offering:
+          LocSubject = LocS.query(Offering).filter(Offering.id == Inst.id).one()
+          NewComment = OfferingComment(text=Response["text"], offering = LocOffering, user=Me)
+        
+        try:          
+          LocS.add(NewComment)          
+          LocS.commit()
+          return False
+          
+        except:
+          return True
+
+    else:
+      return "Invalid Response"
 
 
   # Form Handlers  
@@ -197,8 +225,8 @@ def Setup():
     def POST(self):
       IsLogged()
       Response = POSTParse(web.data())
-      CommitComment(Response)
-        
+      CommitComment(self.TeacherInst, Response)
+      
       return Render.teacherpage(self.TeacherInst, Render)
     
     
