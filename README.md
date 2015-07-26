@@ -51,7 +51,7 @@ Este repositório está organizado como segue, qualquer submissão de conteúdo 
    net/ (web app)
      app.py (Aplicação Web, páginas)
      models.py (Classes para ORM)
-     config.py (Configuração básica do servidor)
+     constants.py (Configuração básica do servidor)
      test.db (Banco de dados SQLite para testes)
      templates/ (HTML das páginas de apresentação)
      static/ (Conteúdo estático - img, css, etc)
