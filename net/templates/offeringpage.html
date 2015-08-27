@@ -21,14 +21,21 @@ $ ThisComments = S.query(OfferingComment).filter(OfferingComment.offering == Off
           $OfferingInst.code - 
           $OfferingInst.subject.name
         </a></h3>        
-        <h4><a class="black-link" href="$OfferingInst.teacher.EncodeURL()">
-          $OfferingInst.teacher.name
+        <h4><a class="black-link" href="">
+          $ "Hi" # OfferingInst.teacher.EncodeURL()
+          $ "Hi" #OfferingInst.teacher.name
         </a></h4>
-        <form method="GET" action="$:OfferingInst.EvaluationURL()">
+        <form method="GET" action="$OfferingInst.EvaluationURL()">
           <button class="btn btn-success" type="submit">Avaliar este oferecimento</button>
         </form>
         </br>
         $:Render.comments(ThisComments)
+      </div>
+      <div class="col-sm-4">
+        <form id="comment-form" action="" method="POST" enctype="multipart/form-data">
+          <input type="hidden" name="trigger" value="upload">
+          <input type="file" name="upfile">
+          <input class="btn btn-submit" value="Enviar" type="submit">
       </div>
     </div>
     $:Render.footer()

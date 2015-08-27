@@ -18,7 +18,7 @@ def Setup():
   CreateDB()
 
   # Render the layouts
-  Render = web.template.render('templates/', globals=globals(), cache=False)
+  Render = web.template.render(os.path.dirname(os.path.abspath(__file__))+'/templates/', globals=globals(), cache=False)
 
   # initialize the application
   App = web.application(mapping=(), fvars=globals())
@@ -30,7 +30,6 @@ def Setup():
   def IsLogged(Redirect = True):
     """ Define secure (logged in only) area"""
     try:
-      print Session.user_id
       if Session.user_id != False:  
         return True
       else:
@@ -49,19 +48,21 @@ def Setup():
 
   def POSTParse(RawPost):
     """Parse POST Filds into dict."""
-    FieldList = [Field.split("=") for Field in RawPost.split("&")]      
-    FieldMap = {Q[0] : urllib.unquote(Q[1].replace("+"," ")).decode('utf8')  for Q in FieldList}
-    
-    return FieldMap
+    FieldList = [Field.split("=") for Field in RawPost.split("&")]
+    try:
+      FieldMap = {Q[0] : urllib.unquote(Q[1].replace("+"," ")).decode('utf8')  for Q in FieldList}
+      return FieldMap
+    except:
+      return {}
+
 
 
   def CommitComment(Inst, Response):
-    if Response.has_key("trigger"):
-      
-      LocDB = create_engine(UserDB, echo=False)
-      LocS = sessionmaker(bind=LocDB)()
-      
+    if Response.has_key("trigger"):    
       if Response["trigger"] == "comment":
+        LocDB = create_engine(UserDB, echo=False)
+        LocS = sessionmaker(bind=LocDB)()
+      
         Me = LocS.query(User).filter(User.id == Session.user_id).one()
         
         if not Response.has_key("anonymous"):
@@ -86,10 +87,8 @@ def Setup():
           return False
           
         except:
+          LocS.rollback()
           return True
-
-    else:
-      return "Invalid Response"
 
   
 
@@ -111,6 +110,7 @@ def Setup():
   SearchForm = web.form.Form(
     web.form.Textbox('Busca', Class="form-control"),
   )
+
   
   
   # Page classes (handlers)
@@ -211,6 +211,7 @@ def Setup():
       Session.user_id = False
       raise web.seeother('/')
       
+
   
   class StudentPage:
     StudentInst = Student()
@@ -266,7 +267,49 @@ def Setup():
       CommitComment(self.OfferingInst, Response)
       
       return Render.offeringpage(self.OfferingInst, Render)
-    
+
+
+
+  class UploadHandler:
+    def GET(self):
+        web.header("Content-Type","text/html; charset=utf-8")
+        return """
+<html><head></head><body>
+<form method="POST" enctype="multipart/form-data" action="">
+<input type="file" name="myfile" />
+<br/>
+<input type="submit" />
+</form>
+</body></html>"""
+
+    def POST(self):
+        x = web.input(myfile={})
+        filedir = 'uploads' # change this to the directory you want to store the file in.
+        if 'myfile' in x: # to check if the file-object is created
+            filepath=x.myfile.filename.replace('\\','/') # replaces the windows-style slashes with linux ones.
+            filename=filepath.split('/')[-1] # splits the and chooses the last part (the filename with extension)
+            fout = open(filedir +'/'+ filename,'w') # creates the file where the uploaded file should be stored
+            fout.write(x.myfile.file.read()) # writes the uploaded file to the newly created file.
+            fout.close() # closes the file, upload complete.
+        raise web.seeother('/upload')
+
+  
+
+
+#    OfferingInst = Offering()
+#    
+#    def GET(self):
+#      IsLogged()
+#      return Render.offeringpage(self.OfferingInst, Render)
+
+#    def POST(self):
+#      IsLogged()
+#      Response = POSTParse(web.data())
+#      CommitComment(self.OfferingInst, Response)
+#      
+#      return Render.offeringpage(self.OfferingInst, Render)
+#    
+#    
     
   
   class SearchTeacher:
@@ -321,6 +364,8 @@ def Setup():
     App.add_mapping(URL.lower().replace(" ","_").decode("utf8"), URL)
     App.add_mapping(URL.lower().replace(" ","_").decode("utf8")+"/", URL)
 
+
+  Map(UploadHandler, "/upload")
 
   Map(IndexPage, "/")
   Map(LoginPage, "/login")

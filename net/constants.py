@@ -12,7 +12,14 @@ BaseTitle = "GDA"
 
 # Base Directory
 BaseDir = "."
+UploadDir = BaseDir + '/uploads'
 os.chdir(BaseDir)  
+
+# Hadled by App or WSGI, WSGI recommended for production.
+AppStaticHandler = True
+
+# Static directories (for css, js, other scripts, etc...)
+StaticDirs = ["static"]
 
 # Disable debug and enable Sessions
 web.config.debug = False
@@ -21,10 +28,5 @@ web.config.debug = False
 SystemDB = 'sqlite:///test.db'
 UserDB = 'sqlite:///test.db'
 
-# Hadled by App or WSGI, WSGI recommended for production.
-AppStaticHandler = True
-
-# Static directories (for css, js, other scripts, etc...)
-StaticDirs = ["static"]
 
 
