@@ -11,9 +11,9 @@ import os
 BaseTitle = "GDA"
 
 # Base Directory
-BaseDir = "."
+BaseDir = os.path.dirname(os.path.abspath(__file__))
 UploadDir = BaseDir + '/uploads'
-os.chdir(BaseDir)  
+os.chdir(BaseDir)
 
 # Hadled by App or WSGI, WSGI recommended for production.
 AppStaticHandler = True
