@@ -63,7 +63,13 @@ class Semester(Base):
   
   id = Column('semester_id', Integer, primary_key=True)
   year = Column('year', Integer)    
-  sem  = Column('sem', Integer)  
+  sem  = Column('sem', Integer)
+  
+  def EncodeURL(self):
+      return ("/oferecimentos/%ss%s/" % (
+            str(self.sem),
+            str(self.year)))  
+  
 
 
 class Offering(Base):
