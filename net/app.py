@@ -393,6 +393,13 @@ def Setup():
         def GET(self):
             IsLogged()
             return Render.index(Render)
+            
+    class SemesterPage:
+        SemesterInst = Semester()
+
+        def GET(self):
+            IsLogged()
+            return Render.semesterpage(self.SemesterInst, Render)
 
     # URL Mappings
     S = sessionmaker(bind=DB)()
@@ -419,6 +426,9 @@ def Setup():
     for Line in S.query(Offering):
         Map(OfferingPage, Line.EncodeURL(), dict(OfferingInst=Line))
         Map(EvaluatePage, Line.EvaluationURL(), dict(OfferingInst=Line))
+        
+    for Line in S.query(Semester):
+        Map(SemesterPage, Line.EncodeURL(), dict(SemesterInst=Line))
 
     # Built-in static handler
     if AppStaticHandler:
