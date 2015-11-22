@@ -1,6 +1,10 @@
 $def with (SemesterInst, Render)
+
 $ S = sessionmaker(bind=DB)()
+
 $ ThisOfferings = S.query(Offering).filter(Offering.semester == SemesterInst)
+
+$ Questions = S.query(QuestionsOffering)
 
 <!DOCTYPE html>
 <html>
@@ -13,7 +17,7 @@ $ ThisOfferings = S.query(Offering).filter(Offering.semester == SemesterInst)
     $:Render.navbar()
     <!-- Begin page content -->
     <div class="container">
-      <div class="col-sm-7">
+      <div class="col-sm-8">
         <h3>Busca de oferecimentos para o $SemesterInst.semº semestre de $SemesterInst.year</h3>
         <div id="oferecimentos">
           <input type="text" class="search" placeholder="Busca">
@@ -24,8 +28,10 @@ $ ThisOfferings = S.query(Offering).filter(Offering.semester == SemesterInst)
             <thead>
               <tr>
                 <th style="min-width: 100px;">Código</th>
-                <th style="min-width: 450px;">Nome</th>
                 <th style="min-width: 300px;">Docente</th>
+                $for Line in Questions:
+                  $ Qid = '%s' % (chr(ord('A')+Line.id - 1))
+                  <th style="min-width: 30px;">$Qid</th>
               </tr>
             </thead>
             <tbody class="list">
@@ -33,17 +39,23 @@ $ ThisOfferings = S.query(Offering).filter(Offering.semester == SemesterInst)
               $ URL = Line.EncodeURL()
               $ Code = '%s %s' % (Line.subject.code, Line.code)
               $ Sem = '%ss%s' % (Line.semester.sem, Line.semester.year)
-              $ ID = '%s' % (Line.id)
               <tr>
                 <td style="min-width: 100px;">
                   <p class="codigo"><a href="$URL">$Code</a></p>
                 </td>
-                <td style="min-width: 550px;">
-                  <p class="nome"><a href="$URL">$Line.subject.name</a></p>
-                </td>
                 <td>
                   <p class="docente"><a href="$Line.teacher.EncodeURL()">$Line.teacher.name</a></p>
                 </td>
+                <td> <p class="QA">90</p> </td>
+                <td> <p class="QB">91</p> </td>
+                <td> <p class="QC">92</p> </td>
+                <td> <p class="QD">93</p> </td>
+                <td> <p class="QE">94</p> </td>
+                <td> <p class="QF">95</p> </td>
+                <td> <p class="QG">96</p> </td>
+                <td> <p class="QH">97</p> </td>
+                <td> <p class="QI">98</p> </td>
+                <td> <p class="QJ">99</p> </td>
               </tr>
             </tbody>
           </table>
@@ -54,6 +66,16 @@ $ ThisOfferings = S.query(Offering).filter(Offering.semester == SemesterInst)
           };
           var userList = new List('oferecimentos', options);
         </script>
+      </div>
+      <div class ="col-sm-4 blog-sidebar" >
+        <div class="sidebar-module sidebar-module-inset">
+          <ol class="list-unstyled">
+            $for Line in Questions:
+              $ Qid = '%s' % (chr(ord('A')+Line.id - 1))
+              $ Question = '%s' % (Line.question)
+              <li> <b>$Qid</b> : $Question </li>
+          </ol>
+        </div>
       </div>
     </div>
     $:Render.footer()

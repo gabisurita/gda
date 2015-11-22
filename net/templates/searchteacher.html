@@ -3,20 +3,20 @@ $def with (Render)
 $ S = sessionmaker(bind=DB)()
 
 $ TeachersList = S.query(Teacher).order_by(Teacher.name)
-
+$ Questions = S.query(QuestionsOffering)
 
 <!DOCTYPE html>
 <html>
   <head>
     $:Render.includes()
     <title>$BaseTitle - Busca de Docentes</title>
-  </head>  
+  </head>
   <body>
     <!-- Fixed navbar -->
     $:Render.navbar()
     <!-- Begin page content -->
     <div class="container">
-      <div class="col-sm-7">
+      <div class="col-sm-8">
         <h2>Busca de Docentes</h2>
         <div id="docentes">
           <input type="text" class="search" placeholder="Busca">
@@ -26,8 +26,10 @@ $ TeachersList = S.query(Teacher).order_by(Teacher.name)
           <table class="searchtable">
             <thead>
               <tr>
-                <th style="min-width:450px">Nome</th>
-                <th style="min-width:100px">Instituto</th>
+                <th style="min-width:350px">Nome</th>
+                $for Line in Questions:
+                  $ Qid = '%s' % (chr(ord('A')+Line.id - 1))
+                  <th style="min-width: 30px;">$Qid</th>
               </tr>
             </thead>
             <tbody class="list">
@@ -35,27 +37,38 @@ $ TeachersList = S.query(Teacher).order_by(Teacher.name)
               $ Name = Line.name
               $ URL = Line.EncodeURL()
               <tr>
-                <td style="min-width:450px">
+                <td style="min-width:350px">
                   <p class="nome"><a href="$URL">$Name</a></p>
                 </td>
-                <td style="min-width:100px">
-                  <p class="instituto"><a href="$URL">FEEC</a></p>
-                </td>
+                <td> <p class="QA">90</p> </td>
+                <td> <p class="QB">91</p> </td>
+                <td> <p class="QC">92</p> </td>
+                <td> <p class="QD">93</p> </td>
+                <td> <p class="QE">94</p> </td>
+                <td> <p class="QF">95</p> </td>
+                <td> <p class="QG">96</p> </td>
+                <td> <p class="QH">97</p> </td>
+                <td> <p class="QI">98</p> </td>
+                <td> <p class="QJ">99</p> </td>
               </tr>
             </tbody>
-          </table>        
+          </table>
         </div>
         <script>
           var options = {
             valueNames: ['nome']
           };
           var userList = new List('docentes', options);
-        </script>   
+        </script>
       </div>
-      
-      <div class="col-sm-4 blog-sidebar">
+      <div class ="col-sm-4 blog-sidebar" >
         <div class="sidebar-module sidebar-module-inset">
-          <h3>Visão Geral</h3>
+          <ol class="list-unstyled">
+            $for Line in Questions:
+              $ Qid = '%s' % (chr(ord('A')+Line.id - 1))
+              $ Question = '%s' % (Line.question)
+              <li> <b>$Qid</b> : $Question </li>
+          </ol>
         </div>
       </div>
     </div>

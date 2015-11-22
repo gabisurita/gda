@@ -3,20 +3,20 @@ $def with (Render)
 $ S = sessionmaker(bind=DB)()
 
 $ SubjectsList = S.query(Subject).order_by(Subject.code)
-
+$ Questions = S.query(QuestionsSubject)
 
 <!DOCTYPE html>
 <html>
   <head>
     $:Render.includes()
     <title>$BaseTitle - Busca de Disciplinas</title>
-  </head>  
+  </head>
   <body>
     <!-- Fixed navbar -->
     $:Render.navbar()
     <!-- Begin page content -->
     <div class="container">
-      <div class="col-sm-7">
+      <div class="col-sm-9">
         <h2>Busca de Disciplinas</h2>
         <div id="disciplinas">
           <input type="text" class="search" placeholder="Busca">
@@ -26,34 +26,48 @@ $ SubjectsList = S.query(Subject).order_by(Subject.code)
           <table class="searchtable">
             <thead>
               <tr>
-                <th style="min-width: 100px;">Código</th>
+                <th style="min-width: 80px;">Código</th>
                 <th style="min-width: 550px;">Nome</th>
-                <th style="min-width: 150px;">Instituto</th>
+                $for Line in Questions:
+                  $ Qid = '%s' % (chr(ord('A')+Line.id - 1))
+                  <th style="min-width: 30px;">$Qid</th>
               </tr>
             </thead>
             <tbody class="list">
             $for Line in SubjectsList:
               $ URL = Line.EncodeURL()
               <tr>
-                <td style="min-width: 100px;">
+                <td style="min-width: 80px;">
                   <p class="codigo"><a href="$URL">$Line.code</a></p>
                 </td>
                 <td style="min-width: 550px;">
                   <p class="nome"><a href="$URL">$Line.name</a></p>
                 </td>
-                <td style="min-width: 150px;">
-                  <p class="instituto"><a href="$URL">FEEC</a></p>
-                </td>
+              <td style="min-width: 10px;">75</td>
+              <td style="min-width: 10px;">80</td>
+              <td style="min-width: 10px;">85</td>
+              <td style="min-width: 10px;">90</td>
+              <td style="min-width: 10px;">95</td>
               </tr>
             </tbody>
-          </table>        
+          </table>
         </div>
         <script>
           var options = {
             valueNames: ['codigo','nome']
           };
           var userList = new List('disciplinas', options);
-        </script>   
+        </script>
+      </div>
+      <div class ="col-sm-3 blog-sidebar" >
+        <div class="sidebar-module sidebar-module-inset">
+          <ol class="list-unstyled">
+            $for Line in Questions:
+              $ Qid = '%s' % (chr(ord('A')+Line.id - 1))
+              $ Question = '%s' % (Line.question)
+              <li> <b>$Qid</b> : $Question </li>
+          </ol>
+        </div>
       </div>
     </div>
     $:Render.footer()
