@@ -3,27 +3,30 @@ $def with (OfferingInst, Render)
 $ S = sessionmaker(bind=DB)()
 
 $ ThisComments = S.query(OfferingComment).filter(OfferingComment.offering == OfferingInst) #.order_by(Subject.semester.year, Offering.semester.sem)
+$ ThisTeacher = S.query(Teacher).filter(Teacher.id == OfferingInst.teacher_id)
+$for Line in ThisTeacher:
+  $ TeacherName = Line.name
+  $ TeacherURL = Line.EncodeURL()
 
 <!DOCTYPE html>
 <html>
   <head>
     $:Render.includes()
     <title>$BaseTitle - $OfferingInst.code</title>
-  </head>  
+  </head>
   <body>
     <!-- Fixed navbar -->
     $:Render.navbar()
     <!-- Begin page content -->
     <div class="container">
-      <div class="col-sm-8">  
+      <div class="col-sm-8">
         <h3><a class="black-link" href="$OfferingInst.subject.EncodeURL()">
-          $OfferingInst.subject.code 
-          $OfferingInst.code - 
+          $OfferingInst.subject.code
+          $OfferingInst.code -
           $OfferingInst.subject.name
-        </a></h3>        
-        <h4><a class="black-link" href="">
-          $ "Hi" # OfferingInst.teacher.EncodeURL()
-          $ "Hi" #OfferingInst.teacher.name
+        </a></h3>
+        <h4><a class="black-link" href="$TeacherURL">
+          $TeacherName
         </a></h4>
         <form method="GET" action="$OfferingInst.EvaluationURL()">
           <button class="btn btn-success" type="submit">Avaliar este oferecimento</button>
