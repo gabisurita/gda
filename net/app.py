@@ -11,7 +11,6 @@ import codecs
 import urllib
 from models import *
 from forms import *
-from setup import *
 
 def Setup():
 
