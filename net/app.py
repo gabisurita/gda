@@ -31,6 +31,15 @@ def Setup():
     Session = web.session.Session(App, web.session.DiskStore(
         'sessions'), initializer={})
 
+    def Map(Inst, URL, AttMap={}):
+        """ Map an object to an URL. """
+
+        globals()[URL] = type(URL, (Inst, object,), AttMap)
+        App.add_mapping(URL.lower().replace(
+            " ", "_").decode("utf8"), URL)
+        App.add_mapping(URL.lower().replace(
+            " ", "_").decode("utf8")+"/", URL)
+
     # Page classes (handlers)
     class LoginPage:
         def GET(self):

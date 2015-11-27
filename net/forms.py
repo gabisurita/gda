@@ -18,7 +18,7 @@ RegisterForm = web.form.Form(
 SearchForm = web.form.Form(
     web.form.Textbox('Busca', Class="form-control"),
 )
-
+a = [('a','abobora'), 'b']
 myform = web.form.Form(
     #form.Textbox("boe"),
     #form.Textbox("bax",

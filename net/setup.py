@@ -1,14 +1,5 @@
 import web
 
-def Map(Inst, URL, AttMap={}):
-    """ Map an object to an URL. """
-
-    globals()[URL] = type(URL, (Inst, object,), AttMap)
-    App.add_mapping(URL.lower().replace(
-        " ", "_").decode("utf8"), URL)
-    App.add_mapping(URL.lower().replace(
-        " ", "_").decode("utf8")+"/", URL)
-
 def POSTParse(RawPost):
     """Parse POST Filds into dict."""
     FieldList = [Field.split("=") for Field in RawPost.split("&")]
