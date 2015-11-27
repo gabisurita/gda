@@ -10,10 +10,10 @@ import os
 import codecs
 import urllib
 from models import *
-
+from forms import *
+from setup import *
 
 def Setup():
-    """Initial server configuration."""
 
     # Start DB
     CreateDB()
@@ -22,120 +22,14 @@ def Setup():
     Render = web.template.render(BaseDir+'/templates/',
                                  cache=False, globals=globals())
 
+    """Initial server configuration."""
+
     # initialize the application
     App = web.application(mapping=(), fvars=globals())
 
     # User session accounts handled by file
     Session = web.session.Session(App, web.session.DiskStore(
         'sessions'), initializer={})
-
-    def Map(Inst, URL, AttMap={}):
-        """ Map an object to an URL. """
-
-        globals()[URL] = type(URL, (Inst, object,), AttMap)
-        App.add_mapping(URL.lower().replace(
-            " ", "_").decode("utf8"), URL)
-        App.add_mapping(URL.lower().replace(
-            " ", "_").decode("utf8")+"/", URL)
-
-    def POSTParse(RawPost):
-        """Parse POST Filds into dict."""
-        FieldList = [Field.split("=") for Field in RawPost.split("&")]
-
-        try:
-            FieldMap = {Q[0]: urllib.unquote(Q[1].replace("+", " ")).
-                        decode('utf8') for Q in FieldList}
-
-            return FieldMap
-        except:
-            return {}
-
-    def IsLogged(Redirect=True):
-        """ Define secure (logged in only) area"""
-        try:
-            if Session.user_id:
-                return True
-            else:
-                if Redirect:
-                    raise web.seeother('/login')
-                else:
-                    return False
-
-        except AttributeError:
-            if Redirect:
-                raise web.seeother('/login')
-            else:
-                return False
-
-    def CommitComment(Inst, Response):
-        """Submit a comment to an instance"""
-        if "trigger" in Response:
-            if Response["trigger"] == "comment":
-                LocDB = create_engine(UserDB, echo=False)
-                LocS = sessionmaker(bind=LocDB)()
-
-                Me = LocS.query(User).filter(User.id == Session.user_id).one()
-
-                if "anonymous" not in Response:
-                    Response["anonymous"] = False
-
-                if Inst.__class__ == Teacher:
-                    LocTeacher = LocS.query(Teacher).filter(
-                        Teacher.id == Inst.id).one()
-
-                    NewComment = TeacherComment(
-                        text=Response["text"],
-                        teacher=LocTeacher,
-                        user=Me,
-                        anonymous=bool(Response["anonymous"]))
-
-                if Inst.__class__ == Subject:
-                    LocSubject = LocS.query(Subject).filter(
-                        Subject.id == Inst.id).one()
-
-                    NewComment = SubjectComment(
-                        text=Response["text"],
-                        subject=LocSubject,
-                        user=Me,
-                        anonymous=bool(Response["anonymous"]))
-
-                if Inst.__class__ == Offering:
-                    LocOffering = LocS.query(Offering).filter(
-                        Offering.id == Inst.id).one()
-
-                    NewComment = OfferingComment(
-                        text=Response["text"],
-                        offering=LocOffering,
-                        user=Me,
-                        anonymous=bool(Response["anonymous"]))
-
-                try:
-                    LocS.add(NewComment)
-                    LocS.commit()
-                    return False
-
-                except:
-                    LocS.rollback()
-                    return True
-
-    # Form Handlers
-    LoginForm = web.form.Form(
-        web.form.Textbox('email', web.form.notnull, Class="form-control"),
-        web.form.Password('senha', web.form.notnull, Class="form-control"),
-        web.form.Button('login', Class="btn btn-primary"),
-    )
-
-    RegisterForm = web.form.Form(
-        web.form.Textbox('RA', web.form.notnull, Class="form-control"),
-        web.form.Textbox('Nome', web.form.notnull, Class="form-control"),
-        web.form.Textbox('E-mail', web.form.notnull, Class="form-control"),
-        web.form.Password('Senha', web.form.notnull, Class="form-control"),
-        web.form.Button('Login', Class="btn btn-primary"),
-    )
-
-    SearchForm = web.form.Form(
-        web.form.Textbox('Busca', Class="form-control"),
-    )
 
     # Page classes (handlers)
     class LoginPage:
@@ -393,7 +287,7 @@ def Setup():
         def GET(self):
             IsLogged()
             return Render.index(Render)
-            
+
     class SemesterPage:
         SemesterInst = Semester()
 
@@ -426,7 +320,7 @@ def Setup():
     for Line in S.query(Offering):
         Map(OfferingPage, Line.EncodeURL(), dict(OfferingInst=Line))
         Map(EvaluatePage, Line.EvaluationURL(), dict(OfferingInst=Line))
-        
+
     for Line in S.query(Semester):
         Map(SemesterPage, Line.EncodeURL(), dict(SemesterInst=Line))
 
