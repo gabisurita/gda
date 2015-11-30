@@ -384,6 +384,25 @@ def Setup():
             IsLogged()
             return Render.semesterpage(self.SemesterInst, Render)
 
+    class Database:
+        def GET(self):
+            IsLogged()
+            form1 = AddTeacher()
+            form2 = MyForm()
+            # make sure you create a copy of the form by calling it (line above)
+            # Otherwise changes will appear globally
+            return Render.database(Render,form1,form2)
+
+        def POST(self):
+            form1 = AddTeacher()
+            form2 = MyForm()
+            #if not form.validates():
+            #    return Render.database(Render,form1,form2)
+            #else:
+            return form1.d.Nome
+            return form1['Nome'].value
+
+
     # URL Mappings
     S = sessionmaker(bind=DB)()
 
@@ -396,6 +415,7 @@ def Setup():
     Map(SearchSubject, "/disciplinas")
     Map(SearchOffering, "/oferecimentos")
     Map(FaqPage, "/faq")
+    Map(Database, "/database")
 
     for Line in S.query(Student):
         Map(StudentPage, Line.EncodeURL(), dict(StudentInst=Line))

@@ -1,4 +1,10 @@
+from constants import *
+
 import web
+import os
+import codecs
+import urllib
+from models import *
 
 # Form Handlers
 LoginForm = web.form.Form(
@@ -18,8 +24,28 @@ RegisterForm = web.form.Form(
 SearchForm = web.form.Form(
     web.form.Textbox('Busca', Class="form-control"),
 )
-a = [('a','abobora'), 'b']
-myform = web.form.Form(
+
+S = sessionmaker(bind=DB)()
+
+SemestersList = S.query(Semester) #.order_by(Offering.subject.code)
+TeachersList = S.query(Teacher).order_by(Teacher.name)
+
+semesters = []
+for Line in SemestersList:
+    sem = '%s semestre de %s' % (Line.sem, Line.year)
+    semesters.insert(-1,(Line.id,sem))
+
+teachers = []
+for Line in TeachersList:
+    t = '%s' % (Line.name)
+    teachers.insert(-1,(Line.id,t))
+
+
+AddTeacher = web.form.Form(
+    web.form.Textbox('Nome'),
+    web.form.Button('Submeter', Class="btn btn-primary"))
+
+MyForm = web.form.Form(
     #form.Textbox("boe"),
     #form.Textbox("bax",
     #    form.notnull,
@@ -27,7 +53,9 @@ myform = web.form.Form(
     #    form.Validator('Must be more than 5', lambda x:int(x)>5)),
     #form.Textarea('moe'),
     #form.Checkbox('curly'),
+        web.form.Dropdown('id', args = semesters),
+        web.form.Dropdown('Professores', args = teachers),
+        #web.form.Button('Submeter1', Class="btn btn-primary")),
         web.form.Dropdown('Semestre', [('1','primeiro'), ('2','segundo')]),
-        web.form.Dropdown('teste', args = a),
         web.form.Textbox("Ano", Class="form-control"),
         web.form.Button('Submeter', Class="btn btn-primary"))
