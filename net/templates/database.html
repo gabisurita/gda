@@ -1,0 +1,26 @@
+$def with (Render, form1, form2)
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    $:Render.includes()
+    <title>$BaseTitle - Database </title>
+  </head>
+  <body>
+    $:Render.navbar()
+    <div class="container">
+      <div class = col-sm-4>
+        <form name="one" method="post">
+          $:form1.render()
+        </form>
+      </div>
+      <div class = col-sm-4>
+        <form name="tw0" method="post">
+          $:form2.render()
+        </form>
+      </div>
+    </div>
+    $:Render.footer()
+  </body>
+</html>
