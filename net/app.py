@@ -388,17 +388,28 @@ def Setup():
         def GET(self):
             IsLogged()
             form1 = AddTeacher()
-            form2 = MyForm()
+            form2 = AddSemester()
+            form3 = DeleteTeacher()
+            form4 = DeleteSemester()
+            form5 = DeleteSubject()
             # make sure you create a copy of the form by calling it (line above)
             # Otherwise changes will appear globally
-            return Render.database(Render,form1,form2)
+            return Render.database(Render,form1,form2,form3,form4,form5)
 
         def POST(self):
             form1 = AddTeacher()
-            form2 = MyForm()
+            form2 = AddSemester()
+            form3 = DeleteTeacher()
+            form4 = DeleteSemester()
+            form5 = DeleteSubject()
             #if not form.validates():
             #    return Render.database(Render,form1,form2)
             #else:
+            form1.validates()
+            form2.validates()
+            form3.validates()
+            form4.validates()
+            form5.validates()
             return form1.d.Nome
             return form1['Nome'].value
 
