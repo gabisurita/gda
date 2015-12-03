@@ -1,13 +1,18 @@
-$def with (OfferingInst, Render)
+$def with (OfferingInst, Render, form)
 
 $ S = sessionmaker(bind=DB)()
 
-$ ThisComments = S.query(OfferingComment).filter(OfferingComment.offering == OfferingInst) #.order_by(Subject.semester.year, Offering.semester.sem)
+$ ThisComments = S.query(OfferingComment).filter(OfferingComment.offering == OfferingInst)
 $ ThisTeacher = S.query(Teacher).filter(Teacher.id == OfferingInst.teacher_id)
 $for Line in ThisTeacher:
   $ TeacherName = Line.name
   $ TeacherURL = Line.EncodeURL()
 
+$ SearchRate = S.query(OfferingRate).filter(OfferingRate.offering_id == OfferingInst.id)
+$ Rated = 0
+$for Line in SearchRate:
+  $ Rate = Line
+  $ Rated = 1
 <!DOCTYPE html>
 <html>
   <head>
@@ -20,27 +25,55 @@ $for Line in ThisTeacher:
     <!-- Begin page content -->
     <div class="container">
       <div class="col-sm-8">
-        <h3><a class="black-link" href="$OfferingInst.subject.EncodeURL()">
-          $OfferingInst.subject.code
-          $OfferingInst.code -
+        <h3>
+          $OfferingInst.subject.code $OfferingInst.code -
+          <a class="black-link" href="$OfferingInst.subject.EncodeURL()">
           $OfferingInst.subject.name
         </a></h3>
-        <h4><a class="black-link" href="$TeacherURL">
+        <h4>Professor: <a class="black-link" href="$TeacherURL">
           $TeacherName
         </a></h4>
-        <form method="GET" action="$OfferingInst.EvaluationURL()">
-          <button class="btn btn-success" type="submit">Avaliar este oferecimento</button>
-        </form>
-        </br>
+        <h4>  $OfferingInst.semester.sem semestre de $OfferingInst.semester.year </h4>
+        <h4> $OfferingInst.students matriculados</h4>
+
+        <h3> Avaliação FEEC</h3>
+        <h4> $Rate.answers respostas</h4>
+        <h4> Média Global: $Rate.question1</h4>
+        <h4> Pontualidade: $Rate.question2</h4>
+        <h4> Atendimento Extra Classe: $Rate.question1</h4>
+        <h4> Planejamento da Bibliografia: $Rate.question1</h4>
+        <h4> Didática: $Rate.question1</h4>
+        <h4> Relacionamento com a turma: $Rate.question1</h4>
+        <h4> Coerência nas avaliações : $Rate.question1</h4>
         $:Render.comments(ThisComments)
       </div>
+
       <div class="col-sm-4">
-        <form id="comment-form" action="" method="POST" enctype="multipart/form-data">
-          <input type="hidden" name="trigger" value="upload">
-          <input type="file" name="upfile">
-          <input class="btn btn-submit" value="Enviar" type="submit">
+
+        <h3>Avaliar Oferecimento</h3>
+        <form name="one" method="post">
+          $if Rated
+            $:form.render()
+
+        </form>
       </div>
     </div>
     $:Render.footer()
   </body>
 </html>
+
+
+<!--
+        <form method="GET" action="$OfferingInst.EvaluationURL()">
+          <button class="btn btn-success" type="submit">Avaliar este oferecimento</button>
+        </form>
+        </br>
+-->
+
+<!--
+        <form id="comment-form" action="" method="POST" enctype="multipart/form-data">
+          <input type="hidden" name="trigger" value="upload">
+          <input type="file" name="upfile">
+          <input class="btn btn-submit" value="Enviar" type="submit">
+      </div>
+-->

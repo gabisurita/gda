@@ -293,14 +293,36 @@ def Setup():
 
         def GET(self):
             IsLogged()
-            return Render.offeringpage(self.OfferingInst, Render)
+            form = RateOffering()
+            return Render.offeringpage(self.OfferingInst, Render, form)
 
         def POST(self):
             IsLogged()
             Response = POSTParse(web.data())
             CommitComment(self.OfferingInst, Response)
-
-            return Render.offeringpage(self.OfferingInst, Render)
+            form = RateOffering()
+            #if not form.validates():
+            #    return Render.database(Render,form1,form2)
+            #else:
+            form.validates()
+            S = sessionmaker(bind=DB)()
+            Rate = OfferingRate(
+                            answers=form.d.Respostas,
+                            offering_id= self.OfferingInst.id,
+                            question1=form.d.Question1,
+                            question2=form.d.Question2,
+                            question3=form.d.Question3,
+                            question4=form.d.Question4,
+                            question5=form.d.Question5,
+                            question6=form.d.Question6,
+                            question7=form.d.Question7,
+                            question8=form.d.Question8,
+                            question9=form.d.Question9,
+                            question10=form.d.Question10)
+            S.add(Rate)
+            S.commit()
+            return self.OfferingInst.id
+            #return Render.offeringpage(self.OfferingInst, Render,form)
 
     # TODO Unfinished
     class UploadHandler:
@@ -387,31 +409,26 @@ def Setup():
     class Database:
         def GET(self):
             IsLogged()
-            form1 = AddTeacher()
-            form2 = AddSemester()
-            form3 = DeleteTeacher()
-            form4 = DeleteSemester()
-            form5 = DeleteSubject()
+            form1 = AddOffering()
             # make sure you create a copy of the form by calling it (line above)
             # Otherwise changes will appear globally
-            return Render.database(Render,form1,form2,form3,form4,form5)
+            return Render.database(Render,form1)
 
         def POST(self):
-            form1 = AddTeacher()
-            form2 = AddSemester()
-            form3 = DeleteTeacher()
-            form4 = DeleteSemester()
-            form5 = DeleteSubject()
+            form1 = AddOffering()
             #if not form.validates():
             #    return Render.database(Render,form1,form2)
             #else:
             form1.validates()
-            form2.validates()
-            form3.validates()
-            form4.validates()
-            form5.validates()
-            return form1.d.Nome
-            return form1['Nome'].value
+            S = sessionmaker(bind=DB)()
+            Off = Offering(subject_id=form1.d.Disciplina,
+                            teacher_id=form1.d.Professor,
+                            semester_id=form1.d.Semestre,
+                            students = int(form1.d.Matriculados),
+                            code = form1.d.Turma)
+            S.add(Off)
+            S.commit()
+            return Render.database(Render,form1)
 
 
     # URL Mappings

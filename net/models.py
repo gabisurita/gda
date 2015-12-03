@@ -77,7 +77,7 @@ class Offering(Base):
 
   id = Column('offering_id', Integer, primary_key=True)
   code = Column('code', String(8))
-  slots = Column('slots', Integer)
+ # slots = Column('slots', Integer)
   students = Column('students', Integer)
   teacher_id = Column(Integer, ForeignKey('teacher.teacher_id'))
   subject_id = Column(Integer, ForeignKey('subject.subject_id'))
@@ -196,6 +196,24 @@ class QuestionsSubject(Base):
 
     id = Column('question_id', Integer, primary_key=True)
     question = Column('question', String)
+
+class OfferingRate(Base):
+  __tablename__ = "offering_rate"
+  id = Column('rating_id', Integer, primary_key=True)
+  offering_id = Column(Integer, ForeignKey('offering.offering_id'))
+  offering = relationship(Offering)
+  answers = Column('answers', Integer)
+  question1 = Column('question1', Integer)
+  question2 = Column('question2', Integer)
+  question3 = Column('question3', Integer)
+  question4 = Column('question4', Integer)
+  question5 = Column('question5', Integer)
+  question6 = Column('question6', Integer)
+  question7 = Column('question7', Integer)
+  question8 = Column('question8', Integer)
+  question9 = Column('question9', Integer)
+  question10 = Column('question10', Integer)
+
 
 def CreateDB():
   Base.metadata.create_all(DB)

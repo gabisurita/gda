@@ -1,5 +1,8 @@
-$def with (Render, form1, form2, form3, form4, form5)
+$def with (Render, form1)
 
+$ S = sessionmaker(bind=DB)()
+
+$ Offerings = S.query(Offering)
 <!DOCTYPE html>
 
 <html>
@@ -10,34 +13,24 @@ $def with (Render, form1, form2, form3, form4, form5)
   <body>
     $:Render.navbar()
     <div class="container">
-      <div class = col-sm-6>
-        <h2> Adicionar </h2> <br>
-        <h4>Adicionar Professor</h4>
+      <div class = col-sm-8>
+        <h3>Adicionar Oferecimento</h3>
         <form name="one" method="post">
           $:form1.render()
         </form>
-        <br> <br>
-        <h4>Adicionar Semestre</h4>
-        <form name="tw0" method="post">
-          $:form2.render()
-        </form>
       </div>
-      <div class = col-sm-6>
-        <h2> Deletar </h2> <br>
-        <h4>Deletar Professor</h4>
-        <form name="tw0" method="post">
-          $:form3.render()
-        </form>
-        <br> <br>
-        <h4>Deletar Semestre</h4>
-        <form name="tw0" method="post">
-          $:form4.render()
-        </form>
-        <br> <br>
-        <h4>Deletar Disciplina</h4>
-        <form name="tw0" method="post">
-          $:form5.render()
-        </form>
+    </div>
+    <div class="container">
+      <div class="col-sm-7">
+        <h4>Lista de Oferecimentos</h4>
+        <ol class="list-unstyled">
+          $for Line in Offerings:
+            $ URL = Line.EncodeURL()
+            $ Code = '%s %s' % (Line.subject.code, Line.code)
+            $ Sem = '%ss%s' % (Line.semester.sem, Line.semester.year)
+            $ Mat = '%s' % (Line.students)
+            <li><a href="$URL">$Code</a> - <a href="$Line.teacher.EncodeURL()">$Line.teacher.name</a> - $Mat matriculados</li>
+        </ol>
       </div>
     </div>
     $:Render.footer()

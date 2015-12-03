@@ -67,6 +67,29 @@ DeleteSubject = web.form.Form(
     web.form.Radio('id', args = subjects),
     web.form.Button('Submeter', Class="btn btn-primary"))
 
+AddOffering = web.form.Form(
+    web.form.Dropdown('Semestre', args = semesters),
+    web.form.Dropdown('Disciplina', args = subjects),
+    web.form.Dropdown('Professor', args = teachers),
+    web.form.Textbox('Turma'),
+    web.form.Textbox('Matriculados'),
+    web.form.Button('Submeter', Class="btn btn-primary"))
+
+RateOffering = web.form.Form(
+    web.form.Textbox('Respostas'),
+    web.form.Textbox('Question1'),
+    web.form.Textbox('Question2'),
+    web.form.Textbox('Question3'),
+    web.form.Textbox('Question4'),
+    web.form.Textbox('Question5'),
+    web.form.Textbox('Question6'),
+    web.form.Textbox('Question7'),
+    web.form.Textbox('Question8'),
+    web.form.Textbox('Question9'),
+    web.form.Textbox('Question10'),
+    web.form.Button('Submeter', Class="btn btn-primary"))
+
+
 #MyForm = web.form.Form(
     #form.Textbox("boe"),
     #form.Textbox("bax",
