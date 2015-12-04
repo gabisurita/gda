@@ -1,43 +1,96 @@
-$def with (OfferingInst, Render)
+$def with (OfferingInst, Render, form)
 
 $ S = sessionmaker(bind=DB)()
 
-$ ThisComments = S.query(OfferingComment).filter(OfferingComment.offering == OfferingInst) #.order_by(Subject.semester.year, Offering.semester.sem)
+$ ThisComments = S.query(OfferingComment).filter(OfferingComment.offering == OfferingInst)
+$ ThisTeacher = S.query(Teacher).filter(Teacher.id == OfferingInst.teacher_id)
+$for Line in ThisTeacher:
+  $ TeacherName = Line.name
+  $ TeacherURL = Line.EncodeURL()
 
+$ SearchRate = S.query(OfferingRate).filter(OfferingRate.offering_id == OfferingInst.id)
+$ Rated = 0
+$for Line in SearchRate:
+  $ Rate = Line
+  $ Rated = 1
+$ Questions = S.query(QuestionsOffering)
+$ Q = []
+$for Line in Questions
+  $Q.append(Line.question)
 <!DOCTYPE html>
 <html>
   <head>
     $:Render.includes()
-    <title>$BaseTitle - $OfferingInst.code</title>
-  </head>  
+    <title>$BaseTitle $OfferingInst.subject.code$OfferingInst.code $(OfferingInst.semester.sem)s$OfferingInst.semester.year</title>
+  </head>
   <body>
     <!-- Fixed navbar -->
     $:Render.navbar()
     <!-- Begin page content -->
     <div class="container">
-      <div class="col-sm-8">  
-        <h3><a class="black-link" href="$OfferingInst.subject.EncodeURL()">
-          $OfferingInst.subject.code 
-          $OfferingInst.code - 
+      <div class="col-sm-8">
+        <h3>
+          $OfferingInst.subject.code $OfferingInst.code -
+          <a class="black-link" href="$OfferingInst.subject.EncodeURL()">
           $OfferingInst.subject.name
-        </a></h3>        
-        <h4><a class="black-link" href="">
-          $ "Hi" # OfferingInst.teacher.EncodeURL()
-          $ "Hi" #OfferingInst.teacher.name
+        </a></h3>
+        <h4>Professor: <a class="black-link" href="$TeacherURL">
+          $TeacherName
         </a></h4>
+        <h4>  $OfferingInst.semester.semº semestre de $OfferingInst.semester.year </h4>
+        $:Render.comments(ThisComments)
+      </div>
+      <div class="col-sm-4">
+        <div>
+          $if Rated:
+          <h3> Avaliação FEEC</h3>
+          <h4> $Rate.answers respostas de $OfferingInst.students matriculados</h4>
+          <table>
+            <thead>
+              <tr>
+                <th style="min-width: 300px;">Critério</th>
+                <th style="min-width: 10px;">Nota</th>
+              </tr>
+            </thead>
+            <tbody class="list">
+              <tr> <td> $Q[0] </td> <td> $Rate.question1 </td> </tr>
+              <tr> <td> $Q[1] </td> <td> $Rate.question2 </td> </tr>
+              <tr> <td> $Q[2] </td> <td> $Rate.question3 </td> </tr>
+              <tr> <td> $Q[3] </td> <td> $Rate.question4 </td> </tr>
+              <tr> <td> $Q[4] </td> <td> $Rate.question5 </td> </tr>
+              <tr> <td> $Q[5] </td> <td> $Rate.question6 </td> </tr>
+              <tr> <td> $Q[6] </td> <td> $Rate.question7 </td> </tr>
+              <tr> <td> $Q[7] </td> <td> $Rate.question8 </td> </tr>
+              <tr> <td> $Q[8] </td> <td> $Rate.question9 </td> </tr>
+              <tr> <td> $Q[9] </td> <td> $Rate.question10 </td> </tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+          $if Rated == 0:
+            <h3>Avaliar Oferecimento</h3>
+            <form name="one" method="post">
+              $:form.render()
+            </form>
+        </div>
+    </div>
+  </div>
+    $:Render.footer()
+  </body>
+</html>
+
+
+<!--
         <form method="GET" action="$OfferingInst.EvaluationURL()">
           <button class="btn btn-success" type="submit">Avaliar este oferecimento</button>
         </form>
         </br>
-        $:Render.comments(ThisComments)
-      </div>
-      <div class="col-sm-4">
+-->
+
+<!--
         <form id="comment-form" action="" method="POST" enctype="multipart/form-data">
           <input type="hidden" name="trigger" value="upload">
           <input type="file" name="upfile">
           <input class="btn btn-submit" value="Enviar" type="submit">
       </div>
-    </div>
-    $:Render.footer()
-  </body>
-</html>
+-->

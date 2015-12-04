@@ -1,0 +1,38 @@
+$def with (Render, form1)
+
+$ S = sessionmaker(bind=DB)()
+
+$ Offerings = S.query(Offering).filter(Offering.semester_id == 1)
+<!DOCTYPE html>
+
+<html>
+  <head>
+    $:Render.includes()
+    <title>$BaseTitle - Database </title>
+  </head>
+  <body>
+    $:Render.navbar()
+    <div class="container">
+      <div class = col-sm-8>
+        <h3>Adicionar Oferecimento</h3>
+        <form name="one" method="post">
+          $:form1.render()
+        </form>
+      </div>
+    </div>
+    <div class="container">
+      <div class="col-sm-7">
+        <h4>Lista de Oferecimentos</h4>
+        <ol class="list-unstyled">
+          $for Line in Offerings:
+            $ URL = Line.EncodeURL()
+            $ Code = '%s %s' % (Line.subject.code, Line.code)
+            $ Sem = '%ss%s' % (Line.semester.sem, Line.semester.year)
+            $ Mat = '%s' % (Line.students)
+            <li><a href="$URL">$Code</a> - <a href="$Line.teacher.EncodeURL()">$Line.teacher.name</a> - $Mat matriculados</li>
+        </ol>
+      </div>
+    </div>
+    $:Render.footer()
+  </body>
+</html>

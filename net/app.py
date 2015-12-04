@@ -10,10 +10,9 @@ import os
 import codecs
 import urllib
 from models import *
-
+from forms import *
 
 def Setup():
-    """Initial server configuration."""
 
     # Start DB
     CreateDB()
@@ -21,6 +20,8 @@ def Setup():
     # Render the layouts
     Render = web.template.render(BaseDir+'/templates/',
                                  cache=False, globals=globals())
+
+    """Initial server configuration."""
 
     # initialize the application
     App = web.application(mapping=(), fvars=globals())
@@ -118,24 +119,6 @@ def Setup():
                     LocS.rollback()
                     return True
 
-    # Form Handlers
-    LoginForm = web.form.Form(
-        web.form.Textbox('email', web.form.notnull, Class="form-control"),
-        web.form.Password('senha', web.form.notnull, Class="form-control"),
-        web.form.Button('login', Class="btn btn-primary"),
-    )
-
-    RegisterForm = web.form.Form(
-        web.form.Textbox('RA', web.form.notnull, Class="form-control"),
-        web.form.Textbox('Nome', web.form.notnull, Class="form-control"),
-        web.form.Textbox('E-mail', web.form.notnull, Class="form-control"),
-        web.form.Password('Senha', web.form.notnull, Class="form-control"),
-        web.form.Button('Login', Class="btn btn-primary"),
-    )
-
-    SearchForm = web.form.Form(
-        web.form.Textbox('Busca', Class="form-control"),
-    )
 
     # Page classes (handlers)
     class LoginPage:
@@ -310,14 +293,36 @@ def Setup():
 
         def GET(self):
             IsLogged()
-            return Render.offeringpage(self.OfferingInst, Render)
+            form = RateOffering()
+            return Render.offeringpage(self.OfferingInst, Render, form)
 
         def POST(self):
             IsLogged()
             Response = POSTParse(web.data())
             CommitComment(self.OfferingInst, Response)
-
-            return Render.offeringpage(self.OfferingInst, Render)
+            form = RateOffering()
+            #if not form.validates():
+            #    return Render.database(Render,form1,form2)
+            #else:
+            form.validates()
+            S = sessionmaker(bind=DB)()
+            Rate = OfferingRate(
+                            answers=form.d.Respostas,
+                            offering_id= self.OfferingInst.id,
+                            question1=form.d.Question1,
+                            question2=form.d.Question2,
+                            question3=form.d.Question3,
+                            question4=form.d.Question4,
+                            question5=form.d.Question5,
+                            question6=form.d.Question6,
+                            question7=form.d.Question7,
+                            question8=form.d.Question8,
+                            question9=form.d.Question9,
+                            question10=form.d.Question10)
+            S.add(Rate)
+            S.commit()
+            #return self.OfferingInst.id
+            return Render.offeringpage(self.OfferingInst, Render,form)
 
     # TODO Unfinished
     class UploadHandler:
@@ -394,6 +399,38 @@ def Setup():
             IsLogged()
             return Render.index(Render)
 
+    class SemesterPage:
+        SemesterInst = Semester()
+
+        def GET(self):
+            IsLogged()
+            return Render.semesterpage(self.SemesterInst, Render)
+
+    class Database:
+        def GET(self):
+            IsLogged()
+            form1 = AddOffering()
+            # make sure you create a copy of the form by calling it (line above)
+            # Otherwise changes will appear globally
+            return Render.database(Render,form1)
+
+        def POST(self):
+            form1 = AddOffering()
+            #if not form.validates():
+            #    return Render.database(Render,form1,form2)
+            #else:
+            form1.validates()
+            S = sessionmaker(bind=DB)()
+            Off = Offering(subject_id=form1.d.Disciplina,
+                            teacher_id=form1.d.Professor,
+                            semester_id=form1.d.Semestre,
+                            students = int(form1.d.Matriculados),
+                            code = form1.d.Turma)
+            S.add(Off)
+            S.commit()
+            return Render.database(Render,form1)
+
+
     # URL Mappings
     S = sessionmaker(bind=DB)()
 
@@ -406,6 +443,7 @@ def Setup():
     Map(SearchSubject, "/disciplinas")
     Map(SearchOffering, "/oferecimentos")
     Map(FaqPage, "/faq")
+    Map(Database, "/database")
 
     for Line in S.query(Student):
         Map(StudentPage, Line.EncodeURL(), dict(StudentInst=Line))
@@ -419,6 +457,9 @@ def Setup():
     for Line in S.query(Offering):
         Map(OfferingPage, Line.EncodeURL(), dict(OfferingInst=Line))
         Map(EvaluatePage, Line.EvaluationURL(), dict(OfferingInst=Line))
+
+    for Line in S.query(Semester):
+        Map(SemesterPage, Line.EncodeURL(), dict(SemesterInst=Line))
 
     # Built-in static handler
     if AppStaticHandler:
