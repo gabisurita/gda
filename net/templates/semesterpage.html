@@ -28,10 +28,10 @@ $ Questions = S.query(QuestionsOffering)
             <thead>
               <tr>
                 <th style="min-width: 100px;">Código</th>
-                <th style="min-width: 300px;">Docente</th>
+                <th style="min-width: 250px;">Docente</th>
                 $for Line in Questions:
                   $ Qid = '%s' % (chr(ord('A')+Line.id - 1))
-                  <th style="min-width: 30px;">$Qid</th>
+                  <th style="min-width: 35px;">$Qid</th>
               </tr>
             </thead>
             <tbody class="list">
@@ -39,23 +39,28 @@ $ Questions = S.query(QuestionsOffering)
               $ URL = Line.EncodeURL()
               $ Code = '%s %s' % (Line.subject.code, Line.code)
               $ Sem = '%ss%s' % (Line.semester.sem, Line.semester.year)
+              $ SearchRate = S.query(OfferingRate).filter(OfferingRate.offering_id == Line.id)
+              $ Rated = 0
+              $for Lin in SearchRate:
+                $ Rate = Lin
+                $ Rated = 1
               <tr>
-                <td style="min-width: 100px;">
-                  <p class="codigo"><a href="$URL">$Code</a></p>
-                </td>
-                <td>
-                  <p class="docente"><a href="$Line.teacher.EncodeURL()">$Line.teacher.name</a></p>
-                </td>
-                <td> <p class="QA">90</p> </td>
-                <td> <p class="QB">91</p> </td>
-                <td> <p class="QC">92</p> </td>
-                <td> <p class="QD">93</p> </td>
-                <td> <p class="QE">94</p> </td>
-                <td> <p class="QF">95</p> </td>
-                <td> <p class="QG">96</p> </td>
-                <td> <p class="QH">97</p> </td>
-                <td> <p class="QI">98</p> </td>
-                <td> <p class="QJ">99</p> </td>
+                <td style="min-width: 100px;"><a href="$URL">$Code</a></td>
+                <td><a href="$Line.teacher.EncodeURL()">$Line.teacher.name</a></td>
+                $if Rated:
+                  <td>$Rate.question1</td>
+                  <td>$Rate.question2</td>
+                  <td>$Rate.question3</td>
+                  <td>$Rate.question4</td>
+                  <td>$Rate.question5</td>
+                  <td>$Rate.question6</td>
+                  <td>$Rate.question7</td>
+                  <td>$Rate.question8</td>
+                  <td>$Rate.question9</td>
+                  <td>$Rate.question10</td>
+                $else:
+                  $for i in range(1,11):
+                    <td> - </td>
               </tr>
             </tbody>
           </table>

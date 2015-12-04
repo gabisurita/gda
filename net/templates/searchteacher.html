@@ -29,7 +29,7 @@ $ Questions = S.query(QuestionsOffering)
                 <th style="min-width:350px">Nome</th>
                 $for Line in Questions:
                   $ Qid = '%s' % (chr(ord('A')+Line.id - 1))
-                  <th style="min-width: 30px;">$Qid</th>
+                  <th style="min-width: 40px;">$Qid</th>
               </tr>
             </thead>
             <tbody class="list">
@@ -40,16 +40,29 @@ $ Questions = S.query(QuestionsOffering)
                 <td style="min-width:350px">
                   <p class="nome"><a href="$URL">$Name</a></p>
                 </td>
-                <td> <p class="QA">90</p> </td>
-                <td> <p class="QB">91</p> </td>
-                <td> <p class="QC">92</p> </td>
-                <td> <p class="QD">93</p> </td>
-                <td> <p class="QE">94</p> </td>
-                <td> <p class="QF">95</p> </td>
-                <td> <p class="QG">96</p> </td>
-                <td> <p class="QH">97</p> </td>
-                <td> <p class="QI">98</p> </td>
-                <td> <p class="QJ">99</p> </td>
+                $ Rated = 0
+                $ Q = [0]*10
+                $ SearchOffering = S.query(Offering).filter(Offering.teacher == Line)
+                $for Offer in SearchOffering:
+                  $ SearchRate = S.query(OfferingRate).filter(OfferingRate.offering_id == Offer.id)
+                  $for Rate in SearchRate:
+                    $ Q[0] += Rate.question1
+                    $ Q[1] += Rate.question2
+                    $ Q[2] += Rate.question3
+                    $ Q[3] += Rate.question4
+                    $ Q[4] += Rate.question5
+                    $ Q[5] += Rate.question6
+                    $ Q[6] += Rate.question7
+                    $ Q[7] += Rate.question8
+                    $ Q[8] += Rate.question9
+                    $ Q[9] += Rate.question10
+                    $ Rated += 1
+                $if Rated:
+                  $for i in range(0,10):
+                    <td>$(Q[i]/Rated)</td>
+                $else:
+                  $for i in range(1,11):
+                    <td> - </td>
               </tr>
             </tbody>
           </table>

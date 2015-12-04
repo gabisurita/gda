@@ -321,8 +321,8 @@ def Setup():
                             question10=form.d.Question10)
             S.add(Rate)
             S.commit()
-            return self.OfferingInst.id
-            #return Render.offeringpage(self.OfferingInst, Render,form)
+            #return self.OfferingInst.id
+            return Render.offeringpage(self.OfferingInst, Render,form)
 
     # TODO Unfinished
     class UploadHandler:

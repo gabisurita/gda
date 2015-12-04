@@ -13,6 +13,10 @@ $ Rated = 0
 $for Line in SearchRate:
   $ Rate = Line
   $ Rated = 1
+$ Questions = S.query(QuestionsOffering)
+$ Q = []
+$for Line in Questions
+  $Q.append(Line.question)
 <!DOCTYPE html>
 <html>
   <head>
@@ -33,31 +37,44 @@ $for Line in SearchRate:
         <h4>Professor: <a class="black-link" href="$TeacherURL">
           $TeacherName
         </a></h4>
-        <h4>  $OfferingInst.semester.sem semestre de $OfferingInst.semester.year </h4>
-        <h4> $OfferingInst.students matriculados</h4>
-
-        <h3> Avaliação FEEC</h3>
-        <h4> $Rate.answers respostas</h4>
-        <h4> Média Global: $Rate.question1</h4>
-        <h4> Pontualidade: $Rate.question2</h4>
-        <h4> Atendimento Extra Classe: $Rate.question1</h4>
-        <h4> Planejamento da Bibliografia: $Rate.question1</h4>
-        <h4> Didática: $Rate.question1</h4>
-        <h4> Relacionamento com a turma: $Rate.question1</h4>
-        <h4> Coerência nas avaliações : $Rate.question1</h4>
+        <h4>  $OfferingInst.semester.semº semestre de $OfferingInst.semester.year </h4>
         $:Render.comments(ThisComments)
       </div>
-
       <div class="col-sm-4">
-
-        <h3>Avaliar Oferecimento</h3>
-        <form name="one" method="post">
-          $if Rated
-            $:form.render()
-
-        </form>
-      </div>
+        <div>
+          $if Rated:
+          <h3> Avaliação FEEC</h3>
+          <h4> $Rate.answers respostas de $OfferingInst.students matriculados</h4>
+          <table>
+            <thead>
+              <tr>
+                <th style="min-width: 300px;">Critério</th>
+                <th style="min-width: 10px;">Nota</th>
+              </tr>
+            </thead>
+            <tbody class="list">
+              <tr> <td> $Q[0] </td> <td> $Rate.question1 </td> </tr>
+              <tr> <td> $Q[1] </td> <td> $Rate.question2 </td> </tr>
+              <tr> <td> $Q[2] </td> <td> $Rate.question3 </td> </tr>
+              <tr> <td> $Q[3] </td> <td> $Rate.question4 </td> </tr>
+              <tr> <td> $Q[4] </td> <td> $Rate.question5 </td> </tr>
+              <tr> <td> $Q[5] </td> <td> $Rate.question6 </td> </tr>
+              <tr> <td> $Q[6] </td> <td> $Rate.question7 </td> </tr>
+              <tr> <td> $Q[7] </td> <td> $Rate.question8 </td> </tr>
+              <tr> <td> $Q[8] </td> <td> $Rate.question9 </td> </tr>
+              <tr> <td> $Q[9] </td> <td> $Rate.question10 </td> </tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+          $if Rated == 0:
+            <h3>Avaliar Oferecimento</h3>
+            <form name="one" method="post">
+              $:form.render()
+            </form>
+        </div>
     </div>
+  </div>
     $:Render.footer()
   </body>
 </html>
