@@ -8,6 +8,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, ForeignKey, Integer, String, Boolean
 from sqlalchemy.orm import relationship, sessionmaker
+from sqlalchemy import desc
 
 
 DB = create_engine(SystemDB, echo=False)

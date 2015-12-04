@@ -36,6 +36,8 @@ for Line in SemestersList:
     sem = '%s semestre de %s' % (Line.sem, Line.year)
     semesters.insert(-1,(Line.id,sem))
 
+semesters = [1]
+
 teachers = []
 for Line in TeachersList:
     t = '%s' % (Line.name)

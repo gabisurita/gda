@@ -2,7 +2,7 @@ $def with (Render)
 
 $ S = sessionmaker(bind=DB)()
 
-$ SemestersList = S.query(Semester) #.order_by(Offering.subject.code)
+$ SemestersList = S.query(Semester).order_by(desc((Semester.year)*2 + Semester.sem))
 
 
 <!DOCTYPE html>

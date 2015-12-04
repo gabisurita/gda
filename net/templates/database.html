@@ -2,7 +2,7 @@ $def with (Render, form1)
 
 $ S = sessionmaker(bind=DB)()
 
-$ Offerings = S.query(Offering)
+$ Offerings = S.query(Offering).filter(Offering.semester_id == 1)
 <!DOCTYPE html>
 
 <html>
