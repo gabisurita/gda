@@ -433,6 +433,7 @@ def Setup():
             question15 = auxiliar['13.0'],
             question14 = auxiliar['14.0'],
 
+            #ainda preciso tratar da parte relacional do campo de usuário e do campo de offering_id
             )
 
             try:
