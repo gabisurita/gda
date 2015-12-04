@@ -411,7 +411,8 @@ def Setup():
 #            LocSemester = LocS.query(Semester).filter(
 #                Semester.id == self.OfferingInst.semester_id).one()
 
-            
+
+
 
 
             NewEvaluation = StudentRate(
@@ -431,9 +432,6 @@ def Setup():
             question13 = auxiliar['12.0'],
             question15 = auxiliar['13.0'],
             question14 = auxiliar['14.0'],
-
-            user =
-            offering =
 
             )
 
