@@ -4,31 +4,90 @@ $ S = sessionmaker(bind=DB)()
 
 $ ThisOfferings = S.query(Offering).filter(Offering.subject == SubjectInst) #.order_by(Offering.semester.year, Offering.semester.sem)
 
-$ ThisTeachers = [Of.teacher for Of in ThisOfferings] 
+$ ThisTeachers = [Of.teacher for Of in ThisOfferings]
 
 $ ThisComments = S.query(SubjectComment).filter(SubjectComment.subject == SubjectInst) #.order_by(Subject.semester.year, Offering.semester.sem)
 
+$ Questions = S.query(QuestionsOffering)
 
 <!DOCTYPE html>
 <html>
   <head>
     $:Render.includes()
     <title>$BaseTitle - $SubjectInst.code</title>
-  </head>  
+  </head>
   <body>
     <!-- Fixed navbar -->
     $:Render.navbar()
     <!-- Begin page content -->
     <div class="container">
-      <div class="col-sm-8">
-        <h2>$SubjectInst.code</h2>
-        <h3>$SubjectInst.name</h3>
+      <div class="col-sm-9">
+        <h2>$SubjectInst.code -   $SubjectInst.name</h3>
         <p><b>Ementa: </b>$SubjectInst.summary</p>
-        <br>
+<!--
         $:Render.comments(ThisComments)
+-->
+        <h3>Oferecimentos</h3>
+        <p> Busca por professor</p>
+        <div id='docentes'>
+        <input type="text" class="search" placeholder="Busca">
+        <br>
+        <table class="searchtable">
+          <thead>
+            <tr>
+              <th style="min-width: 100px;">Semestre</th>
+              <th style="min-width: 70px;">Turma</th>
+              <th style="min-width: 120px;">Matriculados</th>
+              <th style="min-width: 180px;">Docente</th>
+              $for Line in Questions:
+                $ Qid = '%s' % (chr(ord('A')+Line.id - 1))
+                <th style="min-width: 35px;">$Qid</th>
+            </tr>
+          </thead>
+          <tbody class="list">
+          $for Line in ThisOfferings:
+            $ URL = Line.EncodeURL()
+            $ Code = '%s' % (Line.code)
+            $ Enrolled = '%s' % (Line.students)
+            $ Sem = '%ss%s' % (Line.semester.sem, Line.semester.year)
+            $ SearchRate = S.query(OfferingRate).filter(OfferingRate.offering_id == Line.id)
+            $ Rated = 0
+            $for Lin in SearchRate:
+              $ Rate = Lin
+              $ Rated = 1
+            <tr>
+              <td style="min-width: 100px;"><a href="$URL">$Sem</a></td>
+              <td>$Code</td>
+              <td>$Enrolled</td>
+              <td><p class="nome"><a href="$Line.teacher.EncodeURL()">$Line.teacher.name</a></p></td>
+              $if Rated:
+                <td>$Rate.question1</td>
+                <td>$Rate.question2</td>
+                <td>$Rate.question3</td>
+                <td>$Rate.question4</td>
+                <td>$Rate.question5</td>
+                <td>$Rate.question6</td>
+                <td>$Rate.question7</td>
+                <td>$Rate.question8</td>
+                <td>$Rate.question9</td>
+                <td>$Rate.question10</td>
+              $else:
+                $for i in range(1,11):
+                  <td> - </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <script>
+        var options = {
+          valueNames: ['nome']
+        };
+        var userList = new List('docentes', options);
+      </script>
+
       </div>
 
-      <div class="col-sm-4 blog-sidebar">
+      <div class="col-sm-3 blog-sidebar">
         <div class="sidebar-module sidebar-module-inset">
           <h4>Oferecimentos</h4>
           <ol class="list-unstyled">
@@ -45,6 +104,13 @@ $ ThisComments = S.query(SubjectComment).filter(SubjectComment.subject == Subjec
             $ Name = Teacher.name
             $ URL = Teacher.EncodeURL()
             <li><a href="$URL">$Name</a></li>
+          </ol>
+          <br> <br> <br> <br>
+          <ol class="list-unstyled">
+            $for Line in Questions:
+              $ Qid = '%s' % (chr(ord('A')+Line.id - 1))
+              $ Question = '%s' % (Line.question)
+              <li> <b>$Qid</b> : $Question </li>
           </ol>
         </div>
       </div>
