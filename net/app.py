@@ -395,22 +395,47 @@ def Setup():
             chaves = []
 
             #atualizar com range de perguntas (by Raul)
-            for var in range(0,10):
+            for var in range(0,15):
                 chaves.append(str(float(var)))
 
             for x in chaves:
                 if x not in auxiliar.keys():
                     auxiliar[x] = None
 
-            LocTeacher = LocS.query(Teacher).filter(
-                Teacher.id == self.OfferingInst.teacher_id).one()
+#            LocTeacher = LocS.query(Teacher).filter(
+#                Teacher.id == self.OfferingInst.teacher_id).one()
 
-            LocSubject = LocS.query(Subject).filter(
-                Subject.id == self.OfferingInst.subject_id).one()
+#            LocSubject = LocS.query(Subject).filter(
+#                Subject.id == self.OfferingInst.subject_id).one()
 
-            LocSemester = LocS.query(Semester).filter(
-                Semester.id == self.OfferingInst.semester_id).one()
+#            LocSemester = LocS.query(Semester).filter(
+#                Semester.id == self.OfferingInst.semester_id).one()
 
+            
+
+
+            NewEvaluation = StudentRate(
+
+            question1 = auxiliar['0.0'],
+            question2 = auxiliar['1.0'],
+            question3 = auxiliar['2.0'],
+            question4 = auxiliar['3.0'],
+            question5 = auxiliar['4.0'],
+            question6 = auxiliar['5.0'],
+            question7 = auxiliar['6.0'],
+            question8 = auxiliar['7.0'],
+            question9 = auxiliar['8.0'],
+            question10 = auxiliar['9.0'],
+            question11 = auxiliar['10.0'],
+            question12 = auxiliar['11.0'],
+            question13 = auxiliar['12.0'],
+            question15 = auxiliar['13.0'],
+            question14 = auxiliar['14.0'],
+
+            user =
+            offering =
+
+            )
 
             try:
                 LocS.add(NewEvaluation)
