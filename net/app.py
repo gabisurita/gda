@@ -412,24 +412,6 @@ def Setup():
                 Semester.id == self.OfferingInst.semester_id).one()
 
 
-
-
-            NewEvaluation = Evaluations(
-            pontualidade = auxiliar['0.0'],
-            atendimento = auxiliar['1.0'],
-            necessidade = auxiliar['2.0'],
-            ementa = auxiliar['3.0'],
-            bibliografia = auxiliar['4.0'],
-            didatica = auxiliar['5.0'],
-            relacionamento = auxiliar['6.0'],
-            coerencia = auxiliar['7.0'],
-            importancia_aulas = auxiliar['8.0'],
-            veredito = auxiliar['9.0'],
-            teacher = LocTeacher,
-            subject = LocSubject,
-            semester = LocSemester,
-            )
-
             try:
                 LocS.add(NewEvaluation)
                 LocS.commit()
