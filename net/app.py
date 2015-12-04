@@ -411,6 +411,9 @@ def Setup():
 #            LocSemester = LocS.query(Semester).filter(
 #                Semester.id == self.OfferingInst.semester_id).one()
 
+            Me = LocS.query(User).filter(User.id == Session.user_id).one()
+            LocOffering = LocS.query(Offering).filter(
+                Offering.id == self.OfferingInst.id).one()
 
             NewEvaluation = StudentRate(
 
@@ -430,8 +433,8 @@ def Setup():
             question15 = auxiliar['13.0'],
             question14 = auxiliar['14.0'],
 
-            user =
-            offering = self.OfferingInst.offering_id
+            user = Me,
+            offering = LocOffering
             #ainda preciso tratar da parte relacional do campo de usuário e do campo de offering_id
             )
 
