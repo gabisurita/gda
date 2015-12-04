@@ -6,6 +6,7 @@ $ ThisOfferings = S.query(Offering).filter(Offering.semester == SemesterInst)
 
 $ Questions = S.query(QuestionsOffering)
 
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -24,7 +25,7 @@ $ Questions = S.query(QuestionsOffering)
 <!--          <span class="input-group-btn">-->
 <!--            <button class="btn btn-default" type="button"></button>-->
 <!--          </span>-->
-          <table class="searchtable">
+          <table class="sortable">
             <thead>
               <tr>
                 <th style="min-width: 100px;">Código</th>
@@ -45,8 +46,8 @@ $ Questions = S.query(QuestionsOffering)
                 $ Rate = Lin
                 $ Rated = 1
               <tr>
-                <td style="min-width: 100px;"><a href="$URL">$Code</a></td>
-                <td><a href="$Line.teacher.EncodeURL()">$Line.teacher.name</a></td>
+                <td style="min-width: 100px;"><p class = "codigo"><a href="$URL">$Code</a></p></td>
+                <td><p class = "docente"><a href="$Line.teacher.EncodeURL()">$Line.teacher.name</a></p></td>
                 $if Rated:
                   <td>$Rate.question1</td>
                   <td>$Rate.question2</td>
@@ -67,7 +68,7 @@ $ Questions = S.query(QuestionsOffering)
         </div>
         <script>
           var options = {
-            valueNames: ['codigo','nome', 'docente']
+            valueNames: ['codigo', 'docente']
           };
           var userList = new List('oferecimentos', options);
         </script>
