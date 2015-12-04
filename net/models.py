@@ -215,6 +215,33 @@ class OfferingRate(Base):
   question9 = Column('question9', Integer)
   question10 = Column('question10', Integer)
 
+class StudentRate(Base):
+    __tablename__ = "studentrate"
+
+    id = column('studentrate_id', Integer, primary_key=True)
+    offering_id = Column(Integer, ForeignKey('offering.offering_id'))
+    user_id = Column(Integer, ForeignKey('user.user_id'))
+
+    question1 = Column('question1', String)
+    question2 = Column('question2', String)
+    question3 = Column('question3', String)
+    question4 = Column('question4', String)
+    question5 = Column('question5', String)
+    question6 = Column('question6', String)
+    question7 = Column('question7', String)
+    question8 = Column('question8', String)
+    question9 = Column('question9', String)
+    question10 = Column('question10', String)
+    question11 = Column('question11', String)
+    question12 = Column('question12', String)
+    question13 = Column('question13', String)
+    question14 = Column('question14', String)
+    question15 = Column('question15', String)
+
+    user = relationship(User)
+    offering = relationship(Offering)
+
+
 
 def CreateDB():
   Base.metadata.create_all(DB)
