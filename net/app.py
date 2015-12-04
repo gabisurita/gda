@@ -387,7 +387,60 @@ def Setup():
 
         def POST(self):
             IsLogged()
-            return POSTParse(web.data())
+            auxiliar = POSTParse(web.data())
+
+            LocDB = create_engine(UserDB, echo=False)
+            LocS = sessionmaker(bind=LocDB)()
+
+            chaves = []
+
+            #atualizar com range de perguntas (by Raul)
+            for var in range(0,10):
+                chaves.append(str(float(var)))
+
+            for x in chaves:
+                if x not in auxiliar.keys():
+                    auxiliar[x] = None
+
+            LocTeacher = LocS.query(Teacher).filter(
+                Teacher.id == self.OfferingInst.teacher_id).one()
+
+            LocSubject = LocS.query(Subject).filter(
+                Subject.id == self.OfferingInst.subject_id).one()
+
+            LocSemester = LocS.query(Semester).filter(
+                Semester.id == self.OfferingInst.semester_id).one()
+
+
+
+
+            NewEvaluation = Evaluations(
+            pontualidade = auxiliar['0.0'],
+            atendimento = auxiliar['1.0'],
+            necessidade = auxiliar['2.0'],
+            ementa = auxiliar['3.0'],
+            bibliografia = auxiliar['4.0'],
+            didatica = auxiliar['5.0'],
+            relacionamento = auxiliar['6.0'],
+            coerencia = auxiliar['7.0'],
+            importancia_aulas = auxiliar['8.0'],
+            veredito = auxiliar['9.0'],
+            teacher = LocTeacher,
+            subject = LocSubject,
+            semester = LocSemester,
+            )
+
+            try:
+                LocS.add(NewEvaluation)
+                LocS.commit()
+                LocS.close()
+                raise web.seeother('/oferecimentos')
+
+
+            except:
+                LocS.rollback()
+                return True
+
 
     class FaqPage:
         def GET(self):
