@@ -218,7 +218,7 @@ class OfferingRate(Base):
 class StudentRate(Base):
     __tablename__ = "studentrate"
 
-    id = column('studentrate_id', Integer, primary_key=True)
+    id = Column('studentrate_id', Integer, primary_key=True)
     offering_id = Column(Integer, ForeignKey('offering.offering_id'))
     user_id = Column(Integer, ForeignKey('user.user_id'))
 
