@@ -38,6 +38,10 @@ $for Line in Questions
           $TeacherName
         </a></h4>
         <h4>  $OfferingInst.semester.semº semestre de $OfferingInst.semester.year </h4>
+        <form method="GET" action="$OfferingInst.EvaluationURL()">
+          <button class="btn btn-success" type="submit">Avaliar este oferecimento</button>
+        </form>
+        </br>
         $:Render.comments(ThisComments)
       </div>
       <div class="col-sm-4">
@@ -80,12 +84,7 @@ $for Line in Questions
 </html>
 
 
-<!--
-        <form method="GET" action="$OfferingInst.EvaluationURL()">
-          <button class="btn btn-success" type="submit">Avaliar este oferecimento</button>
-        </form>
-        </br>
--->
+
 
 <!--
         <form id="comment-form" action="" method="POST" enctype="multipart/form-data">
