@@ -435,7 +435,6 @@ def Setup():
 
             user = Me,
             offering = LocOffering
-            #ainda preciso tratar da parte relacional do campo de usuário e do campo de offering_id
             )
 
             try:
