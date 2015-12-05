@@ -395,7 +395,7 @@ def Setup():
             chaves = []
 
             #atualizar com range de perguntas (by Raul)
-            for var in range(0,15):
+            for var in range(0,12):
                 chaves.append(str(float(var)))
 
             for x in chaves:
@@ -429,9 +429,6 @@ def Setup():
             question10 = auxiliar['9.0'],
             question11 = auxiliar['10.0'],
             question12 = auxiliar['11.0'],
-            question13 = auxiliar['12.0'],
-            question15 = auxiliar['13.0'],
-            question14 = auxiliar['14.0'],
 
             user = Me,
             offering = LocOffering

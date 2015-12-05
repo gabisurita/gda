@@ -234,9 +234,6 @@ class StudentRate(Base):
     question10 = Column('question10', String)
     question11 = Column('question11', String)
     question12 = Column('question12', String)
-    question13 = Column('question13', String)
-    question14 = Column('question14', String)
-    question15 = Column('question15', String)
 
     user = relationship(User)
     offering = relationship(Offering)
