@@ -210,10 +210,6 @@ class OfferingRate(Base):
   question4 = Column('question4', Integer)
   question5 = Column('question5', Integer)
   question6 = Column('question6', Integer)
-  question7 = Column('question7', Integer)
-  question8 = Column('question8', Integer)
-  question9 = Column('question9', Integer)
-  question10 = Column('question10', Integer)
 
 class StudentRate(Base):
     __tablename__ = "studentrate"
@@ -237,6 +233,41 @@ class StudentRate(Base):
     question13 = Column('question13', String)
 
     user = relationship(User)
+    offering = relationship(Offering)
+
+class EvaluationsAverage(Base):
+    __tablename__ = "evaluationsaverage"
+
+    id = Column('evaluationsaverage_id', Integer, primary_key=True)
+    offering_id = Column(Integer, ForeignKey('offering.offering_id'))
+
+    median_q1 = Column('median_q1', Integer)
+    answers_q1 = Column('answers_q1', Integer)
+    median_q2 = Column('median_q2', Integer)
+    answers_q2 = Column('answers_q2', Integer)
+    median_q3 = Column('median_q3', Integer)
+    answers_q3 = Column('answers_q3', Integer)
+    median_q4 = Column('median_q4', Integer)
+    answers_q4 = Column('answers_q4', Integer)
+    median_q5 = Column('median_q5', Integer)
+    answers_q5 = Column('answers_q5', Integer)
+    median_q6 = Column('median_q6', Integer)
+    answers_q6 = Column('answers_q6', Integer)
+    median_q7 = Column('median_q7', Integer)
+    answers_q7 = Column('answers_q7', Integer)
+    median_q8 = Column('median_q8', Integer)
+    answers_q8 = Column('answers_q8', Integer)
+    median_q9 = Column('median_q9', Integer)
+    answers_q9 = Column('answers_q9', Integer)
+    median_q10 = Column('median_q10', Integer)
+    answers_q10 = Column('answers_q10', Integer)
+    median_q11 = Column('median_q11', Integer)
+    answers_q11 = Column('answers_q11', Integer)
+    median_q12 = Column('median_q12', Integer)
+    answers_q12 = Column('answers_q12', Integer)
+    median_q13 = Column('median_q13', Integer)
+    answers_q13 = Column('answers_q13', Integer)
+
     offering = relationship(Offering)
 
 
