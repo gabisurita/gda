@@ -79,16 +79,12 @@ AddOffering = web.form.Form(
 
 RateOffering = web.form.Form(
     web.form.Textbox('Respostas'),
-    web.form.Textbox('Question1'),
-    web.form.Textbox('Question2'),
-    web.form.Textbox('Question3'),
-    web.form.Textbox('Question4'),
-    web.form.Textbox('Question5'),
-    web.form.Textbox('Question6'),
-    web.form.Textbox('Question7'),
-    web.form.Textbox('Question8'),
-    web.form.Textbox('Question9'),
-    web.form.Textbox('Question10'),
+    web.form.Textbox('Coluna11'),
+    web.form.Textbox('Coluna12'),
+    web.form.Textbox('Coluna13'),
+    web.form.Textbox('Coluna14'),
+    web.form.Textbox('Coluna15'),
+    web.form.Textbox('Coluna16'),
     web.form.Button('Submeter', Class="btn btn-primary"))
 
 

@@ -309,16 +309,12 @@ def Setup():
             Rate = OfferingRate(
                             answers=form.d.Respostas,
                             offering_id= self.OfferingInst.id,
-                            question1=form.d.Question1,
-                            question2=form.d.Question2,
-                            question3=form.d.Question3,
-                            question4=form.d.Question4,
-                            question5=form.d.Question5,
-                            question6=form.d.Question6,
-                            question7=form.d.Question7,
-                            question8=form.d.Question8,
-                            question9=form.d.Question9,
-                            question10=form.d.Question10)
+                            question1=form.d.Coluna11,
+                            question2=form.d.Coluna12,
+                            question3=form.d.Coluna13,
+                            question4=form.d.Coluna14,
+                            question5=form.d.Coluna15,
+                            question6=form.d.Coluna16)
             S.add(Rate)
             S.commit()
             #return self.OfferingInst.id

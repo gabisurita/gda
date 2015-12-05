@@ -27,7 +27,7 @@ $ Questions = S.query(QuestionsOffering)
             <thead>
               <tr>
                 <th style="min-width:350px">Nome</th>
-                $for i in range(0,7):
+                $for i in range(0,6):
                   $ Qid = '%s' % (chr(ord('A') + i))
                   <th style="min-width: 40px;">$Qid</th>
               </tr>
@@ -41,24 +41,23 @@ $ Questions = S.query(QuestionsOffering)
                   <p class="nome"><a href="$URL">$Name</a></p>
                 </td>
                 $ Rated = 0
-                $ Q = [0]*7
+                $ Q = [0]*6
                 $ SearchOffering = S.query(Offering).filter(Offering.teacher == Line)
                 $for Offer in SearchOffering:
                   $ SearchRate = S.query(OfferingRate).filter(OfferingRate.offering_id == Offer.id)
                   $for Rate in SearchRate:
                     $ Q[0] += Rate.question1
-                    $ Q[1] += Rate.question5
-                    $ Q[2] += Rate.question6
-                    $ Q[3] += Rate.question7
-                    $ Q[4] += Rate.question8
-                    $ Q[5] += Rate.question9
-                    $ Q[6] += Rate.question10
+                    $ Q[1] += Rate.question2
+                    $ Q[2] += Rate.question3
+                    $ Q[3] += Rate.question4
+                    $ Q[4] += Rate.question5
+                    $ Q[5] += Rate.question6
                     $ Rated += 1
                 $if Rated:
-                  $for i in range(0,7):
+                  $for i in range(0,6):
                     <td>$(Q[i]/Rated)</td>
                 $else:
-                  $for i in range(0,7):
+                  $for i in range(0,6):
                     <td> - </td>
               </tr>
             </tbody>
