@@ -260,6 +260,5 @@ class AnswerSum(Base):
     offering = relationship(Offering)
 
 
-
 def CreateDB():
   Base.metadata.create_all(DB)
