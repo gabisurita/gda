@@ -259,3 +259,6 @@ class AnswerSum(Base):
     question13 = ('question13', postgresql.ARRAY(Integer, dimensions=2))
 
     offering = relationship(Offering)
+
+def CreateDB():
+    Base.metadata.create_all(DB)
