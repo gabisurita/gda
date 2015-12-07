@@ -482,6 +482,9 @@ def Setup():
                             code = form1.d.Turma)
             S.add(Off)
             S.commit()
+
+            #huebr
+
             return Render.database(Render,form1)
 
 
