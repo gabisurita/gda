@@ -12,6 +12,8 @@ import urllib
 from models import *
 from forms import *
 
+from sqlalchemy.dialects import postgresql
+
 def Setup():
 
     # Start DB

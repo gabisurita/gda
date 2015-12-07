@@ -10,6 +10,7 @@ from sqlalchemy import Column, ForeignKey, Integer, String, Boolean
 from sqlalchemy.orm import relationship, sessionmaker
 from sqlalchemy import desc
 
+from sqlalchemy.dialects import postgresql
 
 DB = create_engine(SystemDB, echo=False)
 Base = declarative_base()
@@ -243,18 +244,18 @@ class AnswerSum(Base):
     id = Column('answersum_id', Integer, primary_key=True)
     offering_id = Column(Integer, ForeignKey('offering.offering_id'))
 
-    question1 = ('question1', Array(Integer, dimensions=2))
-    question2 = ('question2', Array(Integer, dimensions=2))
-    question3 = ('question3', Array(Integer, dimensions=2))
-    question4 = ('question4', Array(Integer, dimensions=2))
-    question5 = ('question5', Array(Integer, dimensions=2))
-    question6 = ('question6', Array(Integer, dimensions=2))
-    question7 = ('question7', Array(Integer, dimensions=2))
-    question8 = ('question8', Array(Integer, dimensions=2))
-    question9 = ('question9', Array(Integer, dimensions=2))
-    question10 = ('question10', Array(Integer, dimensions=2))
-    question11 = ('question11', Array(Integer, dimensions=2))
-    question12 = ('question12', Array(Integer, dimensions=2))
-    question13 = ('question13', Array(Integer, dimensions=2))
+    question1 = ('question1', postgresql.Array(Integer, dimensions=2))
+    question2 = ('question2', postgresql.Array(Integer, dimensions=2))
+    question3 = ('question3', postgresql.Array(Integer, dimensions=2))
+    question4 = ('question4', postgresql.Array(Integer, dimensions=2))
+    question5 = ('question5', postgresql.Array(Integer, dimensions=2))
+    question6 = ('question6', postgresql.Array(Integer, dimensions=2))
+    question7 = ('question7', postgresql.Array(Integer, dimensions=2))
+    question8 = ('question8', postgresql.Array(Integer, dimensions=2))
+    question9 = ('question9', postgresql.Array(Integer, dimensions=2))
+    question10 = ('question10', postgresql.Array(Integer, dimensions=2))
+    question11 = ('question11', postgresql.Array(Integer, dimensions=2))
+    question12 = ('question12', postgresql.Array(Integer, dimensions=2))
+    question13 = ('question13', postgresql.Array(Integer, dimensions=2))
 
     offering = relationship(Offering)
