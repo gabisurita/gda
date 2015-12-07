@@ -211,6 +211,7 @@ class OfferingRate(Base):
   question5 = Column('question5', Integer)
   question6 = Column('question6', Integer)
 
+#Tabela contendo respostas cruas
 class StudentRate(Base):
     __tablename__ = "studentrate"
 
@@ -235,10 +236,11 @@ class StudentRate(Base):
     user = relationship(User)
     offering = relationship(Offering)
 
-class EvaluationsAverage(Base):
-    __tablename__ = "evaluationsaverage"
+#Tabela que contém a soma das avaliações
+class AnswerSum(Base):
+    __tablename__ = "answersum"
 
-    id = Column('evaluationsaverage_id', Integer, primary_key=True)
+    id = Column('answersum_id', Integer, primary_key=True)
     offering_id = Column(Integer, ForeignKey('offering.offering_id'))
 
     median_q1 = Column('median_q1', Integer)
