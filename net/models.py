@@ -199,6 +199,7 @@ class QuestionsSubject(Base):
     id = Column('question_id', Integer, primary_key=True)
     question = Column('question', String)
 
+
 class OfferingRate(Base):
   __tablename__ = "offering_rate"
   id = Column('rating_id', Integer, primary_key=True)
