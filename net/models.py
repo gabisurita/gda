@@ -10,8 +10,6 @@ from sqlalchemy import Column, ForeignKey, Integer, String, Boolean
 from sqlalchemy.orm import relationship, sessionmaker
 from sqlalchemy import desc
 
-from sqlalchemy.dialects import postgresql
-
 DB = create_engine(SystemDB, echo=False)
 Base = declarative_base()
 
@@ -245,19 +243,7 @@ class AnswerSum(Base):
     id = Column('answersum_id', Integer, primary_key=True)
     offering_id = Column(Integer, ForeignKey('offering.offering_id'))
 
-    question1 = ('question1', postgresql.ARRAY(Integer, dimensions=2))
-    question2 = ('question2', postgresql.ARRAY(Integer, dimensions=2))
-    question3 = ('question3', postgresql.ARRAY(Integer, dimensions=2))
-    question4 = ('question4', postgresql.ARRAY(Integer, dimensions=2))
-    question5 = ('question5', postgresql.ARRAY(Integer, dimensions=2))
-    question6 = ('question6', postgresql.ARRAY(Integer, dimensions=2))
-    question7 = ('question7', postgresql.ARRAY(Integer, dimensions=2))
-    question8 = ('question8', postgresql.ARRAY(Integer, dimensions=2))
-    question9 = ('question9', postgresql.ARRAY(Integer, dimensions=2))
-    question10 = ('question10', postgresql.ARRAY(Integer, dimensions=2))
-    question11 = ('question11', postgresql.ARRAY(Integer, dimensions=2))
-    question12 = ('question12', postgresql.ARRAY(Integer, dimensions=2))
-    question13 = ('question13', postgresql.ARRAY(Integer, dimensions=2))
+
 
     offering = relationship(Offering)
 
