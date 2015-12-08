@@ -484,6 +484,52 @@ def Setup():
             S.add(Off)
             S.commit()
 
+            LocOffering = S.query(Offering).filter(
+                Offering.teacher_id == form1.d.Professor).filter(
+                Offering.subject_id == form1.d.Disciplina).filter(
+                Offering.semester_id == form1.d.Semestre).filter(
+                Offering.code == form1.d.Turma).filter(
+                Offering.students == int(form1.d.Matriculados)).one()
+
+            NewSum = AnswerSum(
+            q1_sim = 0,
+            q1_nao = 0,
+            q2_correto = 0,
+            q2_antes = 0,
+            q2_depois = 0,
+            q3_adequada = 0,
+            q3_curta = 0,
+            q3_longa = 0,
+            q4_alta = 0,
+            q4_normal = 0,
+            q4_baixa = 0,
+            q5_alta = 0,
+            q5_normal = 0,
+            q5_baixa = 0,
+            q6_alta = 0,
+            q6_normal = 0,
+            q6_baixa = 0,
+            q7_sim = 0,
+            q7_nao = 0,
+            q8_boa = 0,
+            q8_media = 0,
+            q8_ruim = 0,
+            q9_sim = 0,
+            q9_nao = 0,
+            q10_sim = 0,
+            q10_nao = 0,
+            q11_sim = 0,
+            q11_nao = 0,
+            q12_sim = 0,
+            q12_nao = 0,
+            q13_sim = 0,
+            q13_nao = 0,
+            offering = LocOffering
+            )
+
+            S.add(NewSum)
+            S.commit()
+
             #huebr
 
             return Render.database(Render,form1)
