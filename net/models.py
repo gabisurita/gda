@@ -245,46 +245,34 @@ class AnswerSum(Base):
 
     q1_sim = Column('q1_sim', Integer)
     q1_nao = Column('q1_nao', Integer)
-
     q2_correto = Column('q2_correto', Integer)
     q2_antes = Column('q2_antes', Integer)
     q2_depois = Column('q2_depois', Integer)
-
     q3_adequada = Column('q3_adequada', Integer)
     q3_curta = Column('q3_curta', Integer)
     q3_longa = Column('q3_longa', Integer)
-
     q4_alta = Column('q4_alta', Integer)
     q4_normal = Column('q4_normal', Integer)
     q4_baixa = Column('q4_baixa', Integer)
-
     q5_alta = Column('q5_alta', Integer)
     q5_normal = Column('q5_normal', Integer)
     q5_baixa = Column('q5_baixa', Integer)
-
     q6_alta = Column('q6_alta', Integer)
     q6_normal = Column('q6_normal', Integer)
     q6_baixa = Column('q6_baixa', Integer)
-
     q7_sim = Column('q7_sim', Integer)
     q7_nao = Column('q7_nao', Integer)
-
     q8_boa = Column('q8_boa', Integer)
     q8_media = Column('q8_media', Integer)
     q8_ruim = Column('q8_ruim', Integer)
-
     q9_sim = Column('q9_sim', Integer)
     q9_nao = Column('q9_nao', Integer)
-
     q10_sim = Column('q10_sim', Integer)
     q10_nao = Column('q10_nao', Integer)
-
     q11_sim = Column('q11_sim', Integer)
     q11_nao = Column('q11_nao', Integer)
-
     q12_sim = Column('q12_sim', Integer)
     q12_nao = Column('q12_nao', Integer)
-
     q13_sim = Column('q13_sim', Integer)
     q13_nao = Column('q13_nao', Integer)
 

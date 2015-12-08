@@ -435,7 +435,128 @@ def Setup():
             try:
                 LocS.add(NewEvaluation)
                 LocS.commit()
-                LocS.close()
+
+
+                if (LocS.query(AnswerSum.offering_id).filter(AnswerSum.offering_id == self.OfferingInst.id).count())==0:
+                    NewSum = AnswerSum(
+                    q1_sim = 0,
+                    q1_nao = 0,
+                    q2_correto = 0,
+                    q2_antes = 0,
+                    q2_depois = 0,
+                    q3_adequada = 0,
+                    q3_curta = 0,
+                    q3_longa = 0,
+                    q4_alta = 0,
+                    q4_normal = 0,
+                    q4_baixa = 0,
+                    q5_alta = 0,
+                    q5_normal = 0,
+                    q5_baixa = 0,
+                    q6_alta = 0,
+                    q6_normal = 0,
+                    q6_baixa = 0,
+                    q7_sim = 0,
+                    q7_nao = 0,
+                    q8_boa = 0,
+                    q8_media = 0,
+                    q8_ruim = 0,
+                    q9_sim = 0,
+                    q9_nao = 0,
+                    q10_sim = 0,
+                    q10_nao = 0,
+                    q11_sim = 0,
+                    q11_nao = 0,
+                    q12_sim = 0,
+                    q12_nao = 0,
+                    q13_sim = 0,
+                    q13_nao = 0,
+                    offering = LocOffering
+                    )
+                    LocS.add(NewSum)
+                    LocS.commit()
+
+                elemento = LocS.query(AnswerSum).filter(AnswerSum.offering_id == self.OfferingInst.id).one()
+
+                if auxiliar['0.0'] == ' sim ':
+                    elemento.q1_sim += 1
+                elif auxiliar['0.0'] == ' não ':
+                    elemento.q1_nao += 1
+
+                if auxiliar['1.0'] == ' correto ':
+                    elemento.q2_correto += 1
+                elif auxiliar['1.0'] == ' antes ':
+                    elemento.q2_antes += 1
+                elif euxiliar['1.0'] == ' depois ':
+                    elemento.q2_depois += 1
+
+                if auxiliar['2.0'] == ' adequada ':
+                    elemento.q3_adequada += 1
+                elif auxiliar['2.0'] == ' curta ':
+                    elemento.q3_curta += 1
+                elif euxiliar['2.0'] == ' longa ':
+                    elemento.q3_longa += 1
+
+                if auxiliar['3.0'] == ' alta ':
+                    elemento.q4_alta += 1
+                elif auxiliar['3.0'] == ' normal ':
+                    elemento.q4_normal += 1
+                elif euxiliar['3.0'] == ' baixa ':
+                    elemento.q4_baixa += 1
+
+                if auxiliar['4.0'] == ' alta ':
+                    elemento.q5_alta += 1
+                elif auxiliar['4.0'] == ' normal ':
+                    elemento.q5_normal += 1
+                elif euxiliar['4.0'] == ' baixa ':
+                    elemento.q5_baixa += 1
+
+                if auxiliar['5.0'] == ' alta ':
+                    elemento.q6_alta += 1
+                elif auxiliar['5.0'] == ' normal ':
+                    elemento.q6_normal += 1
+                elif euxiliar['5.0'] == ' baixa ':
+                    elemento.q6_baixa += 1
+
+                if auxiliar['6.0'] == ' sim ':
+                    elemento.q7_sim += 1
+                elif auxiliar['6.0'] == ' não ':
+                    elemento.q7_nao += 1
+
+                if auxiliar['7.0'] == ' boa ':
+                    elemento.q8_boa += 1
+                elif auxiliar['7.0'] == ' média ':
+                    elemento.q8_media += 1
+                elif euxiliar['7.0'] == ' ruim ':
+                    elemento.q8_ruim += 1
+
+                if auxiliar['8.0'] == ' sim ':
+                    elemento.q9_sim += 1
+                elif auxiliar['8.0'] == ' não ':
+                    elemento.q9_nao += 1
+
+                if auxiliar['9.0'] == ' sim ':
+                    elemento.q10_sim += 1
+                elif auxiliar['9.0'] == ' não ':
+                    elemento.q10_nao += 1
+
+                if auxiliar['10.0'] == ' sim ':
+                    elemento.q11_sim += 1
+                elif auxiliar['10.0'] == ' não ':
+                    elemento.q11_nao += 1
+
+                if auxiliar['11.0'] == ' sim ':
+                    elemento.q12_sim += 1
+                elif auxiliar['11.0'] == ' não ':
+                    elemento.q12_nao += 1
+
+                if auxiliar['12.0'] == ' sim ':
+                    elemento.q13_sim += 1
+                elif auxiliar['12.0'] == ' não ':
+                    elemento.q13_nao += 1
+
+                LocS.commit()
+
                 raise web.seeother('/oferecimentos')
 
 
@@ -482,52 +603,6 @@ def Setup():
                             students = int(form1.d.Matriculados),
                             code = form1.d.Turma)
             S.add(Off)
-            S.commit()
-
-            LocOffering = S.query(Offering).filter(
-                Offering.teacher_id == form1.d.Professor).filter(
-                Offering.subject_id == form1.d.Disciplina).filter(
-                Offering.semester_id == form1.d.Semestre).filter(
-                Offering.code == form1.d.Turma).filter(
-                Offering.students == int(form1.d.Matriculados)).one()
-
-            NewSum = AnswerSum(
-            q1_sim = 0,
-            q1_nao = 0,
-            q2_correto = 0,
-            q2_antes = 0,
-            q2_depois = 0,
-            q3_adequada = 0,
-            q3_curta = 0,
-            q3_longa = 0,
-            q4_alta = 0,
-            q4_normal = 0,
-            q4_baixa = 0,
-            q5_alta = 0,
-            q5_normal = 0,
-            q5_baixa = 0,
-            q6_alta = 0,
-            q6_normal = 0,
-            q6_baixa = 0,
-            q7_sim = 0,
-            q7_nao = 0,
-            q8_boa = 0,
-            q8_media = 0,
-            q8_ruim = 0,
-            q9_sim = 0,
-            q9_nao = 0,
-            q10_sim = 0,
-            q10_nao = 0,
-            q11_sim = 0,
-            q11_nao = 0,
-            q12_sim = 0,
-            q12_nao = 0,
-            q13_sim = 0,
-            q13_nao = 0,
-            offering = LocOffering
-            )
-
-            S.add(NewSum)
             S.commit()
 
             #huebr
