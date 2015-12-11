@@ -487,35 +487,35 @@ def Setup():
                     elemento.q2_correto += 1
                 elif auxiliar['1.0'] == ' antes ':
                     elemento.q2_antes += 1
-                elif euxiliar['1.0'] == ' depois ':
+                elif auxiliar['1.0'] == ' depois ':
                     elemento.q2_depois += 1
 
                 if auxiliar['2.0'] == ' adequada ':
                     elemento.q3_adequada += 1
                 elif auxiliar['2.0'] == ' curta ':
                     elemento.q3_curta += 1
-                elif euxiliar['2.0'] == ' longa ':
+                elif auxiliar['2.0'] == ' longa ':
                     elemento.q3_longa += 1
 
                 if auxiliar['3.0'] == ' alta ':
                     elemento.q4_alta += 1
                 elif auxiliar['3.0'] == ' normal ':
                     elemento.q4_normal += 1
-                elif euxiliar['3.0'] == ' baixa ':
+                elif auxiliar['3.0'] == ' baixa ':
                     elemento.q4_baixa += 1
 
                 if auxiliar['4.0'] == ' alta ':
                     elemento.q5_alta += 1
                 elif auxiliar['4.0'] == ' normal ':
                     elemento.q5_normal += 1
-                elif euxiliar['4.0'] == ' baixa ':
+                elif auxiliar['4.0'] == ' baixa ':
                     elemento.q5_baixa += 1
 
                 if auxiliar['5.0'] == ' alta ':
                     elemento.q6_alta += 1
                 elif auxiliar['5.0'] == ' normal ':
                     elemento.q6_normal += 1
-                elif euxiliar['5.0'] == ' baixa ':
+                elif auxiliar['5.0'] == ' baixa ':
                     elemento.q6_baixa += 1
 
                 if auxiliar['6.0'] == ' sim ':
@@ -527,7 +527,7 @@ def Setup():
                     elemento.q8_boa += 1
                 elif auxiliar['7.0'] == ' média ':
                     elemento.q8_media += 1
-                elif euxiliar['7.0'] == ' ruim ':
+                elif auxiliar['7.0'] == ' ruim ':
                     elemento.q8_ruim += 1
 
                 if auxiliar['8.0'] == ' sim ':
