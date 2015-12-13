@@ -23,7 +23,7 @@ $ Questions = S.query(QuestionsSubject)
 <!--          <span class="input-group-btn">-->
 <!--            <button class="btn btn-default" type="button"></button>-->
 <!--          </span>-->
-          <table class="sortable">
+          <table class="table table-striped table-condensed sortable">
             <thead>
               <tr>
                 <th style="min-width: 80px;">Código</th>
@@ -38,10 +38,10 @@ $ Questions = S.query(QuestionsSubject)
               $ URL = Line.EncodeURL()
               <tr>
                 <td style="min-width: 80px;">
-                  <p class="codigo"><a href="$URL">$Line.code</a></p>
+                  <a class="codigo" href="$URL">$Line.code</a>
                 </td>
                 <td style="min-width: 550px;">
-                  <p class="nome">$Line.name</a></p>
+                  <a class="nome black-link" href="$URL">$Line.name</a>
                 </td>
               <td style="min-width: 10px;">75</td>
               <td style="min-width: 10px;">80</td>

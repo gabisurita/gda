@@ -28,7 +28,7 @@ $ Questions = S.query(QuestionsOffering)
         <div id='docentes'>
         <input type="text" class="search" placeholder="Busca">
         <br>
-        <table class="sortable">
+        <table class="table table-striped table-condensed sortable">
           <thead>
             <tr>
               <th style="min-width: 100px;">Semestre</th>
@@ -52,10 +52,10 @@ $ Questions = S.query(QuestionsOffering)
               $ Rate = Lin
               $ Rated = 1
             <tr>
-              <td style="min-width: 100px;"><a href="$URL">$Sem</a></td>
+              <td style="min-width: 100px;"><a class="black-link" href="$URL">$Sem</a></td>
               <td>$Code</td>
               <td>$Enrolled</td>
-              <td><p class="codigo"><a href="$Line.subject.EncodeURL()">$Line.subject.code</a></p></td>
+              <td><a class="codigo" href="$Line.subject.EncodeURL()">$Line.subject.code</a></td>
               $if Rated:
                 <td>$Rate.question1</td>
                 <td>$Rate.question2</td>
