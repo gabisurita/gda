@@ -10,10 +10,10 @@ import os
 import codecs
 import urllib
 from models import *
+from forms import *
 
 
 def Setup():
-    """Initial server configuration."""
 
     # Start DB
     CreateDB()
@@ -21,6 +21,8 @@ def Setup():
     # Render the layouts
     Render = web.template.render(BaseDir+'/templates/',
                                  cache=False, globals=globals())
+
+    """Initial server configuration."""
 
     # initialize the application
     App = web.application(mapping=(), fvars=globals())
@@ -67,75 +69,54 @@ def Setup():
             else:
                 return False
 
-    def CommitComment(Inst, Response):
+#recebe dicionário com respostas e atualiza lista de comentários
+    def CommitComment(Inst ,Response):
         """Submit a comment to an instance"""
-        if "trigger" in Response:
-            if Response["trigger"] == "comment":
-                LocDB = create_engine(UserDB, echo=False)
-                LocS = sessionmaker(bind=LocDB)()
 
-                Me = LocS.query(User).filter(User.id == Session.user_id).one()
 
-                if "anonymous" not in Response:
-                    Response["anonymous"] = False
+        LocDB = create_engine(UserDB, echo=False)
+        LocS = sessionmaker(bind=LocDB)()
 
-                if Inst.__class__ == Teacher:
-                    LocTeacher = LocS.query(Teacher).filter(
-                        Teacher.id == Inst.id).one()
+        Me = LocS.query(User).filter(User.id == Session.user_id).one()
 
-                    NewComment = TeacherComment(
-                        text=Response["text"],
-                        teacher=LocTeacher,
-                        user=Me,
-                        anonymous=bool(Response["anonymous"]))
+        LocTeacher = LocS.query(Teacher).filter(
+            Teacher.id == Inst.teacher_id).one()
+        LocSubject = LocS.query(Subject).filter(
+            Subject.id == Inst.subject_id).one()
+        LocOffering = LocS.query(Offering).filter(
+            Offering.id == Inst.id).one()
 
-                if Inst.__class__ == Subject:
-                    LocSubject = LocS.query(Subject).filter(
-                        Subject.id == Inst.id).one()
 
-                    NewComment = SubjectComment(
-                        text=Response["text"],
-                        subject=LocSubject,
-                        user=Me,
-                        anonymous=bool(Response["anonymous"]))
+        if not Response['text-teacher'] == None:
+            NewTeacherComment = TeacherComment(
+                text=Response["text-teacher"],
+                teacher=LocTeacher,
+                user=Me,
+                anonymous=bool("False"))
+            LocS.add(NewTeacherComment)
 
-                if Inst.__class__ == Offering:
-                    LocOffering = LocS.query(Offering).filter(
-                        Offering.id == Inst.id).one()
+#            NewSubjectComment = SubjectComment(
+#                text=Response["text-offering"],
+#                subject=LocSubject,
+#                user=Me,
+#                anonymous=bool("False"))
 
-                    NewComment = OfferingComment(
-                        text=Response["text"],
-                        offering=LocOffering,
-                        user=Me,
-                        anonymous=bool(Response["anonymous"]))
+        if not Response['text-offering'] == None:
+            NewOfferingComment = OfferingComment(
+                text=Response["text-offering"],
+                offering=LocOffering,
+                user=Me,
+                anonymous=bool("False"))
+            LocS.add(NewOfferingComment)
 
-                try:
-                    LocS.add(NewComment)
-                    LocS.commit()
-                    return False
+        try:
+            LocS.commit()
+            return False
 
-                except:
-                    LocS.rollback()
-                    return True
+        except:
+            LocS.rollback()
+            return True
 
-    # Form Handlers
-    LoginForm = web.form.Form(
-        web.form.Textbox('email', web.form.notnull, Class="form-control"),
-        web.form.Password('senha', web.form.notnull, Class="form-control"),
-        web.form.Button('login', Class="btn btn-primary"),
-    )
-
-    RegisterForm = web.form.Form(
-        web.form.Textbox('RA', web.form.notnull, Class="form-control"),
-        web.form.Textbox('Nome', web.form.notnull, Class="form-control"),
-        web.form.Textbox('E-mail', web.form.notnull, Class="form-control"),
-        web.form.Password('Senha', web.form.notnull, Class="form-control"),
-        web.form.Button('Login', Class="btn btn-primary"),
-    )
-
-    SearchForm = web.form.Form(
-        web.form.Textbox('Busca', Class="form-control"),
-    )
 
     # Page classes (handlers)
     class LoginPage:
@@ -287,7 +268,7 @@ def Setup():
         def POST(self):
             IsLogged()
             Response = POSTParse(web.data())
-            CommitComment(self.TeacherInst, Response)
+#            CommitComment(self.TeacherInst, Response)
 
             return Render.teacherpage(self.TeacherInst, Render)
 
@@ -301,7 +282,7 @@ def Setup():
         def POST(self):
             IsLogged()
             Response = POSTParse(web.data())
-            CommitComment(self.SubjectInst, Response)
+#            CommitComment(self.SubjectInst, Response)
 
             return Render.subjectpage(self.SubjectInst, Render)
 
@@ -310,14 +291,32 @@ def Setup():
 
         def GET(self):
             IsLogged()
-            return Render.offeringpage(self.OfferingInst, Render)
+            form = RateOffering()
+            return Render.offeringpage(self.OfferingInst, Render, form)
 
         def POST(self):
             IsLogged()
             Response = POSTParse(web.data())
-            CommitComment(self.OfferingInst, Response)
-
-            return Render.offeringpage(self.OfferingInst, Render)
+#            CommitComment(self.OfferingInst, Response)
+            form = RateOffering()
+            #if not form.validates():
+            #    return Render.database(Render,form1,form2)
+            #else:
+            form.validates()
+            S = sessionmaker(bind=DB)()
+            Rate = OfferingRate(
+                            answers=form.d.Respostas,
+                            offering_id= self.OfferingInst.id,
+                            question1=form.d.Coluna11,
+                            question2=form.d.Coluna12,
+                            question3=form.d.Coluna13,
+                            question4=form.d.Coluna14,
+                            question5=form.d.Coluna15,
+                            question6=form.d.Coluna16)
+            S.add(Rate)
+            S.commit()
+            #return self.OfferingInst.id
+            return Render.offeringpage(self.OfferingInst, Render,form)
 
     # TODO Unfinished
     class UploadHandler:
@@ -382,7 +381,193 @@ def Setup():
 
         def POST(self):
             IsLogged()
-            return POSTParse(web.data())
+            auxiliar = POSTParse(web.data())
+
+            LocDB = create_engine(UserDB, echo=False)
+            LocS = sessionmaker(bind=LocDB)()
+
+            chaves = []
+
+            #atualizar com range de perguntas (by Raul)
+            for var in range(0,13):
+                chaves.append(str(float(var)))
+
+            for x in chaves:
+                if x not in auxiliar.keys():
+                    auxiliar[x] = None
+
+            if 'text-offering' not in auxiliar.keys():
+                auxiliar['text-offering'] = None
+            if 'text-teacher' not in auxiliar.keys():
+                auxiliar['text-teacher'] = None
+
+#            LocTeacher = LocS.query(Teacher).filter(
+#                Teacher.id == self.OfferingInst.teacher_id).one()
+
+#            LocSubject = LocS.query(Subject).filter(
+#                Subject.id == self.OfferingInst.subject_id).one()
+
+#            LocSemester = LocS.query(Semester).filter(
+#                Semester.id == self.OfferingInst.semester_id).one()
+
+            Me = LocS.query(User).filter(User.id == Session.user_id).one()
+            LocOffering = LocS.query(Offering).filter(
+                Offering.id == self.OfferingInst.id).one()
+
+            CommitComment(self.OfferingInst, auxiliar)
+
+            NewEvaluation = StudentRate(
+
+            question1 = auxiliar['0.0'],
+            question2 = auxiliar['1.0'],
+            question3 = auxiliar['2.0'],
+            question4 = auxiliar['3.0'],
+            question5 = auxiliar['4.0'],
+            question6 = auxiliar['5.0'],
+            question7 = auxiliar['6.0'],
+            question8 = auxiliar['7.0'],
+            question9 = auxiliar['8.0'],
+            question10 = auxiliar['9.0'],
+            question11 = auxiliar['10.0'],
+            question12 = auxiliar['11.0'],
+            question13 = auxiliar['12.0'],
+
+            user = Me,
+            offering = LocOffering
+            )
+
+            try:
+                LocS.add(NewEvaluation)
+                LocS.commit()
+
+
+                if (LocS.query(AnswerSum.offering_id).filter(AnswerSum.offering_id == self.OfferingInst.id).count())==0:
+                    NewSum = AnswerSum(
+                    q1_sim = 0,
+                    q1_nao = 0,
+                    q2_correto = 0,
+                    q2_antes = 0,
+                    q2_depois = 0,
+                    q3_adequada = 0,
+                    q3_curta = 0,
+                    q3_longa = 0,
+                    q4_alta = 0,
+                    q4_normal = 0,
+                    q4_baixa = 0,
+                    q5_alta = 0,
+                    q5_normal = 0,
+                    q5_baixa = 0,
+                    q6_alta = 0,
+                    q6_normal = 0,
+                    q6_baixa = 0,
+                    q7_sim = 0,
+                    q7_nao = 0,
+                    q8_boa = 0,
+                    q8_media = 0,
+                    q8_ruim = 0,
+                    q9_sim = 0,
+                    q9_nao = 0,
+                    q10_sim = 0,
+                    q10_nao = 0,
+                    q11_sim = 0,
+                    q11_nao = 0,
+                    q12_sim = 0,
+                    q12_nao = 0,
+                    q13_sim = 0,
+                    q13_nao = 0,
+                    offering = LocOffering
+                    )
+                    LocS.add(NewSum)
+                    LocS.commit()
+
+                elemento = LocS.query(AnswerSum).filter(AnswerSum.offering_id == self.OfferingInst.id).one()
+
+                if auxiliar['0.0'] == ' sim ':
+                    elemento.q1_sim += 1
+                elif auxiliar['0.0'] == ' não ':
+                    elemento.q1_nao += 1
+
+                if auxiliar['1.0'] == ' correto ':
+                    elemento.q2_correto += 1
+                elif auxiliar['1.0'] == ' antes ':
+                    elemento.q2_antes += 1
+                elif auxiliar['1.0'] == ' depois ':
+                    elemento.q2_depois += 1
+
+                if auxiliar['2.0'] == ' adequada ':
+                    elemento.q3_adequada += 1
+                elif auxiliar['2.0'] == ' curta ':
+                    elemento.q3_curta += 1
+                elif auxiliar['2.0'] == ' longa ':
+                    elemento.q3_longa += 1
+
+                if auxiliar['3.0'] == ' alta ':
+                    elemento.q4_alta += 1
+                elif auxiliar['3.0'] == ' normal ':
+                    elemento.q4_normal += 1
+                elif auxiliar['3.0'] == ' baixa ':
+                    elemento.q4_baixa += 1
+
+                if auxiliar['4.0'] == ' alta ':
+                    elemento.q5_alta += 1
+                elif auxiliar['4.0'] == ' normal ':
+                    elemento.q5_normal += 1
+                elif auxiliar['4.0'] == ' baixa ':
+                    elemento.q5_baixa += 1
+
+                if auxiliar['5.0'] == ' alta ':
+                    elemento.q6_alta += 1
+                elif auxiliar['5.0'] == ' normal ':
+                    elemento.q6_normal += 1
+                elif auxiliar['5.0'] == ' baixa ':
+                    elemento.q6_baixa += 1
+
+                if auxiliar['6.0'] == ' sim ':
+                    elemento.q7_sim += 1
+                elif auxiliar['6.0'] == ' não ':
+                    elemento.q7_nao += 1
+
+                if auxiliar['7.0'] == ' boa ':
+                    elemento.q8_boa += 1
+                elif auxiliar['7.0'] == ' média ':
+                    elemento.q8_media += 1
+                elif auxiliar['7.0'] == ' ruim ':
+                    elemento.q8_ruim += 1
+
+                if auxiliar['8.0'] == ' sim ':
+                    elemento.q9_sim += 1
+                elif auxiliar['8.0'] == ' não ':
+                    elemento.q9_nao += 1
+
+                if auxiliar['9.0'] == ' sim ':
+                    elemento.q10_sim += 1
+                elif auxiliar['9.0'] == ' não ':
+                    elemento.q10_nao += 1
+
+                if auxiliar['10.0'] == ' sim ':
+                    elemento.q11_sim += 1
+                elif auxiliar['10.0'] == ' não ':
+                    elemento.q11_nao += 1
+
+                if auxiliar['11.0'] == ' sim ':
+                    elemento.q12_sim += 1
+                elif auxiliar['11.0'] == ' não ':
+                    elemento.q12_nao += 1
+
+                if auxiliar['12.0'] == ' sim ':
+                    elemento.q13_sim += 1
+                elif auxiliar['12.0'] == ' não ':
+                    elemento.q13_nao += 1
+
+                LocS.commit()
+
+                raise web.seeother('/oferecimentos')
+
+
+            except:
+                LocS.rollback()
+                return True
+
 
     class FaqPage:
         def GET(self):
@@ -393,6 +578,41 @@ def Setup():
         def GET(self):
             IsLogged()
             return Render.index(Render)
+
+    class SemesterPage:
+        SemesterInst = Semester()
+
+        def GET(self):
+            IsLogged()
+            return Render.semesterpage(self.SemesterInst, Render)
+
+    class Database:
+        def GET(self):
+            IsLogged()
+            form1 = AddOffering()
+            # make sure you create a copy of the form by calling it (line above)
+            # Otherwise changes will appear globally
+            return Render.database(Render,form1)
+
+        def POST(self):
+            form1 = AddOffering()
+            #if not form.validates():
+            #    return Render.database(Render,form1,form2)
+            #else:
+            form1.validates()
+            S = sessionmaker(bind=DB)()
+            Off = Offering(subject_id=form1.d.Disciplina,
+                            teacher_id=form1.d.Professor,
+                            semester_id=form1.d.Semestre,
+                            students = int(form1.d.Matriculados),
+                            code = form1.d.Turma)
+            S.add(Off)
+            S.commit()
+
+            #huebr
+
+            return Render.database(Render,form1)
+
 
     # URL Mappings
     S = sessionmaker(bind=DB)()
@@ -406,6 +626,7 @@ def Setup():
     Map(SearchSubject, "/disciplinas")
     Map(SearchOffering, "/oferecimentos")
     Map(FaqPage, "/faq")
+    Map(Database, "/database")
 
     for Line in S.query(Student):
         Map(StudentPage, Line.EncodeURL(), dict(StudentInst=Line))
@@ -419,6 +640,9 @@ def Setup():
     for Line in S.query(Offering):
         Map(OfferingPage, Line.EncodeURL(), dict(OfferingInst=Line))
         Map(EvaluatePage, Line.EvaluationURL(), dict(OfferingInst=Line))
+
+    for Line in S.query(Semester):
+        Map(SemesterPage, Line.EncodeURL(), dict(SemesterInst=Line))
 
     # Built-in static handler
     if AppStaticHandler:

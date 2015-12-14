@@ -9,17 +9,17 @@ $ SubjectsList = S.query(Offering) #.order_by(Offering.subject.code)
 <html>
   <head>
     $:Render.includes()
-    <link rel="stylesheet" href="/static/form.css">
+    <!-- <link rel="stylesheet" href="/static/form.css"> -->
     <title>$BaseTitle - Busca de Oferecimentos</title>
-  </head>  
+  </head>
   <body>
     <!-- Fixed navbar -->
     $:Render.navbar()
     <!-- Begin page content -->
-    <div class="container"> 
-      $:Render.form(OfferingInst)
+    <div class="container">
+      $:Render.form()
     </div>
     $:Render.footer()
-    <script src="/static/form.js"></script>
+    <!-- <script src="/static/form.js"></script> -->
   </body>
 </html>
