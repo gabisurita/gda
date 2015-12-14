@@ -87,13 +87,13 @@ def Setup():
             Offering.id == Inst.id).one()
 
 
-        if not Response['text-teacher'] = None:
+        if not Response['text-teacher'] == None:
             NewTeacherComment = TeacherComment(
                 text=Response["text-teacher"],
                 teacher=LocTeacher,
                 user=Me,
                 anonymous=bool("False"))
-                LocS.add(NewTeacherComment)
+            LocS.add(NewTeacherComment)
 
 #            NewSubjectComment = SubjectComment(
 #                text=Response["text-offering"],
@@ -101,13 +101,13 @@ def Setup():
 #                user=Me,
 #                anonymous=bool("False"))
 
-        if not Response['text-offering']:
+        if not Response['text-offering'] == None:
             NewOfferingComment = OfferingComment(
                 text=Response["text-offering"],
                 offering=LocOffering,
                 user=Me,
                 anonymous=bool("False"))
-                LocS.add(NewOfferingComment)
+            LocS.add(NewOfferingComment)
 
         try:
             LocS.commit()
@@ -268,7 +268,7 @@ def Setup():
         def POST(self):
             IsLogged()
             Response = POSTParse(web.data())
-            CommitComment(self.TeacherInst, Response)
+#            CommitComment(self.TeacherInst, Response)
 
             return Render.teacherpage(self.TeacherInst, Render)
 
@@ -282,7 +282,7 @@ def Setup():
         def POST(self):
             IsLogged()
             Response = POSTParse(web.data())
-            CommitComment(self.SubjectInst, Response)
+#            CommitComment(self.SubjectInst, Response)
 
             return Render.subjectpage(self.SubjectInst, Render)
 
@@ -297,7 +297,7 @@ def Setup():
         def POST(self):
             IsLogged()
             Response = POSTParse(web.data())
-            CommitComment(self.OfferingInst, Response)
+#            CommitComment(self.OfferingInst, Response)
             form = RateOffering()
             #if not form.validates():
             #    return Render.database(Render,form1,form2)
@@ -413,6 +413,8 @@ def Setup():
             Me = LocS.query(User).filter(User.id == Session.user_id).one()
             LocOffering = LocS.query(Offering).filter(
                 Offering.id == self.OfferingInst.id).one()
+
+            CommitComment(self.OfferingInst, auxiliar)
 
             NewEvaluation = StudentRate(
 
