@@ -7,6 +7,7 @@ Define Global Constants Here!
 
 import web
 import os
+import random
 
 BaseTitle = "GDA"
 

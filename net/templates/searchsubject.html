@@ -3,7 +3,6 @@ $def with (Render)
 $ S = sessionmaker(bind=DB)()
 
 $ SubjectsList = S.query(Subject).order_by(Subject.code)
-$ Questions = S.query(QuestionsSubject)
 
 <!DOCTYPE html>
 <html>
@@ -16,7 +15,7 @@ $ Questions = S.query(QuestionsSubject)
     $:Render.navbar()
     <!-- Begin page content -->
     <div class="container">
-      <div class="col-sm-9">
+      <div class="col-sm-12">
         <h2>Busca de Disciplinas</h2>
         <div id="disciplinas">
           <input type="text" class="search" placeholder="Busca">
@@ -27,10 +26,12 @@ $ Questions = S.query(QuestionsSubject)
             <thead>
               <tr>
                 <th style="min-width: 80px;">Código</th>
-                <th style="min-width: 550px;">Nome</th>
-                $for Line in Questions:
-                  $ Qid = '%s' % (chr(ord('A')+Line.id - 1))
-                  <th style="min-width: 30px;">$Qid</th>
+                <th style="min-width: 350px;">Nome</th>
+                <th style="min-width: 30px;"> Necessária </th>
+                <th style="min-width: 30px;"> Ementa </th>
+                <th style="min-width: 30px;"> Dedicação </th>
+                <th style="min-width: 30px;"> Dificuldade </th>
+
               </tr>
             </thead>
             <tbody class="list">
@@ -40,14 +41,39 @@ $ Questions = S.query(QuestionsSubject)
                 <td style="min-width: 80px;">
                   <a class="codigo" href="$URL">$Line.code</a>
                 </td>
-                <td style="min-width: 550px;">
+                <td style="min-width: 350px;">
                   <a class="nome black-link" href="$URL">$Line.name</a>
                 </td>
-              <td style="min-width: 10px;">75</td>
-              <td style="min-width: 10px;">80</td>
-              <td style="min-width: 10px;">85</td>
-              <td style="min-width: 10px;">90</td>
-              <td style="min-width: 10px;">95</td>
+                $ rand1 = random.randrange(50,100)
+                $ rand2 = random.randrange(35,100)
+                $ rand3 = random.randrange(35,100)
+                $ rand4 = random.randrange(35,100)
+                $ s1 = "Sim"
+                $if rand1%2:
+                  $ s1 = "Não"
+                $ q1 = ' %s %d%%' % (s1,rand1)
+                $ s2 = "Adequada"
+                $if (rand2%3)==1:
+                  $ s2 = "Longa"
+                $if (rand2%3)==2:
+                  $ s2 = "Curta"
+                $ q2 = ' %s %d%%' % (s2,rand2)
+                $ s3 = "Normal"
+                $if (rand3%3)==1:
+                  $ s3 = "Alta"
+                $if (rand3%3)==2:
+                  $ s3 = "Baixa"
+                $ q3 = ' %s %d%%' % (s3,rand3)
+                $ s4 = "Normal"
+                $if (rand4%3)==1:
+                  $ s4 = "Difícil"
+                $if (rand2%3)==2:
+                  $ s4 = "Fácil"
+                $ q4 = ' %s %d%%' % (s4,rand4)
+              <td style="min-width: 10px;">$q1</td>
+              <td style="min-width: 10px;">$q2</td>
+              <td style="min-width: 10px;">$q3</td>
+              <td style="min-width: 10px;">$q4</td>
               </tr>
             </tbody>
           </table>
@@ -58,16 +84,6 @@ $ Questions = S.query(QuestionsSubject)
           };
           var userList = new List('disciplinas', options);
         </script>
-      </div>
-      <div class ="col-sm-3 blog-sidebar" >
-        <div class="sidebar-module sidebar-module-inset">
-          <ol class="list-unstyled">
-            $for Line in Questions:
-              $ Qid = '%s' % (chr(ord('A')+Line.id - 1))
-              $ Question = '%s' % (Line.question)
-              <li> <b>$Qid</b> : $Question </li>
-          </ol>
-        </div>
       </div>
     </div>
     $:Render.footer()
