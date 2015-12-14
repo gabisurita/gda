@@ -3,6 +3,7 @@ $def with (Render)
 $ S = sessionmaker(bind=DB)()
 
 $ SubjectsList = S.query(Subject).order_by(Subject.code)
+$ Questions = S.query(QuestionsSubject)
 
 <!DOCTYPE html>
 <html>
@@ -15,22 +16,22 @@ $ SubjectsList = S.query(Subject).order_by(Subject.code)
     $:Render.navbar()
     <!-- Begin page content -->
     <div class="container">
-      <div class="col-sm-12">
         <h2>Busca de Disciplinas</h2>
         <div id="disciplinas">
           <input type="text" class="search" placeholder="Busca">
 <!--          <span class="input-group-btn">-->
 <!--            <button class="btn btn-default" type="button"></button>-->
 <!--          </span>-->
+        <div class="row" style="overflow-y: scroll; height:400px;">
           <table class="table table-striped table-condensed sortable">
             <thead>
               <tr>
-                <th style="min-width: 80px;">Código</th>
-                <th style="min-width: 350px;">Nome</th>
-                <th style="min-width: 30px;"> Necessária </th>
-                <th style="min-width: 30px;"> Ementa </th>
-                <th style="min-width: 30px;"> Dedicação </th>
-                <th style="min-width: 30px;"> Dificuldade </th>
+                <th>Código</th>
+                <th>Nome</th>
+                <th style="min-width: 50px; text-align: right;"> Necessária </th>
+                <th style="min-width: 100px; text-align: right;"> Ementa </th>
+                <th style="min-width: 30px; text-align: right;"> Dedicação </th>
+                <th style="min-width: 30px; text-align: right;"> Dificuldade </th>
 
               </tr>
             </thead>
@@ -38,10 +39,10 @@ $ SubjectsList = S.query(Subject).order_by(Subject.code)
             $for Line in SubjectsList:
               $ URL = Line.EncodeURL()
               <tr>
-                <td style="min-width: 80px;">
+                <td>
                   <a class="codigo" href="$URL">$Line.code</a>
                 </td>
-                <td style="min-width: 350px;">
+                <td>
                   <a class="nome black-link" href="$URL">$Line.name</a>
                 </td>
                 $ rand1 = random.randrange(50,100)
@@ -70,17 +71,17 @@ $ SubjectsList = S.query(Subject).order_by(Subject.code)
                 $if (rand2%3)==2:
                   $ s4 = "Fácil"
                 $ q4 = ' %s %d%%' % (s4,rand4)
-              <td style="min-width: 10px;">$q1</td>
-              <td style="min-width: 10px;">$q2</td>
-              <td style="min-width: 10px;">$q3</td>
-              <td style="min-width: 10px;">$q4</td>
+              <td class="quest1" style="min-width: 100px;" align="right">$q1</td>
+              <td class="quest2" style="min-width: 180px;" align="right">$q2</td>
+              <td class="quest3" style="min-width: 150px;" align="right">$q3</td>
+              <td class="quest4" style="min-width: 150px;"align="right">$q4</td>
               </tr>
             </tbody>
           </table>
         </div>
         <script>
           var options = {
-            valueNames: ['codigo','nome']
+            valueNames: ['codigo','nome','quest1','quest2','quest3','quest4']
           };
           var userList = new List('disciplinas', options);
         </script>
