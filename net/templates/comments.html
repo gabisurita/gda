@@ -1,14 +1,6 @@
 $def with (ThisComments)
 
 <div class="comment-box">
-  <h3>Comentários</h3>
-  <form id="comment-form" action="" method="POST">
-    <input type="hidden" name="trigger" value="comment">
-    <textarea class="form-control comment-field" name="text"></textarea>
-    <br> <br>
-    <input class="btn comment-submit" value="Enviar" type="submit">
-    <input type="checkbox" name="anonymous"> Postar como anônimo [?]
-  </form>
   <div id="comment-listing">
     $for Comment in ThisComments:
       <div>

@@ -69,56 +69,53 @@ def Setup():
             else:
                 return False
 
-    def CommitComment(Inst, Response):
+#recebe dicionário com respostas e atualiza lista de comentários
+    def CommitComment(Inst ,Response):
         """Submit a comment to an instance"""
-        if "trigger" in Response:
-            if Response["trigger"] == "comment":
-                LocDB = create_engine(UserDB, echo=False)
-                LocS = sessionmaker(bind=LocDB)()
 
-                Me = LocS.query(User).filter(User.id == Session.user_id).one()
 
-                if "anonymous" not in Response:
-                    Response["anonymous"] = False
+        LocDB = create_engine(UserDB, echo=False)
+        LocS = sessionmaker(bind=LocDB)()
 
-                if Inst.__class__ == Teacher:
-                    LocTeacher = LocS.query(Teacher).filter(
-                        Teacher.id == Inst.id).one()
+        Me = LocS.query(User).filter(User.id == Session.user_id).one()
 
-                    NewComment = TeacherComment(
-                        text=Response["text"],
-                        teacher=LocTeacher,
-                        user=Me,
-                        anonymous=bool(Response["anonymous"]))
+        LocTeacher = LocS.query(Teacher).filter(
+            Teacher.id == Inst.teacher_id).one()
+        LocSubject = LocS.query(Subject).filter(
+            Subject.id == Inst.subject_id).one()
+        LocOffering = LocS.query(Offering).filter(
+            Offering.id == Inst.id).one()
 
-                if Inst.__class__ == Subject:
-                    LocSubject = LocS.query(Subject).filter(
-                        Subject.id == Inst.id).one()
 
-                    NewComment = SubjectComment(
-                        text=Response["text"],
-                        subject=LocSubject,
-                        user=Me,
-                        anonymous=bool(Response["anonymous"]))
+        if not Response['text-teacher'] = None:
+            NewTeacherComment = TeacherComment(
+                text=Response["text-teacher"],
+                teacher=LocTeacher,
+                user=Me,
+                anonymous=bool("False"))
+                LocS.add(NewTeacherComment)
 
-                if Inst.__class__ == Offering:
-                    LocOffering = LocS.query(Offering).filter(
-                        Offering.id == Inst.id).one()
+#            NewSubjectComment = SubjectComment(
+#                text=Response["text-offering"],
+#                subject=LocSubject,
+#                user=Me,
+#                anonymous=bool("False"))
 
-                    NewComment = OfferingComment(
-                        text=Response["text"],
-                        offering=LocOffering,
-                        user=Me,
-                        anonymous=bool(Response["anonymous"]))
+        if not Response['text-offering']:
+            NewOfferingComment = OfferingComment(
+                text=Response["text-offering"],
+                offering=LocOffering,
+                user=Me,
+                anonymous=bool("False"))
+                LocS.add(NewOfferingComment)
 
-                try:
-                    LocS.add(NewComment)
-                    LocS.commit()
-                    return False
+        try:
+            LocS.commit()
+            return False
 
-                except:
-                    LocS.rollback()
-                    return True
+        except:
+            LocS.rollback()
+            return True
 
 
     # Page classes (handlers)
@@ -398,6 +395,11 @@ def Setup():
             for x in chaves:
                 if x not in auxiliar.keys():
                     auxiliar[x] = None
+
+            if 'text-offering' not in auxiliar.keys():
+                auxiliar['text-offering'] = None
+            if 'text-teacher' not in auxiliar.keys():
+                auxiliar['text-teacher'] = None
 
 #            LocTeacher = LocS.query(Teacher).filter(
 #                Teacher.id == self.OfferingInst.teacher_id).one()
