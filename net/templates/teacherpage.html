@@ -20,13 +20,11 @@ $ Questions = S.query(QuestionsOffering)
     <!-- Begin page content -->
     <div class="container">
       <div class="col-sm-9">
-        <h3>$TeacherInst.name</h3>
-        </br>
+        <h2>$TeacherInst.name </h2>
         $:Render.comments(ThisComments)
         <h3>Oferecimentos</h3>
-        <p> Busca por disciplina</p>
         <div id='docentes'>
-        <input type="text" class="search" placeholder="Busca">
+        <input type="text" class="search" placeholder="Busca por disciplina">
         <br>
         <table class="table table-striped table-condensed sortable">
           <thead>
