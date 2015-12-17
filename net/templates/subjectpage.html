@@ -24,9 +24,6 @@ $ Questions = S.query(QuestionsOffering)
       <h2>$SubjectInst.code -   $SubjectInst.name</h2>
       <div class="row">
       <div class="col-sm-6">
-<!--
-        <p><b>Ementa: </b>$SubjectInst.summary</p>
--->
         <div class="panel panel-default">
           <div class="panel-heading">Ementa</div>
           <div class="panel-body">$SubjectInst.summary</div>
@@ -38,29 +35,29 @@ $ Questions = S.query(QuestionsOffering)
         <div class="col-sm-6">
           <table class="table table-striped">
             <thead>
-              <th style="text-align: right;"> Necessária </th>
-              <th style="text-align: right;"> Ementa </th>
               <th style="text-align: right;"> Dedicação </th>
               <th style="text-align: right;"> Dificuldade </th>
+              <th style="text-align: right;"> Ementa </th>
+              <th style="text-align: right;"> Necessária </th>
             </thead>
             <tbody style="text-align: right;">
               <tr>
-                <td> Sim 73% </td>
-                <td> Adequada 68% </td>
                 <td> Normal 46% </td>
                 <td> Normal 34% </td>
+                <td> Adequada 68% </td>
+                <td> Sim 73% </td>
               </tr>
               <tr>
-                <td> Não 27%</td>
-                <td> Curta 5% </td>
                 <td> Baixa 18% </td>
                 <td> Fácil 14% </td>
+                <td> Curta 5% </td>
+                <td> Não 27%</td>
               </tr>
               <tr>
-                <td> </td>
-                <td> Longa 27%</td>
                 <td> Alta 36%</td>
                 <td> Dificil 52% </td>
+                <td> Longa 27%</td>
+                <td> </td>
               </tr>
               <tr>
                 <td> 25 votos </td>
@@ -72,65 +69,82 @@ $ Questions = S.query(QuestionsOffering)
           </table>
         </div>
       </div>
-        <div class="row" id='docentes'>
-          <div class="col-sm-5">
+      <div id='docentes'>
+        <div class="row">
+          <div class="col-sm-4">
             <h2>Oferecimentos</h2>
           </div>
-          <div class="col-sm-6">
+          <div class="col-sm-4">
             <br>
             <input type="text" class="search" placeholder="Busca por professor">
           </div>
-        <table class="table table-striped table-condensed sortable">
-          <thead>
-            <tr>
-              <th style="min-width: 100px;">Semestre</th>
-              <th style="min-width: 70px;">Turma</th>
-              <th style="min-width: 120px;">Matriculados</th>
-              <th style="min-width: 180px;">Docente</th>
-              $for Line in Questions:
-                $ Qid = '%s' % (chr(ord('A')+Line.id - 1))
-                <th style="min-width: 35px;">$Qid</th>
-            </tr>
-          </thead>
-          <tbody class="list">
-          $for Line in ThisOfferings:
-            $ URL = Line.EncodeURL()
-            $ Code = '%s' % (Line.code)
-            $ Enrolled = '%s' % (Line.students)
-            $ Sem = '%ss%s' % (Line.semester.sem, Line.semester.year)
-            $ SearchRate = S.query(OfferingRate).filter(OfferingRate.offering_id == Line.id)
-            $ Rated = 0
-            $for Lin in SearchRate:
-              $ Rate = Lin
-              $ Rated = 1
-            <tr>
-              <td style="min-width: 100px;"><a class="year black-link"href="$URL">$Sem</a></td>
-              <td>$Code</td>
-              <td>$Enrolled</td>
-              <td><a class="nome" href="$Line.teacher.EncodeURL()">$Line.teacher.name</a></td>
-              $if Rated:
-                <td>$Rate.question1</td>
-                <td>$Rate.question2</td>
-                <td>$Rate.question3</td>
-                <td>$Rate.question4</td>
-                <td>$Rate.question5</td>
-                <td>$Rate.question6</td>
-              $else:
-                $for i in range(0,6):
-                  <td> - </td>
-            </tr>
-          </tbody>
-        </table>
-      <script>
-        var options = {
-          valueNames: ['nome','year']
-        };
-        var userList = new List('docentes', options);
-      </script>
-      </div>
-      <div class="col-sm-3 blog-sidebar">
-      </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-9">
+            <table class="table table-striped table-condensed sortable">
+              <thead>
+                <tr>
+                  <th>Semestre</th>
+                  <th>Turma</th>
+                  <th>Matriculados</th>
+                  <th>Docente</th>
+                  <th style="min-width: 35px;"> A </th>
+                  <th style="min-width: 35px;"> B </th>
+                  <th style="min-width: 35px;"> C </th>
+                  <th style="min-width: 35px;"> D </th>
+                  <th style="min-width: 35px;"> E </th>
+                  <th style="min-width: 35px;"> F </th>
+                </tr>
+              </thead>
+              <tbody class="list">
+              $for Line in ThisOfferings:
+                $ URL = Line.EncodeURL()
+                $ Code = '%s' % (Line.code)
+                $ Enrolled = '%s' % (Line.students)
+                $ Sem = '%ss%s' % (Line.semester.sem, Line.semester.year)
+                $ SearchRate = S.query(OfferingRate).filter(OfferingRate.offering_id == Line.id)
+                $ Rated = 0
+                $for Lin in SearchRate:
+                  $ Rate = Lin
+                  $ Rated = 1
+                <tr>
+                  <td style="min-width: 100px;"><a class="year black-link"href="$URL">$Sem</a></td>
+                  <td>$Code</td>
+                  <td>$Enrolled</td>
+                  <td><a class="nome" href="$Line.teacher.EncodeURL()">$Line.teacher.name</a></td>
+                  $if Rated:
+                    <td>$Rate.question1</td>
+                    <td>$Rate.question2</td>
+                    <td>$Rate.question3</td>
+                    <td>$Rate.question4</td>
+                    <td>$Rate.question5</td>
+                    <td>$Rate.question6</td>
+                  $else:
+                    $for i in range(0,6):
+                      <td> - </td>
+                </tr>
+              </tbody>
+            </table>
+            <script>
+              var options = {
+                valueNames: ['nome','year']
+              };
+              var userList = new List('docentes', options);
+            </script>
+          </div>
+          <div class="col-sm-3">
+            <ol class="list-unstyled">
+                <li> <b>A</b> Planejamento da Bibliografia  </li>
+                <li> <b>B</b> Didática  </li>
+                <li> <b>C</b> Interesse pelo Aluno  </li>
+                <li> <b>D</b> Relacionamento com alunos  </li>
+                <li> <b>E</b> Adequação da avaliação   </li>
+                <li> <b>F</b> Contribuição para aprendizado  </li>
+            </ol>
+          </div>
     </div>
+  </div>
+</div>
     $:Render.footer()
   </body>
 </html>
