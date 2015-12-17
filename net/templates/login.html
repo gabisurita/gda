@@ -6,7 +6,7 @@ $def with (Form, Error, Render)
     $:Render.includes()
     <title>$BaseTitle - Login</title>
 
-  </head>  
+  </head>
   <body>
     $if Error != "":
       <script>BootstrapDialog.show({type: BootstrapDialog.TYPE_DANGER, size: BootstrapDialog.SIZE_SMALL, title: 'Erro', message: '$:Error' });</script>
@@ -29,7 +29,7 @@ $def with (Form, Error, Render)
           </div>
           <button class="btn btn-primary btn-block" type="submit">Entrar</button>
         </form>
-        
+
         <a href="/login"> Login </a>
         <br/>
         <a href="/registrar"> Registrar </a>
@@ -38,7 +38,3 @@ $def with (Form, Error, Render)
     $:Render.footer()
   </body>
 </html>
-
-
-
-

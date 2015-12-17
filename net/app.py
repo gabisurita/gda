@@ -169,7 +169,7 @@ def Setup():
         def GET(self):
             if not IsLogged(Redirect=False):
                 Form = RegisterForm()
-                return Render.login(Form, Render)
+                return Render.login(Form,"",Render)
             else:
                 raise web.seeother('/')
 
