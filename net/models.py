@@ -147,6 +147,8 @@ class TeacherComment(Base):
   user = relationship(User)
   teacher_id = Column(Integer, ForeignKey('teacher.teacher_id'))
   teacher = relationship(Teacher)
+  offering_id = Column(Integer, ForeignKey('offering.offering_id'))
+  offering = relationship(Offering)
 
 
 class OfferingComment(Base):

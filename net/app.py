@@ -87,12 +87,13 @@ def Setup():
             Offering.id == Inst.id).one()
 
 
-        if not Response['text-teacher'] == None:
+        if not Response['text-teacher'] == "":
             NewTeacherComment = TeacherComment(
                 text=Response["text-teacher"],
                 teacher=LocTeacher,
                 user=Me,
-                anonymous=bool("False"))
+                anonymous=False,
+                offering=LocOffering)
             LocS.add(NewTeacherComment)
 
 #            NewSubjectComment = SubjectComment(
@@ -101,12 +102,12 @@ def Setup():
 #                user=Me,
 #                anonymous=bool("False"))
 
-        if not Response['text-offering'] == None:
+        if not Response['text-offering'] == "":
             NewOfferingComment = OfferingComment(
                 text=Response["text-offering"],
                 offering=LocOffering,
                 user=Me,
-                anonymous=bool("False"))
+                anonymous=False)
             LocS.add(NewOfferingComment)
 
         try:
@@ -193,9 +194,6 @@ def Setup():
 
                 if Match == None or check_email.count() != 0 or check_ra.count() != 0:
                     return Render.register(Form,"Error", Render)
-                else:
-                    print "nao deu none"
-
 
                 NewStudent = Student(
                 ra = int(Form['RA'].value),
