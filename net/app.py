@@ -333,6 +333,17 @@ def Setup():
         def GET(self):
             IsLogged()
             form = RateOffering()
+
+            already_evaluated = False
+
+            manobra = LocS.query(StudentRate).filter(
+                StudentRate.user_id == Session.user_id).filter(
+                StudentRate.offering_id == self.OfferingInst.id)
+
+            if manobra.count() != 0:
+                already_evaluated = True
+
+            #modificar o template para usar a variável "already_evaluated" (By Raul)
             return Render.offeringpage(self.OfferingInst, Render, form)
 
         def POST(self):
@@ -418,20 +429,7 @@ def Setup():
 
         def GET(self):
             IsLogged()
-
-            LocDB = create_engine(UserDB, echo=False)
-            LocS = sessionmaker(bind=LocDB)()
-
-            manobra = LocS.query(StudentRate).filter(
-                StudentRate.user_id == Session.user_id).filter(
-                StudentRate.offering_id == self.OfferingInst.id)
-
-            if manobra.count() == 0:
-                return Render.evaluatepage(self.OfferingInst, Render)
-            else:
-                form = RateOffering()
-                return Render.offeringpage(self.OfferingInst, Render, form)
-
+            return Render.evaluatepage(self.OfferingInst, Render)
 
         def POST(self):
             IsLogged()
