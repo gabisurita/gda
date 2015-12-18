@@ -51,27 +51,50 @@ $for Line in Questions
       <div class="row">
       <div class="col-sm-12">
         <div class="panel panel-default">
-            <div class="panel-heading"> Avaliação Oficial</div>
-            <table class="table">
-              <tbody>
-                <tr>
-                  <td class="col-sm-3"> Planejamento da Bibliografia </td>
-                  <td class="col-sm-1" > 92 </td>
-                  <td class="col-sm-3"> Didática e Técnica de Ensino </td>
-                  <td class="col-sm-1"> 86 </td>
-                  <td class="col-sm-3"> Interesse pelo Aluno </td>
-                  <td class="col-sm-1" style="text-align:right;"> 88 </td>
-                </tr>
-                <tr>
-                  <td> Relacionamento com alunos </td>
-                  <td> 80 </td>
-                  <td> Adequação da avaliação </td>
-                  <td> 96 </td>
-                  <td> Contribuição para aprendizado </td>
-                  <td style="text-align:right;"> 74 </td>
-                </tr>
-              </tbody>
-            </table>
+          $if Rated:
+            <div class="panel-heading"> Avaliação Oficial - $Rate.answers respostas de $OfferingInst.students matriculados</div>
+              <table class="table">
+                <tbody>
+                  <tr>
+                    <td class="col-sm-3"> Planejamento da Bibliografia </td>
+                    <td class="col-sm-1" > $Rate.question1 </td>
+                    <td class="col-sm-3"> Didática e Técnica de Ensino </td>
+                    <td class="col-sm-1"> $Rate.question2 </td>
+                    <td class="col-sm-3"> Interesse pelo Aluno </td>
+                    <td class="col-sm-1" style="text-align:right;"> $Rate.question3 </td>
+                  </tr>
+                  <tr>
+                    <td> Relacionamento com alunos </td>
+                    <td> $Rate.question4 </td>
+                    <td> Adequação da avaliação </td>
+                    <td> $Rate.question5 </td>
+                    <td> Contribuição para aprendizado </td>
+                    <td style="text-align:right;"> $Rate.question6 </td>
+                  </tr>
+                </tbody>
+              </table>
+          $else:
+              <div class="panel-heading"> Avaliação Oficial - Não foi avaliado</div>
+              <table class="table">
+                <tbody>
+                  <tr>
+                    <td class="col-sm-3"> Planejamento da Bibliografia </td>
+                    <td class="col-sm-1" > -- </td>
+                    <td class="col-sm-3"> Didática e Técnica de Ensino </td>
+                    <td class="col-sm-1"> -- </td>
+                    <td class="col-sm-3"> Interesse pelo Aluno </td>
+                    <td class="col-sm-1" style="text-align:right;"> -- </td>
+                  </tr>
+                  <tr>
+                    <td> Relacionamento com alunos </td>
+                    <td> -- </td>
+                    <td> Adequação da avaliação </td>
+                    <td> -- </td>
+                    <td> Contribuição para aprendizado </td>
+                    <td style="text-align:right;"> -- </td>
+                  </tr>
+                </tbody>
+              </table>
         </div>
       </div>
     </div>
@@ -153,27 +176,6 @@ $for Line in Questions
         </div>
       </div>
       <div class="row">
-        <div>
-          $if Rated:
-          <h3> Avaliação FEEC</h3>
-          <h4> $Rate.answers respostas de $OfferingInst.students matriculados</h4>
-          <table>
-            <thead>
-              <tr>
-                <th style="min-width: 300px;">Critério</th>
-                <th style="min-width: 10px;">Nota</th>
-              </tr>
-            </thead>
-            <tbody class="list">
-              <tr> <td> $Q[0] </td> <td> $Rate.question1 </td> </tr>
-              <tr> <td> $Q[1] </td> <td> $Rate.question2 </td> </tr>
-              <tr> <td> $Q[2] </td> <td> $Rate.question3 </td> </tr>
-              <tr> <td> $Q[3] </td> <td> $Rate.question4 </td> </tr>
-              <tr> <td> $Q[4] </td> <td> $Rate.question5 </td> </tr>
-              <tr> <td> $Q[5] </td> <td> $Rate.question6 </td> </tr>
-            </tbody>
-          </table>
-        </div>
         <div>
           $if Rated == 0:
             <h3>Avaliar Oferecimento</h3>
