@@ -1,0 +1,17 @@
+$def with (Form, Error, Render)
+
+<!DOCTYPE html>
+<html>
+  <head>
+    $:Render.includes()
+    <title>$BaseTitle - Register</title>
+  </head>
+
+  <body>
+    $if Error != "":
+      <h2>Aluno já cadastrado ou e-mail inválido.</h2>
+    <form name="one" method="post">
+      $:Form.render()
+    </form>
+  </body>
+</html>
