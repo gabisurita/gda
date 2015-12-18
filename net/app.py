@@ -418,7 +418,20 @@ def Setup():
 
         def GET(self):
             IsLogged()
-            return Render.evaluatepage(self.OfferingInst, Render)
+
+            LocDB = create_engine(UserDB, echo=False)
+            LocS = sessionmaker(bind=LocDB)()
+
+            manobra = LocS.query(StudentRate).filter(
+                StudentRate.user_id == Session.user_id).filter(
+                StudentRate.offering_id == self.OfferingInst.id)
+
+            if manobra.count() == 0:
+                return Render.evaluatepage(self.OfferingInst, Render)
+            else:
+                form = RateOffering()
+                return Render.offeringpage(self.OfferingInst, Render, form)
+
 
         def POST(self):
             IsLogged()
