@@ -4,6 +4,7 @@ $ S = sessionmaker(bind=DB)()
 
 $ SubjectsList = S.query(Offering) #.order_by(Offering.subject.code)
 
+$ ThisTeacher = S.query(Teacher).filter(Teacher.id == OfferingInst.teacher_id).one()
 
 <!DOCTYPE html>
 <html>
@@ -17,6 +18,15 @@ $ SubjectsList = S.query(Offering) #.order_by(Offering.subject.code)
     $:Render.navbar()
     <!-- Begin page content -->
     <div class="container">
+        <div class="col-sm-12">
+          <h2> $OfferingInst.subject.code $OfferingInst.code - $OfferingInst.subject.name</h2>
+        </div>
+        <div class="col-sm-7">
+          <h3>Professor: $ThisTeacher.name</h3>
+        </div>
+        <div class="col-sm-5">
+            <h3 class="text-right"> $OfferingInst.semester.semº semestre de $OfferingInst.semester.year </h3>
+        </div>
       $:Render.form()
     </div>
     $:Render.footer()
