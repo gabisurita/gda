@@ -11,7 +11,7 @@ import codecs
 import urllib
 from models import *
 from forms import *
-
+import re
 
 def Setup():
 
@@ -182,6 +182,49 @@ def Setup():
             else:
                 S = sessionmaker(bind=DB)()
 
+                Match = re.search(r'[\w.-]+@[\w.-]+.unicamp.br', Form['E-mail'].value)
+
+                check_email = S.query(User).filter(
+                    User.email == Form['E-mail'].value)
+
+                check_ra = S.query(Student).filter(
+                    Student.ra == Form['RA'].value)
+
+
+                if Match == None or check_email.count() != 0 or check_ra.count() != 0:
+                    return Render.register(Form,"Error", Render)
+                else:
+                    print "nao deu none"
+
+
+                NewStudent = Student(
+                ra = int(Form['RA'].value),
+                name = Form['Nome'].value
+                )
+
+                S.add(NewStudent)
+                S.commit()
+
+                StudentCall = S.query(Student).filter(
+                    Student.ra == int(Form['RA'].value)).one()
+
+                NewUser = User(
+                email = Form['E-mail'].value,
+                password = Form['Senha'].value,
+                confirmed = True,
+                student = StudentCall
+                )
+
+                S.add(NewUser)
+                S.commit()
+
+                UserCall = S.query(User).filter(
+                    User.email == Form['E-mail'].value).one()
+
+                Session.user_id = UserCall.id
+                raise web.seeother('/')
+
+
                 # Students disabled
 #                StudentCall = S.query(Student).filter(
 #                    Student.ra == int(Form['RA'].value))
@@ -205,30 +248,30 @@ def Setup():
 #                    UserCall = S.query(User).filter(
 #                        User.student == StudentCall)
 
-                UserCall = S.query(User).filter(
-                    User.email == Form['E-mail'].value).one()
+#                UserCall = S.query(User).filter(
+#                    User.email == Form['E-mail'].value).one()
 
-                if UserCall.count():
-                    UserCall = UserCall.one()
-                    if UserCall.password == Form['Senha'].value:
+#                if UserCall.count():
+#                    UserCall = UserCall.one()
+#                    if UserCall.password == Form['Senha'].value:
                         # TODO Check confirmation
-                        Session.user_id = UserCall.id
-                        raise web.seeother('/')
-                    else:
-                        return "Meh"
+#                        Session.user_id = UserCall.id
+#                        raise web.seeother('/')
+#                    else:
+#                        return "Meh"
 
-                else:
+#                else:
 
-                    Match = re.search(
-                        r'[\w.-]+@[\w.-]+.unicamp.br',
-                        Form['E-mail'].value)
+#                    Match = re.search(
+#                        r'[\w.-]+@[\w.-]+.unicamp.br',
+#                        Form['E-mail'].value)
 
-                    if not Form['E-mail'].value:
-                        return "Meh"
+#                    if not Form['E-mail'].value:
+#                        return "Meh"
 
-                    UserCall = User(
-                        email=Form['E-mail'].value,
-                        password=Form['Senha'].value)
+#                    UserCall = User(
+#                        email=Form['E-mail'].value,
+#                        password=Form['Senha'].value)
                     # student = StudentCall)
 
                     # TODO Send Mail
@@ -237,13 +280,13 @@ def Setup():
                     #      Form['E-mail'].value,
                     #      'subject', 'message')
 
-                    S.add(UserCall)
-                    S.commit()
-                    UserCall = S.query(User).filter(
-                        User.student == StudentCall).one()
+#                    S.add(UserCall)
+#                    S.commit()
+#                    UserCall = S.query(User).filter(
+#                        User.student == StudentCall).one()
 
-                    Session.user_id = UserCall.id
-                    return "First, Hi"
+#                    Session.user_id = UserCall.id
+#                    return "First, Hi"
 
     # TODO Destroy Session
     class LogoutPage:
