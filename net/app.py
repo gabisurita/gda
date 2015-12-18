@@ -335,7 +335,8 @@ def Setup():
             form = RateOffering()
 
             already_evaluated = False
-
+            LocDB = create_engine(UserDB, echo=False)
+            LocS = sessionmaker(bind=LocDB)()
             manobra = LocS.query(StudentRate).filter(
                 StudentRate.user_id == Session.user_id).filter(
                 StudentRate.offering_id == self.OfferingInst.id)
