@@ -50,70 +50,70 @@ $ Questions = S.query(QuestionsSubject)
                     <td>
                       <a class="nome black-link" href="$URL">$Line.name</a>
                     </td>
-                    $ oferecimentos = S.query(Offering).filter(Offering.subject_id == Line.id)
+$ oferecimentos = S.query(Offering).filter(Offering.subject_id == Line.id)
 
-                    $ q1_sum[2] # sim e não
-                    $ q2_sum[3] # curta, adequada e longa
-                    $ q3_sum[3] # baixa, normal e alta
-                    $ q4_sum[3] # baixa, normal e alta
+$ q1_sum[2] # sim e não
+$ q2_sum[3] # curta, adequada e longa
+$ q3_sum[3] # baixa, normal e alta
+$ q4_sum[3] # baixa, normal e alta
 
-                    $ for Line in oferecimentos:
+$ for Line in oferecimentos:
 
-                        line_of_interest = S.query(AnswerSum).filter(AnswerSum.offering_id == Line.id)
+$ line_of_interest = S.query(AnswerSum).filter(AnswerSum.offering_id == Line.id)
 
-                        $ q1_sum[0] += int(getattr(line_of_interest, q1_sim))
-                        $ q1_sum[1] += int(getattr(line_of_interest, q1_nao))
+$ q1_sum[0] += int(getattr(line_of_interest, q1_sim))
+$ q1_sum[1] += int(getattr(line_of_interest, q1_nao))
 
-                        $ q2_sum[0] += int(getattr(line_of_interest, q3_curta))
-                        $ q2_sum[1] += int(getattr(line_of_interest, q3_adequada))
-                        $ q2_sum[2] += int(getattr(line_of_interest, q3_longa))
+$ q2_sum[0] += int(getattr(line_of_interest, q3_curta))
+$ q2_sum[1] += int(getattr(line_of_interest, q3_adequada))
+$ q2_sum[2] += int(getattr(line_of_interest, q3_longa))
 
-                        $ q3_sum[0] += S.query(AnswerSum).filter(AnswerSum.offering_id == Line.id).q4_baixa
-                        $ q3_sum[1] += S.query(AnswerSum).filter(AnswerSum.offering_id == Line.id).q4_normal
-                        $ q3_sum[2] += S.query(AnswerSum).filter(AnswerSum.offering_id == Line.id).q4_alta
+$ q3_sum[0] += S.query(AnswerSum).filter(AnswerSum.offering_id == Line.id).q4_baixa
+$ q3_sum[1] += S.query(AnswerSum).filter(AnswerSum.offering_id == Line.id).q4_normal
+$ q3_sum[2] += S.query(AnswerSum).filter(AnswerSum.offering_id == Line.id).q4_alta
 
-                        $ q4_sum[0] += S.query(AnswerSum).filter(AnswerSum.offering_id == Line.id).q5_baixa
-                        $ q4_sum[1] += S.query(AnswerSum).filter(AnswerSum.offering_id == Line.id).q5_normal
-                        $ q4_sum[2] += S.query(AnswerSum).filter(AnswerSum.offering_id == Line.id).q5_alta
+$ q4_sum[0] += S.query(AnswerSum).filter(AnswerSum.offering_id == Line.id).q5_baixa
+$ q4_sum[1] += S.query(AnswerSum).filter(AnswerSum.offering_id == Line.id).q5_normal
+$ q4_sum[2] += S.query(AnswerSum).filter(AnswerSum.offering_id == Line.id).q5_alta
 
-                    $ if q1_sum[0] >= q1_sum[1]:
-                      $ s1 = "Sim"
-                      $ value1 = int(q1_sum[0]/(q1_sum[0]+q1_sum[1]))
-                    $ else:
-                      $ s1 = "Não"
-                      $ value1 = int(q1_sum[1]/(q1_sum[0]+q1_sum[1]))
+$ if q1_sum[0] >= q1_sum[1]:
+$ s1 = "Sim"
+$ value1 = int(q1_sum[0]/(q1_sum[0]+q1_sum[1]))
+$ else:
+$ s1 = "Não"
+$ value1 = int(q1_sum[1]/(q1_sum[0]+q1_sum[1]))
 
-                    $ s2 = "Curta"
-                    $ value2 = int(q2_sum[0]/(q2_sum[0]+q2_sum[1]+q2_sum[2]))
-                    $ if q2_sum[1] > q2_sum[2] and q2_sum[1] > q2_sum[0]:
-                      $ s2 = "Adequada"
-                      $ value2 = int(q2_sum[1]/(q2_sum[0]+q2_sum[1]+q2_sum[2]))
-                    $ elif q2_sum[2] > q2_sum[0] and q2_sum[2] > q2_sum[1]:
-                      $ s2 = "Longa"
-                      $ value2 = int(q2_sum[2]/(q2_sum[0]+q2_sum[1]+q2_sum[2]))
+$ s2 = "Curta"
+$ value2 = int(q2_sum[0]/(q2_sum[0]+q2_sum[1]+q2_sum[2]))
+$ if q2_sum[1] > q2_sum[2] and q2_sum[1] > q2_sum[0]:
+$ s2 = "Adequada"
+$ value2 = int(q2_sum[1]/(q2_sum[0]+q2_sum[1]+q2_sum[2]))
+$ elif q2_sum[2] > q2_sum[0] and q2_sum[2] > q2_sum[1]:
+$ s2 = "Longa"
+$ value2 = int(q2_sum[2]/(q2_sum[0]+q2_sum[1]+q2_sum[2]))
 
-                    $ s3 = "Baixa"
-                    $ value3 = int(q3_sum[0]/(q3_sum[0]+q3_sum[1]+q3_sum[2]))
-                    $ if q3_sum[1] > q3_sum[2] and q3_sum[1] > q3_sum[0]:
-                      $ s3 = "Normal"
-                      $ value3 = int(q3_sum[1]/(q3_sum[0]+q3_sum[1]+q3_sum[2]))
-                    $ elif q3_sum[2] > q3_sum[0] and q3_sum[2] > q3_sum[1]:
-                      $ s3 = "Alta"
-                      $ value3 = int(q3_sum[2]/(q3_sum[0]+q3_sum[1]+q3_sum[2]))
+$ s3 = "Baixa"
+$ value3 = int(q3_sum[0]/(q3_sum[0]+q3_sum[1]+q3_sum[2]))
+$ if q3_sum[1] > q3_sum[2] and q3_sum[1] > q3_sum[0]:
+$ s3 = "Normal"
+$ value3 = int(q3_sum[1]/(q3_sum[0]+q3_sum[1]+q3_sum[2]))
+$ elif q3_sum[2] > q3_sum[0] and q3_sum[2] > q3_sum[1]:
+$ s3 = "Alta"
+$ value3 = int(q3_sum[2]/(q3_sum[0]+q3_sum[1]+q3_sum[2]))
 
-                    $ s4 = "Baixa"
-                    $ value4 = int(q4_sum[0]/(q4_sum[0]+q4_sum[1]+q4_sum[2]))
-                    $ if q4_sum[1] > q4_sum[2] and q4_sum[1] > q4_sum[0]:
-                      $ s4 = "Normal"
-                      $ value4 = int(q4_sum[1]/(q4_sum[0]+q4_sum[1]+q4_sum[2]))
-                    $ elif q4_sum[2] > q4_sum[0] and q4_sum[2] > q4_sum[1]:
-                      $ s4 = "Alta"
-                      $ value4 = int(q4_sum[2]/(q4_sum[0]+q4_sum[1]+q4_sum[2]))
+$ s4 = "Baixa"
+$ value4 = int(q4_sum[0]/(q4_sum[0]+q4_sum[1]+q4_sum[2]))
+$ if q4_sum[1] > q4_sum[2] and q4_sum[1] > q4_sum[0]:
+$ s4 = "Normal"
+$ value4 = int(q4_sum[1]/(q4_sum[0]+q4_sum[1]+q4_sum[2]))
+$ elif q4_sum[2] > q4_sum[0] and q4_sum[2] > q4_sum[1]:
+$ s4 = "Alta"
+$ value4 = int(q4_sum[2]/(q4_sum[0]+q4_sum[1]+q4_sum[2]))
 
-                    $ q1 = ' %s %d%%' % (s1,value1)
-                    $ q2 = ' %s %d%%' % (s2,value2)
-                    $ q3 = ' %s %d%%' % (s3,value3)
-                    $ q4 = ' %s %d%%' % (s4,value4)
+$ q1 = ' %s %d%%' % (s1,value1)
+$ q2 = ' %s %d%%' % (s2,value2)
+$ q3 = ' %s %d%%' % (s3,value3)
+$ q4 = ' %s %d%%' % (s4,value4)
                   <td class="quest1" style="min-width: 100px;" align="right">$q1</td>
                   <td class="quest2" style="min-width: 180px;" align="right">$q2</td>
                   <td class="quest3" style="min-width: 150px;" align="right">$q3</td>
