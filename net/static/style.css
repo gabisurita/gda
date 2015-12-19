@@ -21,24 +21,27 @@ body {
 /* Custom page CSS
 -------------------------------------------------- */
 /* Not required for template or sticky footer method. */
+body {
+  padding-bottom: 40px;
+  background-color: #FFFFFF;
+}
 
 body > .container {
   padding: 70px 15px 0;
-  font-size: 15.5px;
-  font-weight: 500;
+  font-size: 14px;
+/*font-weight: 500;*/
 }
+/* ********** FOOTER ********** */
 .container .text-muted {
   margin: 20px 0;
-} 
+}
 
 .footer > .container {
   padding-right: 15px;
   padding-left: 15px;
 }
 
-code {
-  font-size: 80%;
-}
+/* ********** BUSCA ********** */
 
 .search {
   display: block;
@@ -60,49 +63,31 @@ code {
   transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
 }
 
-/*#oferecimentos{*/
-/*  border-top: 3px solid #ccc;*/
-/*  border-bottom: 3px solid #ccc;*/
-/*  border-radius: 4px;*/
-/*} */
 
-.table-fixed {
-  margin-top:3px;
-  border-top: 3px solid #ccc;
-  border-bottom: 3px solid #ccc;
-  border-radius: 4px;
+.tableFloatingHeaderOriginal th {
+  background-color: #2196f3;
+  border-bottom: 1px solid #DDD;
+  color: #b2dbfb;
 }
-
-.table-fixed thead {
-  width: 100%;
-}
-.table-fixed tbody {
-  height: 230px;
-  overflow-y: auto;
-  overflow-x: hidden;
-  width: 100%;
-  margin-left: 50px;
-}
-.table-fixed thead, .table-fixed tbody, .table-fixed tr, .table-fixed td, .table-fixed th {
-  display: block;
-  margin-left:10px;
-}
-.table-fixed tbody td, .table-fixed thead > tr> th {
-  float: left;
-/*  border-bottom-width: 0;*/
-}
-
 
 .nav.navbar-nav>li>a {
   font-size: 16px;
-  font-weight: 800;
-  color: #333;
+  /*font-weight: 800;*/
+  /*color: #333;*/
 }
 
-body {
-  padding-bottom: 40px;
-  background-color: #eee;
+/* **** NAVBAR PAPER THEME BOOTSTRAP **** */
+
+.navbar-inverse {
+  background-color: #2196f3;
+  border-color: transparent;
 }
+
+.navbar-inverse .navbar-nav > li > a {
+  color: #b2dbfb;
+}
+
+/* ********** BLACK LINK ********** */
 
 .black-link {
   color: inherit;
@@ -112,7 +97,7 @@ body {
   color: inherit;
 }
 
-/*Login Page */
+/* ********** Login Page ********** */
 
 .login .form-signin {
   max-width: 230px;
@@ -131,8 +116,8 @@ body {
 }
 
 
+/* ********** Comments ********** */
 
-/* Comments */
 
 .comment-box{
   max-width: 500px;
@@ -157,7 +142,7 @@ body {
 
 
 
-/* FAQ */
+/* ********** FAQ ********** */
 
 .FaqPerg {
   font-size: 20px;
@@ -166,3 +151,37 @@ body {
   display: none;
   padding-left: 20px; }
 
+  /*#oferecimentos{*/
+  /*  border-top: 3px solid #ccc;*/
+  /*  border-bottom: 3px solid #ccc;*/
+  /*  border-radius: 4px;*/
+  /*} */
+
+  /* TABLE FIXED - not used */
+  /*
+  .table-fixed {
+    margin-top:3px;
+    border-top: 3px solid #ccc;
+    border-bottom: 3px solid #ccc;
+    border-radius: 4px;
+  }
+
+  .table-fixed thead {
+    width: 100%;
+  }
+  .table-fixed tbody {
+    height: 230px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    width: 100%;
+    margin-left: 50px;
+  }
+  .table-fixed thead, .table-fixed tbody, .table-fixed tr, .table-fixed td, .table-fixed th {
+    display: block;
+    margin-left:10px;
+  }
+  .table-fixed tbody td, .table-fixed thead > tr> th {
+    float: left;
+    border-bottom-width: 0;
+  }
+  */
