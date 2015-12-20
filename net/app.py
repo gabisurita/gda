@@ -3,6 +3,7 @@
 
 """GDA Website."""
 
+from __future__ import division
 from constants import *
 
 import web
