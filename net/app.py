@@ -3,6 +3,7 @@
 
 """GDA Website."""
 
+from __future__ import division
 from constants import *
 
 import web
@@ -498,8 +499,84 @@ def Setup():
                 StudentRate.user_id == Session.user_id).filter(
                 StudentRate.offering_id == self.OfferingInst.id)
 
+            LocOffering = LocS.query(Offering).filter(
+                Offering.id == self.OfferingInst.id).one()
+
             if manobra.count() != 0:
                 already_evaluated = True
+
+            if (LocS.query(AnswerSum.offering_id).filter(AnswerSum.offering_id == self.OfferingInst.id).count())==0:
+                NewSum = AnswerSum(
+                q1_sim = 0,
+                q1_nao = 0,
+                q2_correto = 0,
+                q2_antes = 0,
+                q2_depois = 0,
+                q3_adequada = 0,
+                q3_curta = 0,
+                q3_longa = 0,
+                q4_alta = 0,
+                q4_normal = 0,
+                q4_baixa = 0,
+                q5_alta = 0,
+                q5_normal = 0,
+                q5_baixa = 0,
+                q6_alta = 0,
+                q6_normal = 0,
+                q6_baixa = 0,
+                q7_sim = 0,
+                q7_nao = 0,
+                q8_boa = 0,
+                q8_media = 0,
+                q8_ruim = 0,
+                q9_sim = 0,
+                q9_nao = 0,
+                q10_sim = 0,
+                q10_nao = 0,
+                q11_sim = 0,
+                q11_nao = 0,
+                q12_sim = 0,
+                q12_nao = 0,
+                q13_sim = 0,
+                q13_nao = 0,
+                offering = LocOffering
+                )
+                LocS.add(NewSum)
+                LocS.commit()
+
+            if ((LocS.query(OfferingDisplay).filter(OfferingDisplay.offering_id == self.OfferingInst.id)).count()) == 0:
+                NewDisplay=OfferingDisplay(
+                q1_resp = '-',
+                q1_porc = 101,
+                q2_resp = '-',
+                q2_porc = 101,
+                q3_resp = '-',
+                q3_porc = 101,
+                q4_resp = '-',
+                q4_porc = 101,
+                q5_resp = '-',
+                q5_porc = 101,
+                q6_resp = '-',
+                q6_porc = 101,
+                q7_resp = '-',
+                q7_porc = 101,
+                q8_resp = '-',
+                q8_porc = 101,
+                q9_resp = '-',
+                q9_porc = 101,
+                q10_resp = '-',
+                q10_porc = 101,
+                q11_resp = '-',
+                q11_porc = 101,
+                q12_resp = '-',
+                q12_porc = 101,
+                q13_resp = '-',
+                q13_porc = 101,
+                offering = LocOffering
+                )
+
+                LocS.add(NewDisplay)
+                LocS.commit()
 
             #modificar o template para usar a variável "already_evaluated" (By Raul)
             return Render.offeringpage(self.OfferingInst, Render, form)
@@ -647,79 +724,6 @@ def Setup():
             )
             LocS.add(NewEvaluation)
             LocS.commit()
-
-            if (LocS.query(AnswerSum.offering_id).filter(AnswerSum.offering_id == self.OfferingInst.id).count())==0:
-                NewSum = AnswerSum(
-                q1_sim = 0,
-                q1_nao = 0,
-                q2_correto = 0,
-                q2_antes = 0,
-                q2_depois = 0,
-                q3_adequada = 0,
-                q3_curta = 0,
-                q3_longa = 0,
-                q4_alta = 0,
-                q4_normal = 0,
-                q4_baixa = 0,
-                q5_alta = 0,
-                q5_normal = 0,
-                q5_baixa = 0,
-                q6_alta = 0,
-                q6_normal = 0,
-                q6_baixa = 0,
-                q7_sim = 0,
-                q7_nao = 0,
-                q8_boa = 0,
-                q8_media = 0,
-                q8_ruim = 0,
-                q9_sim = 0,
-                q9_nao = 0,
-                q10_sim = 0,
-                q10_nao = 0,
-                q11_sim = 0,
-                q11_nao = 0,
-                q12_sim = 0,
-                q12_nao = 0,
-                q13_sim = 0,
-                q13_nao = 0,
-                offering = LocOffering
-                )
-                LocS.add(NewSum)
-                LocS.commit()
-
-            if ((LocS.query(OfferingDisplay).filter(OfferingDisplay.offering_id == self.OfferingInst.id)).count()) == 0:
-                NewDisplay=OfferingDisplay(
-                q1_resp = '-',
-                q1_porc = 101,
-                q2_resp = '-',
-                q2_porc = 101,
-                q3_resp = '-',
-                q3_porc = 101,
-                q4_resp = '-',
-                q4_porc = 101,
-                q5_resp = '-',
-                q5_porc = 101,
-                q6_resp = '-',
-                q6_porc = 101,
-                q7_resp = '-',
-                q7_porc = 101,
-                q8_resp = '-',
-                q8_porc = 101,
-                q9_resp = '-',
-                q9_porc = 101,
-                q10_resp = '-',
-                q10_porc = 101,
-                q11_resp = '-',
-                q11_porc = 101,
-                q12_resp = '-',
-                q12_porc = 101,
-                q13_resp = '-',
-                q13_porc = 101,
-                offering = LocOffering
-                )
-
-                LocS.add(NewDisplay)
-                LocS.commit()
 
             elemento = LocS.query(AnswerSum).filter(AnswerSum.offering_id == self.OfferingInst.id).one()
 
