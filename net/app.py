@@ -118,6 +118,163 @@ def Setup():
             LocS.rollback()
             return True
 
+#receive the AnswerSum line and update the OfferingDisplay table of that offering
+    def UpdateDisplayOffering(Inst):
+
+        LocDB = create_engine(UserDB, echo=False)
+        S = sessionmaker(bind=LocDB)()
+
+        sums = []
+
+        for var in range(0,13):
+            sums.append(var)
+
+        sums[0] = (Inst.q1_sim + Inst.q1_nao)
+        sums[2] = (Inst.q3_curta + Inst.q3_longa + Inst.q3_adequada)
+        sums[3] = Inst.q4_alta + Inst.q4_baixa + Inst.q4_normal
+        sums[4] = Inst.q5_alta + Inst.q5_normal + Inst.q5_baixa
+        sums[5] = Inst.q6_alta + Inst.q6_normal + Inst.q6_baixa
+        sums[6] = Inst.q7_sim + Inst.q7_nao
+        sums[7] = Inst.q8_boa + Inst.q8_media + Inst.q8_ruim
+        sums[8] = Inst.q9_sim + Inst.q9_nao
+        sums[9] = Inst.q10_sim + Inst.q10_nao
+        sums[10] = Inst.q11_sim + Inst.q11_nao
+        sums[11] = Inst.q12_sim + Inst.q12_nao
+        sums[12] = Inst.q13_sim + Inst.q13_nao
+
+        line_of_interest = S.query(OfferingDisplay).filter(Inst.offering_id == OfferingDisplay.offering_id).one()
+
+        if sums[0] != 0:
+            line_of_interest.q1_resp = 'Sim'
+            line_of_interest.q1_porc = int(100*(Inst.q1_sim/sums[0]))
+            if Inst.q1_nao > Inst.q1_sim:
+                line_of_interest.q1_resp = 'Não'
+                line_of_interest.q1_porc = int(100*(Inst.q1_nao/sums[0]))
+        else:
+            line_of_interest.q1_resp = '-'
+            line_of_interest.q1_porc = 0
+
+        if sums[2] != 0:
+            line_of_interest.q3_porc = int(100*((max(Inst.q3_curta, Inst.q3_longa, Inst.q3_adequada))/sums[2]))
+            line_of_interest.q3_resp = 'Adequada'
+
+            if Inst.q3_curta > Inst.q3_longa and Inst.q3_curta > Inst.q3_adequada:
+                line_of_interest.q3_resp = 'Curta'
+            if Inst.q3_longa > Inst.q3_curta and Inst.q3_longa > Inst.q3_adequada:
+                line_of_interest.q3_resp = 'Longa'
+        else:
+            line_of_interest.q3_resp = '-'
+            line_of_interest.q3_porc = 0
+
+        if sums[3] != 0:
+            line_of_interest.q4_porc = int(100*(max(Inst.q4_alta, Inst.q4_normal, Inst.q4_baixa))/sums[3])
+            line_of_interest.q4_resp = 'Normal'
+
+            if Inst.q4_baixa > Inst.q4_alta and Inst.q4_baixa > Inst.q4_normal:
+                line_of_interest.q4_resp = 'Baixa'
+            if Inst.q4_alta > Inst.q4_baixa and Inst.q4_alta > Inst.q4_normal:
+                line_of_interest.q4_resp = 'Alta'
+        else:
+            line_of_interest.q4_resp = '-'
+            line_of_interest.q4_porc = 0
+
+        if sums[4] != 0:
+            line_of_interest.q5_porc = int(100*(max(Inst.q5_alta, Inst.q5_normal, Inst.q5_baixa))/sums[4])
+            line_of_interest.q5_resp = 'Normal'
+
+            if Inst.q5_baixa > Inst.q5_alta and Inst.q5_baixa > Inst.q5_normal:
+                line_of_interest.q5_resp = 'Baixa'
+            if Inst.q5_alta > Inst.q5_baixa and Inst.q5_alta > Inst.q5_normal:
+                line_of_interest.q5_resp = 'Alta'
+        else:
+            line_of_interest.q5_resp = '-'
+            line_of_interest.q5_porc = 0
+
+        if sums[5] != 0:
+            line_of_interest.q6_porc = int(100*(max(Inst.q6_alta, Inst.q6_normal, Inst.q6_baixa))/sums[5])
+            line_of_interest.q6_resp = 'Normal'
+
+            if Inst.q6_baixa > Inst.q6_alta and Inst.q6_baixa > Inst.q6_normal:
+                line_of_interest.q6_resp = 'Baixa'
+            if Inst.q6_alta > Inst.q6_baixa and Inst.q6_alta > Inst.q6_normal:
+                line_of_interest.q6_resp = 'Alta'
+        else:
+            line_of_interest.q6_resp = '-'
+            line_of_interest.q6_porc = 0
+
+        if sums[6] != 0:
+            line_of_interest.q7_resp = 'Sim'
+            line_of_interest.q7_porc = int(100*(Inst.q7_sim/sums[6]))
+            if Inst.q7_nao > Inst.q7_sim:
+                line_of_interest.q7_resp = 'Não'
+                line_of_interest.q7_porc = int(100*(Inst.q7_nao/sums[6]))
+        else:
+            line_of_interest.q7_resp = '-'
+            line_of_interest.q7_porc = 0
+
+        if sums[7] != 0:
+            line_of_interest.q8_porc = int(100*(max(Inst.q8_boa, Inst.q8_media, Inst.q8_ruim))/sums[7])
+            line_of_interest.q8_resp = 'Média'
+
+            if Inst.q8_ruim > Inst.q8_boa and Inst.q8_ruim > Inst.q8_media:
+                line_of_interest.q8_resp = 'Ruim'
+            if Inst.q8_boa > Inst.q8_ruim and Inst.q8_boa > Inst.q8_media:
+                line_of_interest.q8_resp = 'Boa'
+        else:
+            line_of_interest.q8_resp = '-'
+            line_of_interest.q8_porc = 0
+
+        if sums[8] != 0:
+            line_of_interest.q9_resp = 'Sim'
+            line_of_interest.q9_porc = int(100*(Inst.q9_sim/sums[8]))
+            if Inst.q9_nao > Inst.q9_sim:
+                line_of_interest.q9_resp = 'Não'
+                line_of_interest.q9_porc = int(100*(Inst.q9_nao/sums[8]))
+        else:
+            line_of_interest.q9_resp = '-'
+            line_of_interest.q9_porc = 0
+
+        if sums[9] != 0:
+            line_of_interest.q10_resp = 'Sim'
+            line_of_interest.q10_porc = int(100*(Inst.q10_sim/sums[9]))
+            if (Inst.q10_nao) > (Inst.q10_sim):
+                line_of_interest.q10_resp = 'Sim'
+                line_of_interest.q10_porc = int(100*(Inst.q10_nao/sums[9]))
+        else:
+            line_of_interest.q10_resp = '-'
+            line_of_interest.q10_porc = 0
+
+        if sums[10] != 0:
+            line_of_interest.q11_resp = 'Sim'
+            line_of_interest.q11_porc = int(100*(Inst.q11_sim/sums[10]))
+            if Inst.q11_nao > Inst.q11_sim:
+                line_of_interest.q11_resp = 'Não'
+                line_of_interest.q11_porc = int(100*(Inst.q11_nao/sums[10]))
+        else:
+            line_of_interest.q11_resp = '-'
+            line_of_interest.q11_porc = 0
+
+        if sums[11] != 0:
+            line_of_interest.q12_resp = 'Sim'
+            line_of_interest.q12_porc = int(100*(Inst.q12_sim/sums[11]))
+            if Inst.q12_nao > Inst.q12_sim:
+                line_of_interest.q12_resp = 'Não'
+                line_of_interest.q12_porc = int(100*(Inst.q12_nao/sums[11]))
+        else:
+            line_of_interest.q12_resp = '-'
+            line_of_interest.q12_porc = 0
+
+        if sums[12] != 0:
+            line_of_interest.q13_resp = 'Sim'
+            line_of_interest.q13_porc = int(100*(Inst.q13_sim/sums[12]))
+            if Inst.q13_nao > Inst.q13_sim:
+                line_of_interest.q13_resp = 'Não'
+                line_of_interest.q13_porc = int(100*(Inst.q13_nao/sums[12]))
+        else:
+            line_of_interest.q13_resp = '-'
+            line_of_interest.q13_porc = 0
+
+        S.commit()
 
     # Page classes (handlers)
     class LoginPage:
@@ -488,138 +645,171 @@ def Setup():
             user = Me,
             offering = LocOffering
             )
+            LocS.add(NewEvaluation)
+            LocS.commit()
 
-            try:
-                LocS.add(NewEvaluation)
+            if (LocS.query(AnswerSum.offering_id).filter(AnswerSum.offering_id == self.OfferingInst.id).count())==0:
+                NewSum = AnswerSum(
+                q1_sim = 0,
+                q1_nao = 0,
+                q2_correto = 0,
+                q2_antes = 0,
+                q2_depois = 0,
+                q3_adequada = 0,
+                q3_curta = 0,
+                q3_longa = 0,
+                q4_alta = 0,
+                q4_normal = 0,
+                q4_baixa = 0,
+                q5_alta = 0,
+                q5_normal = 0,
+                q5_baixa = 0,
+                q6_alta = 0,
+                q6_normal = 0,
+                q6_baixa = 0,
+                q7_sim = 0,
+                q7_nao = 0,
+                q8_boa = 0,
+                q8_media = 0,
+                q8_ruim = 0,
+                q9_sim = 0,
+                q9_nao = 0,
+                q10_sim = 0,
+                q10_nao = 0,
+                q11_sim = 0,
+                q11_nao = 0,
+                q12_sim = 0,
+                q12_nao = 0,
+                q13_sim = 0,
+                q13_nao = 0,
+                offering = LocOffering
+                )
+                LocS.add(NewSum)
                 LocS.commit()
 
+            if ((LocS.query(OfferingDisplay).filter(OfferingDisplay.offering_id == self.OfferingInst.id)).count()) == 0:
+                NewDisplay=OfferingDisplay(
+                q1_resp = '-',
+                q1_porc = 101,
+                q2_resp = '-',
+                q2_porc = 101,
+                q3_resp = '-',
+                q3_porc = 101,
+                q4_resp = '-',
+                q4_porc = 101,
+                q5_resp = '-',
+                q5_porc = 101,
+                q6_resp = '-',
+                q6_porc = 101,
+                q7_resp = '-',
+                q7_porc = 101,
+                q8_resp = '-',
+                q8_porc = 101,
+                q9_resp = '-',
+                q9_porc = 101,
+                q10_resp = '-',
+                q10_porc = 101,
+                q11_resp = '-',
+                q11_porc = 101,
+                q12_resp = '-',
+                q12_porc = 101,
+                q13_resp = '-',
+                q13_porc = 101,
+                offering = LocOffering
+                )
 
-                if (LocS.query(AnswerSum.offering_id).filter(AnswerSum.offering_id == self.OfferingInst.id).count())==0:
-                    NewSum = AnswerSum(
-                    q1_sim = 0,
-                    q1_nao = 0,
-                    q2_correto = 0,
-                    q2_antes = 0,
-                    q2_depois = 0,
-                    q3_adequada = 0,
-                    q3_curta = 0,
-                    q3_longa = 0,
-                    q4_alta = 0,
-                    q4_normal = 0,
-                    q4_baixa = 0,
-                    q5_alta = 0,
-                    q5_normal = 0,
-                    q5_baixa = 0,
-                    q6_alta = 0,
-                    q6_normal = 0,
-                    q6_baixa = 0,
-                    q7_sim = 0,
-                    q7_nao = 0,
-                    q8_boa = 0,
-                    q8_media = 0,
-                    q8_ruim = 0,
-                    q9_sim = 0,
-                    q9_nao = 0,
-                    q10_sim = 0,
-                    q10_nao = 0,
-                    q11_sim = 0,
-                    q11_nao = 0,
-                    q12_sim = 0,
-                    q12_nao = 0,
-                    q13_sim = 0,
-                    q13_nao = 0,
-                    offering = LocOffering
-                    )
-                    LocS.add(NewSum)
-                    LocS.commit()
-
-                elemento = LocS.query(AnswerSum).filter(AnswerSum.offering_id == self.OfferingInst.id).one()
-
-                if auxiliar['0.0'] == ' sim ':
-                    elemento.q1_sim += 1
-                elif auxiliar['0.0'] == ' não ':
-                    elemento.q1_nao += 1
-
-                if auxiliar['1.0'] == ' correto ':
-                    elemento.q2_correto += 1
-                elif auxiliar['1.0'] == ' antes ':
-                    elemento.q2_antes += 1
-                elif auxiliar['1.0'] == ' depois ':
-                    elemento.q2_depois += 1
-
-                if auxiliar['2.0'] == ' adequada ':
-                    elemento.q3_adequada += 1
-                elif auxiliar['2.0'] == ' curta ':
-                    elemento.q3_curta += 1
-                elif auxiliar['2.0'] == ' longa ':
-                    elemento.q3_longa += 1
-
-                if auxiliar['3.0'] == ' alta ':
-                    elemento.q4_alta += 1
-                elif auxiliar['3.0'] == ' normal ':
-                    elemento.q4_normal += 1
-                elif auxiliar['3.0'] == ' baixa ':
-                    elemento.q4_baixa += 1
-
-                if auxiliar['4.0'] == ' alta ':
-                    elemento.q5_alta += 1
-                elif auxiliar['4.0'] == ' normal ':
-                    elemento.q5_normal += 1
-                elif auxiliar['4.0'] == ' baixa ':
-                    elemento.q5_baixa += 1
-
-                if auxiliar['5.0'] == ' alta ':
-                    elemento.q6_alta += 1
-                elif auxiliar['5.0'] == ' normal ':
-                    elemento.q6_normal += 1
-                elif auxiliar['5.0'] == ' baixa ':
-                    elemento.q6_baixa += 1
-
-                if auxiliar['6.0'] == ' sim ':
-                    elemento.q7_sim += 1
-                elif auxiliar['6.0'] == ' não ':
-                    elemento.q7_nao += 1
-
-                if auxiliar['7.0'] == ' boa ':
-                    elemento.q8_boa += 1
-                elif auxiliar['7.0'] == ' média ':
-                    elemento.q8_media += 1
-                elif auxiliar['7.0'] == ' ruim ':
-                    elemento.q8_ruim += 1
-
-                if auxiliar['8.0'] == ' sim ':
-                    elemento.q9_sim += 1
-                elif auxiliar['8.0'] == ' não ':
-                    elemento.q9_nao += 1
-
-                if auxiliar['9.0'] == ' sim ':
-                    elemento.q10_sim += 1
-                elif auxiliar['9.0'] == ' não ':
-                    elemento.q10_nao += 1
-
-                if auxiliar['10.0'] == ' sim ':
-                    elemento.q11_sim += 1
-                elif auxiliar['10.0'] == ' não ':
-                    elemento.q11_nao += 1
-
-                if auxiliar['11.0'] == ' sim ':
-                    elemento.q12_sim += 1
-                elif auxiliar['11.0'] == ' não ':
-                    elemento.q12_nao += 1
-
-                if auxiliar['12.0'] == ' sim ':
-                    elemento.q13_sim += 1
-                elif auxiliar['12.0'] == ' não ':
-                    elemento.q13_nao += 1
-
+                LocS.add(NewDisplay)
                 LocS.commit()
 
-                raise web.seeother('/oferecimentos')
+            elemento = LocS.query(AnswerSum).filter(AnswerSum.offering_id == self.OfferingInst.id).one()
 
+            if auxiliar['0.0'] == u' sim ':
+                elemento.q1_sim += 1
+            elif auxiliar['0.0'] == u' não ':
+                elemento.q1_nao += 1
 
-            except:
-                LocS.rollback()
-                return True
+            if auxiliar['1.0'] == u' correto ':
+                elemento.q2_correto += 1
+            elif auxiliar['1.0'] == u' antes ':
+                elemento.q2_antes += 1
+            elif auxiliar['1.0'] == u' depois ':
+                elemento.q2_depois += 1
+
+            if auxiliar['2.0'] == u' adequada ':
+                elemento.q3_adequada += 1
+            elif auxiliar['2.0'] == u' curta ':
+                elemento.q3_curta += 1
+            elif auxiliar['2.0'] == u' longa ':
+                elemento.q3_longa += 1
+
+            if auxiliar['3.0'] == u' alta ':
+                elemento.q4_alta += 1
+            elif auxiliar['3.0'] == u' normal ':
+                elemento.q4_normal += 1
+            elif auxiliar['3.0'] == u' baixa ':
+                elemento.q4_baixa += 1
+
+            if auxiliar['4.0'] == u' alta ':
+                elemento.q5_alta += 1
+            elif auxiliar['4.0'] == u' normal ':
+                elemento.q5_normal += 1
+            elif auxiliar['4.0'] == u' baixa ':
+                elemento.q5_baixa += 1
+
+            if auxiliar['5.0'] == u' alta ':
+                elemento.q6_alta += 1
+            elif auxiliar['5.0'] == u' normal ':
+                elemento.q6_normal += 1
+            elif auxiliar['5.0'] == u' baixa ':
+                elemento.q6_baixa += 1
+
+            if auxiliar['6.0'] == u' sim ':
+                elemento.q7_sim += 1
+            elif auxiliar['6.0'] == u' não ':
+                elemento.q7_nao += 1
+
+            if auxiliar['7.0'] == u' boa ':
+                elemento.q8_boa += 1
+            elif auxiliar['7.0'] == u' média ':
+                elemento.q8_media += 1
+            elif auxiliar['7.0'] == u' ruim ':
+                elemento.q8_ruim += 1
+
+            if auxiliar['8.0'] == u' sim ':
+                elemento.q9_sim += 1
+            elif auxiliar['8.0'] == u' não ':
+                elemento.q9_nao += 1
+
+            if auxiliar['9.0'] == u' sim ':
+                elemento.q10_sim += 1
+            elif auxiliar['9.0'] == u' não ':
+                elemento.q10_nao += 1
+
+            if auxiliar['10.0'] == u' sim ':
+                elemento.q11_sim += 1
+            elif auxiliar['10.0'] == u' não ':
+                elemento.q11_nao += 1
+
+            if auxiliar['11.0'] == u' sim ':
+                elemento.q12_sim += 1
+            elif auxiliar['11.0'] == u' não ':
+                elemento.q12_nao += 1
+
+            if auxiliar['12.0'] == u' sim ':
+                elemento.q13_sim += 1
+            elif auxiliar['12.0'] == u' não ':
+                elemento.q13_nao += 1
+
+            LocS.commit()
+
+            UpdateDisplayOffering(elemento)
+            raise web.seeother('/oferecimentos')
+#            try:
+#
+#
+#            except:
+#                LocS.rollback()
+#                return True
 
 
     class FaqPage:
