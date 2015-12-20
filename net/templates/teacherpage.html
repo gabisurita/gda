@@ -21,9 +21,9 @@ $ ThisComments = S.query(TeacherComment).filter(TeacherComment.teacher == Teache
     <div class="container">
       <h3>$TeacherInst.name </h3>
       <div class="row">
-        <div class="col-sm-8">
+        <div class="col-sm-7">
           <div class="panel panel-default">
-            <div class="panel-heading">Avaliação GDA</div>
+            <div class="panel-heading">Avaliação</div>
               <table class="table">
                 <tbody>
                   <tr>
@@ -70,17 +70,17 @@ $ ThisComments = S.query(TeacherComment).filter(TeacherComment.teacher == Teache
               </table>
           </div>
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-5">
           <div class="panel panel-default">
             <div class="panel-heading">Comentários</div>
-            <div class="panel-body" style="overflow-y: scroll; height:313px;">$:Render.comments(ThisComments)</div>
+            <div class="panel-body" style="overflow-y: scroll; height:342px;">$:Render.comments(ThisComments)</div>
           </div>
         </div>
       </div>
       <div id = 'oferecimentos'>
         <div class="row">
           <div class="col-sm-4">
-            <h3>Oferecimentos FEEC</h3>
+            <h3>Oferecimentos</h3>
           </div>
           <div class="col-sm-4">
             <br>
