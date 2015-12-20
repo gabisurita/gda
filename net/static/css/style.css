@@ -87,6 +87,16 @@ body > .container {
   color: #b2dbfb;
 }
 
+.navbar-inverse .navbar-brand {
+  color: #E8E8E8;
+}
+
+.font-effect-outline {
+  font-family: 'Pricedown', Arial;
+  color: white;
+  font-size: 48px;
+}
+
 /* ********** BLACK LINK ********** */
 
 .black-link {
