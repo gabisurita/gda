@@ -280,5 +280,40 @@ class AnswerSum(Base):
 
     offering = relationship(Offering)
 
+class OfferingDisplay(Base):
+    __tablename__ = "offeringdisplay"
+
+    id = Column('offeringdisplay_id', Integer, primary_key=True)
+
+    q1_resp = Column('q1_resp', String)
+    q1_porc = Column('q1_porc', Integer)
+    q2_resp = Column('q2_resp', String)
+    q2_porc = Column('q2_porc', Integer)
+    q3_resp = Column('q3_resp', String)
+    q3_porc = Column('q3_porc', Integer)
+    q4_resp = Column('q4_resp', String)
+    q4_porc = Column('q4_porc', Integer)
+    q5_resp = Column('q5_resp', String)
+    q5_porc = Column('q5_porc', Integer)
+    q6_resp = Column('q6_resp', String)
+    q6_porc = Column('q6_porc', Integer)
+    q7_resp = Column('q7_resp', String)
+    q7_porc = Column('q7_porc', Integer)
+    q8_resp = Column('q8_resp', String)
+    q8_porc = Column('q8_porc', Integer)
+    q9_resp = Column('q9_resp', String)
+    q9_porc = Column('q9_porc', Integer)
+    q10_resp = Column('q10_resp', String)
+    q10_porc = Column('q10_porc', Integer)
+    q11_resp = Column('q11_resp', String)
+    q11_porc = Column('q11_porc', Integer)
+    q12_resp = Column('q12_resp', String)
+    q12_porc = Column('q12_porc', Integer)
+    q13_resp = Column('q13_resp', String)
+    q13_porc = Column('q13_porc', Integer)
+
+    offering_id = Column(Integer, ForeignKey('offering.offering_id'))
+    offering = relationship(Offering)
+
 def CreateDB():
     Base.metadata.create_all(DB)
