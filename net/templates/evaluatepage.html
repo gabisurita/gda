@@ -18,16 +18,18 @@ $ ThisTeacher = S.query(Teacher).filter(Teacher.id == OfferingInst.teacher_id).o
     $:Render.navbar()
     <!-- Begin page content -->
     <div class="container">
-        <div class="col-sm-12">
-          <h2> $OfferingInst.subject.code $OfferingInst.code - $OfferingInst.subject.name</h2>
-        </div>
+          <h3> $OfferingInst.subject.code $OfferingInst.code - $OfferingInst.subject.name</h3>
+    <div class="row">
         <div class="col-sm-7">
-          <h3>Professor: $ThisTeacher.name</h3>
+          <h4>Professor: $ThisTeacher.name</h4>
         </div>
         <div class="col-sm-5">
-            <h3 class="text-right"> $OfferingInst.semester.semº semestre de $OfferingInst.semester.year </h3>
+            <h4 class="text-right"> $OfferingInst.semester.semº semestre de $OfferingInst.semester.year </h4>
         </div>
+    </div>
+    <div class="row">
       $:Render.form()
+    </div>
     </div>
     $:Render.footer()
     <!-- <script src="/static/form.js"></script> -->

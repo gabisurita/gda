@@ -21,7 +21,7 @@ $ Questions = S.query(QuestionsOffering)
     $:Render.navbar()
     <!-- Begin page content -->
     <div class="container">
-      <h2>$SubjectInst.code -   $SubjectInst.name</h2>
+      <h3>$SubjectInst.code -   $SubjectInst.name</h3>
       <div class="row">
         <div class="col-sm-6">
           <div class="panel panel-default">
@@ -33,7 +33,7 @@ $ Questions = S.query(QuestionsOffering)
           <div class="panel panel-default">
             <table class="table table-striped">
               <thead>
-                <th style="text-align: right;"> [GDA] Dedicação </th>
+                <th style="text-align: right;"> Dedicação </th>
                 <th style="text-align: right;"> Dificuldade </th>
                 <th style="text-align: right;"> Ementa </th>
                 <th style="text-align: right;"> Necessária </th>
@@ -71,7 +71,7 @@ $ Questions = S.query(QuestionsOffering)
       <div id='docentes'>
         <div class="row">
           <div class="col-sm-4">
-            <h2>Oferecimentos FEEC</h2>
+            <h3>Oferecimentos FEEC</h3>
           </div>
           <div class="col-sm-4">
             <br>
@@ -132,14 +132,18 @@ $ Questions = S.query(QuestionsOffering)
             </script>
           </div>
           <div class="col-sm-3">
-            <ol class="list-unstyled">
-                <li> <b>A</b> Planejamento da Bibliografia  </li>
-                <li> <b>B</b> Didática  </li>
-                <li> <b>C</b> Interesse pelo Aluno  </li>
-                <li> <b>D</b> Relacionamento com alunos  </li>
-                <li> <b>E</b> Adequação da avaliação   </li>
-                <li> <b>F</b> Contribuição para aprendizado  </li>
-            </ol>
+            <div class="panel panel-default">
+              <div  class="panel-body">
+                <ol class="list-unstyled">
+                  <li> <b>A</b> Planejamento da Bibliografia  </li>
+                  <li> <b>B</b> Didática e Técnica de Ensino </li>
+                  <li> <b>C</b> Interesse pelo Aluno  </li>
+                  <li> <b>D</b> Relacionamento com alunos  </li>
+                  <li> <b>E</b> Adequação da avaliação   </li>
+                  <li> <b>F</b> Contribuição para aprendizado  </li>
+                </ol>
+              </div>
+            </div>
           </div>
     </div>
   </div>
