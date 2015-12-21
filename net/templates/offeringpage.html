@@ -101,7 +101,8 @@ $for Line in SearchRate:
                 </tbody>
               </table>
           $else:
-              <div class="panel-heading"> Avaliação Oficial - Não foi avaliado</div>
+              <div class="panel-heading col-sm-6">Avaliação Oficial</div>
+              <div class="panel-heading col-sm-6 text-right">Não foi avaliado</div>
               <table class="table">
                 <tbody>
                   <tr>
@@ -198,7 +199,7 @@ $for Line in SearchRate:
         <div class="col-sm-5">
           <div class="panel panel-default">
             <div class="panel-heading">Comentários</div>
-            <div class="panel-body" style="overflow-y: scroll; height:513px;">$:Render.comments(ThisComments)</div>
+            <div class="panel-body" style="overflow-y: scroll; height:513px;">$:Render.commentsoffering(ThisComments)</div>
           </div>
         </div>
       </div>
