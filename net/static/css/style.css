@@ -107,6 +107,17 @@ body > .container {
   color: inherit;
 }
 
+/* ********** CLICKABLE ROW ********** */
+
+.table-hover > tbody > tr:hover {
+  color : white;
+  background-color: #4dabf5;
+}
+
+ tr.clickable-row {
+   cursor: pointer;
+ }
+
 /* ***** FORMS - FONT AWESOME  ***** */
 
 input[type=radio] {

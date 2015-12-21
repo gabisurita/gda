@@ -109,7 +109,7 @@ $ s13 = (sum_line.q13_sim)+(sum_line.q13_nao)
         </div>
         <div class="row">
           <div class="col-sm-9">
-            <table class="table table-striped table-condensed sortable">
+            <table class="table table-striped table-condensed sortable table-hover">
               <thead>
                 <tr>
                   <th style="min-width: 100px;">Semestre</th>
@@ -135,7 +135,7 @@ $ s13 = (sum_line.q13_sim)+(sum_line.q13_nao)
                 $for Lin in SearchRate:
                   $ Rate = Lin
                   $ Rated = 1
-                <tr>
+                <tr class="clickable-row" data-url='$URL'>
                   <td style="min-width: 100px;"><a class="black-link" href="$URL">$Sem</a></td>
                   <td>$Code</td>
                   <td>$Enrolled</td>
