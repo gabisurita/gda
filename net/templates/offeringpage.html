@@ -26,14 +26,14 @@ $if s4:
 $else:
   $ q4 = ""
 
-$ s5 = (sum_line.q5_alta)+(sum_line.q5_normal)+(sum_line.q5_baixa)
+$ s5 = (sum_line.q5_dificil)+(sum_line.q5_normal)+(sum_line.q5_facil)
 $if s5:
   $ q5 = ' %s %s%%' % (display_line.q5_resp, display_line.q5_porc)
 $else:
   $ q5 = ""
 
 
-$ s6 = (sum_line.q6_alta)+(sum_line.q6_normal)+(sum_line.q6_baixa)
+$ s6 = (sum_line.q6_dificil)+(sum_line.q6_normal)+(sum_line.q6_facil)
 $if s6:
   $ q6 = ' %s %s%%' % (display_line.q6_resp, display_line.q6_porc)
 $else:
@@ -214,6 +214,14 @@ $for Line in SearchRate:
                       <td class="text-right"> $s5 </td>
                   </tr>
                   <tr>
+                    <td> Como você avalia a dificuldade inerente ao professor? </td>
+                    <td class="text-right"> $q6 </td>
+                    $if s6 == 0:
+                      <td class="text-right"> <i class="fa fa-minus"></i></td>
+                    $else:
+                      <td class="text-right"> $s6 </td>
+                  </tr>
+                  <tr>
                     <td> A bibliografia recomendada foi adequada? </td>
                     <td class="text-right"> $q7 </td>
                     $if s7 == 0:
@@ -260,14 +268,6 @@ $for Line in SearchRate:
                       <td class="text-right"> <i class="fa fa-minus"></i></td>
                     $else:
                       <td class="text-right"> $s12 </td>
-                  </tr>
-                  <tr>
-                    <td> Como você avalia a dificuldade inerente ao professor? </td>
-                    <td class="text-right"> $q6 </td>
-                    $if s6 == 0:
-                      <td class="text-right"> <i class="fa fa-minus"></i></td>
-                    $else:
-                      <td class="text-right"> $s6 </td>
                   </tr>
                   <tr>
                     <td> Faria outra disciplina com este professor? </td>

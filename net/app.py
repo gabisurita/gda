@@ -133,8 +133,8 @@ def Setup():
         sums[0] = (Inst.q1_sim + Inst.q1_nao)
         sums[2] = (Inst.q3_curta + Inst.q3_longa + Inst.q3_adequada)
         sums[3] = Inst.q4_alta + Inst.q4_baixa + Inst.q4_normal
-        sums[4] = Inst.q5_alta + Inst.q5_normal + Inst.q5_baixa
-        sums[5] = Inst.q6_alta + Inst.q6_normal + Inst.q6_baixa
+        sums[4] = Inst.q5_dificil + Inst.q5_normal + Inst.q5_facil
+        sums[5] = Inst.q6_dificil + Inst.q6_normal + Inst.q6_facil
         sums[6] = Inst.q7_sim + Inst.q7_nao
         sums[7] = Inst.q8_boa + Inst.q8_media + Inst.q8_ruim
         sums[8] = Inst.q9_sim + Inst.q9_nao
@@ -180,25 +180,25 @@ def Setup():
             line_of_interest.q4_porc = 0
 
         if sums[4] != 0:
-            line_of_interest.q5_porc = int(100*(max(Inst.q5_alta, Inst.q5_normal, Inst.q5_baixa))/sums[4])
+            line_of_interest.q5_porc = int(100*(max(Inst.q5_dificil, Inst.q5_normal, Inst.q5_facil))/sums[4])
             line_of_interest.q5_resp = u'Normal'
 
-            if Inst.q5_baixa > Inst.q5_alta and Inst.q5_baixa > Inst.q5_normal:
-                line_of_interest.q5_resp = u'Baixa'
-            if Inst.q5_alta > Inst.q5_baixa and Inst.q5_alta > Inst.q5_normal:
-                line_of_interest.q5_resp = u'Alta'
+            if Inst.q5_facil > Inst.q5_dificil and Inst.q5_facil > Inst.q5_normal:
+                line_of_interest.q5_resp = u'Fácil'
+            if Inst.q5_dificil > Inst.q5_facil and Inst.q5_dificil > Inst.q5_normal:
+                line_of_interest.q5_resp = u'Difícil'
         else:
             line_of_interest.q5_resp = u''
             line_of_interest.q5_porc = 0
 
         if sums[5] != 0:
-            line_of_interest.q6_porc = int(100*(max(Inst.q6_alta, Inst.q6_normal, Inst.q6_baixa))/sums[5])
+            line_of_interest.q6_porc = int(100*(max(Inst.q6_dificil, Inst.q6_normal, Inst.q6_facil))/sums[5])
             line_of_interest.q6_resp = u'Normal'
 
-            if Inst.q6_baixa > Inst.q6_alta and Inst.q6_baixa > Inst.q6_normal:
-                line_of_interest.q6_resp = u'Baixa'
-            if Inst.q6_alta > Inst.q6_baixa and Inst.q6_alta > Inst.q6_normal:
-                line_of_interest.q6_resp = u'Alta'
+            if Inst.q6_facil > Inst.q6_dificil and Inst.q6_facil > Inst.q6_normal:
+                line_of_interest.q6_resp = u'Fácil'
+            if Inst.q6_dificil > Inst.q6_facil and Inst.q6_dificil > Inst.q6_normal:
+                line_of_interest.q6_resp = u'Difícil'
         else:
             line_of_interest.q6_resp = u''
             line_of_interest.q6_porc = 0
@@ -291,7 +291,7 @@ def Setup():
         sums[0] = (Inst.q1_sim + Inst.q1_nao)
         sums[2] = (Inst.q3_curta + Inst.q3_longa + Inst.q3_adequada)
         sums[3] = Inst.q4_alta + Inst.q4_baixa + Inst.q4_normal
-        sums[4] = Inst.q5_alta + Inst.q5_normal + Inst.q5_baixa
+        sums[4] = Inst.q5_dificil + Inst.q5_normal + Inst.q5_facil
 
 
         line_of_interest = S.query(SubjectDisplay).filter(Inst.subject_id == SubjectDisplay.subject_id).one()
@@ -331,13 +331,13 @@ def Setup():
             line_of_interest.q4_porc = 0
 
         if sums[4] != 0:
-            line_of_interest.q5_porc = int(100*(max(Inst.q5_alta, Inst.q5_normal, Inst.q5_baixa))/sums[4])
+            line_of_interest.q5_porc = int(100*(max(Inst.q5_dificil, Inst.q5_normal, Inst.q5_facil))/sums[4])
             line_of_interest.q5_resp = u'Normal'
 
-            if Inst.q5_baixa > Inst.q5_alta and Inst.q5_baixa > Inst.q5_normal:
-                line_of_interest.q5_resp = u'Baixa'
-            if Inst.q5_alta > Inst.q5_baixa and Inst.q5_alta > Inst.q5_normal:
-                line_of_interest.q5_resp = u'Alta'
+            if Inst.q5_facil > Inst.q5_dificil and Inst.q5_facil > Inst.q5_normal:
+                line_of_interest.q5_resp = u'Fácil'
+            if Inst.q5_dificil > Inst.q5_facil and Inst.q5_dificil > Inst.q5_normal:
+                line_of_interest.q5_resp = u'Difícil'
         else:
             line_of_interest.q5_resp = u''
             line_of_interest.q5_porc = 0
@@ -356,7 +356,7 @@ def Setup():
         for var in range(0,13):
             sums.append(var)
 
-        sums[5] = Inst.q6_alta + Inst.q6_normal + Inst.q6_baixa
+        sums[5] = Inst.q6_dificil + Inst.q6_normal + Inst.q6_facil
         sums[6] = Inst.q7_sim + Inst.q7_nao
         sums[7] = Inst.q8_boa + Inst.q8_media + Inst.q8_ruim
         sums[8] = Inst.q9_sim + Inst.q9_nao
@@ -368,13 +368,13 @@ def Setup():
         line_of_interest = S.query(TeacherDisplay).filter(Inst.teacher_id == TeacherDisplay.teacher_id).one()
 
         if sums[5] != 0:
-            line_of_interest.q6_porc = int(100*(max(Inst.q6_alta, Inst.q6_normal, Inst.q6_baixa))/sums[5])
+            line_of_interest.q6_porc = int(100*(max(Inst.q6_dificil, Inst.q6_normal, Inst.q6_facil))/sums[5])
             line_of_interest.q6_resp = u'Normal'
 
-            if Inst.q6_baixa > Inst.q6_alta and Inst.q6_baixa > Inst.q6_normal:
-                line_of_interest.q6_resp = u'Baixa'
-            if Inst.q6_alta > Inst.q6_baixa and Inst.q6_alta > Inst.q6_normal:
-                line_of_interest.q6_resp = u'Alta'
+            if Inst.q6_facil > Inst.q6_dificil and Inst.q6_facil > Inst.q6_normal:
+                line_of_interest.q6_resp = u'Fácil'
+            if Inst.q6_dificil > Inst.q6_facil and Inst.q6_dificil > Inst.q6_normal:
+                line_of_interest.q6_resp = u'Difícil'
         else:
             line_of_interest.q6_resp = u''
             line_of_interest.q6_porc = 0
@@ -463,9 +463,9 @@ def Setup():
 
         NewAnswerSumTeacher = AnswerSumTeacher(
         teacher = LocTeacher,
-        q6_alta = 0,
+        q6_dificil = 0,
         q6_normal = 0,
-        q6_baixa = 0,
+        q6_facil = 0,
         q7_sim = 0,
         q7_nao = 0,
         q8_boa = 0,
@@ -558,9 +558,9 @@ def Setup():
             q4_alta = 0,
             q4_normal = 0,
             q4_baixa = 0,
-            q5_alta = 0,
+            q5_dificil = 0,
             q5_normal = 0,
-            q5_baixa = 0
+            q5_facil = 0
         )
         LocS.add(NewAnswerSumSubject)
         LocS.commit()
@@ -819,12 +819,12 @@ def Setup():
                 q4_alta = 0,
                 q4_normal = 0,
                 q4_baixa = 0,
-                q5_alta = 0,
+                q5_dificil = 0,
                 q5_normal = 0,
-                q5_baixa = 0,
-                q6_alta = 0,
+                q5_facil = 0,
+                q6_dificil = 0,
                 q6_normal = 0,
-                q6_baixa = 0,
+                q6_facil = 0,
                 q7_sim = 0,
                 q7_nao = 0,
                 q8_boa = 0,
@@ -1033,25 +1033,25 @@ def Setup():
                 elemento.q4_baixa += 1
                 disciplina.q4_baixa += 1
 
-            if auxiliar['4.0'] == u' alta ':
-                elemento.q5_alta += 1
-                disciplina.q5_alta += 1
+            if auxiliar['4.0'] == u' dificil ':
+                elemento.q5_dificil += 1
+                disciplina.q5_dificil += 1
             elif auxiliar['4.0'] == u' normal ':
                 elemento.q5_normal += 1
                 disciplina.q5_normal += 1
-            elif auxiliar['4.0'] == u' baixa ':
-                elemento.q5_baixa += 1
-                disciplina.q5_baixa += 1
+            elif auxiliar['4.0'] == u' facil ':
+                elemento.q5_facil += 1
+                disciplina.q5_facil += 1
 
-            if auxiliar['5.0'] == u' alta ':
-                elemento.q6_alta += 1
-                professor.q6_alta += 1
+            if auxiliar['5.0'] == u' dificil ':
+                elemento.q6_dificil += 1
+                professor.q6_dificil += 1
             elif auxiliar['5.0'] == u' normal ':
                 elemento.q6_normal += 1
                 professor.q6_normal += 1
-            elif auxiliar['5.0'] == u' baixa ':
-                elemento.q6_baixa += 1
-                professor.q6_baixa += 1
+            elif auxiliar['5.0'] == u' facil ':
+                elemento.q6_facil += 1
+                professor.q6_facil += 1
 
             if auxiliar['6.0'] == u' sim ':
                 elemento.q7_sim += 1

@@ -11,7 +11,7 @@ $ display_line = S.query(TeacherDisplay).filter(TeacherDisplay.teacher_id == Tea
 $ sum_line = S.query(AnswerSumTeacher).filter(AnswerSumTeacher.teacher_id == TeacherInst.id).one()
 
 
-$ s6 = (sum_line.q6_alta)+(sum_line.q6_normal)+(sum_line.q6_baixa)
+$ s6 = (sum_line.q6_dificil)+(sum_line.q6_normal)+(sum_line.q6_facil)
 $if s6:
   $ q6 = ' %s %s%%' % (display_line.q6_resp, display_line.q6_porc)
 $else:

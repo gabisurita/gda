@@ -164,7 +164,13 @@ input[type=radio][value=" não "]:checked + label:before{
 input[type=radio][value=" alta "]:checked + label:before{
     content:"\f1e2"; /* bomb */
 }
+input[type=radio][value=" dificil "]:checked + label:before{
+    content:"\f1e2"; /* bomb */
+}
 input[type=radio][value=" baixa "]:checked + label:before{
+    content:"\f25b"; /* hand-peace-o */
+}
+input[type=radio][value=" facil "]:checked + label:before{
     content:"\f25b"; /* hand-peace-o */
 }
 
