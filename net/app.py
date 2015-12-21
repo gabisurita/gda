@@ -152,7 +152,7 @@ def Setup():
                 line_of_interest.q1_resp = u'Não'
                 line_of_interest.q1_porc = int(100*(Inst.q1_nao/sums[0]))
         else:
-            line_of_interest.q1_resp = u'-'
+            line_of_interest.q1_resp = u''
             line_of_interest.q1_porc = 0
 
         if sums[2] != 0:
@@ -164,7 +164,7 @@ def Setup():
             if Inst.q3_longa > Inst.q3_curta and Inst.q3_longa > Inst.q3_adequada:
                 line_of_interest.q3_resp = u'Longa'
         else:
-            line_of_interest.q3_resp = u'-'
+            line_of_interest.q3_resp = u''
             line_of_interest.q3_porc = 0
 
         if sums[3] != 0:
@@ -176,7 +176,7 @@ def Setup():
             if Inst.q4_alta > Inst.q4_baixa and Inst.q4_alta > Inst.q4_normal:
                 line_of_interest.q4_resp = u'Alta'
         else:
-            line_of_interest.q4_resp = u'-'
+            line_of_interest.q4_resp = u''
             line_of_interest.q4_porc = 0
 
         if sums[4] != 0:
@@ -188,7 +188,7 @@ def Setup():
             if Inst.q5_alta > Inst.q5_baixa and Inst.q5_alta > Inst.q5_normal:
                 line_of_interest.q5_resp = u'Alta'
         else:
-            line_of_interest.q5_resp = u'-'
+            line_of_interest.q5_resp = u''
             line_of_interest.q5_porc = 0
 
         if sums[5] != 0:
@@ -200,7 +200,7 @@ def Setup():
             if Inst.q6_alta > Inst.q6_baixa and Inst.q6_alta > Inst.q6_normal:
                 line_of_interest.q6_resp = u'Alta'
         else:
-            line_of_interest.q6_resp = u'-'
+            line_of_interest.q6_resp = u''
             line_of_interest.q6_porc = 0
 
         if sums[6] != 0:
@@ -210,7 +210,7 @@ def Setup():
                 line_of_interest.q7_resp = u'Não'
                 line_of_interest.q7_porc = int(100*(Inst.q7_nao/sums[6]))
         else:
-            line_of_interest.q7_resp = u'-'
+            line_of_interest.q7_resp = u''
             line_of_interest.q7_porc = 0
 
         if sums[7] != 0:
@@ -222,7 +222,7 @@ def Setup():
             if Inst.q8_boa > Inst.q8_ruim and Inst.q8_boa > Inst.q8_media:
                 line_of_interest.q8_resp = u'Boa'
         else:
-            line_of_interest.q8_resp = u'-'
+            line_of_interest.q8_resp = u''
             line_of_interest.q8_porc = 0
 
         if sums[8] != 0:
@@ -232,7 +232,7 @@ def Setup():
                 line_of_interest.q9_resp = u'Não'
                 line_of_interest.q9_porc = int(100*(Inst.q9_nao/sums[8]))
         else:
-            line_of_interest.q9_resp = u'-'
+            line_of_interest.q9_resp = u''
             line_of_interest.q9_porc = 0
 
         if sums[9] != 0:
@@ -242,7 +242,7 @@ def Setup():
                 line_of_interest.q10_resp = u'Sim'
                 line_of_interest.q10_porc = int(100*(Inst.q10_nao/sums[9]))
         else:
-            line_of_interest.q10_resp = u'-'
+            line_of_interest.q10_resp = u''
             line_of_interest.q10_porc = 0
 
         if sums[10] != 0:
@@ -252,7 +252,7 @@ def Setup():
                 line_of_interest.q11_resp = u'Não'
                 line_of_interest.q11_porc = int(100*(Inst.q11_nao/sums[10]))
         else:
-            line_of_interest.q11_resp = u'-'
+            line_of_interest.q11_resp = u''
             line_of_interest.q11_porc = 0
 
         if sums[11] != 0:
@@ -262,7 +262,7 @@ def Setup():
                 line_of_interest.q12_resp = u'Não'
                 line_of_interest.q12_porc = int(100*(Inst.q12_nao/sums[11]))
         else:
-            line_of_interest.q12_resp = u'-'
+            line_of_interest.q12_resp = u''
             line_of_interest.q12_porc = 0
 
         if sums[12] != 0:
@@ -272,7 +272,7 @@ def Setup():
                 line_of_interest.q13_resp = u'Não'
                 line_of_interest.q13_porc = int(100*(Inst.q13_nao/sums[12]))
         else:
-            line_of_interest.q13_resp = u'-'
+            line_of_interest.q13_resp = u''
             line_of_interest.q13_porc = 0
 
         S.commit()
@@ -303,7 +303,7 @@ def Setup():
                 line_of_interest.q1_resp = u'Não'
                 line_of_interest.q1_porc = int(100*(Inst.q1_nao/sums[0]))
         else:
-            line_of_interest.q1_resp = u'-'
+            line_of_interest.q1_resp = u''
             line_of_interest.q1_porc = 0
 
         if sums[2] != 0:
@@ -315,7 +315,7 @@ def Setup():
             if Inst.q3_longa > Inst.q3_curta and Inst.q3_longa > Inst.q3_adequada:
                 line_of_interest.q3_resp = u'Longa'
         else:
-            line_of_interest.q3_resp = u'-'
+            line_of_interest.q3_resp = u''
             line_of_interest.q3_porc = 0
 
         if sums[3] != 0:
@@ -327,7 +327,7 @@ def Setup():
             if Inst.q4_alta > Inst.q4_baixa and Inst.q4_alta > Inst.q4_normal:
                 line_of_interest.q4_resp = u'Alta'
         else:
-            line_of_interest.q4_resp = u'-'
+            line_of_interest.q4_resp = u''
             line_of_interest.q4_porc = 0
 
         if sums[4] != 0:
@@ -339,7 +339,7 @@ def Setup():
             if Inst.q5_alta > Inst.q5_baixa and Inst.q5_alta > Inst.q5_normal:
                 line_of_interest.q5_resp = u'Alta'
         else:
-            line_of_interest.q5_resp = u'-'
+            line_of_interest.q5_resp = u''
             line_of_interest.q5_porc = 0
 
         S.commit()
@@ -376,7 +376,7 @@ def Setup():
             if Inst.q6_alta > Inst.q6_baixa and Inst.q6_alta > Inst.q6_normal:
                 line_of_interest.q6_resp = u'Alta'
         else:
-            line_of_interest.q6_resp = u'-'
+            line_of_interest.q6_resp = u''
             line_of_interest.q6_porc = 0
 
         if sums[6] != 0:
@@ -386,7 +386,7 @@ def Setup():
                 line_of_interest.q7_resp = u'Não'
                 line_of_interest.q7_porc = int(100*(Inst.q7_nao/sums[6]))
         else:
-            line_of_interest.q7_resp = u'-'
+            line_of_interest.q7_resp = u''
             line_of_interest.q7_porc = 0
 
         if sums[7] != 0:
@@ -398,7 +398,7 @@ def Setup():
             if Inst.q8_boa > Inst.q8_ruim and Inst.q8_boa > Inst.q8_media:
                 line_of_interest.q8_resp = u'Boa'
         else:
-            line_of_interest.q8_resp = u'-'
+            line_of_interest.q8_resp = u''
             line_of_interest.q8_porc = 0
 
         if sums[8] != 0:
@@ -408,7 +408,7 @@ def Setup():
                 line_of_interest.q9_resp = u'Não'
                 line_of_interest.q9_porc = int(100*(Inst.q9_nao/sums[8]))
         else:
-            line_of_interest.q9_resp = u'-'
+            line_of_interest.q9_resp = u''
             line_of_interest.q9_porc = 0
 
         if sums[9] != 0:
@@ -418,7 +418,7 @@ def Setup():
                 line_of_interest.q10_resp = u'Sim'
                 line_of_interest.q10_porc = int(100*(Inst.q10_nao/sums[9]))
         else:
-            line_of_interest.q10_resp = u'-'
+            line_of_interest.q10_resp = u''
             line_of_interest.q10_porc = 0
 
         if sums[10] != 0:
@@ -428,7 +428,7 @@ def Setup():
                 line_of_interest.q11_resp = u'Não'
                 line_of_interest.q11_porc = int(100*(Inst.q11_nao/sums[10]))
         else:
-            line_of_interest.q11_resp = u'-'
+            line_of_interest.q11_resp = u''
             line_of_interest.q11_porc = 0
 
         if sums[11] != 0:
@@ -438,7 +438,7 @@ def Setup():
                 line_of_interest.q12_resp = u'Não'
                 line_of_interest.q12_porc = int(100*(Inst.q12_nao/sums[11]))
         else:
-            line_of_interest.q12_resp = u'-'
+            line_of_interest.q12_resp = u''
             line_of_interest.q12_porc = 0
 
         if sums[12] != 0:
@@ -448,7 +448,7 @@ def Setup():
                 line_of_interest.q13_resp = u'Não'
                 line_of_interest.q13_porc = int(100*(Inst.q13_nao/sums[12]))
         else:
-            line_of_interest.q13_resp = u'-'
+            line_of_interest.q13_resp = u''
             line_of_interest.q13_porc = 0
 
         S.commit()
@@ -493,21 +493,21 @@ def Setup():
             Teacher.id == Inst.id).one()
 
         NewTeacherDisplay = TeacherDisplay(
-        q6_resp = u'-',
+        q6_resp = u'',
         q6_porc = 0,
-        q7_resp = u'-',
+        q7_resp = u'',
         q7_porc = 0,
-        q8_resp = u'-',
+        q8_resp = u'',
         q8_porc = 0,
-        q9_resp = u'-',
+        q9_resp = u'',
         q9_porc = 0,
-        q10_resp = u'-',
+        q10_resp = u'',
         q10_porc = 0,
-        q11_resp = u'-',
+        q11_resp = u'',
         q11_porc = 0,
-        q12_resp = u'-',
+        q12_resp = u'',
         q12_porc = 0,
-        q13_resp = u'-',
+        q13_resp = u'',
         q13_porc = 0,
         teacher = LocTeacher
         )
@@ -522,15 +522,15 @@ def Setup():
             Subject.id == Inst.id).one()
 
         NewSubjectDisplay = SubjectDisplay(
-            q1_resp = u'-',
+            q1_resp = u'',
             q1_porc = 0,
-            q2_resp = u'-',
+            q2_resp = u'',
             q2_porc = 0,
-            q3_resp = u'-',
+            q3_resp = u'',
             q3_porc = 0,
-            q4_resp = u'-',
+            q4_resp = u'',
             q4_porc = 0,
-            q5_resp = u'-',
+            q5_resp = u'',
             q5_porc =  0,
             subject = LocSubject
         )
@@ -1143,31 +1143,31 @@ def Setup():
                     LocOffering = S.query(Offering).filter(
                         Offering.id == Line.id).one()
                     NewDisplay=OfferingDisplay(
-                    q1_resp = u'-',
+                    q1_resp = u'',
                     q1_porc = 0,
-                    q2_resp = u'-',
+                    q2_resp = u'',
                     q2_porc = 0,
-                    q3_resp = u'-',
+                    q3_resp = u'',
                     q3_porc = 0,
-                    q4_resp = u'-',
+                    q4_resp = u'',
                     q4_porc = 0,
-                    q5_resp = u'-',
+                    q5_resp = u'',
                     q5_porc = 0,
-                    q6_resp = u'-',
+                    q6_resp = u'',
                     q6_porc = 0,
-                    q7_resp = u'-',
+                    q7_resp = u'',
                     q7_porc = 0,
-                    q8_resp = u'-',
+                    q8_resp = u'',
                     q8_porc = 0,
-                    q9_resp = u'-',
+                    q9_resp = u'',
                     q9_porc = 0,
-                    q10_resp = u'-',
+                    q10_resp = u'',
                     q10_porc = 0,
-                    q11_resp = u'-',
+                    q11_resp = u'',
                     q11_porc = 0,
-                    q12_resp = u'-',
+                    q12_resp = u'',
                     q12_porc = 0,
-                    q13_resp = u'-',
+                    q13_resp = u'',
                     q13_porc = 0,
                     offering = LocOffering
                     )
