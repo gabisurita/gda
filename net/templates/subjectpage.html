@@ -10,6 +10,44 @@ $ ThisComments = S.query(SubjectComment).filter(SubjectComment.subject == Subjec
 
 $ Questions = S.query(QuestionsOffering)
 
+
+$ display_line = S.query(SubjectDisplay).filter(SubjectDisplay.subject_id == SubjectInst.id).one()
+$ sum_line = S.query(AnswerSumSubject).filter(AnswerSumSubject.subject_id == SubjectInst.id).one()
+
+$ s1 = (sum_line.q1_sim)+(sum_line.q1_nao)
+$ s3 = (sum_line.q3_adequada)+(sum_line.q3_longa)+(sum_line.q3_curta)
+$ s4 = (sum_line.q4_alta)+(sum_line.q4_normal)+(sum_line.q4_baixa)
+$ s5 = (sum_line.q5_alta)+(sum_line.q5_normal)+(sum_line.q5_baixa)
+
+$ porc1_sim = 0
+$ porc1_nao = 0
+$ porc3_adequada = 0
+$ porc3_curta = 0
+$ porc3_longa = 0
+$ porc4_alta = 0
+$ porc4_normal = 0
+$ porc4_baixa = 0
+$ porc5_alta = 0
+$ porc5_normal = 0
+$ porc5_baixa = 0
+
+$if s1!=0:
+  $ porc1_sim = int(100*sum_line.q1_sim/s1)
+  $ porc1_nao = int(100*sum_line.q1_nao/s1)
+$if s3!=0:
+  $ porc3_adequada = int(100*sum_line.q3_adequada/s3)
+  $ porc3_curta = int(100*sum_line.q3_curta/s3)
+  $ porc3_longa = int(100*sum_line.q3_longa/s3)
+$if s4!=0:
+  $ porc4_alta = int(100*sum_line.q4_alta/s4)
+  $ porc4_normal = int(100*sum_line.q4_normal/s4)
+  $ porc4_baixa = int(100*sum_line.q4_baixa/s4)
+$if s5!=0:
+  $ porc5_alta = int(100*sum_line.q5_alta/s5)
+  $ porc5_normal = int(100*sum_line.q5_normal/s5)
+  $ porc5_baixa = int(100*sum_line.q5_baixa/s5)
+
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -40,28 +78,28 @@ $ Questions = S.query(QuestionsOffering)
               </thead>
               <tbody style="text-align: right;">
                 <tr>
-                  <td> Normal 46% </td>
-                  <td> Normal 34% </td>
-                  <td> Adequada 68% </td>
-                  <td> Sim 73% </td>
+                  <td> Alta $porc4_alta% </td>
+                  <td> Alta $porc5_alta% </td>
+                  <td> Longa $porc3_longa% </td>
+                  <td> Sim $porc1_sim% </td>
                 </tr>
                 <tr>
-                  <td> Baixa 18% </td>
-                  <td> Fácil 14% </td>
-                  <td> Curta 5% </td>
-                  <td> Não 27%</td>
+                  <td> Normal $porc4_normal% </td>
+                  <td> Normal $porc5_normal% </td>
+                  <td> Adequada $porc3_adequada% </td>
+                  <td> Não $porc1_nao%</td>
                 </tr>
                 <tr>
-                  <td> Alta 36%</td>
-                  <td> Dificil 52% </td>
-                  <td> Longa 27%</td>
+                  <td> Baixa $porc4_baixa%</td>
+                  <td> Baixa $porc5_baixa% </td>
+                  <td> Curta $porc3_curta%</td>
                   <td> </td>
                 </tr>
                 <tr>
-                  <td> 25 votos </td>
-                  <td> 24 votos </td>
-                  <td> 21 votos </td>
-                  <td> 29 votos </td>
+                  <td> $s4 votos </td>
+                  <td> $s5 votos </td>
+                  <td> $s3 votos </td>
+                  <td> $s1 votos </td>
                 </tr>
               </tbody>
             </table>

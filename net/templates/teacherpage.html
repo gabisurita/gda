@@ -7,6 +7,26 @@ $ ThisOfferings = S.query(Offering).filter(Offering.teacher == TeacherInst) #.or
 $ ThisComments = S.query(TeacherComment).filter(TeacherComment.teacher == TeacherInst) #.order_by(Offering.semester.year, Offering.semester.sem)
 
 
+$ display_line = S.query(TeacherDisplay).filter(TeacherDisplay.teacher_id == TeacherInst.id).one()
+$ sum_line = S.query(AnswerSumTeacher).filter(AnswerSumTeacher.teacher_id == TeacherInst.id).one()
+
+$ q6 = ' %s %d%%' % (display_line.q6_resp, display_line.q6_porc)
+$ s6 = (sum_line.q6_alta)+(sum_line.q6_normal)+(sum_line.q6_baixa)
+$ q7 = ' %s %d%%' % (display_line.q7_resp, display_line.q7_porc)
+$ s7 = (sum_line.q7_sim)+(sum_line.q7_nao)
+$ q8 = ' %s %d%%' % (display_line.q8_resp, display_line.q8_porc)
+$ s8 = (sum_line.q8_boa)+(sum_line.q8_media)+(sum_line.q8_ruim)
+$ q9 = ' %s %d%%' % (display_line.q9_resp, display_line.q9_porc)
+$ s9 = (sum_line.q9_sim)+(sum_line.q9_nao)
+$ q10 = ' %s %d%%' % (display_line.q10_resp, display_line.q10_porc)
+$ s10 = (sum_line.q10_sim)+(sum_line.q10_nao)
+$ q11 = ' %s %d%%' % (display_line.q11_resp, display_line.q11_porc)
+$ s11 = (sum_line.q11_sim)+(sum_line.q11_nao)
+$ q12 = ' %s %d%%' % (display_line.q12_resp, display_line.q12_porc)
+$ s12 = (sum_line.q12_sim)+(sum_line.q12_nao)
+$ q13 = ' %s %d%%' % (display_line.q13_resp, display_line.q13_porc)
+$ s13 = (sum_line.q13_sim)+(sum_line.q13_nao)
+
 
 <!DOCTYPE html>
 <html>
@@ -28,43 +48,43 @@ $ ThisComments = S.query(TeacherComment).filter(TeacherComment.teacher == Teache
                 <tbody>
                   <tr>
                     <td> A bibliografia recomendada foi adequada? </td>
-                    <td> Sim (86%) </td>
-                    <td> 25 votos</td>
+                    <td> $q7 </td>
+                    <td> $s7 </td>
                   </tr>
                   <tr>
                     <td> Como você avalia a didática do professor? </td>
-                    <td> Boa (75%) </td>
-                    <td> 26 votos</td>
+                    <td> $q8 </td>
+                    <td> $s8 </td>
                   </tr>
                   <tr>
                     <td> O professor se preocupou em tornar as aulas interessantes? </td>
-                    <td> Sim (90%)  </td>
-                    <td> 20 votos</td>
+                    <td> $q9  </td>
+                    <td> $s9 </td>
                   </tr>
                   <tr>
                     <td> O professor se mostrou acessível para tirar dúvidas? </td>
-                    <td> Sim (82%)  </td>
-                    <td> 15 votos</td>
+                    <td> $q10 </td>
+                    <td> $s10 </td>
                   </tr>
                   <tr>
                     <td> As avaliações foram coerentes? </td>
-                    <td> Não (66%)  </td>
-                    <td> 18 votos</td>
+                    <td> $q11  </td>
+                    <td> $s11 </td>
                   </tr>
                   <tr>
                     <td> Ir às aulas foi importante? </td>
-                    <td> Não (53%)  </td>
-                    <td> 27 votos</td>
+                    <td> $q12 </td>
+                    <td> $s12 </td>
                   </tr>
                   <tr>
                     <td> Como você avalia a dificuldade inerente ao professor? </td>
-                    <td> Alta (82%) </td>
-                    <td> 22 votos</td>
+                    <td> $q6 </td>
+                    <td> $s6 </td>
                   </tr>
                   <tr>
                     <td> Faria outra disciplina com este professor? </td>
-                    <td> Sim (59%)  </td>
-                    <td> 30 votos</td>
+                    <td> $q13  </td>
+                    <td> $s13 </td>
                   </tr>
                 </tbody>
               </table>

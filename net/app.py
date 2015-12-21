@@ -120,7 +120,7 @@ def Setup():
             return True
 
 #receive the AnswerSum line and update the OfferingDisplay table of that offering
-    def UpdateDisplayOffering(Inst):
+    def UpdateOfferingDisplay(Inst):
 
         LocDB = create_engine(UserDB, echo=False)
         S = sessionmaker(bind=LocDB)()
@@ -146,136 +146,425 @@ def Setup():
         line_of_interest = S.query(OfferingDisplay).filter(Inst.offering_id == OfferingDisplay.offering_id).one()
 
         if sums[0] != 0:
-            line_of_interest.q1_resp = 'Sim'
+            line_of_interest.q1_resp = u'Sim'
             line_of_interest.q1_porc = int(100*(Inst.q1_sim/sums[0]))
             if Inst.q1_nao > Inst.q1_sim:
-                line_of_interest.q1_resp = 'Não'
+                line_of_interest.q1_resp = u'Não'
                 line_of_interest.q1_porc = int(100*(Inst.q1_nao/sums[0]))
         else:
-            line_of_interest.q1_resp = '-'
+            line_of_interest.q1_resp = u'-'
             line_of_interest.q1_porc = 0
 
         if sums[2] != 0:
             line_of_interest.q3_porc = int(100*((max(Inst.q3_curta, Inst.q3_longa, Inst.q3_adequada))/sums[2]))
-            line_of_interest.q3_resp = 'Adequada'
+            line_of_interest.q3_resp = u'Adequada'
 
             if Inst.q3_curta > Inst.q3_longa and Inst.q3_curta > Inst.q3_adequada:
-                line_of_interest.q3_resp = 'Curta'
+                line_of_interest.q3_resp = u'Curta'
             if Inst.q3_longa > Inst.q3_curta and Inst.q3_longa > Inst.q3_adequada:
-                line_of_interest.q3_resp = 'Longa'
+                line_of_interest.q3_resp = u'Longa'
         else:
-            line_of_interest.q3_resp = '-'
+            line_of_interest.q3_resp = u'-'
             line_of_interest.q3_porc = 0
 
         if sums[3] != 0:
             line_of_interest.q4_porc = int(100*(max(Inst.q4_alta, Inst.q4_normal, Inst.q4_baixa))/sums[3])
-            line_of_interest.q4_resp = 'Normal'
+            line_of_interest.q4_resp = u'Normal'
 
             if Inst.q4_baixa > Inst.q4_alta and Inst.q4_baixa > Inst.q4_normal:
-                line_of_interest.q4_resp = 'Baixa'
+                line_of_interest.q4_resp = u'Baixa'
             if Inst.q4_alta > Inst.q4_baixa and Inst.q4_alta > Inst.q4_normal:
-                line_of_interest.q4_resp = 'Alta'
+                line_of_interest.q4_resp = u'Alta'
         else:
-            line_of_interest.q4_resp = '-'
+            line_of_interest.q4_resp = u'-'
             line_of_interest.q4_porc = 0
 
         if sums[4] != 0:
             line_of_interest.q5_porc = int(100*(max(Inst.q5_alta, Inst.q5_normal, Inst.q5_baixa))/sums[4])
-            line_of_interest.q5_resp = 'Normal'
+            line_of_interest.q5_resp = u'Normal'
 
             if Inst.q5_baixa > Inst.q5_alta and Inst.q5_baixa > Inst.q5_normal:
-                line_of_interest.q5_resp = 'Baixa'
+                line_of_interest.q5_resp = u'Baixa'
             if Inst.q5_alta > Inst.q5_baixa and Inst.q5_alta > Inst.q5_normal:
-                line_of_interest.q5_resp = 'Alta'
+                line_of_interest.q5_resp = u'Alta'
         else:
-            line_of_interest.q5_resp = '-'
+            line_of_interest.q5_resp = u'-'
             line_of_interest.q5_porc = 0
 
         if sums[5] != 0:
             line_of_interest.q6_porc = int(100*(max(Inst.q6_alta, Inst.q6_normal, Inst.q6_baixa))/sums[5])
-            line_of_interest.q6_resp = 'Normal'
+            line_of_interest.q6_resp = u'Normal'
 
             if Inst.q6_baixa > Inst.q6_alta and Inst.q6_baixa > Inst.q6_normal:
-                line_of_interest.q6_resp = 'Baixa'
+                line_of_interest.q6_resp = u'Baixa'
             if Inst.q6_alta > Inst.q6_baixa and Inst.q6_alta > Inst.q6_normal:
-                line_of_interest.q6_resp = 'Alta'
+                line_of_interest.q6_resp = u'Alta'
         else:
-            line_of_interest.q6_resp = '-'
+            line_of_interest.q6_resp = u'-'
             line_of_interest.q6_porc = 0
 
         if sums[6] != 0:
-            line_of_interest.q7_resp = 'Sim'
+            line_of_interest.q7_resp = u'Sim'
             line_of_interest.q7_porc = int(100*(Inst.q7_sim/sums[6]))
             if Inst.q7_nao > Inst.q7_sim:
-                line_of_interest.q7_resp = 'Não'
+                line_of_interest.q7_resp = u'Não'
                 line_of_interest.q7_porc = int(100*(Inst.q7_nao/sums[6]))
         else:
-            line_of_interest.q7_resp = '-'
+            line_of_interest.q7_resp = u'-'
             line_of_interest.q7_porc = 0
 
         if sums[7] != 0:
             line_of_interest.q8_porc = int(100*(max(Inst.q8_boa, Inst.q8_media, Inst.q8_ruim))/sums[7])
-            line_of_interest.q8_resp = 'Média'
+            line_of_interest.q8_resp = u'Média'
 
             if Inst.q8_ruim > Inst.q8_boa and Inst.q8_ruim > Inst.q8_media:
-                line_of_interest.q8_resp = 'Ruim'
+                line_of_interest.q8_resp = u'Ruim'
             if Inst.q8_boa > Inst.q8_ruim and Inst.q8_boa > Inst.q8_media:
-                line_of_interest.q8_resp = 'Boa'
+                line_of_interest.q8_resp = u'Boa'
         else:
-            line_of_interest.q8_resp = '-'
+            line_of_interest.q8_resp = u'-'
             line_of_interest.q8_porc = 0
 
         if sums[8] != 0:
-            line_of_interest.q9_resp = 'Sim'
+            line_of_interest.q9_resp = u'Sim'
             line_of_interest.q9_porc = int(100*(Inst.q9_sim/sums[8]))
             if Inst.q9_nao > Inst.q9_sim:
-                line_of_interest.q9_resp = 'Não'
+                line_of_interest.q9_resp = u'Não'
                 line_of_interest.q9_porc = int(100*(Inst.q9_nao/sums[8]))
         else:
-            line_of_interest.q9_resp = '-'
+            line_of_interest.q9_resp = u'-'
             line_of_interest.q9_porc = 0
 
         if sums[9] != 0:
-            line_of_interest.q10_resp = 'Sim'
+            line_of_interest.q10_resp = u'Sim'
             line_of_interest.q10_porc = int(100*(Inst.q10_sim/sums[9]))
             if (Inst.q10_nao) > (Inst.q10_sim):
-                line_of_interest.q10_resp = 'Sim'
+                line_of_interest.q10_resp = u'Sim'
                 line_of_interest.q10_porc = int(100*(Inst.q10_nao/sums[9]))
         else:
-            line_of_interest.q10_resp = '-'
+            line_of_interest.q10_resp = u'-'
             line_of_interest.q10_porc = 0
 
         if sums[10] != 0:
-            line_of_interest.q11_resp = 'Sim'
+            line_of_interest.q11_resp = u'Sim'
             line_of_interest.q11_porc = int(100*(Inst.q11_sim/sums[10]))
             if Inst.q11_nao > Inst.q11_sim:
-                line_of_interest.q11_resp = 'Não'
+                line_of_interest.q11_resp = u'Não'
                 line_of_interest.q11_porc = int(100*(Inst.q11_nao/sums[10]))
         else:
-            line_of_interest.q11_resp = '-'
+            line_of_interest.q11_resp = u'-'
             line_of_interest.q11_porc = 0
 
         if sums[11] != 0:
-            line_of_interest.q12_resp = 'Sim'
+            line_of_interest.q12_resp = u'Sim'
             line_of_interest.q12_porc = int(100*(Inst.q12_sim/sums[11]))
             if Inst.q12_nao > Inst.q12_sim:
-                line_of_interest.q12_resp = 'Não'
+                line_of_interest.q12_resp = u'Não'
                 line_of_interest.q12_porc = int(100*(Inst.q12_nao/sums[11]))
         else:
-            line_of_interest.q12_resp = '-'
+            line_of_interest.q12_resp = u'-'
             line_of_interest.q12_porc = 0
 
         if sums[12] != 0:
-            line_of_interest.q13_resp = 'Sim'
+            line_of_interest.q13_resp = u'Sim'
             line_of_interest.q13_porc = int(100*(Inst.q13_sim/sums[12]))
             if Inst.q13_nao > Inst.q13_sim:
-                line_of_interest.q13_resp = 'Não'
+                line_of_interest.q13_resp = u'Não'
                 line_of_interest.q13_porc = int(100*(Inst.q13_nao/sums[12]))
         else:
-            line_of_interest.q13_resp = '-'
+            line_of_interest.q13_resp = u'-'
             line_of_interest.q13_porc = 0
 
         S.commit()
+
+#receive the AnswerSum line and update the OfferingDisplay table of that offering
+    def UpdateSubjectDisplay(Inst):
+
+        LocDB = create_engine(UserDB, echo=False)
+        S = sessionmaker(bind=LocDB)()
+
+        sums = []
+
+        for var in range(0,13):
+            sums.append(var)
+
+        sums[0] = (Inst.q1_sim + Inst.q1_nao)
+        sums[2] = (Inst.q3_curta + Inst.q3_longa + Inst.q3_adequada)
+        sums[3] = Inst.q4_alta + Inst.q4_baixa + Inst.q4_normal
+        sums[4] = Inst.q5_alta + Inst.q5_normal + Inst.q5_baixa
+
+
+        line_of_interest = S.query(SubjectDisplay).filter(Inst.subject_id == SubjectDisplay.subject_id).one()
+
+        if sums[0] != 0:
+            line_of_interest.q1_resp = u'Sim'
+            line_of_interest.q1_porc = int(100*(Inst.q1_sim/sums[0]))
+            if Inst.q1_nao > Inst.q1_sim:
+                line_of_interest.q1_resp = u'Não'
+                line_of_interest.q1_porc = int(100*(Inst.q1_nao/sums[0]))
+        else:
+            line_of_interest.q1_resp = u'-'
+            line_of_interest.q1_porc = 0
+
+        if sums[2] != 0:
+            line_of_interest.q3_porc = int(100*((max(Inst.q3_curta, Inst.q3_longa, Inst.q3_adequada))/sums[2]))
+            line_of_interest.q3_resp = u'Adequada'
+
+            if Inst.q3_curta > Inst.q3_longa and Inst.q3_curta > Inst.q3_adequada:
+                line_of_interest.q3_resp = u'Curta'
+            if Inst.q3_longa > Inst.q3_curta and Inst.q3_longa > Inst.q3_adequada:
+                line_of_interest.q3_resp = u'Longa'
+        else:
+            line_of_interest.q3_resp = u'-'
+            line_of_interest.q3_porc = 0
+
+        if sums[3] != 0:
+            line_of_interest.q4_porc = int(100*(max(Inst.q4_alta, Inst.q4_normal, Inst.q4_baixa))/sums[3])
+            line_of_interest.q4_resp = u'Normal'
+
+            if Inst.q4_baixa > Inst.q4_alta and Inst.q4_baixa > Inst.q4_normal:
+                line_of_interest.q4_resp = u'Baixa'
+            if Inst.q4_alta > Inst.q4_baixa and Inst.q4_alta > Inst.q4_normal:
+                line_of_interest.q4_resp = u'Alta'
+        else:
+            line_of_interest.q4_resp = u'-'
+            line_of_interest.q4_porc = 0
+
+        if sums[4] != 0:
+            line_of_interest.q5_porc = int(100*(max(Inst.q5_alta, Inst.q5_normal, Inst.q5_baixa))/sums[4])
+            line_of_interest.q5_resp = u'Normal'
+
+            if Inst.q5_baixa > Inst.q5_alta and Inst.q5_baixa > Inst.q5_normal:
+                line_of_interest.q5_resp = u'Baixa'
+            if Inst.q5_alta > Inst.q5_baixa and Inst.q5_alta > Inst.q5_normal:
+                line_of_interest.q5_resp = u'Alta'
+        else:
+            line_of_interest.q5_resp = u'-'
+            line_of_interest.q5_porc = 0
+
+        S.commit()
+
+
+#recebe uma linha de AnswerSumTeacher e atualiza a tabela TeacherDisplay
+    def UpdateTeacherDisplay(Inst):
+
+        LocDB = create_engine(UserDB, echo=False)
+        S = sessionmaker(bind=LocDB)()
+
+        sums = []
+
+        for var in range(0,13):
+            sums.append(var)
+
+        sums[5] = Inst.q6_alta + Inst.q6_normal + Inst.q6_baixa
+        sums[6] = Inst.q7_sim + Inst.q7_nao
+        sums[7] = Inst.q8_boa + Inst.q8_media + Inst.q8_ruim
+        sums[8] = Inst.q9_sim + Inst.q9_nao
+        sums[9] = Inst.q10_sim + Inst.q10_nao
+        sums[10] = Inst.q11_sim + Inst.q11_nao
+        sums[11] = Inst.q12_sim + Inst.q12_nao
+        sums[12] = Inst.q13_sim + Inst.q13_nao
+
+        line_of_interest = S.query(TeacherDisplay).filter(Inst.teacher_id == TeacherDisplay.teacher_id).one()
+
+        if sums[5] != 0:
+            line_of_interest.q6_porc = int(100*(max(Inst.q6_alta, Inst.q6_normal, Inst.q6_baixa))/sums[5])
+            line_of_interest.q6_resp = u'Normal'
+
+            if Inst.q6_baixa > Inst.q6_alta and Inst.q6_baixa > Inst.q6_normal:
+                line_of_interest.q6_resp = u'Baixa'
+            if Inst.q6_alta > Inst.q6_baixa and Inst.q6_alta > Inst.q6_normal:
+                line_of_interest.q6_resp = u'Alta'
+        else:
+            line_of_interest.q6_resp = u'-'
+            line_of_interest.q6_porc = 0
+
+        if sums[6] != 0:
+            line_of_interest.q7_resp = u'Sim'
+            line_of_interest.q7_porc = int(100*(Inst.q7_sim/sums[6]))
+            if Inst.q7_nao > Inst.q7_sim:
+                line_of_interest.q7_resp = u'Não'
+                line_of_interest.q7_porc = int(100*(Inst.q7_nao/sums[6]))
+        else:
+            line_of_interest.q7_resp = u'-'
+            line_of_interest.q7_porc = 0
+
+        if sums[7] != 0:
+            line_of_interest.q8_porc = int(100*(max(Inst.q8_boa, Inst.q8_media, Inst.q8_ruim))/sums[7])
+            line_of_interest.q8_resp = u'Média'
+
+            if Inst.q8_ruim > Inst.q8_boa and Inst.q8_ruim > Inst.q8_media:
+                line_of_interest.q8_resp = u'Ruim'
+            if Inst.q8_boa > Inst.q8_ruim and Inst.q8_boa > Inst.q8_media:
+                line_of_interest.q8_resp = u'Boa'
+        else:
+            line_of_interest.q8_resp = u'-'
+            line_of_interest.q8_porc = 0
+
+        if sums[8] != 0:
+            line_of_interest.q9_resp = u'Sim'
+            line_of_interest.q9_porc = int(100*(Inst.q9_sim/sums[8]))
+            if Inst.q9_nao > Inst.q9_sim:
+                line_of_interest.q9_resp = u'Não'
+                line_of_interest.q9_porc = int(100*(Inst.q9_nao/sums[8]))
+        else:
+            line_of_interest.q9_resp = u'-'
+            line_of_interest.q9_porc = 0
+
+        if sums[9] != 0:
+            line_of_interest.q10_resp = u'Sim'
+            line_of_interest.q10_porc = int(100*(Inst.q10_sim/sums[9]))
+            if (Inst.q10_nao) > (Inst.q10_sim):
+                line_of_interest.q10_resp = u'Sim'
+                line_of_interest.q10_porc = int(100*(Inst.q10_nao/sums[9]))
+        else:
+            line_of_interest.q10_resp = u'-'
+            line_of_interest.q10_porc = 0
+
+        if sums[10] != 0:
+            line_of_interest.q11_resp = u'Sim'
+            line_of_interest.q11_porc = int(100*(Inst.q11_sim/sums[10]))
+            if Inst.q11_nao > Inst.q11_sim:
+                line_of_interest.q11_resp = u'Não'
+                line_of_interest.q11_porc = int(100*(Inst.q11_nao/sums[10]))
+        else:
+            line_of_interest.q11_resp = u'-'
+            line_of_interest.q11_porc = 0
+
+        if sums[11] != 0:
+            line_of_interest.q12_resp = u'Sim'
+            line_of_interest.q12_porc = int(100*(Inst.q12_sim/sums[11]))
+            if Inst.q12_nao > Inst.q12_sim:
+                line_of_interest.q12_resp = u'Não'
+                line_of_interest.q12_porc = int(100*(Inst.q12_nao/sums[11]))
+        else:
+            line_of_interest.q12_resp = u'-'
+            line_of_interest.q12_porc = 0
+
+        if sums[12] != 0:
+            line_of_interest.q13_resp = u'Sim'
+            line_of_interest.q13_porc = int(100*(Inst.q13_sim/sums[12]))
+            if Inst.q13_nao > Inst.q13_sim:
+                line_of_interest.q13_resp = u'Não'
+                line_of_interest.q13_porc = int(100*(Inst.q13_nao/sums[12]))
+        else:
+            line_of_interest.q13_resp = u'-'
+            line_of_interest.q13_porc = 0
+
+        S.commit()
+
+
+    def CreateLineAnswerSumTeacher(Inst):
+        LocDB = create_engine(UserDB, echo=False)
+        LocS = sessionmaker(bind=LocDB)()
+
+        LocTeacher = LocS.query(Teacher).filter(
+            Teacher.id == Inst.id).one()
+
+        NewAnswerSumTeacher = AnswerSumTeacher(
+        teacher = LocTeacher,
+        q6_alta = 0,
+        q6_normal = 0,
+        q6_baixa = 0,
+        q7_sim = 0,
+        q7_nao = 0,
+        q8_boa = 0,
+        q8_media = 0,
+        q8_ruim = 0,
+        q9_sim = 0,
+        q9_nao = 0,
+        q10_sim = 0,
+        q11_sim = 0,
+        q10_nao = 0,
+        q11_nao = 0,
+        q12_sim = 0,
+        q12_nao = 0,
+        q13_sim = 0,
+        q13_nao = 0
+        )
+        LocS.add(NewAnswerSumTeacher)
+        LocS.commit()
+
+    def CreateLineTeacherDisplay(Inst):
+        LocDB = create_engine(UserDB, echo=False)
+        LocS = sessionmaker(bind=LocDB)()
+
+        LocTeacher = LocS.query(Teacher).filter(
+            Teacher.id == Inst.id).one()
+
+        NewTeacherDisplay = TeacherDisplay(
+        q6_resp = u'-',
+        q6_porc = 0,
+        q7_resp = u'-',
+        q7_porc = 0,
+        q8_resp = u'-',
+        q8_porc = 0,
+        q9_resp = u'-',
+        q9_porc = 0,
+        q10_resp = u'-',
+        q10_porc = 0,
+        q11_resp = u'-',
+        q11_porc = 0,
+        q12_resp = u'-',
+        q12_porc = 0,
+        q13_resp = u'-',
+        q13_porc = 0,
+        teacher = LocTeacher
+        )
+        LocS.add(NewTeacherDisplay)
+        LocS.commit()
+
+    def CreateLineSubjectDisplay(Inst):
+        LocDB = create_engine(UserDB, echo=False)
+        LocS = sessionmaker(bind=LocDB)()
+
+        LocSubject = LocS.query(Subject).filter(
+            Subject.id == Inst.id).one()
+
+        NewSubjectDisplay = SubjectDisplay(
+            q1_resp = u'-',
+            q1_porc = 0,
+            q2_resp = u'-',
+            q2_porc = 0,
+            q3_resp = u'-',
+            q3_porc = 0,
+            q4_resp = u'-',
+            q4_porc = 0,
+            q5_resp = u'-',
+            q5_porc =  0,
+            subject = LocSubject
+        )
+        LocS.add(NewSubjectDisplay)
+        LocS.commit()
+
+
+    def CreateLineAnswerSumSubject(Inst):
+        LocDB = create_engine(UserDB, echo=False)
+        LocS = sessionmaker(bind=LocDB)()
+
+        LocSubject = LocS.query(Subject).filter(
+            Subject.id == Inst.id).one()
+
+        NewAnswerSumSubject = AnswerSumSubject(
+            subject = LocSubject,
+            q1_sim = 0,
+            q1_nao = 0,
+            q2_correto = 0,
+            q2_antes = 0,
+            q2_depois = 0,
+            q3_adequada = 0,
+            q3_curta = 0,
+            q3_longa = 0,
+            q4_alta = 0,
+            q4_normal = 0,
+            q4_baixa = 0,
+            q5_alta = 0,
+            q5_normal = 0,
+            q5_baixa = 0
+        )
+        LocS.add(NewAnswerSumSubject)
+        LocS.commit()
+
 
     # Page classes (handlers)
     class LoginPage:
@@ -317,8 +606,6 @@ def Setup():
                     if UserCall.password == Form['senha'].value:
                         # TODO Check email confirmation
                         Session.user_id = UserCall.id
-                        global StudentName
-                        StudentName = UserCall.student.name
                         raise web.seeother('/')
                     else:
                         return Render.login(Form, "Senha inválida", Render)
@@ -464,6 +751,16 @@ def Setup():
 
         def GET(self):
             IsLogged()
+
+            LocDB = create_engine(UserDB, echo=False)
+            LocS = sessionmaker(bind=LocDB)()
+
+            if (LocS.query(AnswerSumTeacher).filter(self.TeacherInst.id == AnswerSumTeacher.teacher_id).count())==0:
+                CreateLineAnswerSumTeacher(self.TeacherInst)
+            if (LocS.query(TeacherDisplay).filter(self.TeacherInst.id == TeacherDisplay.teacher_id).count())==0:
+                CreateLineTeacherDisplay(self.TeacherInst)
+
+
             return Render.teacherpage(self.TeacherInst, Render)
 
         def POST(self):
@@ -546,42 +843,8 @@ def Setup():
                 LocS.add(NewSum)
                 LocS.commit()
 
-            if ((LocS.query(OfferingDisplay).filter(OfferingDisplay.offering_id == self.OfferingInst.id)).count()) == 0:
-                NewDisplay=OfferingDisplay(
-                q1_resp = '-',
-                q1_porc = 101,
-                q2_resp = '-',
-                q2_porc = 101,
-                q3_resp = '-',
-                q3_porc = 101,
-                q4_resp = '-',
-                q4_porc = 101,
-                q5_resp = '-',
-                q5_porc = 101,
-                q6_resp = '-',
-                q6_porc = 101,
-                q7_resp = '-',
-                q7_porc = 101,
-                q8_resp = '-',
-                q8_porc = 101,
-                q9_resp = '-',
-                q9_porc = 101,
-                q10_resp = '-',
-                q10_porc = 101,
-                q11_resp = '-',
-                q11_porc = 101,
-                q12_resp = '-',
-                q12_porc = 101,
-                q13_resp = '-',
-                q13_porc = 101,
-                offering = LocOffering
-                )
-
-                LocS.add(NewDisplay)
-                LocS.commit()
-
-            #modificar o template para usar a variável "already_evaluated" (By Raul) -- OK!
-            return Render.offeringpage(self.OfferingInst, Render, form, already_evaluated)
+            #modificar o template para usar a variável "already_evaluated" (By Raul)
+            return Render.offeringpage(self.OfferingInst, Render, form)
 
         def POST(self):
             IsLogged()
@@ -649,16 +912,19 @@ def Setup():
     class SearchTeacher:
         def GET(self):
             IsLogged()
+
             return Render.searchteacher(Render)
 
     class SearchSubject:
         def GET(self):
             IsLogged()
+
             return Render.searchsubject(Render)
 
     class SearchOffering:
         def GET(self):
             IsLogged()
+
             return Render.searchoffering(Render)
 
     class EvaluatePage:
@@ -728,11 +994,15 @@ def Setup():
             LocS.commit()
 
             elemento = LocS.query(AnswerSum).filter(AnswerSum.offering_id == self.OfferingInst.id).one()
+            professor = LocS.query(AnswerSumTeacher).filter(AnswerSumTeacher.teacher_id == self.OfferingInst.teacher_id).one()
+            disciplina = LocS.query(AnswerSumSubject).filter(AnswerSumSubject.subject_id == self.OfferingInst.subject_id).one()
 
             if auxiliar['0.0'] == u' sim ':
                 elemento.q1_sim += 1
+                disciplina.q1_sim += 1
             elif auxiliar['0.0'] == u' não ':
                 elemento.q1_nao += 1
+                disciplina.q1_nao += 1
 
             if auxiliar['1.0'] == u' correto ':
                 elemento.q2_correto += 1
@@ -743,72 +1013,101 @@ def Setup():
 
             if auxiliar['2.0'] == u' adequada ':
                 elemento.q3_adequada += 1
+                disciplina.q3_adequada += 1
             elif auxiliar['2.0'] == u' curta ':
                 elemento.q3_curta += 1
+                disciplina.q3_curta += 1
             elif auxiliar['2.0'] == u' longa ':
                 elemento.q3_longa += 1
+                disciplina.q3_longa += 1
 
             if auxiliar['3.0'] == u' alta ':
                 elemento.q4_alta += 1
+                disciplina.q4_alta += 1
             elif auxiliar['3.0'] == u' normal ':
                 elemento.q4_normal += 1
+                disciplina.q4_normal += 1
             elif auxiliar['3.0'] == u' baixa ':
                 elemento.q4_baixa += 1
+                disciplina.q4_baixa += 1
 
             if auxiliar['4.0'] == u' alta ':
                 elemento.q5_alta += 1
+                disciplina.q5_alta += 1
             elif auxiliar['4.0'] == u' normal ':
                 elemento.q5_normal += 1
+                disciplina.q5_normal += 1
             elif auxiliar['4.0'] == u' baixa ':
                 elemento.q5_baixa += 1
+                disciplina.q5_baixa += 1
 
             if auxiliar['5.0'] == u' alta ':
                 elemento.q6_alta += 1
+                professor.q6_alta += 1
             elif auxiliar['5.0'] == u' normal ':
                 elemento.q6_normal += 1
+                professor.q6_normal += 1
             elif auxiliar['5.0'] == u' baixa ':
                 elemento.q6_baixa += 1
+                professor.q6_baixa += 1
 
             if auxiliar['6.0'] == u' sim ':
                 elemento.q7_sim += 1
+                professor.q7_sim += 1
             elif auxiliar['6.0'] == u' não ':
                 elemento.q7_nao += 1
+                professor.q7_nao += 1
 
             if auxiliar['7.0'] == u' boa ':
                 elemento.q8_boa += 1
+                professor.q8_boa += 1
             elif auxiliar['7.0'] == u' média ':
                 elemento.q8_media += 1
+                professor.q8_media += 1
             elif auxiliar['7.0'] == u' ruim ':
                 elemento.q8_ruim += 1
+                professor.q8_ruim += 1
 
             if auxiliar['8.0'] == u' sim ':
                 elemento.q9_sim += 1
+                professor.q9_sim += 1
             elif auxiliar['8.0'] == u' não ':
                 elemento.q9_nao += 1
+                professor.q9_nao += 1
 
             if auxiliar['9.0'] == u' sim ':
                 elemento.q10_sim += 1
+                professor.q10_sim += 1
             elif auxiliar['9.0'] == u' não ':
                 elemento.q10_nao += 1
+                professor.q10_nao += 1
 
             if auxiliar['10.0'] == u' sim ':
                 elemento.q11_sim += 1
+                professor.q11_sim += 1
             elif auxiliar['10.0'] == u' não ':
                 elemento.q11_nao += 1
+                professor.q11_nao += 1
 
             if auxiliar['11.0'] == u' sim ':
                 elemento.q12_sim += 1
+                professor.q12_sim += 1
             elif auxiliar['11.0'] == u' não ':
                 elemento.q12_nao += 1
+                professor.q12_nao += 1
 
             if auxiliar['12.0'] == u' sim ':
                 elemento.q13_sim += 1
+                professor.q13_sim += 1
             elif auxiliar['12.0'] == u' não ':
                 elemento.q13_nao += 1
+                professor.q13_nao += 1
 
             LocS.commit()
 
-            UpdateDisplayOffering(elemento)
+            UpdateOfferingDisplay(elemento)
+            UpdateTeacherDisplay(professor)
+            UpdateSubjectDisplay(disciplina)
             raise web.seeother('/oferecimentos')
 #            try:
 #
@@ -821,6 +1120,59 @@ def Setup():
     class FaqPage:
         def GET(self):
             IsLogged()
+
+            LocDB = create_engine(UserDB, echo=False)
+            S = sessionmaker(bind=LocDB)()
+
+            for Line in S.query(Subject):
+                if (S.query(AnswerSumSubject).filter(Line.id == AnswerSumSubject.subject_id).count())==0:
+                    CreateLineAnswerSumSubject(Line)
+                if (S.query(SubjectDisplay).filter(Line.id == SubjectDisplay.subject_id).count())==0:
+                    CreateLineSubjectDisplay(Line)
+
+            for Line in S.query(Teacher):
+                if (S.query(AnswerSumTeacher).filter(Line.id == AnswerSumTeacher.teacher_id).count())==0:
+                    CreateLineAnswerSumTeacher(Line)
+                if (S.query(TeacherDisplay).filter(Line.id == TeacherDisplay.teacher_id).count())==0:
+                    CreateLineTeacherDisplay(Line)
+
+            for Line in S.query(Offering):
+                if ((S.query(OfferingDisplay).filter(OfferingDisplay.offering_id == Line.id)).count()) == 0:
+                    LocOffering = S.query(Offering).filter(
+                        Offering.id == Line.id).one()
+                    NewDisplay=OfferingDisplay(
+                    q1_resp = u'-',
+                    q1_porc = 0,
+                    q2_resp = u'-',
+                    q2_porc = 0,
+                    q3_resp = u'-',
+                    q3_porc = 0,
+                    q4_resp = u'-',
+                    q4_porc = 0,
+                    q5_resp = u'-',
+                    q5_porc = 0,
+                    q6_resp = u'-',
+                    q6_porc = 0,
+                    q7_resp = u'-',
+                    q7_porc = 0,
+                    q8_resp = u'-',
+                    q8_porc = 0,
+                    q9_resp = u'-',
+                    q9_porc = 0,
+                    q10_resp = u'-',
+                    q10_porc = 0,
+                    q11_resp = u'-',
+                    q11_porc = 0,
+                    q12_resp = u'-',
+                    q12_porc = 0,
+                    q13_resp = u'-',
+                    q13_porc = 0,
+                    offering = LocOffering
+                    )
+
+                    S.add(NewDisplay)
+                    S.commit()
+
             return Render.faq(Render)
 
     class IndexPage:

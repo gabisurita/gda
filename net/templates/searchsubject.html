@@ -38,6 +38,7 @@ $ Questions = S.query(QuestionsSubject)
                 <tbody class="list">
                 $for Line in SubjectsList:
                   $ URL = Line.EncodeURL()
+                  $ line_of_interest = S.query(SubjectDisplay).filter(Line.id == SubjectDisplay.subject_id).one()
                   <tr>
                     <td>
                       <a class="codigo black-link" href="$URL">$Line.code</a>
@@ -45,36 +46,22 @@ $ Questions = S.query(QuestionsSubject)
                     <td>
                       <a class="nome black-link" href="$URL">$Line.name</a>
                     </td>
-                    $ rand1 = random.randrange(50,100)
-                    $ rand2 = random.randrange(35,100)
-                    $ rand3 = random.randrange(35,100)
-                    $ rand4 = random.randrange(35,100)
-                    $ s1 = "Sim"
-                    $if rand1%2:
-                      $ s1 = "Não"
+                    $ s1 = line_of_interest.q1_resp
+                    $ rand1 = line_of_interest.q1_porc
                     $ q1 = ' %s %d%%' % (s1,rand1)
-                    $ s2 = "Adequada"
-                    $if (rand2%3)==1:
-                      $ s2 = "Longa"
-                    $if (rand2%3)==2:
-                      $ s2 = "Curta"
-                    $ q2 = ' %s %d%%' % (s2,rand2)
-                    $ s3 = "Normal"
-                    $if (rand3%3)==1:
-                      $ s3 = "Alta"
-                    $if (rand3%3)==2:
-                      $ s3 = "Baixa"
+                    $ s3 = line_of_interest.q3_resp
+                    $ rand3 = line_of_interest.q3_porc
                     $ q3 = ' %s %d%%' % (s3,rand3)
-                    $ s4 = "Normal"
-                    $if (rand4%3)==1:
-                      $ s4 = "Difícil"
-                    $if (rand2%3)==2:
-                      $ s4 = "Fácil"
+                    $ s4 = line_of_interest.q4_resp
+                    $ rand4 = line_of_interest.q4_porc
                     $ q4 = ' %s %d%%' % (s4,rand4)
+                    $ s5 = line_of_interest.q5_resp
+                    $ rand5 = line_of_interest.q5_porc
+                    $ q5 = ' %s %d%%' % (s5,rand5)
                   <td class="quest1 text-right">$q1</td>
-                  <td class="quest2 text-right">$q2</td>
-                  <td class="quest3 text-right">$q3</td>
-                  <td class="quest4 text-right">$q4</td>
+                  <td class="quest2 text-right">$q3</td>
+                  <td class="quest3 text-right">$q4</td>
+                  <td class="quest4 text-right">$q5</td>
                   </tr>
                 </tbody>
               </table>

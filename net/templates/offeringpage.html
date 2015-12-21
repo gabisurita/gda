@@ -1,9 +1,37 @@
-$def with (OfferingInst, Render, form, already_evaluated)
+$def with (OfferingInst, Render, form)
 
 $ S = sessionmaker(bind=DB)()
 
 $ ThisComments = S.query(OfferingComment).filter(OfferingComment.offering == OfferingInst)
 $ ThisTeacher = S.query(Teacher).filter(Teacher.id == OfferingInst.teacher_id).one()
+
+$ display_line = S.query(OfferingDisplay).filter(OfferingDisplay.offering_id == OfferingInst.id).one()
+$ sum_line = S.query(AnswerSum).filter(AnswerSum.offering_id == OfferingInst.id).one()
+
+$ q1 = ' %s %d%%' % (display_line.q1_resp, display_line.q1_porc)
+$ s1 = (sum_line.q1_sim)+(sum_line.q1_nao)
+$ q3 = ' %s %d%%' % (display_line.q3_resp, display_line.q3_porc)
+$ s3 = (sum_line.q3_adequada)+(sum_line.q3_longa)+(sum_line.q3_curta)
+$ q4 = ' %s %d%%' % (display_line.q4_resp, display_line.q4_porc)
+$ s4 = (sum_line.q4_alta)+(sum_line.q4_normal)+(sum_line.q4_baixa)
+$ q5 = ' %s %d%%' % (display_line.q5_resp, display_line.q5_porc)
+$ s5 = (sum_line.q5_alta)+(sum_line.q5_normal)+(sum_line.q5_baixa)
+$ q6 = ' %s %d%%' % (display_line.q6_resp, display_line.q6_porc)
+$ s6 = (sum_line.q6_alta)+(sum_line.q6_normal)+(sum_line.q6_baixa)
+$ q7 = ' %s %d%%' % (display_line.q7_resp, display_line.q7_porc)
+$ s7 = (sum_line.q7_sim)+(sum_line.q7_nao)
+$ q8 = ' %s %d%%' % (display_line.q8_resp, display_line.q8_porc)
+$ s8 = (sum_line.q8_boa)+(sum_line.q8_media)+(sum_line.q8_ruim)
+$ q9 = ' %s %d%%' % (display_line.q9_resp, display_line.q9_porc)
+$ s9 = (sum_line.q9_sim)+(sum_line.q9_nao)
+$ q10 = ' %s %d%%' % (display_line.q10_resp, display_line.q10_porc)
+$ s10 = (sum_line.q10_sim)+(sum_line.q10_nao)
+$ q11 = ' %s %d%%' % (display_line.q11_resp, display_line.q11_porc)
+$ s11 = (sum_line.q11_sim)+(sum_line.q11_nao)
+$ q12 = ' %s %d%%' % (display_line.q12_resp, display_line.q12_porc)
+$ s12 = (sum_line.q12_sim)+(sum_line.q12_nao)
+$ q13 = ' %s %d%%' % (display_line.q13_resp, display_line.q13_porc)
+$ s13 = (sum_line.q13_sim)+(sum_line.q13_nao)
 
 $ SearchRate = S.query(OfferingRate).filter(OfferingRate.offering_id == OfferingInst.id)
 $ Rated = 0
@@ -37,9 +65,6 @@ $for Line in SearchRate:
             <h4> $OfferingInst.semester.semº semestre de $OfferingInst.semester.year </h4>
         </div>
         <div class="col-sm-3">
-        $if already_evaluated:
-          <button class="btn btn-success btn-block" disabled>Você já avaliou este oferecimento</button>
-        $else:
           <form method="GET" action="$OfferingInst.EvaluationURL()">
             <button class="btn btn-primary btn-block" type="submit">Avaliar este oferecimento</button>
           </form>
@@ -105,63 +130,63 @@ $for Line in SearchRate:
                 <tbody>
                   <tr>
                     <td> A disciplina é necessária ao currículo? </td>
-                    <td style="text-align:right;"> Sim (59%)  </td>
-                    <td style="text-align:right;"> 23 votos</td>
+                    <td style="text-align:right;"> $q1  </td>
+                    <td style="text-align:right;"> $s1 </td>
                   </tr>
                   <tr>
                     <td> Como você avalia a ementa da disciplina? </td>
-                    <td style="text-align:right;"> Adequada (82%)  </td>
-                    <td td style="text-align:right;"> 21 votos</td>
+                    <td style="text-align:right;"> $q3  </td>
+                    <td td style="text-align:right;"> $s3 </td>
                   </tr>
                   <tr>
-                    <td> Como você avalia a dedicação exigida pela disciplina? </td>
-                    <td style="text-align:right;"> Alta (60%)  </td>
-                    <td style="text-align:right;"> 33 votos</td>
+                    <td> A dedicação exigida pela disciplina foi: </td>
+                    <td style="text-align:right;"> $q4  </td>
+                    <td style="text-align:right;"> $s4 </td>
                   </tr>
                   <tr>
                     <td> Como você avalia a dificuldade inerente à disciplina? </td>
-                    <td style="text-align:right;"> Fácil (46%)  </td>
-                    <td style="text-align:right;"> 30 votos</td>
+                    <td style="text-align:right;"> $q5  </td>
+                    <td style="text-align:right;"> $s5 </td>
                   </tr>
                   <tr>
                     <td> A bibliografia recomendada foi adequada? </td>
-                    <td style="text-align:right;"> Sim (86%) </td>
-                    <td style="text-align:right;"> 25 votos</td>
+                    <td style="text-align:right;"> $q7 </td>
+                    <td style="text-align:right;"> $s7 </td>
                   </tr>
                   <tr>
                     <td> Como você avalia a didática do professor? </td>
-                    <td style="text-align:right;"> Boa (75%) </td>
-                    <td style="text-align:right;"> 26 votos</td>
+                    <td style="text-align:right;"> $q8 </td>
+                    <td style="text-align:right;"> $s8 </td>
                   </tr>
                   <tr>
                     <td> O professor se preocupou em tornar as aulas interessantes? </td>
-                    <td style="text-align:right;"> Sim (90%)  </td>
-                    <td style="text-align:right;"> 20 votos</td>
+                    <td style="text-align:right;"> $q9  </td>
+                    <td style="text-align:right;"> $s9 </td>
                   </tr>
                   <tr>
                     <td> O professor se mostrou acessível para tirar dúvidas? </td>
-                    <td style="text-align:right;"> Sim (82%)  </td>
-                    <td style="text-align:right;"> 15 votos</td>
+                    <td style="text-align:right;"> $q10  </td>
+                    <td style="text-align:right;"> $s10 </td>
                   </tr>
                   <tr>
                     <td > As avaliações foram coerentes? </td>
-                    <td style="text-align:right;"> Não (66%)  </td>
-                    <td style="text-align:right;"> 18 votos</td>
+                    <td style="text-align:right;"> $q11  </td>
+                    <td style="text-align:right;"> $s11 </td>
                   </tr>
                   <tr>
                     <td> Ir às aulas foi importante? </td>
-                    <td style="text-align:right;"> Não (53%)  </td>
-                    <td style="text-align:right;"> 27 votos</td>
+                    <td style="text-align:right;"> $q12  </td>
+                    <td style="text-align:right;"> $s12 </td>
                   </tr>
                   <tr>
                     <td> Como você avalia a dificuldade inerente ao professor? </td>
-                    <td style="text-align:right;"> Alta (82%) </td>
-                    <td style="text-align:right;"> 22 votos</td>
+                    <td style="text-align:right;"> $q6 </td>
+                    <td style="text-align:right;"> $s6 </td>
                   </tr>
                   <tr>
                     <td> Faria outra disciplina com este professor? </td>
-                    <td style="text-align:right;"> Sim (59%)  </td>
-                    <td style="text-align:right;"> 30 votos</td>
+                    <td style="text-align:right;"> $q13  </td>
+                    <td style="text-align:right;"> $s13 </td>
                   </tr>
                 </tbody>
               </table>
