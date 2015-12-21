@@ -63,6 +63,7 @@ body > .container {
   transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
 }
 
+/* ********** TABLES ********** */
 
 .tableFloatingHeaderOriginal th {
   background-color: #2196f3;
@@ -70,10 +71,11 @@ body > .container {
   color: #b2dbfb;
 }
 
-.nav.navbar-nav>li>a {
-  font-size: 16px;
-  /*font-weight: 800;*/
-  /*color: #333;*/
+.table-column-border > tbody > tr > td,
+.table-column-border > tfoot > tr > td {
+  border-right: 1px solid #e8e8e8;
+  border-bottom: 0;
+  border-top: 0;
 }
 
 /* **** NAVBAR PAPER THEME BOOTSTRAP **** */
@@ -95,6 +97,12 @@ body > .container {
   font-family: 'Pricedown', Arial;
   color: white;
   font-size: 48px;
+}
+
+.nav.navbar-nav>li>a {
+  font-size: 16px;
+  /*font-weight: 800;*/
+  /*color: #333;*/
 }
 
 /* ********** BLACK LINK ********** */

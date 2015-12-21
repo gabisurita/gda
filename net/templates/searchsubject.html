@@ -47,21 +47,33 @@ $ Questions = S.query(QuestionsSubject)
                       <a class="nome black-link" href="$URL">$Line.name</a>
                     </td>
                     $ s1 = line_of_interest.q1_resp
-                    $ rand1 = line_of_interest.q1_porc
-                    $ q1 = ' %s %d%%' % (s1,rand1)
+                    $ p1 = line_of_interest.q1_porc
+                    $ q1 = ' %s %d%%' % (s1,p1)
                     $ s3 = line_of_interest.q3_resp
-                    $ rand3 = line_of_interest.q3_porc
-                    $ q3 = ' %s %d%%' % (s3,rand3)
+                    $ p3 = line_of_interest.q3_porc
+                    $ q3 = ' %s %d%%' % (s3,p3)
                     $ s4 = line_of_interest.q4_resp
-                    $ rand4 = line_of_interest.q4_porc
-                    $ q4 = ' %s %d%%' % (s4,rand4)
+                    $ p4 = line_of_interest.q4_porc
+                    $ q4 = ' %s %d%%' % (s4,p4)
                     $ s5 = line_of_interest.q5_resp
-                    $ rand5 = line_of_interest.q5_porc
-                    $ q5 = ' %s %d%%' % (s5,rand5)
-                  <td class="quest1 text-right">$q1</td>
-                  <td class="quest2 text-right">$q3</td>
-                  <td class="quest3 text-right">$q4</td>
-                  <td class="quest4 text-right">$q5</td>
+                    $ p5 = line_of_interest.q5_porc
+                    $ q5 = ' %s %d%%' % (s5,p5)
+                    $if p1:
+                      <td class="text-right">$q1</td>
+                    $else:
+                      <td class="text-right"><i class="fa fa-minus"></i></td>
+                    $if p3:
+                      <td class="text-right">$q3</td>
+                    $else:
+                      <td class="text-right"><i class="fa fa-minus"></i></td>
+                    $if p4:
+                      <td class="text-right">$q4</td>
+                    $else:
+                      <td class="text-right"><i class="fa fa-minus"></i></td>
+                    $if p5:
+                      <td class="text-right">$q5</td>
+                    $else:
+                      <td class="text-right"><i class="fa fa-minus"></i></td>
                   </tr>
                 </tbody>
               </table>

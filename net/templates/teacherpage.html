@@ -10,23 +10,54 @@ $ ThisComments = S.query(TeacherComment).filter(TeacherComment.teacher == Teache
 $ display_line = S.query(TeacherDisplay).filter(TeacherDisplay.teacher_id == TeacherInst.id).one()
 $ sum_line = S.query(AnswerSumTeacher).filter(AnswerSumTeacher.teacher_id == TeacherInst.id).one()
 
-$ q6 = ' %s %d%%' % (display_line.q6_resp, display_line.q6_porc)
-$ s6 = (sum_line.q6_alta)+(sum_line.q6_normal)+(sum_line.q6_baixa)
-$ q7 = ' %s %d%%' % (display_line.q7_resp, display_line.q7_porc)
-$ s7 = (sum_line.q7_sim)+(sum_line.q7_nao)
-$ q8 = ' %s %d%%' % (display_line.q8_resp, display_line.q8_porc)
-$ s8 = (sum_line.q8_boa)+(sum_line.q8_media)+(sum_line.q8_ruim)
-$ q9 = ' %s %d%%' % (display_line.q9_resp, display_line.q9_porc)
-$ s9 = (sum_line.q9_sim)+(sum_line.q9_nao)
-$ q10 = ' %s %d%%' % (display_line.q10_resp, display_line.q10_porc)
-$ s10 = (sum_line.q10_sim)+(sum_line.q10_nao)
-$ q11 = ' %s %d%%' % (display_line.q11_resp, display_line.q11_porc)
-$ s11 = (sum_line.q11_sim)+(sum_line.q11_nao)
-$ q12 = ' %s %d%%' % (display_line.q12_resp, display_line.q12_porc)
-$ s12 = (sum_line.q12_sim)+(sum_line.q12_nao)
-$ q13 = ' %s %d%%' % (display_line.q13_resp, display_line.q13_porc)
-$ s13 = (sum_line.q13_sim)+(sum_line.q13_nao)
 
+$ s6 = (sum_line.q6_alta)+(sum_line.q6_normal)+(sum_line.q6_baixa)
+$if s6:
+  $ q6 = ' %s %s%%' % (display_line.q6_resp, display_line.q6_porc)
+$else:
+  $ q6 = ""
+
+$ s7 = (sum_line.q7_sim)+(sum_line.q7_nao)
+$if s7:
+  $ q7 = ' %s %d%%' % (display_line.q7_resp, display_line.q7_porc)
+$else:
+  $ q7 = ""
+
+$ s8 = (sum_line.q8_boa)+(sum_line.q8_media)+(sum_line.q8_ruim)
+$if s8:
+  $ q8 = ' %s %d%%' % (display_line.q8_resp, display_line.q8_porc)
+$else:
+  $ q8 = ""
+
+$ s9 = (sum_line.q9_sim)+(sum_line.q9_nao)
+$if s9:
+  $ q9 = ' %s %d%%' % (display_line.q9_resp, display_line.q9_porc)
+$else:
+  $ q9 = ""
+
+$ s10 = (sum_line.q10_sim)+(sum_line.q10_nao)
+$if s10:
+  $ q10 = ' %s %d%%' % (display_line.q10_resp, display_line.q10_porc)
+$else:
+  $ q10 = ""
+
+$ s11 = (sum_line.q11_sim)+(sum_line.q11_nao)
+$if s11:
+  $ q11 = ' %s %d%%' % (display_line.q11_resp, display_line.q11_porc)
+$else:
+  $ q11 = ""
+
+$ s12 = (sum_line.q12_sim)+(sum_line.q12_nao)
+$if s12:
+  $ q12 = ' %s %d%%' % (display_line.q12_resp, display_line.q12_porc)
+$else:
+  $ q12 = ""
+
+$ s13 = (sum_line.q13_sim)+(sum_line.q13_nao)
+$if s13:
+  $ q13 = ' %s %d%%' % (display_line.q13_resp, display_line.q13_porc)
+$else:
+  $ q13 = ""
 
 <!DOCTYPE html>
 <html>
@@ -43,48 +74,72 @@ $ s13 = (sum_line.q13_sim)+(sum_line.q13_nao)
       <div class="row">
         <div class="col-sm-7">
           <div class="panel panel-default">
-            <div class="panel-heading">Avaliação</div>
+            <div class="panel-heading col-sm-6">Avaliação</div>
+            <div class="panel-heading text-right col-sm-6">Respostas &nbsp; &nbsp; Total</div>
               <table class="table">
                 <tbody>
                   <tr>
                     <td> A bibliografia recomendada foi adequada? </td>
-                    <td> $q7 </td>
-                    <td> $s7 </td>
+                    <td class="text-right"> $q7 </td>
+                  $if s7 == 0:
+                    <td class="text-right"> <i class="fa fa-minus"></i></td>
+                  $else:
+                    <td class="text-right"> $s7 </td>
                   </tr>
                   <tr>
                     <td> Como você avalia a didática do professor? </td>
-                    <td> $q8 </td>
-                    <td> $s8 </td>
+                    <td class="text-right"> $q8 </td>
+                  $if s8 == 0:
+                    <td class="text-right"> <i class="fa fa-minus"></i></td>
+                  $else:
+                    <td class="text-right"> $s8 </td>
                   </tr>
                   <tr>
                     <td> O professor se preocupou em tornar as aulas interessantes? </td>
-                    <td> $q9  </td>
-                    <td> $s9 </td>
+                    <td class="text-right"> $q9 </td>
+                  $if s9 == 0:
+                    <td class="text-right"> <i class="fa fa-minus"></i></td>
+                  $else:
+                    <td class="text-right"> $s9 </td>
                   </tr>
                   <tr>
                     <td> O professor se mostrou acessível para tirar dúvidas? </td>
-                    <td> $q10 </td>
-                    <td> $s10 </td>
+                    <td class="text-right"> $q10 </td>
+                  $if s10 == 0:
+                    <td class="text-right"> <i class="fa fa-minus"></i></td>
+                  $else:
+                    <td class="text-right"> $s10 </td>
                   </tr>
                   <tr>
                     <td> As avaliações foram coerentes? </td>
-                    <td> $q11  </td>
-                    <td> $s11 </td>
-                  </tr>
+                    <td class="text-right"> $q11 </td>
+                  $if s11 == 0:
+                    <td class="text-right"> <i class="fa fa-minus"></i></td>
+                  $else:
+                    <td class="text-right"> $s11 </td>                  </tr>
                   <tr>
                     <td> Ir às aulas foi importante? </td>
-                    <td> $q12 </td>
-                    <td> $s12 </td>
+                    <td class="text-right"> $q12 </td>
+                  $if s12 == 0:
+                    <td class="text-right"> <i class="fa fa-minus"></i></td>
+                  $else:
+                    <td class="text-right"> $s12 </td>
                   </tr>
                   <tr>
                     <td> Como você avalia a dificuldade inerente ao professor? </td>
-                    <td> $q6 </td>
-                    <td> $s6 </td>
+                      <td class="text-right"> $q6 </td>
+                    $if s6 == 0:
+                      <td class="text-right"> <i class="fa fa-minus"></i></td>
+                    $else:
+                      <td class="text-right"> $s6 </td>
                   </tr>
                   <tr>
                     <td> Faria outra disciplina com este professor? </td>
-                    <td> $q13  </td>
-                    <td> $s13 </td>
+                    <td class="text-right"> $q13 </td>
+                  $if s13 == 0:
+                    <td class="text-right"> <i class="fa fa-minus"></i></td>
+                  $else:
+                    <td class="text-right"> $s13 </td>
                   </tr>
                 </tbody>
               </table>
