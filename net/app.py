@@ -606,6 +606,8 @@ def Setup():
                     if UserCall.password == Form['senha'].value:
                         # TODO Check email confirmation
                         Session.user_id = UserCall.id
+                        global StudentName
+                        StudentName = UserCall.student.name
                         raise web.seeother('/')
                     else:
                         return Render.login(Form, "Senha inválida", Render)
@@ -844,7 +846,7 @@ def Setup():
                 LocS.commit()
 
             #modificar o template para usar a variável "already_evaluated" (By Raul)
-            return Render.offeringpage(self.OfferingInst, Render, form)
+            return Render.offeringpage(self.OfferingInst, Render, form, already_evaluated)
 
         def POST(self):
             IsLogged()

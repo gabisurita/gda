@@ -1,4 +1,4 @@
-$def with (OfferingInst, Render, form)
+$def with (OfferingInst, Render, form, already_evaluated)
 
 $ S = sessionmaker(bind=DB)()
 
@@ -65,9 +65,12 @@ $for Line in SearchRate:
             <h4> $OfferingInst.semester.semº semestre de $OfferingInst.semester.year </h4>
         </div>
         <div class="col-sm-3">
-          <form method="GET" action="$OfferingInst.EvaluationURL()">
-            <button class="btn btn-primary btn-block" type="submit">Avaliar este oferecimento</button>
-          </form>
+          $if already_evaluated:
+            <button class="btn btn-success btn-block" disabled>Você já avaliou este oferecimento</button>
+          $else:
+            <form method="GET" action="$OfferingInst.EvaluationURL()">
+              <button class="btn btn-primary btn-block" type="submit">Avaliar este oferecimento</button>
+            </form>
         </div>
       </div>
       <br>
