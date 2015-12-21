@@ -10,7 +10,7 @@ $ S = sessionmaker(bind=DB)()
       <div>
         $if not Comment.anonymous:
           <b>$Comment.user.student.name</b>
-          sobre <b>$subj.name</b>
+          sobre <a class="black-link" href=""><b>$subj.code  $(oferec.semester.sem)s$(oferec.semester.year)</b></a>
         $else:
           <b>Anônimo</b>
         <br/>
