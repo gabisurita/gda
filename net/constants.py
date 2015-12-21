@@ -11,6 +11,8 @@ import random
 
 BaseTitle = "GDA"
 
+StudentName = "User Name"
+
 # Base Directory
 BaseDir = os.path.dirname(os.path.abspath(__file__))
 UploadDir = BaseDir + '/uploads'
