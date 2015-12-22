@@ -190,7 +190,6 @@ input[type=radio][value=" longa "]:checked + label:before{
 /* ********** Login Page ********** */
 
 .login .form-signin {
-  max-width: 230px;
   margin: 0 auto;
 }
 .login .form-signin .form-signin-heading,

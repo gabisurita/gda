@@ -669,6 +669,8 @@ def Setup():
                     User.email == Form['E-mail'].value).one()
 
                 Session.user_id = UserCall.id
+                global StudentName
+                StudentName = UserCall.student.name
                 raise web.seeother('/')
 
 
