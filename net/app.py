@@ -1139,6 +1139,47 @@ def Setup():
                     S.add(NewDisplay)
                     S.commit()
 
+                if (S.query(AnswerSum.offering_id).filter(AnswerSum.offering_id == Line.id).count())==0:
+                    LocOffering = S.query(Offering).filter(
+                        Offering.id == Line.id).one()
+                    NewSum = AnswerSum(
+                    q1_sim = 0,
+                    q1_nao = 0,
+                    q2_correto = 0,
+                    q2_antes = 0,
+                    q2_depois = 0,
+                    q3_adequada = 0,
+                    q3_curta = 0,
+                    q3_longa = 0,
+                    q4_alta = 0,
+                    q4_normal = 0,
+                    q4_baixa = 0,
+                    q5_dificil = 0,
+                    q5_normal = 0,
+                    q5_facil = 0,
+                    q6_dificil = 0,
+                    q6_normal = 0,
+                    q6_facil = 0,
+                    q7_sim = 0,
+                    q7_nao = 0,
+                    q8_boa = 0,
+                    q8_media = 0,
+                    q8_ruim = 0,
+                    q9_sim = 0,
+                    q9_nao = 0,
+                    q10_sim = 0,
+                    q10_nao = 0,
+                    q11_sim = 0,
+                    q11_nao = 0,
+                    q12_sim = 0,
+                    q12_nao = 0,
+                    q13_sim = 0,
+                    q13_nao = 0,
+                    offering = LocOffering
+                    )
+                    S.add(NewSum)
+                    S.commit()
+
 
             return Render.faq(Render)
 
