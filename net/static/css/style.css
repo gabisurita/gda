@@ -127,6 +127,9 @@ body > .container {
  }
 
 /* ***** FORMS - FONT AWESOME  ***** */
+i.fa-minus{
+color: #D0D0D0;
+}
 
 input[type=radio] {
     display: none;
