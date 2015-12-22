@@ -833,7 +833,7 @@ def Setup():
             S.add(Rate)
             S.commit()
             #return self.OfferingInst.id
-            return Render.offeringpage(self.OfferingInst, Render,form)
+            return Render.offeringpage(self.OfferingInst, Render,form, False)
 
     # TODO Unfinished
     class UploadHandler:
