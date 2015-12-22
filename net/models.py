@@ -1,5 +1,6 @@
 #!/usr/env/python
 #encoding:utf-8
+
 """ GDA Website Database Models."""
 
 from constants import *
@@ -32,7 +33,8 @@ class Teacher(Base):
   name = Column('name', String)
 
   def EncodeURL(self):
-    return str("/docentes/%s" % self.name.lower().replace(" ","_").decode("utf8"))
+    return str("/docentes/%s" % self.name.lower().replace(" ","_").encode('utf8'))
+
 
 
 class Subject(Base):
@@ -147,6 +149,8 @@ class TeacherComment(Base):
   user = relationship(User)
   teacher_id = Column(Integer, ForeignKey('teacher.teacher_id'))
   teacher = relationship(Teacher)
+  offering_id = Column(Integer, ForeignKey('offering.offering_id'))
+  offering = relationship(Offering)
 
 
 class OfferingComment(Base):
@@ -254,12 +258,12 @@ class AnswerSum(Base):
     q4_alta = Column('q4_alta', Integer)
     q4_normal = Column('q4_normal', Integer)
     q4_baixa = Column('q4_baixa', Integer)
-    q5_alta = Column('q5_alta', Integer)
+    q5_dificil = Column('q5_dificil', Integer)
     q5_normal = Column('q5_normal', Integer)
-    q5_baixa = Column('q5_baixa', Integer)
-    q6_alta = Column('q6_alta', Integer)
+    q5_facil = Column('q5_facil', Integer)
+    q6_dificil = Column('q6_dificil', Integer)
     q6_normal = Column('q6_normal', Integer)
-    q6_baixa = Column('q6_baixa', Integer)
+    q6_facil = Column('q6_facil', Integer)
     q7_sim = Column('q7_sim', Integer)
     q7_nao = Column('q7_nao', Integer)
     q8_boa = Column('q8_boa', Integer)
@@ -277,6 +281,137 @@ class AnswerSum(Base):
     q13_nao = Column('q13_nao', Integer)
 
     offering = relationship(Offering)
+
+class AnswerSumTeacher(Base):
+    __tablename__ = "answersumteacher"
+
+    id = Column('answersumteacher_id', Integer, primary_key=True)
+    teacher_id = Column(Integer, ForeignKey('teacher.teacher_id'))
+    teacher = relationship(Teacher)
+
+    q6_dificil = Column('q6_dificil', Integer)
+    q6_normal = Column('q6_normal', Integer)
+    q6_facil = Column('q6_facil', Integer)
+    q7_sim = Column('q7_sim', Integer)
+    q7_nao = Column('q7_nao', Integer)
+    q8_boa = Column('q8_boa', Integer)
+    q8_media = Column('q8_media', Integer)
+    q8_ruim = Column('q8_ruim', Integer)
+    q9_sim = Column('q9_sim', Integer)
+    q9_nao = Column('q9_nao', Integer)
+    q10_sim = Column('q10_sim', Integer)
+    q10_nao = Column('q10_nao', Integer)
+    q11_sim = Column('q11_sim', Integer)
+    q11_nao = Column('q11_nao', Integer)
+    q12_sim = Column('q12_sim', Integer)
+    q12_nao = Column('q12_nao', Integer)
+    q13_sim = Column('q13_sim', Integer)
+    q13_nao = Column('q13_nao', Integer)
+
+
+class AnswerSumSubject(Base):
+    __tablename__ = "answersumsubject"
+
+    id = Column('answersumsubject_id', Integer, primary_key=True)
+    subject_id = Column(Integer, ForeignKey('subject.subject_id'))
+    subject = relationship(Subject)
+
+    q1_sim = Column('q1_sim', Integer)
+    q1_nao = Column('q1_nao', Integer)
+    q2_correto = Column('q2_correto', Integer)
+    q2_antes = Column('q2_antes', Integer)
+    q2_depois = Column('q2_depois', Integer)
+    q3_adequada = Column('q3_adequada', Integer)
+    q3_curta = Column('q3_curta', Integer)
+    q3_longa = Column('q3_longa', Integer)
+    q4_alta = Column('q4_alta', Integer)
+    q4_normal = Column('q4_normal', Integer)
+    q4_baixa = Column('q4_baixa', Integer)
+    q5_dificil = Column('q5_dificil', Integer)
+    q5_normal = Column('q5_normal', Integer)
+    q5_facil = Column('q5_facil', Integer)
+
+
+class TeacherDisplay(Base):
+
+    __tablename__ = "teacherdisplay"
+
+    id = Column('teacherdisplay_id', Integer, primary_key=True)
+
+    teacher_id = Column(Integer, ForeignKey('teacher.teacher_id'))
+    teacher = relationship(Teacher)
+
+    q6_resp = Column('q6_resp', String)
+    q6_porc = Column('q6_porc', Integer)
+    q7_resp = Column('q7_resp', String)
+    q7_porc = Column('q7_porc', Integer)
+    q8_resp = Column('q8_resp', String)
+    q8_porc = Column('q8_porc', Integer)
+    q9_resp = Column('q9_resp', String)
+    q9_porc = Column('q9_porc', Integer)
+    q10_resp = Column('q10_resp', String)
+    q10_porc = Column('q10_porc', Integer)
+    q11_resp = Column('q11_resp', String)
+    q11_porc = Column('q11_porc', Integer)
+    q12_resp = Column('q12_resp', String)
+    q12_porc = Column('q12_porc', Integer)
+    q13_resp = Column('q13_resp', String)
+    q13_porc = Column('q13_porc', Integer)
+
+class OfferingDisplay(Base):
+    __tablename__ = "offeringdisplay"
+
+    id = Column('offeringdisplay_id', Integer, primary_key=True)
+
+    q1_resp = Column('q1_resp', String)
+    q1_porc = Column('q1_porc', Integer)
+    q2_resp = Column('q2_resp', String)
+    q2_porc = Column('q2_porc', Integer)
+    q3_resp = Column('q3_resp', String)
+    q3_porc = Column('q3_porc', Integer)
+    q4_resp = Column('q4_resp', String)
+    q4_porc = Column('q4_porc', Integer)
+    q5_resp = Column('q5_resp', String)
+    q5_porc = Column('q5_porc', Integer)
+    q6_resp = Column('q6_resp', String)
+    q6_porc = Column('q6_porc', Integer)
+    q7_resp = Column('q7_resp', String)
+    q7_porc = Column('q7_porc', Integer)
+    q8_resp = Column('q8_resp', String)
+    q8_porc = Column('q8_porc', Integer)
+    q9_resp = Column('q9_resp', String)
+    q9_porc = Column('q9_porc', Integer)
+    q10_resp = Column('q10_resp', String)
+    q10_porc = Column('q10_porc', Integer)
+    q11_resp = Column('q11_resp', String)
+    q11_porc = Column('q11_porc', Integer)
+    q12_resp = Column('q12_resp', String)
+    q12_porc = Column('q12_porc', Integer)
+    q13_resp = Column('q13_resp', String)
+    q13_porc = Column('q13_porc', Integer)
+
+    offering_id = Column(Integer, ForeignKey('offering.offering_id'))
+    offering = relationship(Offering)
+
+
+class SubjectDisplay(Base):
+    __tablename__ = "subjectdisplay"
+
+    id = Column('subjectdisplay_id', Integer, primary_key=True)
+    subject_id = Column(Integer, ForeignKey('subject.subject_id'))
+    subject = relationship(Subject)
+
+    q1_resp = Column('q1_resp', String)
+    q1_porc = Column('q1_porc', Integer)
+    q2_resp = Column('q2_resp', String)
+    q2_porc = Column('q2_porc', Integer)
+    q3_resp = Column('q3_resp', String)
+    q3_porc = Column('q3_porc', Integer)
+    q4_resp = Column('q4_resp', String)
+    q4_porc = Column('q4_porc', Integer)
+    q5_resp = Column('q5_resp', String)
+    q5_porc = Column('q5_porc', Integer)
+
 
 def CreateDB():
     Base.metadata.create_all(DB)

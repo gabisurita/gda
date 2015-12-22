@@ -1,71 +1,294 @@
-$def with (OfferingInst, Render, form)
+$def with (OfferingInst, Render, form, already_evaluated)
 
 $ S = sessionmaker(bind=DB)()
 
 $ ThisComments = S.query(OfferingComment).filter(OfferingComment.offering == OfferingInst)
-$ ThisTeacher = S.query(Teacher).filter(Teacher.id == OfferingInst.teacher_id)
-$for Line in ThisTeacher:
-  $ TeacherName = Line.name
-  $ TeacherURL = Line.EncodeURL()
+$ ThisTeacher = S.query(Teacher).filter(Teacher.id == OfferingInst.teacher_id).one()
+
+$ display_line = S.query(OfferingDisplay).filter(OfferingDisplay.offering_id == OfferingInst.id).one()
+$ sum_line = S.query(AnswerSum).filter(AnswerSum.offering_id == OfferingInst.id).one()
+
+$ s1 = (sum_line.q1_sim)+(sum_line.q1_nao)
+$if s1:
+  $ q1 = ' %s %s%%' % (display_line.q1_resp, display_line.q1_porc)
+$else:
+  $ q1 = ""
+
+$ s3 = (sum_line.q3_adequada)+(sum_line.q3_longa)+(sum_line.q3_curta)
+$if s3:
+  $ q3 = ' %s %s%%' % (display_line.q3_resp, display_line.q3_porc)
+$else:
+  $ q3 = ""
+
+$ s4 = (sum_line.q4_alta)+(sum_line.q4_normal)+(sum_line.q4_baixa)
+$if s4:
+  $ q4 = ' %s %s%%' % (display_line.q4_resp, display_line.q4_porc)
+$else:
+  $ q4 = ""
+
+$ s5 = (sum_line.q5_dificil)+(sum_line.q5_normal)+(sum_line.q5_facil)
+$if s5:
+  $ q5 = ' %s %s%%' % (display_line.q5_resp, display_line.q5_porc)
+$else:
+  $ q5 = ""
+
+
+$ s6 = (sum_line.q6_dificil)+(sum_line.q6_normal)+(sum_line.q6_facil)
+$if s6:
+  $ q6 = ' %s %s%%' % (display_line.q6_resp, display_line.q6_porc)
+$else:
+  $ q6 = ""
+
+$ s7 = (sum_line.q7_sim)+(sum_line.q7_nao)
+$if s7:
+  $ q7 = ' %s %d%%' % (display_line.q7_resp, display_line.q7_porc)
+$else:
+  $ q7 = ""
+
+$ s8 = (sum_line.q8_boa)+(sum_line.q8_media)+(sum_line.q8_ruim)
+$if s8:
+  $ q8 = ' %s %d%%' % (display_line.q8_resp, display_line.q8_porc)
+$else:
+  $ q8 = ""
+
+$ s9 = (sum_line.q9_sim)+(sum_line.q9_nao)
+$if s9:
+  $ q9 = ' %s %d%%' % (display_line.q9_resp, display_line.q9_porc)
+$else:
+  $ q9 = ""
+
+$ s10 = (sum_line.q10_sim)+(sum_line.q10_nao)
+$if s10:
+  $ q10 = ' %s %d%%' % (display_line.q10_resp, display_line.q10_porc)
+$else:
+  $ q10 = ""
+
+$ s11 = (sum_line.q11_sim)+(sum_line.q11_nao)
+$if s11:
+  $ q11 = ' %s %d%%' % (display_line.q11_resp, display_line.q11_porc)
+$else:
+  $ q11 = ""
+
+$ s12 = (sum_line.q12_sim)+(sum_line.q12_nao)
+$if s12:
+  $ q12 = ' %s %d%%' % (display_line.q12_resp, display_line.q12_porc)
+$else:
+  $ q12 = ""
+
+$ s13 = (sum_line.q13_sim)+(sum_line.q13_nao)
+$if s13:
+  $ q13 = ' %s %d%%' % (display_line.q13_resp, display_line.q13_porc)
+$else:
+  $ q13 = ""
 
 $ SearchRate = S.query(OfferingRate).filter(OfferingRate.offering_id == OfferingInst.id)
 $ Rated = 0
 $for Line in SearchRate:
   $ Rate = Line
   $ Rated = 1
-$ Questions = S.query(QuestionsOffering)
-$ Q = []
-$for Line in Questions
-  $Q.append(Line.question)
+
 <!DOCTYPE html>
 <html>
   <head>
     $:Render.includes()
-    <title>$BaseTitle $OfferingInst.subject.code$OfferingInst.code $(OfferingInst.semester.sem)s$OfferingInst.semester.year</title>
+    <title>$BaseTitle - $OfferingInst.subject.code$OfferingInst.code $(OfferingInst.semester.sem)s$OfferingInst.semester.year</title>
   </head>
   <body>
     <!-- Fixed navbar -->
     $:Render.navbar()
     <!-- Begin page content -->
     <div class="container">
-      <div class="col-sm-8">
-        <h3>
-          $OfferingInst.subject.code $OfferingInst.code -
-          <a class="black-link" href="$OfferingInst.subject.EncodeURL()">
-          $OfferingInst.subject.name
-        </a></h3>
-        <h4>Professor: <a class="black-link" href="$TeacherURL">
-          $TeacherName
-        </a></h4>
-        <h4>  $OfferingInst.semester.semº semestre de $OfferingInst.semester.year </h4>
-        <form method="GET" action="$OfferingInst.EvaluationURL()">
-          <button class="btn btn-success" type="submit">Avaliar este oferecimento</button>
-        </form>
-        </br>
-        $:Render.comments(ThisComments)
-      </div>
-      <div class="col-sm-4">
-        <div>
-          $if Rated:
-          <h3> Avaliação FEEC</h3>
-          <h4> $Rate.answers respostas de $OfferingInst.students matriculados</h4>
-          <table>
-            <thead>
-              <tr>
-                <th style="min-width: 300px;">Critério</th>
-                <th style="min-width: 10px;">Nota</th>
-              </tr>
-            </thead>
-            <tbody class="list">
-              <tr> <td> $Q[0] </td> <td> $Rate.question1 </td> </tr>
-              <tr> <td> $Q[1] </td> <td> $Rate.question2 </td> </tr>
-              <tr> <td> $Q[2] </td> <td> $Rate.question3 </td> </tr>
-              <tr> <td> $Q[3] </td> <td> $Rate.question4 </td> </tr>
-              <tr> <td> $Q[4] </td> <td> $Rate.question5 </td> </tr>
-              <tr> <td> $Q[5] </td> <td> $Rate.question6 </td> </tr>
-            </tbody>
-          </table>
+      <h3>
+        $OfferingInst.subject.code $OfferingInst.code -
+        <a class="black-link" href="$OfferingInst.subject.EncodeURL()">
+        $OfferingInst.subject.name
+      </a></h3>
+      <div class="row">
+        <div class="col-sm-5">
+          <h4>Professor: <a class="black-link" href="$ThisTeacher.EncodeURL()">
+            $ThisTeacher.name
+          </a></h4>
         </div>
+        <div class="col-sm-4">
+            <h4> $OfferingInst.semester.semº semestre de $OfferingInst.semester.year </h4>
+        </div>
+        <div class="col-sm-3">
+          $if already_evaluated:
+            <button class="btn btn-success btn-block" disabled>Você já avaliou este oferecimento</button>
+          $else:
+            <form method="GET" action="$OfferingInst.EvaluationURL()">
+              <button class="btn btn-primary btn-block" type="submit">Avaliar este oferecimento</button>
+            </form>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+      <div class="col-sm-12">
+        <div class="panel panel-default">
+          $if Rated:
+            <div class="panel-heading col-sm-6">Avaliação Oficial</div>
+            <div class="panel-heading col-sm-6 text-right">$Rate.answers respostas de $OfferingInst.students matriculados</div>
+              <table class="table">
+                <tbody>
+                  <tr>
+                    <td class="col-sm-3"> Planejamento da Bibliografia </td>
+                    <td class="col-sm-1" > $Rate.question1 </td>
+                    <td class="col-sm-3"> Didática e Técnica de Ensino </td>
+                    <td class="col-sm-1"> $Rate.question2 </td>
+                    <td class="col-sm-3"> Interesse pelo Aluno </td>
+                    <td class="col-sm-1 text-right"> $Rate.question3 </td>
+                  </tr>
+                  <tr>
+                    <td> Relacionamento com alunos </td>
+                    <td> $Rate.question4 </td>
+                    <td> Adequação da avaliação </td>
+                    <td> $Rate.question5 </td>
+                    <td> Contribuição para aprendizado </td>
+                    <td class="text-right"> $Rate.question6 </td>
+                  </tr>
+                </tbody>
+              </table>
+          $else:
+              <div class="panel-heading col-sm-6">Avaliação Oficial</div>
+              <div class="panel-heading col-sm-6 text-right">Não foi avaliado</div>
+              <table class="table">
+                <tbody>
+                  <tr>
+                    <td class="col-sm-3"> Planejamento da Bibliografia </td>
+                    <td class="col-sm-1" > <i class="fa fa-minus"></i> </td>
+                    <td class="col-sm-3"> Didática e Técnica de Ensino </td>
+                    <td class="col-sm-1"> <i class="fa fa-minus"></i> </td>
+                    <td class="col-sm-3"> Interesse pelo Aluno </td>
+                    <td class="col-sm-1 text-right"> <i class="fa fa-minus"></i> </td>
+                  </tr>
+                  <tr>
+                    <td> Relacionamento com alunos </td>
+                    <td> <i class="fa fa-minus"></i> </td>
+                    <td> Adequação da avaliação </td>
+                    <td> <i class="fa fa-minus"></i> </td>
+                    <td> Contribuição para aprendizado </td>
+                    <td class="text-right"> <i class="fa fa-minus"></i> </td>
+                  </tr>
+                </tbody>
+              </table>
+        </div>
+      </div>
+    </div>
+      <div class="row">
+        <div class="col-sm-7">
+          <div class="panel panel-default">
+            <div class="panel-heading col-sm-6">Avaliação</div>
+            <div class="panel-heading text-right col-sm-6">Respostas &nbsp; Total</div>
+              <table class="table">
+                <tbody>
+                  <tr>
+                    <td> A disciplina é necessária ao currículo? </td>
+                    <td class="text-right"> $q1  </td>
+                    $if s1 == 0:
+                      <td class="text-right col-sm-1"> <i class="fa fa-minus"></i></td>
+                    $else:
+                      <td class="text-right col-sm-1"> $s1 </td>
+                  </tr>
+                  <tr>
+                    <td> Como você avalia a ementa da disciplina? </td>
+                    <td class="text-right"> $q3  </td>
+                    $if s3 == 0:
+                      <td class="text-right"> <i class="fa fa-minus"></i></td>
+                    $else:
+                      <td class="text-right"> $s3 </td>
+                  </tr>
+                  <tr>
+                    <td> A dedicação exigida pela disciplina foi: </td>
+                    <td class="text-right"> $q4  </td>
+                    $if s4 == 0:
+                      <td class="text-right"> <i class="fa fa-minus"></i></td>
+                    $else:
+                      <td class="text-right"> $s4 </td>
+                  </tr>
+                  <tr>
+                    <td> Como você avalia a dificuldade inerente à disciplina? </td>
+                    <td class="text-right"> $q5  </td>
+                    $if s5 == 0:
+                      <td class="text-right"> <i class="fa fa-minus"></i></td>
+                    $else:
+                      <td class="text-right"> $s5 </td>
+                  </tr>
+                  <tr>
+                    <td> Como você avalia a dificuldade inerente ao professor? </td>
+                    <td class="text-right"> $q6 </td>
+                    $if s6 == 0:
+                      <td class="text-right"> <i class="fa fa-minus"></i></td>
+                    $else:
+                      <td class="text-right"> $s6 </td>
+                  </tr>
+                  <tr>
+                    <td> A bibliografia recomendada foi adequada? </td>
+                    <td class="text-right"> $q7 </td>
+                    $if s7 == 0:
+                      <td class="text-right"> <i class="fa fa-minus"></i></td>
+                    $else:
+                      <td class="text-right"> $s7 </td>
+                  </tr>
+                  <tr>
+                    <td> Como você avalia a didática do professor? </td>
+                    <td class="text-right"> $q8 </td>
+                    $if s8 == 0:
+                      <td class="text-right"> <i class="fa fa-minus"></i></td>
+                    $else:
+                      <td class="text-right"> $s8 </td>
+                  </tr>
+                  <tr>
+                    <td> O professor se preocupou em tornar as aulas interessantes? </td>
+                    <td class="text-right"> $q9  </td>
+                    $if s9 == 0:
+                      <td class="text-right"> <i class="fa fa-minus"></i></td>
+                    $else:
+                      <td class="text-right"> $s9 </td>
+                  </tr>
+                  <tr>
+                    <td> O professor se mostrou acessível para tirar dúvidas? </td>
+                    <td class="text-right"> $q10  </td>
+                    $if s10 == 0:
+                      <td class="text-right"> <i class="fa fa-minus"></i></td>
+                    $else:
+                      <td class="text-right"> $s10 </td>
+                  </tr>
+                  <tr>
+                    <td > As avaliações foram coerentes? </td>
+                    <td class="text-right"> $q11  </td>
+                    $if s11 == 0:
+                      <td class="text-right"> <i class="fa fa-minus"></i></td>
+                    $else:
+                      <td class="text-right"> $s11 </td>
+                  </tr>
+                  <tr>
+                    <td> Ir às aulas foi importante? </td>
+                    <td class="text-right"> $q12  </td>
+                    $if s12 == 0:
+                      <td class="text-right"> <i class="fa fa-minus"></i></td>
+                    $else:
+                      <td class="text-right"> $s12 </td>
+                  </tr>
+                  <tr>
+                    <td> Faria outra disciplina com este professor? </td>
+                    <td class="text-right"> $q13  </td>
+                    $if s13 == 0:
+                      <td class="text-right"> <i class="fa fa-minus"></i></td>
+                    $else:
+                      <td class="text-right"> $s13 </td>
+                  </tr>
+                </tbody>
+              </table>
+          </div>
+        </div>
+        <div class="col-sm-5">
+          <div class="panel panel-default">
+            <div class="panel-heading">Comentários</div>
+            <div class="panel-body" style="overflow-y: scroll; height:513px;">$:Render.commentsoffering(ThisComments)</div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
         <div>
           $if Rated == 0:
             <h3>Avaliar Oferecimento</h3>

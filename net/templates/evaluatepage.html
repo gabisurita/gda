@@ -4,20 +4,32 @@ $ S = sessionmaker(bind=DB)()
 
 $ SubjectsList = S.query(Offering) #.order_by(Offering.subject.code)
 
+$ ThisTeacher = S.query(Teacher).filter(Teacher.id == OfferingInst.teacher_id).one()
 
 <!DOCTYPE html>
 <html>
   <head>
     $:Render.includes()
     <!-- <link rel="stylesheet" href="/static/form.css"> -->
-    <title>$BaseTitle - Busca de Oferecimentos</title>
+    <title>$BaseTitle - Avaliar $OfferingInst.subject.code</title>
   </head>
   <body>
     <!-- Fixed navbar -->
     $:Render.navbar()
     <!-- Begin page content -->
     <div class="container">
+          <h3> $OfferingInst.subject.code $OfferingInst.code - $OfferingInst.subject.name</h3>
+    <div class="row">
+        <div class="col-sm-7">
+          <h4>Professor: $ThisTeacher.name</h4>
+        </div>
+        <div class="col-sm-5">
+            <h4 class="text-right"> $OfferingInst.semester.semº semestre de $OfferingInst.semester.year </h4>
+        </div>
+    </div>
+    <div class="row">
       $:Render.form()
+    </div>
     </div>
     $:Render.footer()
     <!-- <script src="/static/form.js"></script> -->

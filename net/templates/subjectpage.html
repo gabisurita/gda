@@ -10,6 +10,44 @@ $ ThisComments = S.query(SubjectComment).filter(SubjectComment.subject == Subjec
 
 $ Questions = S.query(QuestionsOffering)
 
+
+$ display_line = S.query(SubjectDisplay).filter(SubjectDisplay.subject_id == SubjectInst.id).one()
+$ sum_line = S.query(AnswerSumSubject).filter(AnswerSumSubject.subject_id == SubjectInst.id).one()
+
+$ s1 = (sum_line.q1_sim)+(sum_line.q1_nao)
+$ s3 = (sum_line.q3_adequada)+(sum_line.q3_longa)+(sum_line.q3_curta)
+$ s4 = (sum_line.q4_alta)+(sum_line.q4_normal)+(sum_line.q4_baixa)
+$ s5 = (sum_line.q5_dificil)+(sum_line.q5_normal)+(sum_line.q5_facil)
+
+$ porc1_sim = 0
+$ porc1_nao = 0
+$ porc3_adequada = 0
+$ porc3_curta = 0
+$ porc3_longa = 0
+$ porc4_alta = 0
+$ porc4_normal = 0
+$ porc4_baixa = 0
+$ porc5_dificil = 0
+$ porc5_normal = 0
+$ porc5_facil = 0
+
+$if s1!=0:
+  $ porc1_sim = int(100*sum_line.q1_sim/s1)
+  $ porc1_nao = int(100*sum_line.q1_nao/s1)
+$if s3!=0:
+  $ porc3_adequada = int(100*sum_line.q3_adequada/s3)
+  $ porc3_curta = int(100*sum_line.q3_curta/s3)
+  $ porc3_longa = int(100*sum_line.q3_longa/s3)
+$if s4!=0:
+  $ porc4_alta = int(100*sum_line.q4_alta/s4)
+  $ porc4_normal = int(100*sum_line.q4_normal/s4)
+  $ porc4_baixa = int(100*sum_line.q4_baixa/s4)
+$if s5!=0:
+  $ porc5_dificil = int(100*sum_line.q5_dificil/s5)
+  $ porc5_normal = int(100*sum_line.q5_normal/s5)
+  $ porc5_facil = int(100*sum_line.q5_facil/s5)
+
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -21,96 +59,134 @@ $ Questions = S.query(QuestionsOffering)
     $:Render.navbar()
     <!-- Begin page content -->
     <div class="container">
-      <div class="col-sm-9">
-        <h2>$SubjectInst.code -   $SubjectInst.name</h3>
-        <p><b>Ementa: </b>$SubjectInst.summary</p>
-<!--
-        $:Render.comments(ThisComments)
--->
-        <h3>Oferecimentos</h3>
-        <p> Busca por professor</p>
-        <div id='docentes'>
-        <input type="text" class="search" placeholder="Busca">
-        <br>
-        <table class="table table-striped table-condensed sortable">
-          <thead>
-            <tr>
-              <th style="min-width: 100px;">Semestre</th>
-              <th style="min-width: 70px;">Turma</th>
-              <th style="min-width: 120px;">Matriculados</th>
-              <th style="min-width: 180px;">Docente</th>
-              $for Line in Questions:
-                $ Qid = '%s' % (chr(ord('A')+Line.id - 1))
-                <th style="min-width: 35px;">$Qid</th>
-            </tr>
-          </thead>
-          <tbody class="list">
-          $for Line in ThisOfferings:
-            $ URL = Line.EncodeURL()
-            $ Code = '%s' % (Line.code)
-            $ Enrolled = '%s' % (Line.students)
-            $ Sem = '%ss%s' % (Line.semester.sem, Line.semester.year)
-            $ SearchRate = S.query(OfferingRate).filter(OfferingRate.offering_id == Line.id)
-            $ Rated = 0
-            $for Lin in SearchRate:
-              $ Rate = Lin
-              $ Rated = 1
-            <tr>
-              <td style="min-width: 100px;"><a class="year black-link"href="$URL">$Sem</a></td>
-              <td>$Code</td>
-              <td>$Enrolled</td>
-              <td><a class="nome" href="$Line.teacher.EncodeURL()">$Line.teacher.name</a></td>
-              $if Rated:
-                <td>$Rate.question1</td>
-                <td>$Rate.question2</td>
-                <td>$Rate.question3</td>
-                <td>$Rate.question4</td>
-                <td>$Rate.question5</td>
-                <td>$Rate.question6</td>
-              $else:
-                $for i in range(0,6):
-                  <td> - </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <script>
-        var options = {
-          valueNames: ['nome','year']
-        };
-        var userList = new List('docentes', options);
-      </script>
-
-      </div>
-
-      <div class="col-sm-3 blog-sidebar">
-        <div class="sidebar-module sidebar-module-inset">
-          <h4>Oferecimentos</h4>
-          <ol class="list-unstyled">
-          $for Line in ThisOfferings:
-            $ URL = Line.EncodeURL()
-            $ Name = u'%sº Semestre de %s - Turma %s' % (Line.semester.sem, Line.semester.year, Line.code)
-            <li><a href="$URL">$Name</a></li>
-          </ol>
+      <h3>$SubjectInst.code -   $SubjectInst.name</h3>
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="panel panel-default">
+            <div class="panel-heading col-sm-6">Ementa</div>
+            <div class="panel-heading col-sm-6 text-right">$SubjectInst.credits créditos</div>
+            <div class="panel-body" style="min-height: 211px;">$SubjectInst.summary</div>
+          </div>
         </div>
-        <div class="sidebar-module sidebar-module-inset">
-          <h4>Docentes</h4>
-          <ol class="list-unstyled">
-          $for Teacher in ThisTeachers:
-            $ Name = Teacher.name
-            $ URL = Teacher.EncodeURL()
-            <li><a href="$URL">$Name</a></li>
-          </ol>
-          <br> <br> <br> <br>
-          <ol class="list-unstyled">
-            $for Line in Questions:
-              $ Qid = '%s' % (chr(ord('A')+Line.id - 1))
-              $ Question = '%s' % (Line.question)
-              <li> <b>$Qid</b> : $Question </li>
-          </ol>
+        <div class="col-sm-6">
+          <div class="panel panel-default">
+            <table class="table table-column-border">
+              <thead>
+                <th class="text-right col-sm-3"> Dedicação </th>
+                <th class="text-right col-sm-3"> Dificuldade </th>
+                <th class="text-right col-sm-3"> Ementa </th>
+                <th class="text-right col-sm-3"> Necessária </th>
+              </thead>
+              <tbody style="text-align: right;">
+                <tr>
+                  <td> Alta $porc4_alta% </td>
+                  <td> Difícil $porc5_dificil% </td>
+                  <td> Longa $porc3_longa% </td>
+                  <td> Sim $porc1_sim% </td>
+                </tr>
+                <tr>
+                  <td> Normal $porc4_normal% </td>
+                  <td> Normal $porc5_normal% </td>
+                  <td> Adequada $porc3_adequada% </td>
+                  <td> Não $porc1_nao%</td>
+                </tr>
+                <tr>
+                  <td> Baixa $porc4_baixa%</td>
+                  <td> Fácil $porc5_facil% </td>
+                  <td> Curta $porc3_curta%</td>
+                  <td> </td>
+                </tr>
+                <tr>
+                  <td> $s4 respostas </td>
+                  <td> $s5 respostas </td>
+                  <td> $s3 respostas </td>
+                  <td> $s1 respostas </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
+      <div id='docentes'>
+        <div class="row">
+          <div class="col-sm-4">
+            <h3>Oferecimentos</h3>
+          </div>
+          <div class="col-sm-4">
+            <br>
+            <input type="text" class="search" placeholder="Busca por professor">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-9">
+            <table class="table table-striped table-condensed sortable table-hover">
+              <thead>
+                <tr>
+                  <th>Semestre</th>
+                  <th>Turma</th>
+                  <th>Matriculados</th>
+                  <th>Docente</th>
+                  <th style="min-width: 35px;"> A </th>
+                  <th style="min-width: 35px;"> B </th>
+                  <th style="min-width: 35px;"> C </th>
+                  <th style="min-width: 35px;"> D </th>
+                  <th style="min-width: 35px;"> E </th>
+                  <th style="min-width: 35px;"> F </th>
+                </tr>
+              </thead>
+              <tbody class="list">
+              $for Line in ThisOfferings:
+                $ URL = Line.EncodeURL()
+                $ Code = '%s' % (Line.code)
+                $ Enrolled = '%s' % (Line.students)
+                $ Sem = '%ss%s' % (Line.semester.sem, Line.semester.year)
+                $ SearchRate = S.query(OfferingRate).filter(OfferingRate.offering_id == Line.id)
+                $ Rated = 0
+                $for Lin in SearchRate:
+                  $ Rate = Lin
+                  $ Rated = 1
+                <tr class="clickable-row" data-url="$URL">
+                  <td style="min-width: 100px;"><a class="year black-link"href="$Line.semester.EncodeURL()">$Sem</a></td>
+                  <td>$Code</td>
+                  <td>$Enrolled</td>
+                  <td><a class="nome black-link" href="$Line.teacher.EncodeURL()">$Line.teacher.name</a></td>
+                  $if Rated:
+                    <td>$Rate.question1</td>
+                    <td>$Rate.question2</td>
+                    <td>$Rate.question3</td>
+                    <td>$Rate.question4</td>
+                    <td>$Rate.question5</td>
+                    <td>$Rate.question6</td>
+                  $else:
+                    $for i in range(0,6):
+                      <td> - </td>
+                </tr>
+              </tbody>
+            </table>
+            <script>
+              var options = {
+                valueNames: ['nome','year']
+              };
+              var userList = new List('docentes', options);
+            </script>
+          </div>
+          <div class="col-sm-3">
+            <div class="panel panel-default">
+              <div  class="panel-body">
+                <ol class="list-unstyled">
+                  <li> <b>A</b>&nbsp; Planejamento da Bibliografia  </li>
+                  <li> <b>B</b>&nbsp; Didática e Técnica de Ensino </li>
+                  <li> <b>C</b>&nbsp; Interesse pelo Aluno  </li>
+                  <li> <b>D</b>&nbsp; Relacionamento com alunos  </li>
+                  <li> <b>E</b>&nbsp; Adequação da avaliação   </li>
+                  <li> <b>F</b>&nbsp; Contribuição para aprendizado  </li>
+                </ol>
+              </div>
+            </div>
+          </div>
     </div>
+  </div>
+</div>
     $:Render.footer()
   </body>
 </html>

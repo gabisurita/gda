@@ -4,9 +4,9 @@ $def with (Form, Error, Render)
 <html>
   <head>
     $:Render.includes()
-    <title>$BaseTitle - Login</title>
+    <title>$BaseTitle - Log In</title>
 
-  </head>  
+  </head>
   <body>
     $if Error != "":
       <script>BootstrapDialog.show({type: BootstrapDialog.TYPE_DANGER, size: BootstrapDialog.SIZE_SMALL, title: 'Erro', message: '$:Error' });</script>
@@ -17,28 +17,25 @@ $def with (Form, Error, Render)
       </div>
       <div class="col-lg-3">
         <form class="form-signin" method="POST" action="/login">
-          <h2 class="form-signin-heading">Login</h2>
+          <h2 class="form-signin-heading">Log In</h2>
           <label for="email" class="sr-only">E-mail</label>
           <input type="text" class="form-control" placeholder="Email" name="email" required autofocus>
           <label for="senha" class="sr-only">Senha</label>
           <input type="password" class="form-control" placeholder="Senha" name="senha" required>
+          <!--
           <div class="checkbox">
             <label>
               <input type="checkbox" value="remember-me"> Lembre-me
             </label>
           </div>
+        -->
+          <br>
           <button class="btn btn-primary btn-block" type="submit">Entrar</button>
         </form>
-        
-        <a href="/login"> Login </a>
-        <br/>
-        <a href="/registrar"> Registrar </a>
+        <br>
+        <p> Não tem login? Registre-se <a href="/registrar"> aqui </a> .</p>
       </div>
     </div>
     $:Render.footer()
   </body>
 </html>
-
-
-
-

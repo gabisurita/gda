@@ -1,2 +1,4 @@
 /net/sessions/*
 *.pyc
+/net/test.db
+/net/models.pyc

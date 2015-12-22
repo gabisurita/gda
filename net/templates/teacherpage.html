@@ -5,8 +5,59 @@ $ S = sessionmaker(bind=DB)()
 $ ThisOfferings = S.query(Offering).filter(Offering.teacher == TeacherInst) #.order_by(Offering.semester.year, Offering.semester.sem)
 
 $ ThisComments = S.query(TeacherComment).filter(TeacherComment.teacher == TeacherInst) #.order_by(Offering.semester.year, Offering.semester.sem)
-$ Questions = S.query(QuestionsOffering)
 
+
+$ display_line = S.query(TeacherDisplay).filter(TeacherDisplay.teacher_id == TeacherInst.id).one()
+$ sum_line = S.query(AnswerSumTeacher).filter(AnswerSumTeacher.teacher_id == TeacherInst.id).one()
+
+
+$ s6 = (sum_line.q6_dificil)+(sum_line.q6_normal)+(sum_line.q6_facil)
+$if s6:
+  $ q6 = ' %s %s%%' % (display_line.q6_resp, display_line.q6_porc)
+$else:
+  $ q6 = ""
+
+$ s7 = (sum_line.q7_sim)+(sum_line.q7_nao)
+$if s7:
+  $ q7 = ' %s %d%%' % (display_line.q7_resp, display_line.q7_porc)
+$else:
+  $ q7 = ""
+
+$ s8 = (sum_line.q8_boa)+(sum_line.q8_media)+(sum_line.q8_ruim)
+$if s8:
+  $ q8 = ' %s %d%%' % (display_line.q8_resp, display_line.q8_porc)
+$else:
+  $ q8 = ""
+
+$ s9 = (sum_line.q9_sim)+(sum_line.q9_nao)
+$if s9:
+  $ q9 = ' %s %d%%' % (display_line.q9_resp, display_line.q9_porc)
+$else:
+  $ q9 = ""
+
+$ s10 = (sum_line.q10_sim)+(sum_line.q10_nao)
+$if s10:
+  $ q10 = ' %s %d%%' % (display_line.q10_resp, display_line.q10_porc)
+$else:
+  $ q10 = ""
+
+$ s11 = (sum_line.q11_sim)+(sum_line.q11_nao)
+$if s11:
+  $ q11 = ' %s %d%%' % (display_line.q11_resp, display_line.q11_porc)
+$else:
+  $ q11 = ""
+
+$ s12 = (sum_line.q12_sim)+(sum_line.q12_nao)
+$if s12:
+  $ q12 = ' %s %d%%' % (display_line.q12_resp, display_line.q12_porc)
+$else:
+  $ q12 = ""
+
+$ s13 = (sum_line.q13_sim)+(sum_line.q13_nao)
+$if s13:
+  $ q13 = ' %s %d%%' % (display_line.q13_resp, display_line.q13_porc)
+$else:
+  $ q13 = ""
 
 <!DOCTYPE html>
 <html>
@@ -19,84 +70,165 @@ $ Questions = S.query(QuestionsOffering)
     $:Render.navbar()
     <!-- Begin page content -->
     <div class="container">
-      <div class="col-sm-9">
-        <h3>$TeacherInst.name</h3>
-        </br>
-        $:Render.comments(ThisComments)
-        <h3>Oferecimentos</h3>
-        <p> Busca por disciplina</p>
-        <div id='docentes'>
-        <input type="text" class="search" placeholder="Busca">
-        <br>
-        <table class="table table-striped table-condensed sortable">
-          <thead>
-            <tr>
-              <th style="min-width: 100px;">Semestre</th>
-              <th style="min-width: 70px;">Turma</th>
-              <th style="min-width: 120px;">Matriculados</th>
-              <th style="min-width: 120px;">Disciplina</th>
-              $for Line in Questions:
-                $ Qid = '%s' % (chr(ord('A')+Line.id - 1))
-                <th style="min-width: 35px;">$Qid</th>
-            </tr>
-          </thead>
-          <tbody class="list">
-          $for Line in ThisOfferings:
-            $ URL = Line.EncodeURL()
-            $ Code = '%s' % (Line.code)
-            $ Enrolled = '%s' % (Line.students)
-            $ Sem = '%ss%s' % (Line.semester.sem, Line.semester.year)
-            $ SearchRate = S.query(OfferingRate).filter(OfferingRate.offering_id == Line.id)
-            $ Rated = 0
-            $for Lin in SearchRate:
-              $ Rate = Lin
-              $ Rated = 1
-            <tr>
-              <td style="min-width: 100px;"><a class="black-link" href="$URL">$Sem</a></td>
-              <td>$Code</td>
-              <td>$Enrolled</td>
-              <td><a class="codigo" href="$Line.subject.EncodeURL()">$Line.subject.code</a></td>
-              $if Rated:
-                <td>$Rate.question1</td>
-                <td>$Rate.question2</td>
-                <td>$Rate.question3</td>
-                <td>$Rate.question4</td>
-                <td>$Rate.question5</td>
-                <td>$Rate.question6</td>
-              $else:
-                $for i in range(0,6):
-                  <td> - </td>
-            </tr>
-          </tbody>
-        </table>
+      <h3>$TeacherInst.name </h3>
+      <div class="row">
+        <div class="col-sm-7">
+          <div class="panel panel-default">
+            <div class="panel-heading col-sm-6">Avaliação</div>
+            <div class="panel-heading text-right col-sm-6">Respostas &nbsp; &nbsp; Total</div>
+              <table class="table">
+                <tbody>
+                  <tr>
+                    <td> A bibliografia recomendada foi adequada? </td>
+                    <td class="text-right"> $q7 </td>
+                  $if s7 == 0:
+                    <td class="text-right"> <i class="fa fa-minus"></i></td>
+                  $else:
+                    <td class="text-right"> $s7 </td>
+                  </tr>
+                  <tr>
+                    <td> Como você avalia a didática do professor? </td>
+                    <td class="text-right"> $q8 </td>
+                  $if s8 == 0:
+                    <td class="text-right"> <i class="fa fa-minus"></i></td>
+                  $else:
+                    <td class="text-right"> $s8 </td>
+                  </tr>
+                  <tr>
+                    <td> O professor se preocupou em tornar as aulas interessantes? </td>
+                    <td class="text-right"> $q9 </td>
+                  $if s9 == 0:
+                    <td class="text-right"> <i class="fa fa-minus"></i></td>
+                  $else:
+                    <td class="text-right"> $s9 </td>
+                  </tr>
+                  <tr>
+                    <td> O professor se mostrou acessível para tirar dúvidas? </td>
+                    <td class="text-right"> $q10 </td>
+                  $if s10 == 0:
+                    <td class="text-right"> <i class="fa fa-minus"></i></td>
+                  $else:
+                    <td class="text-right"> $s10 </td>
+                  </tr>
+                  <tr>
+                    <td> As avaliações foram coerentes? </td>
+                    <td class="text-right"> $q11 </td>
+                  $if s11 == 0:
+                    <td class="text-right"> <i class="fa fa-minus"></i></td>
+                  $else:
+                    <td class="text-right"> $s11 </td>                  </tr>
+                  <tr>
+                    <td> Ir às aulas foi importante? </td>
+                    <td class="text-right"> $q12 </td>
+                  $if s12 == 0:
+                    <td class="text-right"> <i class="fa fa-minus"></i></td>
+                  $else:
+                    <td class="text-right"> $s12 </td>
+                  </tr>
+                  <tr>
+                    <td> Como você avalia a dificuldade inerente ao professor? </td>
+                      <td class="text-right"> $q6 </td>
+                    $if s6 == 0:
+                      <td class="text-right"> <i class="fa fa-minus"></i></td>
+                    $else:
+                      <td class="text-right"> $s6 </td>
+                  </tr>
+                  <tr>
+                    <td> Faria outra disciplina com este professor? </td>
+                    <td class="text-right"> $q13 </td>
+                  $if s13 == 0:
+                    <td class="text-right"> <i class="fa fa-minus"></i></td>
+                  $else:
+                    <td class="text-right"> $s13 </td>
+                  </tr>
+                </tbody>
+              </table>
+          </div>
+        </div>
+        <div class="col-sm-5">
+          <div class="panel panel-default">
+            <div class="panel-heading">Comentários</div>
+            <div class="panel-body" style="overflow-y: scroll; height:342px;">$:Render.commentsteacher(ThisComments)</div>
+          </div>
+        </div>
       </div>
-      <script>
-        var options = {
-          valueNames: ['codigo']
-        };
-        var userList = new List('docentes', options);
-      </script>
-
-
-
-
-      </div>
-
-      <div class="col-sm-3 blog-sidebar">
-        <div class="sidebar-module sidebar-module-inset">
-          <h4>Oferecimentos</h4>
-          <ol class="list-unstyled">
-          $for Line in ThisOfferings:
-            $ URL = Line.EncodeURL()
-            $ Name = u'%s %s - %ss%s' % (Line.subject.code, Line.code, Line.semester.sem, Line.semester.year)
-            <li><a href="$URL">$Name</a></li>
-          </ol>
-          <ol class="list-unstyled">
-            $for Line in Questions:
-              $ Qid = '%s' % (chr(ord('A')+Line.id - 1))
-              $ Question = '%s' % (Line.question)
-              <li> <b>$Qid</b> : $Question </li>
-          </ol>
+      <div id = 'oferecimentos'>
+        <div class="row">
+          <div class="col-sm-4">
+            <h3>Oferecimentos</h3>
+          </div>
+          <div class="col-sm-4">
+            <br>
+            <input type="text" class="search" placeholder="Busca por disciplina">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-9">
+            <table class="table table-striped table-condensed sortable table-hover">
+              <thead>
+                <tr>
+                  <th style="min-width: 100px;">Semestre</th>
+                  <th style="min-width: 70px;">Turma</th>
+                  <th style="min-width: 120px;">Matriculados</th>
+                  <th style="min-width: 120px;">Disciplina</th>
+                  <th style="min-width: 35px;"> A </th>
+                  <th style="min-width: 35px;"> B </th>
+                  <th style="min-width: 35px;"> C </th>
+                  <th style="min-width: 35px;"> D </th>
+                  <th style="min-width: 35px;"> E </th>
+                  <th style="min-width: 35px;"> F </th>
+                </tr>
+              </thead>
+              <tbody class="list">
+              $for Line in ThisOfferings:
+                $ URL = Line.EncodeURL()
+                $ Code = '%s' % (Line.code)
+                $ Enrolled = '%s' % (Line.students)
+                $ Sem = '%ss%s' % (Line.semester.sem, Line.semester.year)
+                $ SearchRate = S.query(OfferingRate).filter(OfferingRate.offering_id == Line.id)
+                $ Rated = 0
+                $for Lin in SearchRate:
+                  $ Rate = Lin
+                  $ Rated = 1
+                <tr class="clickable-row" data-url='$URL'>
+                  <td style="min-width: 100px;"><a class="black-link" href="$URL">$Sem</a></td>
+                  <td>$Code</td>
+                  <td>$Enrolled</td>
+                  <td><a class="codigo black-link" href="$Line.subject.EncodeURL()">$Line.subject.code</a></td>
+                  $if Rated:
+                    <td>$Rate.question1</td>
+                    <td>$Rate.question2</td>
+                    <td>$Rate.question3</td>
+                    <td>$Rate.question4</td>
+                    <td>$Rate.question5</td>
+                    <td>$Rate.question6</td>
+                  $else:
+                    $for i in range(0,6):
+                      <td> <i class="fa fa-minus"></i> </td>
+                </tr>
+              </tbody>
+            </table>
+            <script>
+              var options = {
+                valueNames: ['codigo']
+              };
+              var userList = new List('oferecimentos', options);
+            </script>
+          </div>
+          <div class="col-sm-3">
+            <div class="panel panel-default">
+              <div  class="panel-body">
+                <ol class="list-unstyled">
+                  <li> <b>A</b> Planejamento da Bibliografia  </li>
+                  <li> <b>B</b> Didática e Técnica de Ensino </li>
+                  <li> <b>C</b> Interesse pelo Aluno  </li>
+                  <li> <b>D</b> Relacionamento com alunos  </li>
+                  <li> <b>E</b> Adequação da avaliação   </li>
+                  <li> <b>F</b> Contribuição para aprendizado  </li>
+                </ol>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

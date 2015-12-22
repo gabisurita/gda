@@ -16,15 +16,15 @@ $ SemestersList = S.query(Semester).order_by(desc((Semester.year)*2 + Semester.s
     $:Render.navbar()
     <!-- Begin page content -->
     <div class="container">
-      <div class="col-sm-7">
-        <h2>Escolha um semestre</h2>
-        <ol class="list-unstyled">
+        <h3>Escolha um semestre</h3>
         $for Line in SemestersList:
           $ URL = Line.EncodeURL()
           $ Name = u'%sº semestre de %s' % (Line.sem, Line.year)
-          <li><a href="$URL">$Name</a></li>
-        </ol>
-      </div>
+          <div class="col-sm-3">
+            <ul class="list-group">
+              <a class="list-group-item text-center" href="$URL">$Name</a>
+            </ul>
+          </div>
     </div>
     $:Render.footer()
   </body>
