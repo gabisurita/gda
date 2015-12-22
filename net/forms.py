@@ -25,37 +25,29 @@ SearchForm = web.form.Form(
     web.form.Textbox('Busca', Class="form-control"),
 )
 
-S = sessionmaker(bind=DB)()
-
-SemestersList = S.query(Semester) #.order_by(Offering.subject.code)
-TeachersList = S.query(Teacher).order_by(Teacher.name)
-SubjectsList = S.query(Subject).order_by(Subject.code)
 
 semesters = []
-for Line in SemestersList:
-    sem = '%s semestre de %s' % (Line.sem, Line.year)
-    semesters.insert(-1,(Line.id,sem))
-
-semesters = [1]
-
 teachers = []
-for Line in TeachersList:
-    t = '%s' % (Line.name)
-    teachers.insert(-1,(Line.id,t))
-
 subjects = []
-for Line in SubjectsList:
-    sub = '%s %s' % (Line.code, Line.name)
-    subjects.insert(-1,(Line.id,sub))
 
-AddSemester = web.form.Form(
-    web.form.Dropdown('Semestre', [('1','primeiro'), ('2','segundo')]),
-    web.form.Textbox("Ano", Class="form-control"),
-    web.form.Button('Submeter', Class="btn btn-primary"))
+def UpdateLists():
+    S = sessionmaker(bind=DB)()
 
-AddTeacher = web.form.Form(
-    web.form.Textbox('Nome'),
-    web.form.Button('Submeter', Class="btn btn-primary"))
+    SemestersList = S.query(Semester) #.order_by(Offering.subject.code)
+    TeachersList = S.query(Teacher).order_by(Teacher.name)
+    SubjectsList = S.query(Subject).order_by(Subject.code)
+
+    for Line in SemestersList:
+        sem = '%s semestre de %s' % (Line.sem, Line.year)
+        semesters.insert(-1,(Line.id,sem))
+
+    for Line in TeachersList:
+        t = '%s' % (Line.name)
+        teachers.insert(-1,(Line.id,t))
+
+    for Line in SubjectsList:
+        sub = '%s %s' % (Line.code, Line.name)
+        subjects.insert(-1,(Line.id,sub))
 
 DeleteTeacher = web.form.Form(
     web.form.Dropdown('Professores', args = teachers),
@@ -73,8 +65,24 @@ AddOffering = web.form.Form(
     web.form.Dropdown('Semestre', args = semesters),
     web.form.Dropdown('Disciplina', args = subjects),
     web.form.Dropdown('Professor', args = teachers),
-    web.form.Textbox('Turma'),
-    web.form.Textbox('Matriculados'),
+    web.form.Textbox('Turma', web.form.notnull),
+    web.form.Textbox('Matriculados', web.form.notnull),
+    web.form.Button('Submeter', Class="btn btn-primary"))
+
+AddSemester = web.form.Form(
+    web.form.Dropdown('Semestre', [('1','primeiro'), ('2','segundo')]),
+    web.form.Textbox('Ano', web.form.notnull),
+    web.form.Button('Submeter', Class="btn btn-primary"))
+
+AddTeacher = web.form.Form(
+    web.form.Textbox('Nome', web.form.notnull),
+    web.form.Button('Submeter', Class="btn btn-primary"))
+
+AddSubject = web.form.Form(
+    web.form.Textbox('Codigo', web.form.notnull),
+    web.form.Textbox('Nome', web.form.notnull),
+    web.form.Textbox('Creditos', web.form.notnull),
+    web.form.Textbox('Ementa', web.form.notnull),
     web.form.Button('Submeter', Class="btn btn-primary"))
 
 RateOffering = web.form.Form(

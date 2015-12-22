@@ -1,4 +1,4 @@
-$def with (Render, form1)
+$def with (Render, form1, form2, form3, form4)
 
 $ S = sessionmaker(bind=DB)()
 
@@ -14,9 +14,31 @@ $ Offerings = S.query(Offering).filter(Offering.semester_id == 1)
     $:Render.navbar()
     <div class="container">
       <div class = col-sm-8>
-        <h3>Adicionar Oferecimento</h3>
+        <h3>Adicionar Semestre</h3>
         <form name="one" method="post">
           $:form1.render()
+          <br></br>
+        </form>
+      </div>
+      <div class = col-sm-8>
+        <h3>Adicionar Oferecimento</h3>
+        <form name="one" method="post">
+          $:form2.render()
+          <br></br>
+        </form>
+      </div>
+      <div class = col-sm-8>
+        <h3>Adicionar Professor</h3>
+        <form name="one" method="post">
+          $:form3.render()
+          <br></br>
+        </form>
+      </div>
+      <div class = col-sm-8>
+        <h3>Adicionar Disciplina</h3>
+        <form name="one" method="post">
+          $:form4.render()
+          <br></br>
         </form>
       </div>
     </div>

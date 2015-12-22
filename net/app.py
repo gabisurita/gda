@@ -1110,7 +1110,8 @@ def Setup():
             UpdateOfferingDisplay(elemento)
             UpdateTeacherDisplay(professor)
             UpdateSubjectDisplay(disciplina)
-            raise web.seeother('/oferecimentos')
+
+            raise web.seeother(self.OfferingInst.EncodeURL())
 #            try:
 #
 #
@@ -1122,9 +1123,77 @@ def Setup():
     class FaqPage:
         def GET(self):
             IsLogged()
+            return Render.faq(Render)
 
-            LocDB = create_engine(UserDB, echo=False)
-            S = sessionmaker(bind=LocDB)()
+    class IndexPage:
+        def GET(self):
+            IsLogged()
+            return Render.index(Render)
+
+    class SemesterPage:
+        SemesterInst = Semester()
+
+        def GET(self):
+            IsLogged()
+            return Render.semesterpage(self.SemesterInst, Render)
+
+    class Database:
+        def GET(self):
+            IsLogged()
+            UpdateLists()
+            form1 = AddSemester()
+            form2 = AddOffering()
+            form3 = AddTeacher()
+            form4 = AddSubject()
+            # make sure you create a copy of the form by calling it (line above)
+            # Otherwise changes will appear globally
+            return Render.database(Render,form1, form2, form3, form4)
+
+        def POST(self):
+            form1 = AddSemester()
+            form2 = AddOffering()
+            form3 = AddTeacher()
+            form4 = AddSubject()
+
+            S = sessionmaker(bind=DB)()
+
+            if form1.validates():
+                print "ENTREI NO FORMS DE SEMESTRE"
+                Sem = Semester(
+                    year = form1.d.Ano,
+                    sem = form1.d.Semestre[0]
+                )
+                S.add(Sem)
+                S.commit()
+
+            elif form2.validates():
+                print "ENTREI NO FORMS DE oferecimento"
+                Off = Offering(subject_id=form2.d.Disciplina,
+                                teacher_id=form2.d.Professor,
+                                semester_id=form2.d.Semestre,
+                                students = int(form2.d.Matriculados),
+                                code = form2.d.Turma)
+                S.add(Off)
+                S.commit()
+
+            elif form4.validates():
+                print "ENTREI NO FORMS DE disciplina"
+                Subj = Subject(
+                    code = form4.d.Codigo,
+                    name = form4.d.Nome,
+                    credits = int(form4.d.Creditos),
+                    summary = form4.d.Ementa
+                )
+                S.add(Subj)
+                S.commit()
+
+            elif form3.validates():
+                print "ENTREI NO FORMS DE professor"
+                Teac = Teacher(
+                    name = form3.d.Nome
+                )
+                S.add(Teac)
+                S.commit()
 
             for Line in S.query(Subject):
                 if (S.query(AnswerSumSubject).filter(Line.id == AnswerSumSubject.subject_id).count())==0:
@@ -1175,47 +1244,9 @@ def Setup():
                     S.add(NewDisplay)
                     S.commit()
 
-            return Render.faq(Render)
 
-    class IndexPage:
-        def GET(self):
-            IsLogged()
-            return Render.index(Render)
 
-    class SemesterPage:
-        SemesterInst = Semester()
-
-        def GET(self):
-            IsLogged()
-            return Render.semesterpage(self.SemesterInst, Render)
-
-    class Database:
-        def GET(self):
-            IsLogged()
-            form1 = AddOffering()
-            # make sure you create a copy of the form by calling it (line above)
-            # Otherwise changes will appear globally
-            return Render.database(Render,form1)
-
-        def POST(self):
-            form1 = AddOffering()
-            #if not form.validates():
-            #    return Render.database(Render,form1,form2)
-            #else:
-            form1.validates()
-            S = sessionmaker(bind=DB)()
-            Off = Offering(subject_id=form1.d.Disciplina,
-                            teacher_id=form1.d.Professor,
-                            semester_id=form1.d.Semestre,
-                            students = int(form1.d.Matriculados),
-                            code = form1.d.Turma)
-            S.add(Off)
-            S.commit()
-
-            #huebr
-
-            return Render.database(Render,form1)
-
+            raise web.seeother('/database')
 
     # URL Mappings
     S = sessionmaker(bind=DB)()
