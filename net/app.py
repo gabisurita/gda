@@ -1086,6 +1086,60 @@ def Setup():
     class FaqPage:
         def GET(self):
             IsLogged()
+
+            LocDB = create_engine(UserDB, echo=False)
+            S = sessionmaker(bind=LocDB)()
+
+            for Line in S.query(Subject):
+                if (S.query(AnswerSumSubject).filter(Line.id == AnswerSumSubject.subject_id).count())==0:
+                    CreateLineAnswerSumSubject(Line)
+                if (S.query(SubjectDisplay).filter(Line.id == SubjectDisplay.subject_id).count())==0:
+                    CreateLineSubjectDisplay(Line)
+
+            for Line in S.query(Teacher):
+                if (S.query(AnswerSumTeacher).filter(Line.id == AnswerSumTeacher.teacher_id).count())==0:
+                    CreateLineAnswerSumTeacher(Line)
+                if (S.query(TeacherDisplay).filter(Line.id == TeacherDisplay.teacher_id).count())==0:
+                    CreateLineTeacherDisplay(Line)
+
+            for Line in S.query(Offering):
+                if ((S.query(OfferingDisplay).filter(OfferingDisplay.offering_id == Line.id)).count()) == 0:
+                    LocOffering = S.query(Offering).filter(
+                        Offering.id == Line.id).one()
+                    NewDisplay=OfferingDisplay(
+                    q1_resp = u'',
+                    q1_porc = 0,
+                    q2_resp = u'',
+                    q2_porc = 0,
+                    q3_resp = u'',
+                    q3_porc = 0,
+                    q4_resp = u'',
+                    q4_porc = 0,
+                    q5_resp = u'',
+                    q5_porc = 0,
+                    q6_resp = u'',
+                    q6_porc = 0,
+                    q7_resp = u'',
+                    q7_porc = 0,
+                    q8_resp = u'',
+                    q8_porc = 0,
+                    q9_resp = u'',
+                    q9_porc = 0,
+                    q10_resp = u'',
+                    q10_porc = 0,
+                    q11_resp = u'',
+                    q11_porc = 0,
+                    q12_resp = u'',
+                    q12_porc = 0,
+                    q13_resp = u'',
+                    q13_porc = 0,
+                    offering = LocOffering
+                    )
+
+                    S.add(NewDisplay)
+                    S.commit()
+
+
             return Render.faq(Render)
 
     class IndexPage:
