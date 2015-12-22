@@ -1,5 +1,6 @@
 #!/usr/env/python
 #encoding:utf-8
+
 """ GDA Website Database Models."""
 
 from constants import *
@@ -32,7 +33,8 @@ class Teacher(Base):
   name = Column('name', String)
 
   def EncodeURL(self):
-    return str("/docentes/%s" % self.name.lower().replace(" ","_").decode("utf8"))
+    return str("/docentes/%s" % self.name.lower().replace(" ","_").encode('utf8'))
+
 
 
 class Subject(Base):
