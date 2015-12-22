@@ -1,5 +1,5 @@
 from constants import *
-
+from operator import itemgetter
 import web
 import os
 import codecs
@@ -33,21 +33,29 @@ subjects = []
 def UpdateLists():
     S = sessionmaker(bind=DB)()
 
-    SemestersList = S.query(Semester) #.order_by(Offering.subject.code)
+    SemestersList = S.query(Semester).order_by(Semester.id)
     TeachersList = S.query(Teacher).order_by(Teacher.name)
     SubjectsList = S.query(Subject).order_by(Subject.code)
 
     for Line in SemestersList:
         sem = '%s semestre de %s' % (Line.sem, Line.year)
-        semesters.insert(-1,(Line.id,sem))
+        if (Line.id,sem) not in semesters:
+            semesters.insert(-1,(Line.id,sem))
 
     for Line in TeachersList:
         t = '%s' % (Line.name)
-        teachers.insert(-1,(Line.id,t))
+        if (Line.id,t) not in teachers:
+            teachers.insert(-1,(Line.id,t))
 
     for Line in SubjectsList:
         sub = '%s %s' % (Line.code, Line.name)
-        subjects.insert(-1,(Line.id,sub))
+        if (Line.id,sub) not in subjects:
+            subjects.insert(-1,(Line.id,sub))
+
+    sorted(semesters, key=itemgetter(1))
+    sorted(teachers, key=itemgetter(1))
+    sorted(subjects, key=itemgetter(1))
+
 
 DeleteTeacher = web.form.Form(
     web.form.Dropdown('Professores', args = teachers),

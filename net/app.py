@@ -808,45 +808,6 @@ def Setup():
             if manobra.count() != 0:
                 already_evaluated = True
 
-            if (LocS.query(AnswerSum.offering_id).filter(AnswerSum.offering_id == self.OfferingInst.id).count())==0:
-                NewSum = AnswerSum(
-                q1_sim = 0,
-                q1_nao = 0,
-                q2_correto = 0,
-                q2_antes = 0,
-                q2_depois = 0,
-                q3_adequada = 0,
-                q3_curta = 0,
-                q3_longa = 0,
-                q4_alta = 0,
-                q4_normal = 0,
-                q4_baixa = 0,
-                q5_dificil = 0,
-                q5_normal = 0,
-                q5_facil = 0,
-                q6_dificil = 0,
-                q6_normal = 0,
-                q6_facil = 0,
-                q7_sim = 0,
-                q7_nao = 0,
-                q8_boa = 0,
-                q8_media = 0,
-                q8_ruim = 0,
-                q9_sim = 0,
-                q9_nao = 0,
-                q10_sim = 0,
-                q10_nao = 0,
-                q11_sim = 0,
-                q11_nao = 0,
-                q12_sim = 0,
-                q12_nao = 0,
-                q13_sim = 0,
-                q13_nao = 0,
-                offering = LocOffering
-                )
-                LocS.add(NewSum)
-                LocS.commit()
-
             #modificar o template para usar a variável "already_evaluated" (By Raul)
             return Render.offeringpage(self.OfferingInst, Render, form, already_evaluated)
 
@@ -1178,41 +1139,11 @@ def Setup():
                 S.add(Off)
                 S.commit()
 
-            elif form4.validates():
-                print "ENTREI NO FORMS DE disciplina"
-                Subj = Subject(
-                    code = form4.d.Codigo,
-                    name = form4.d.Nome,
-                    credits = int(form4.d.Creditos),
-                    summary = form4.d.Ementa
-                )
-                S.add(Subj)
-                S.commit()
+                Offnovelty = S.query(Offering).filter(Offering.id == Off.id).one()
 
-            elif form3.validates():
-                print "ENTREI NO FORMS DE professor"
-                Teac = Teacher(
-                    name = form3.d.Nome
-                )
-                S.add(Teac)
-                S.commit()
-
-            for Line in S.query(Subject):
-                if (S.query(AnswerSumSubject).filter(Line.id == AnswerSumSubject.subject_id).count())==0:
-                    CreateLineAnswerSumSubject(Line)
-                if (S.query(SubjectDisplay).filter(Line.id == SubjectDisplay.subject_id).count())==0:
-                    CreateLineSubjectDisplay(Line)
-
-            for Line in S.query(Teacher):
-                if (S.query(AnswerSumTeacher).filter(Line.id == AnswerSumTeacher.teacher_id).count())==0:
-                    CreateLineAnswerSumTeacher(Line)
-                if (S.query(TeacherDisplay).filter(Line.id == TeacherDisplay.teacher_id).count())==0:
-                    CreateLineTeacherDisplay(Line)
-
-            for Line in S.query(Offering):
-                if ((S.query(OfferingDisplay).filter(OfferingDisplay.offering_id == Line.id)).count()) == 0:
+                if ((S.query(OfferingDisplay).filter(OfferingDisplay.offering_id == Offnovelty.id)).count()) == 0:
                     LocOffering = S.query(Offering).filter(
-                        Offering.id == Line.id).one()
+                        Offering.id == Offnovelty.id).one()
                     NewDisplay=OfferingDisplay(
                     q1_resp = u'',
                     q1_porc = 0,
@@ -1246,7 +1177,79 @@ def Setup():
                     S.add(NewDisplay)
                     S.commit()
 
+                if (S.query(AnswerSum).filter(AnswerSum.offering_id == Offnovelty.id).count())==0:
+                    LocOffering = S.query(Offering).filter(
+                        Offering.id == Offnovelty.id).one()
+                    NewSum = AnswerSum(
+                    q1_sim = 0,
+                    q1_nao = 0,
+                    q2_correto = 0,
+                    q2_antes = 0,
+                    q2_depois = 0,
+                    q3_adequada = 0,
+                    q3_curta = 0,
+                    q3_longa = 0,
+                    q4_alta = 0,
+                    q4_normal = 0,
+                    q4_baixa = 0,
+                    q5_dificil = 0,
+                    q5_normal = 0,
+                    q5_facil = 0,
+                    q6_dificil = 0,
+                    q6_normal = 0,
+                    q6_facil = 0,
+                    q7_sim = 0,
+                    q7_nao = 0,
+                    q8_boa = 0,
+                    q8_media = 0,
+                    q8_ruim = 0,
+                    q9_sim = 0,
+                    q9_nao = 0,
+                    q10_sim = 0,
+                    q10_nao = 0,
+                    q11_sim = 0,
+                    q11_nao = 0,
+                    q12_sim = 0,
+                    q12_nao = 0,
+                    q13_sim = 0,
+                    q13_nao = 0,
+                    offering = LocOffering
+                    )
+                    S.add(NewSum)
+                    S.commit()
 
+            elif form4.validates():
+                print "ENTREI NO FORMS DE disciplina"
+                Subj = Subject(
+                    code = form4.d.Codigo,
+                    name = form4.d.Nome,
+                    credits = int(form4.d.Creditos),
+                    summary = form4.d.Ementa
+                )
+                S.add(Subj)
+                S.commit()
+
+                Subjnovelty = S.query(Subject).filter(Subject.id == Subj.id).one()
+
+                if (S.query(AnswerSumSubject).filter(Subjnovelty.id == AnswerSumSubject.subject_id).count())==0:
+                    CreateLineAnswerSumSubject(Subjnovelty)
+                if (S.query(SubjectDisplay).filter(Subjnovelty.id == SubjectDisplay.subject_id).count())==0:
+                    CreateLineSubjectDisplay(Subjnovelty)
+
+            elif form3.validates():
+                print "ENTREI NO FORMS DE professor"
+                Teac = Teacher(
+                    name = form3.d.Nome
+                )
+                S.add(Teac)
+                S.commit()
+
+                Teachernovelty = S.query(Teacher).filter(Teacher.id == Teac.id).one()
+
+                if (S.query(AnswerSumTeacher).filter(Teachernovelty.id == AnswerSumTeacher.teacher_id).count())==0:
+                    CreateLineAnswerSumTeacher(Teachernovelty)
+                if (S.query(TeacherDisplay).filter(Teachernovelty.id == TeacherDisplay.teacher_id).count())==0:
+                    CreateLineTeacherDisplay(Teachernovelty)
 
             raise web.seeother('/database')
 
