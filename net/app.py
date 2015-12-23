@@ -833,7 +833,15 @@ def Setup():
             S.add(Rate)
             S.commit()
             #return self.OfferingInst.id
-            return Render.offeringpage(self.OfferingInst, Render,form, False)
+
+            #deixar as duas linhas abaixo apenas quando formos inserir novas avaliações oficiais
+            semestre = S.query(Semester).filter(Semester.id == self.OfferingInst.semester_id).one()
+            return web.seeother(semestre.EncodeURL())
+
+            # deixar a parte de baixo no curso normal do site
+            #return Render.offeringpage(self.OfferingInst, Render,form, False)
+
+
 
     # TODO Unfinished
     class UploadHandler:
