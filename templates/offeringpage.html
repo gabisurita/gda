@@ -81,11 +81,15 @@ $if s13:
 $else:
   $ q13 = ""
 
+
+
 $ SearchRate = S.query(OfferingRate).filter(OfferingRate.offering_id == OfferingInst.id)
 $ Rated = 0
+
 $for Line in SearchRate:
   $ Rate = Line
   $ Rated = 1
+
 
 <!DOCTYPE html>
 <html>
@@ -288,7 +292,7 @@ $for Line in SearchRate:
           </div>
         </div>
       </div>
-      <div class="row">
+<!--      <div class="row">
         <div>
           $if Rated == 0:
             <h3>Avaliar Oferecimento</h3>
@@ -297,7 +301,7 @@ $for Line in SearchRate:
             </form>
         </div>
     </div>
-  </div>
+-->  </div>
     $:Render.footer()
   </body>
 </html>

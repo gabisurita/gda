@@ -810,25 +810,25 @@ def Setup():
 
         def POST(self):
             IsLogged()
-            Response = POSTParse(web.data())
+        #    Response = POSTParse(web.data())
 #            CommitComment(self.OfferingInst, Response)
-            form = RateOffering()
+        #    form = RateOffering()
             #if not form.validates():
             #    return Render.database(Render,form1,form2)
             #else:
-            form.validates()
-            S = sessionmaker(bind=DB)()
-            Rate = OfferingRate(
-                            answers=form.d.Respostas,
-                            offering_id= self.OfferingInst.id,
-                            question1=form.d.Coluna11,
-                            question2=form.d.Coluna12,
-                            question3=form.d.Coluna13,
-                            question4=form.d.Coluna14,
-                            question5=form.d.Coluna15,
-                            question6=form.d.Coluna16)
-            S.add(Rate)
-            S.commit()
+        #    form.validates()
+        #    S = sessionmaker(bind=DB)()
+        #    Rate = OfferingRate(
+        #                    answers=form.d.Respostas,
+        #                    offering_id= self.OfferingInst.id,
+        #                    question1=form.d.Coluna11,
+        #                    question2=form.d.Coluna12,
+        #                    question3=form.d.Coluna13,
+        #                    question4=form.d.Coluna14,
+        #                    question5=form.d.Coluna15,
+        #                    question6=form.d.Coluna16)
+        #    S.add(Rate)
+        #    S.commit()
             #return self.OfferingInst.id
 
             #deixar as duas linhas abaixo apenas quando formos inserir novas avaliações oficiais
