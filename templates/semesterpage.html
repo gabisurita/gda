@@ -2,9 +2,7 @@ $def with (SemesterInst, Render)
 
 $ S = sessionmaker(bind=DB)()
 
-session.query(Base).join(Base.owner).order_by(Player.name)
-
-$ ThisOfferings = S.query(Offering).filter(Offering.semester == SemesterInst).join(Offering.subject).order_by(Subject.code)
+$ ThisOfferings = S.query(Offering).filter(Offering.semester == SemesterInst)
 
 $ Questions = S.query(QuestionsOffering)
 
