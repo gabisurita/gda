@@ -1092,7 +1092,9 @@ def Setup():
         def GET(self):
             IsLogged()
 
-            LocDB = create_engine(UserDB, echo=False)
+            return Render.faq(Render)
+
+            """LocDB = create_engine(UserDB, echo=False)
             S = sessionmaker(bind=LocDB)()
 
             for Line in S.query(Subject):
@@ -1184,9 +1186,7 @@ def Setup():
                     )
                     S.add(NewSum)
                     S.commit()
-
-
-            return Render.faq(Render)
+                """
 
     class IndexPage:
         def GET(self):
