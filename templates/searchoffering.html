@@ -1,0 +1,31 @@
+$def with (Render)
+
+$ S = sessionmaker(bind=DB)()
+
+$ SemestersList = S.query(Semester).order_by(desc((Semester.year)*2 + Semester.sem))
+
+
+<!DOCTYPE html>
+<html>
+  <head>
+    $:Render.includes()
+    <title>$BaseTitle - Busca de Oferecimentos</title>
+  </head>
+  <body>
+    <!-- Fixed navbar -->
+    $:Render.navbar(Render.user_id)
+    <!-- Begin page content -->
+    <div class="container">
+        <h3>Escolha um semestre</h3>
+        $for Line in SemestersList:
+          $ URL = Line.EncodeURL()
+          $ Name = u'%sº semestre de %s' % (Line.sem, Line.year)
+          <div class="col-sm-3">
+            <ul class="list-group">
+              <a class="list-group-item text-center" href="$URL">$Name</a>
+            </ul>
+          </div>
+    </div>
+    $:Render.footer()
+  </body>
+</html>

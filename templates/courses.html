@@ -1,0 +1,46 @@
+$def with (Page, Elements)
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    $:Elements['includes']
+    <title>$BaseTitle - $Page['name']</title>
+  </head>  
+  <body>
+    <!-- Fixed navbar -->
+    $:Elements['navbar']
+    <!-- Begin page content -->
+    <div class="container">
+      <div class="col-sm-8">
+        $:Page['html']  
+      </div>
+
+      <div class="col-sm-4 blog-sidebar">
+        <div class="sidebar-module sidebar-module-inset">
+          <h4>Cursos</h4>
+          <ol class="list-unstyled">
+          $for Link in Menus['courses']:
+             <li><a href="$Link['link']">$Link['name']</a></li>
+          </ol>
+        </div>
+        <div class="sidebar-module">
+          <h4>Material de Apoio</h4>
+          <ol class="list-unstyled">
+          $for Link in Menus['python']:
+             <li><a href="$Link['link']">$Link['name']</a></li>
+          </ol>
+        </div>
+<!--        <div class="sidebar-module">-->
+<!--          <h4>Elsewhere</h4>-->
+<!--          <ol class="list-unstyled">-->
+<!--            <li><a href="#">GitHub</a></li>-->
+<!--            <li><a href="#">Twitter</a></li>-->
+<!--            <li><a href="#">Facebook</a></li>-->
+<!--          </ol>-->
+<!--        </div>-->
+      </div>
+    </div>
+    $:Elements['footer']
+  </body>
+</html>
