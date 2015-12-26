@@ -41,6 +41,29 @@ body > .container {
   padding-left: 15px;
 }
 
+/* ****** INDEX, CONTACT ********** */
+
+.home-icon{
+  font-size: 36px;
+  color:#2196f3;
+}
+
+a.home-link{
+  text-decoration: none;
+}
+
+.home-link:hover > h5{
+  color: inherit;
+}
+
+
+.big-icon{
+  font-size: 100px;
+  color:#2196f3;
+}
+
+
+
 /* ********** BUSCA ********** */
 
 .search {

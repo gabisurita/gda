@@ -1,0 +1,15 @@
+/*****************************
+ All rights reserved.
+ AllFont.net (c) 2011-2015
+ *****************************/
+@font-face {
+    font-family: 'Pricedown';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Pricedown'), local('Pricedown-Regular'),
+        url('../fonts/pricedown_3550c0dc18db282dbb540df631211e6c.woff') format('woff'),
+        url('../fonts/pricedown_3550c0dc18db282dbb540df631211e6c.ttf') format('truetype');
+}
+.font-effect-outline {
+    color:#fff;text-shadow:0px 1px 1px #000000, 0px -1px 1px #000000, 1px 0px 1px #000000, -1px 0px 1px #000000;
+}

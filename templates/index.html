@@ -1,19 +1,100 @@
 $def with (Render)
 
+$ S = sessionmaker(bind=DB)()
+
+$ MyUser = S.query(User).filter(User.id == Render.user_id).one()
+
+$ Ratings = S.query(StudentRate).filter(StudentRate.user_id == MyUser.id)
 
 <!DOCTYPE html>
 <html>
-  <head>
-    $:Render.includes()
-    <title>$BaseTitle</title>
-  </head>
-  <body>
-    <!-- Fixed navbar -->
-    $:Render.navbar(Render.user_id)
-    <!-- Begin page content -->
-    <div class="container">
-      <h3><a href="/database" class="black-link"> Adicionar semestre, oferecimento, professor ou disciplina</a></h3>
+<head>
+  $:Render.includes()
+  <title>$BaseTitle</title>
+</head>
+<body>
+  <!-- Fixed navbar -->
+  $:Render.navbar(Render.user_id)
+  <!-- Begin page content -->
+  <div class="container">
+    <div class="col-sm-7">
+      <div class="col-sm-6">
+        <br>
+        <a href="http://www.cabs.fee.unicamp.br/?t=52_GDA" target="_blank">
+          <img class="img-responsive" src="/static/images/old/GDA$random.randrange(13,14)_capa.jpg" alt="Chania">
+        </a>
+      </div>
+
+      <div class="col-sm-6 text-center">
+        <!--
+        <h3 class="text-center"> Grupo Discente de Avaliação</h3>
+      -->
+
+      <br>
+
+      <a class="home-link" href="/sobre">
+        <i class="fa fa-check-square-o home-icon"></i>
+        <h5> Avaliação </h5>
+      </a>
+      Conheça nossos objetivos e o que nos motivou a construir essa plataforma.
+
+      <br>
+      <br>
+
+      <a class="home-link" href="http://www.cabs.fee.unicamp.br/?t=52_GDA" target="_blank">
+        <i class="fa fa-book home-icon"></i>
+        <h5> Guias antigos </h5>
+      </a>
+      Consulte os guias digitalizados no site do CABS para conhecer a história do GDA.
+
+      <br>
+      <br>
+
+      <a class="home-link" href="/contato">
+        <i class="fa fa-code home-icon"></i>
+        <h5> Projeto </h5>
+      </a>
+      Entre em contato com nossa equipe e descubra como você pode ajudar.
     </div>
-    $:Render.footer()
-  </body>
+
+  </div>
+  <div class="col-sm-5" id="oferecimentos">
+    <div class="well well-sm text-primary">
+      Olá, <name class="text-primary">$MyUser.student.name</name>!
+      Essa é sua contribuição para o GDA.
+    </div>
+    <h5> Oferecimentos avaliados por você: $Ratings.count() </h5>
+    <input type="text" class="search" placeholder="Busca por semestre, disciplina ou docente"> <br>
+    <div class="scrollable-area" style="overflow-y: scroll; height:295px;">
+      <table class="table table-striped table-condensed sortable table-hover">
+        <thead>
+          <tr>
+            <th class="col-sm-3">Semestre</th>
+            <th class="col-sm-3">Disciplina</th>
+            <th style="col-sm-6">Docente</th>
+          </tr>
+        </thead>
+        <tbody class="list">
+          $for Line in Ratings:
+            $ URL = Line.offering.EncodeURL()
+            $ Code = '%s %s' % (Line.offering.subject.code, Line.offering.code)
+            $ Sem = '%ss%s' % (Line.offering.semester.sem, Line.offering.semester.year)
+            <tr class="clickable-row" data-url="$URL">
+              <td><a class = "semestre black-link" href="$URL">$Sem</a></td>
+              <td><a class = "disciplina black-link" href="$URL">$Code</a></td>
+              <td><a class = "docente black-link" href="$Line.offering.teacher.EncodeURL()">$Line.offering.teacher.name</a></td>
+            </tr>
+        </tbody>
+      </table>
+    </div>
+    <script>
+    var options = {
+      valueNames: ['disciplina', 'docente', 'semestre']
+    };
+    var userList = new List('oferecimentos', options);
+    </script>
+  </div>
+</div>
+$:Render.footer()
+</body>
 </html>

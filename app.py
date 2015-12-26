@@ -1193,6 +1193,16 @@ def Setup():
             IsLogged()
             return Render.index(Render)
 
+    class ContactPage:
+        def GET(self):
+            IsLogged()
+            return Render.contact(Render)
+
+    class AboutPage:
+        def GET(self):
+            IsLogged()
+            return Render.about(Render)
+
     class SemesterPage:
         SemesterInst = Semester()
 
@@ -1358,6 +1368,8 @@ def Setup():
 
     Map(UploadHandler, "/upload")
     Map(IndexPage, "/")
+    Map(ContactPage, "/contato")
+    Map(AboutPage, "/sobre")
     Map(LoginPage, "/login")
     Map(RegisterPage, "/registrar")
     Map(LogoutPage, "/logout")

@@ -41,11 +41,15 @@ $ MyUser = S.query(User).filter(User.id == Me).one()
                   <li><a href="/oferecimentos">Escolher outro semestre</a></li>
           </ul>
         </li>
+        <li><a href="/sobre">Sobre</a></li>
+        <li><a href="/contato">Contato</a></li>
+        <!--
         <li><a href="/faq">FAQ</a></li>
+      -->
       </ul>
         <ul class="nav navbar-nav navbar-right">
           <li><a href="$MyUser.student.EncodeURL()"> <i class="fa fa-graduation-cap"></i> $MyUser.student.name </a></li>
-          <li><a href="/logout">Log Out <i class="fa fa-sign-out"></i></a></li>
+          <li><a href="/logout">Log Out &nbsp; <i class="fa fa-sign-out"></i></a></li>
         </ul>
     </div><!--/.nav-collapse -->
   </div>
