@@ -841,17 +841,19 @@ def Setup():
 
 
     # TODO Unfinished
+    '''
     class UploadHandler:
         def GET(self):
                 web.header("Content-Type", "text/html; charset=utf-8")
-                return """
-<html><head></head><body>
-<form method="POST" enctype="multipart/form-data" action="">
-<input type="file" name="myfile" />
-<br/>
-<input type="submit" />
-</form>
-</body></html>"""
+                return
+    <html><head></head><body>
+    <form method="POST" enctype="multipart/form-data" action="">
+    <input type="file" name="myfile" />
+    <br/>
+    <input type="submit" />
+    </form>
+    </body></html>
+
 
         def POST(self):
                 x = web.input(myfile={})
@@ -878,7 +880,7 @@ def Setup():
 #            return Render.offeringpage(self.OfferingInst, Render)
 #
 #
-
+'''
     class SearchTeacher:
         def GET(self):
             IsLogged()
@@ -1087,14 +1089,15 @@ def Setup():
 #                LocS.rollback()
 #                return True
 
-
+    '''
     class FaqPage:
         def GET(self):
             IsLogged()
 
             return Render.faq(Render)
 
-            """LocDB = create_engine(UserDB, echo=False)
+
+            LocDB = create_engine(UserDB, echo=False)
             S = sessionmaker(bind=LocDB)()
 
             for Line in S.query(Subject):
@@ -1186,17 +1189,17 @@ def Setup():
                     )
                     S.add(NewSum)
                     S.commit()
-                """
+                '''
 
     class IndexPage:
         def GET(self):
             IsLogged()
             return Render.index(Render)
 
-    class ContactPage:
-        def GET(self):
-            IsLogged()
-            return Render.contact(Render)
+#    class ContactPage:
+#        def GET(self):
+#            IsLogged()
+#            return Render.contact(Render)
 
     class AboutPage:
         def GET(self):
@@ -1210,6 +1213,7 @@ def Setup():
             IsLogged()
             return Render.semesterpage(self.SemesterInst, Render)
 
+    '''
     class Database:
         def GET(self):
             IsLogged()
@@ -1231,7 +1235,6 @@ def Setup():
             S = sessionmaker(bind=DB)()
 
             if form1.validates():
-                print "ENTREI NO FORMS DE SEMESTRE"
                 Sem = Semester(
                     year = form1.d.Ano,
                     sem = form1.d.Semestre[0]
@@ -1240,7 +1243,6 @@ def Setup():
                 S.commit()
 
             elif form2.validates():
-                print "ENTREI NO FORMS DE oferecimento"
                 Off = Offering(subject_id=form2.d.Disciplina,
                                 teacher_id=form2.d.Professor,
                                 semester_id=form2.d.Semestre,
@@ -1329,7 +1331,6 @@ def Setup():
                     S.commit()
 
             elif form4.validates():
-                print "ENTREI NO FORMS DE disciplina"
                 Subj = Subject(
                     code = form4.d.Codigo,
                     name = form4.d.Nome,
@@ -1347,7 +1348,6 @@ def Setup():
                     CreateLineSubjectDisplay(Subjnovelty)
 
             elif form3.validates():
-                print "ENTREI NO FORMS DE professor"
                 Teac = Teacher(
                     name = form3.d.Nome
                 )
@@ -1362,13 +1362,12 @@ def Setup():
                     CreateLineTeacherDisplay(Teachernovelty)
 
             raise web.seeother('/database')
+            '''
 
     # URL Mappings
     S = sessionmaker(bind=DB)()
 
-    Map(UploadHandler, "/upload")
     Map(IndexPage, "/")
-    Map(ContactPage, "/contato")
     Map(AboutPage, "/sobre")
     Map(LoginPage, "/login")
     Map(RegisterPage, "/registrar")
@@ -1376,8 +1375,11 @@ def Setup():
     Map(SearchTeacher, "/docentes")
     Map(SearchSubject, "/disciplinas")
     Map(SearchOffering, "/oferecimentos")
-    Map(FaqPage, "/faq")
-    Map(Database, "/database")
+
+    #Map(ContactPage, "/contato")
+    #Map(FaqPage, "/faq")
+    #Map(Database, "/database")
+    #Map(UploadHandler, "/upload")
 
     for Line in S.query(Student):
         Map(StudentPage, Line.EncodeURL(), dict(StudentInst=Line))

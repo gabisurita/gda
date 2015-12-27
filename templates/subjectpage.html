@@ -2,7 +2,7 @@ $def with (SubjectInst, Render)
 
 $ S = sessionmaker(bind=DB)()
 
-$ ThisOfferings = S.query(Offering).filter(Offering.subject == SubjectInst) #.order_by(Offering.semester.year, Offering.semester.sem)
+$ ThisOfferings = S.query(Offering).filter(Offering.subject == SubjectInst).join(Offering.semester).order_by(desc((Semester.year)*2 + Semester.sem))
 
 $ ThisTeachers = [Of.teacher for Of in ThisOfferings]
 
@@ -65,7 +65,7 @@ $if s5!=0:
           <div class="panel panel-default">
             <div class="panel-heading col-sm-6">Ementa</div>
             <div class="panel-heading col-sm-6 text-right">$SubjectInst.credits créditos</div>
-            <div class="panel-body" style="min-height: 211px;">$SubjectInst.summary</div>
+            <div class="panel-body text-justify" style="min-height: 211px;">$SubjectInst.summary</div>
           </div>
         </div>
         <div class="col-sm-6">

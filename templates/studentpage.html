@@ -4,8 +4,7 @@ $ S = sessionmaker(bind=DB)()
 
 $ ThisUser = S.query(User).filter(User.student_id == StudentInst.id).one()
 
-$ Ratings = S.query(StudentRate).filter(StudentRate.user_id == ThisUser.id)
-
+$ Ratings = S.query(StudentRate).filter(StudentRate.user_id == ThisUser.id).join(StudentRate.offering).join(Offering.semester).order_by(desc((Semester.year)*2 + Semester.sem))
 
 <!DOCTYPE html>
 <html>

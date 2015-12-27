@@ -2,7 +2,7 @@ $def with (SemesterInst, Render)
 
 $ S = sessionmaker(bind=DB)()
 
-$ ThisOfferings = S.query(Offering).filter(Offering.semester == SemesterInst)
+$ ThisOfferings = S.query(Offering).filter(Offering.semester == SemesterInst).join(Offering.subject).order_by(Subject.code)
 
 $ Questions = S.query(QuestionsOffering)
 
@@ -48,7 +48,7 @@ $ Questions = S.query(QuestionsOffering)
             </div>
           </div>
         </div>
-          <div class="scrollable-area" style="overflow-y: scroll; height:360px;">
+          <div class="scrollable-area" style="overflow-y: auto; height:400px;">
             <table class="table table-striped table-condensed sortable table-hover">
                 <thead>
                   <tr>

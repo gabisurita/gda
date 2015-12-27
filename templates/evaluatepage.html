@@ -20,10 +20,13 @@ $ ThisTeacher = S.query(Teacher).filter(Teacher.id == OfferingInst.teacher_id).o
     <div class="container">
           <h3> $OfferingInst.subject.code $OfferingInst.code - $OfferingInst.subject.name</h3>
     <div class="row">
-        <div class="col-sm-7">
+        <div class="col-sm-4">
           <h4>Professor: $ThisTeacher.name</h4>
         </div>
         <div class="col-sm-5">
+          <h6 class="text-muted small"> <br>Deixe em branco as perguntas que você não souber responder</h6>
+        </div>
+        <div class="col-sm-3">
             <h4 class="text-right"> $OfferingInst.semester.semº semestre de $OfferingInst.semester.year </h4>
         </div>
     </div>

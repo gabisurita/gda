@@ -2,9 +2,9 @@ $def with (TeacherInst, Render)
 
 $ S = sessionmaker(bind=DB)()
 
-$ ThisOfferings = S.query(Offering).filter(Offering.teacher == TeacherInst) #.order_by(Offering.semester.year, Offering.semester.sem)
+$ ThisOfferings = S.query(Offering).filter(Offering.teacher == TeacherInst).join(Offering.semester).order_by(desc((Semester.year)*2 + Semester.sem))
 
-$ ThisComments = S.query(TeacherComment).filter(TeacherComment.teacher == TeacherInst) #.order_by(Offering.semester.year, Offering.semester.sem)
+$ ThisComments = S.query(TeacherComment).filter(TeacherComment.teacher == TeacherInst).join(TeacherComment.offering).order_by(Offering.subject_id,TeacherComment.offering_id)
 
 
 $ display_line = S.query(TeacherDisplay).filter(TeacherDisplay.teacher_id == TeacherInst.id).one()
@@ -70,9 +70,9 @@ $else:
     $:Render.navbar(Render.user_id)
     <!-- Begin page content -->
     <div class="container">
-      <h3>$TeacherInst.name </h3>
-      <div class="row">
-        <div class="col-sm-7">
+          <h3>$TeacherInst.name </h3>
+          <div class="row">
+        <div class="col-sm-8">
           <div class="panel panel-default">
             <div class="panel-heading col-sm-6">Avaliação</div>
             <div class="panel-heading text-right col-sm-6">Respostas &nbsp; &nbsp; Total</div>
@@ -144,30 +144,41 @@ $else:
                 </tbody>
               </table>
           </div>
-        </div>
-        <div class="col-sm-5">
-          <div class="panel panel-default">
-            <div class="panel-heading">Comentários</div>
-            <div class="panel-body" style="overflow-y: scroll; height:342px;">$:Render.commentsteacher(ThisComments)</div>
-          </div>
-        </div>
-      </div>
+
       <div id = 'oferecimentos'>
         <div class="row">
-          <div class="col-sm-4">
+          <div class="col-sm-5">
             <h3>Oferecimentos</h3>
-          </div>
-          <div class="col-sm-4">
-            <br>
             <input type="text" class="search" placeholder="Busca por disciplina">
           </div>
+          <div class="col-sm-7">
+            <div class="panel panel-default small">
+              <table class="table table-condensed">
+                  <tr>
+                    <td class="col-sm-6"> <b>A</b> &nbsp; Planejamento da Bibliografia  </td>
+                    <td> <b>D</b> &nbsp; Relacionamento com alunos  </td>
+                  </tr>
+                </table>
+                <table class="table table-condensed">
+                    <tr>
+                      <td class="col-sm-6"> <b>B</b> &nbsp; Didática e Técnica de Ensino </td>
+                      <td> <b>E</b> &nbsp; Adequação da avaliação   </td>
+                    </tr>
+                  </table>
+                  <table class="table table-condensed">
+                      <tr>
+                        <td class="col-sm-6"> <b>C</b> &nbsp; Interesse pelo Aluno  </td>
+                        <td> <b>F</b> &nbsp; Contribuição para aprendizado  </td>
+                      </tr>
+                    </table>
+            </div>
         </div>
+      </div>
         <div class="row">
-          <div class="col-sm-9">
             <table class="table table-striped table-condensed sortable table-hover">
               <thead>
                 <tr>
-                  <th style="min-width: 100px;">Semestre</th>
+                  <th style="min-width: 70px;">Semestre</th>
                   <th style="min-width: 70px;">Turma</th>
                   <th style="min-width: 120px;">Matriculados</th>
                   <th style="min-width: 120px;">Disciplina</th>
@@ -191,7 +202,7 @@ $else:
                   $ Rate = Lin
                   $ Rated = 1
                 <tr class="clickable-row" data-url='$URL'>
-                  <td style="min-width: 100px;"><a class="black-link" href="$URL">$Sem</a></td>
+                  <td><a class="black-link" href="$URL">$Sem</a></td>
                   <td>$Code</td>
                   <td>$Enrolled</td>
                   <td><a class="codigo black-link" href="$Line.subject.EncodeURL()">$Line.subject.code</a></td>
@@ -214,23 +225,19 @@ $else:
               };
               var userList = new List('oferecimentos', options);
             </script>
-          </div>
-          <div class="col-sm-3">
-            <div class="panel panel-default">
-              <div  class="panel-body">
-                <ol class="list-unstyled">
-                  <li> <b>A</b> Planejamento da Bibliografia  </li>
-                  <li> <b>B</b> Didática e Técnica de Ensino </li>
-                  <li> <b>C</b> Interesse pelo Aluno  </li>
-                  <li> <b>D</b> Relacionamento com alunos  </li>
-                  <li> <b>E</b> Adequação da avaliação   </li>
-                  <li> <b>F</b> Contribuição para aprendizado  </li>
-                </ol>
-              </div>
-            </div>
+        </div>
+      </div>
+    </div>
+      <div class="col-sm-4">
+        <div class="panel panel-default">
+          <div class="panel-heading">Comentários</div>
+          $ height = 525 + 37*ThisOfferings.count()
+          <div class="panel-body text-justify" style="overflow-y: auto; height: $(height)px;">
+            $:Render.commentsteacher(ThisComments)
           </div>
         </div>
       </div>
+    </div>
     </div>
     $:Render.footer()
   </body>

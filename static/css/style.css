@@ -188,18 +188,17 @@ input[type=radio][value=" não "]:checked + label:before{
     content:"\f088"; /* thumbs-o-down */
 }
 input[type=radio][value=" alta "]:checked + label:before{
-    content:"\f1e2"; /* bomb */
+    content:"\f017 \f017"; /* clock-o */
 }
 input[type=radio][value=" dificil "]:checked + label:before{
     content:"\f1e2"; /* bomb */
 }
 input[type=radio][value=" baixa "]:checked + label:before{
-    content:"\f25b"; /* hand-peace-o */
+    content:"\f017"; /* hand-peace-o */
 }
 input[type=radio][value=" facil "]:checked + label:before{
     content:"\f25b"; /* hand-peace-o */
 }
-
 input[type=radio][value=" boa "]:checked + label:before{
     content:"\f118"; /* smile-o */
 }
@@ -210,7 +209,10 @@ input[type=radio][value=" ruim "]:checked + label:before{
     content:"\f119"; /* frown-o */
 }
 input[type=radio][value=" longa "]:checked + label:before{
-    content:"\f017"; /* clock-o */
+    content:"\f00d"; /* times */
+}
+input[type=radio][value=" curta "]:checked + label:before{
+    content:"\f00d"; /* times */
 }
 
 /* ********** Login Page ********** */
