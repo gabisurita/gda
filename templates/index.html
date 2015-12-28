@@ -80,7 +80,7 @@ $ Ratings = S.query(StudentRate).filter(StudentRate.user_id == MyUser.id).join(S
             $ URL = Line.offering.EncodeURL()
             $ Code = '%s %s' % (Line.offering.subject.code, Line.offering.code)
             $ Sem = '%ss%s' % (Line.offering.semester.sem, Line.offering.semester.year)
-            <tr class="clickable-row" data-url="$URL">
+            <tr class="clickable-row" data-url="$URL" data-toggle="tooltip" title="$Line.offering.subject.name">
               <td><a class = "semestre black-link" href="$URL">$Sem</a></td>
               <td><a class = "disciplina black-link" href="$URL">$Code</a></td>
               <td><a class = "docente black-link" href="$Line.offering.teacher.EncodeURL()">$Line.offering.teacher.name</a></td>

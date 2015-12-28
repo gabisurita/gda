@@ -74,7 +74,7 @@ $else:
           <div class="row">
         <div class="col-sm-8">
           <div class="panel panel-default">
-            <div class="panel-heading col-sm-6">Avaliação</div>
+            <div class="panel-heading col-sm-6">Avaliação GDA</div>
             <div class="panel-heading text-right col-sm-6">Respostas &nbsp; &nbsp; Total</div>
               <table class="table">
                 <tbody>
@@ -152,7 +152,7 @@ $else:
             <input type="text" class="search" placeholder="Busca por disciplina">
           </div>
           <div class="col-sm-7">
-            <div class="panel panel-default small">
+            <div class="panel panel-default small" data-toggle="tooltip" title="Avaliação Oficial">
               <table class="table table-condensed">
                   <tr>
                     <td class="col-sm-6"> <b>A</b> &nbsp; Planejamento da Bibliografia  </td>
@@ -201,11 +201,11 @@ $else:
                 $for Lin in SearchRate:
                   $ Rate = Lin
                   $ Rated = 1
-                <tr class="clickable-row" data-url='$URL'>
+                <tr class="clickable-row" data-url='$URL' data-toggle="tooltip" title="$Line.subject.name">
                   <td><a class="black-link" href="$URL">$Sem</a></td>
                   <td>$Code</td>
                   <td>$Enrolled</td>
-                  <td><a class="codigo black-link" href="$Line.subject.EncodeURL()">$Line.subject.code</a></td>
+                  <td><a class="codigo black-link" href="$Line.subject.EncodeURL()" >$Line.subject.code</a></td>
                   $if Rated:
                     <td>$Rate.question1</td>
                     <td>$Rate.question2</td>

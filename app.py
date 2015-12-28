@@ -923,181 +923,190 @@ def Setup():
             LocDB = create_engine(UserDB, echo=False)
             LocS = sessionmaker(bind=LocDB)()
 
-            chaves = []
+            already_evaluated = LocS.query(StudentRate).filter(
+                StudentRate.user_id == Session.user_id).filter(
+                StudentRate.offering_id == self.OfferingInst.id).count()
 
-            #atualizar com range de perguntas (by Raul)
-            for var in range(0,13):
-                chaves.append(str(float(var)))
+            if already_evaluated:
+                IsLogged()
+                return Render.evaluatepage(self.OfferingInst, Render)
 
-            for x in chaves:
-                if x not in auxiliar.keys():
-                    auxiliar[x] = None
+            else:
+                chaves = []
 
-            if 'text-offering' not in auxiliar.keys():
-                auxiliar['text-offering'] = None
-            if 'text-teacher' not in auxiliar.keys():
-                auxiliar['text-teacher'] = None
+                #atualizar com range de perguntas (by Raul)
+                for var in range(0,13):
+                    chaves.append(str(float(var)))
 
-#            LocTeacher = LocS.query(Teacher).filter(
-#                Teacher.id == self.OfferingInst.teacher_id).one()
+                for x in chaves:
+                    if x not in auxiliar.keys():
+                        auxiliar[x] = None
 
-#            LocSubject = LocS.query(Subject).filter(
-#                Subject.id == self.OfferingInst.subject_id).one()
+                if 'text-offering' not in auxiliar.keys():
+                    auxiliar['text-offering'] = None
+                if 'text-teacher' not in auxiliar.keys():
+                    auxiliar['text-teacher'] = None
 
-#            LocSemester = LocS.query(Semester).filter(
-#                Semester.id == self.OfferingInst.semester_id).one()
+    #            LocTeacher = LocS.query(Teacher).filter(
+    #                Teacher.id == self.OfferingInst.teacher_id).one()
 
-            Me = LocS.query(User).filter(User.id == Session.user_id).one()
-            LocOffering = LocS.query(Offering).filter(
-                Offering.id == self.OfferingInst.id).one()
+    #            LocSubject = LocS.query(Subject).filter(
+    #                Subject.id == self.OfferingInst.subject_id).one()
 
-            CommitComment(self.OfferingInst, auxiliar)
+    #            LocSemester = LocS.query(Semester).filter(
+    #                Semester.id == self.OfferingInst.semester_id).one()
 
-            NewEvaluation = StudentRate(
+                Me = LocS.query(User).filter(User.id == Session.user_id).one()
+                LocOffering = LocS.query(Offering).filter(
+                    Offering.id == self.OfferingInst.id).one()
 
-            question1 = auxiliar['0.0'],
-            question2 = auxiliar['1.0'],
-            question3 = auxiliar['2.0'],
-            question4 = auxiliar['3.0'],
-            question5 = auxiliar['4.0'],
-            question6 = auxiliar['5.0'],
-            question7 = auxiliar['6.0'],
-            question8 = auxiliar['7.0'],
-            question9 = auxiliar['8.0'],
-            question10 = auxiliar['9.0'],
-            question11 = auxiliar['10.0'],
-            question12 = auxiliar['11.0'],
-            question13 = auxiliar['12.0'],
+                CommitComment(self.OfferingInst, auxiliar)
 
-            user = Me,
-            offering = LocOffering
-            )
-            LocS.add(NewEvaluation)
-            LocS.commit()
+                NewEvaluation = StudentRate(
 
-            elemento = LocS.query(AnswerSum).filter(AnswerSum.offering_id == self.OfferingInst.id).one()
-            professor = LocS.query(AnswerSumTeacher).filter(AnswerSumTeacher.teacher_id == self.OfferingInst.teacher_id).one()
-            disciplina = LocS.query(AnswerSumSubject).filter(AnswerSumSubject.subject_id == self.OfferingInst.subject_id).one()
+                question1 = auxiliar['0.0'],
+                question2 = auxiliar['1.0'],
+                question3 = auxiliar['2.0'],
+                question4 = auxiliar['3.0'],
+                question5 = auxiliar['4.0'],
+                question6 = auxiliar['5.0'],
+                question7 = auxiliar['6.0'],
+                question8 = auxiliar['7.0'],
+                question9 = auxiliar['8.0'],
+                question10 = auxiliar['9.0'],
+                question11 = auxiliar['10.0'],
+                question12 = auxiliar['11.0'],
+                question13 = auxiliar['12.0'],
 
-            if auxiliar['0.0'] == u' sim ':
-                elemento.q1_sim += 1
-                disciplina.q1_sim += 1
-            elif auxiliar['0.0'] == u' não ':
-                elemento.q1_nao += 1
-                disciplina.q1_nao += 1
+                user = Me,
+                offering = LocOffering
+                )
+                LocS.add(NewEvaluation)
+                LocS.commit()
 
-            if auxiliar['1.0'] == u' correto ':
-                elemento.q2_correto += 1
-            elif auxiliar['1.0'] == u' antes ':
-                elemento.q2_antes += 1
-            elif auxiliar['1.0'] == u' depois ':
-                elemento.q2_depois += 1
+                elemento = LocS.query(AnswerSum).filter(AnswerSum.offering_id == self.OfferingInst.id).one()
+                professor = LocS.query(AnswerSumTeacher).filter(AnswerSumTeacher.teacher_id == self.OfferingInst.teacher_id).one()
+                disciplina = LocS.query(AnswerSumSubject).filter(AnswerSumSubject.subject_id == self.OfferingInst.subject_id).one()
 
-            if auxiliar['2.0'] == u' adequada ':
-                elemento.q3_adequada += 1
-                disciplina.q3_adequada += 1
-            elif auxiliar['2.0'] == u' curta ':
-                elemento.q3_curta += 1
-                disciplina.q3_curta += 1
-            elif auxiliar['2.0'] == u' longa ':
-                elemento.q3_longa += 1
-                disciplina.q3_longa += 1
+                if auxiliar['0.0'] == u' sim ':
+                    elemento.q1_sim += 1
+                    disciplina.q1_sim += 1
+                elif auxiliar['0.0'] == u' não ':
+                    elemento.q1_nao += 1
+                    disciplina.q1_nao += 1
 
-            if auxiliar['3.0'] == u' alta ':
-                elemento.q4_alta += 1
-                disciplina.q4_alta += 1
-            elif auxiliar['3.0'] == u' normal ':
-                elemento.q4_normal += 1
-                disciplina.q4_normal += 1
-            elif auxiliar['3.0'] == u' baixa ':
-                elemento.q4_baixa += 1
-                disciplina.q4_baixa += 1
+                if auxiliar['1.0'] == u' correto ':
+                    elemento.q2_correto += 1
+                elif auxiliar['1.0'] == u' antes ':
+                    elemento.q2_antes += 1
+                elif auxiliar['1.0'] == u' depois ':
+                    elemento.q2_depois += 1
 
-            if auxiliar['4.0'] == u' dificil ':
-                elemento.q5_dificil += 1
-                disciplina.q5_dificil += 1
-            elif auxiliar['4.0'] == u' normal ':
-                elemento.q5_normal += 1
-                disciplina.q5_normal += 1
-            elif auxiliar['4.0'] == u' facil ':
-                elemento.q5_facil += 1
-                disciplina.q5_facil += 1
+                if auxiliar['2.0'] == u' adequada ':
+                    elemento.q3_adequada += 1
+                    disciplina.q3_adequada += 1
+                elif auxiliar['2.0'] == u' curta ':
+                    elemento.q3_curta += 1
+                    disciplina.q3_curta += 1
+                elif auxiliar['2.0'] == u' longa ':
+                    elemento.q3_longa += 1
+                    disciplina.q3_longa += 1
 
-            if auxiliar['5.0'] == u' dificil ':
-                elemento.q6_dificil += 1
-                professor.q6_dificil += 1
-            elif auxiliar['5.0'] == u' normal ':
-                elemento.q6_normal += 1
-                professor.q6_normal += 1
-            elif auxiliar['5.0'] == u' facil ':
-                elemento.q6_facil += 1
-                professor.q6_facil += 1
+                if auxiliar['3.0'] == u' alta ':
+                    elemento.q4_alta += 1
+                    disciplina.q4_alta += 1
+                elif auxiliar['3.0'] == u' normal ':
+                    elemento.q4_normal += 1
+                    disciplina.q4_normal += 1
+                elif auxiliar['3.0'] == u' baixa ':
+                    elemento.q4_baixa += 1
+                    disciplina.q4_baixa += 1
 
-            if auxiliar['6.0'] == u' sim ':
-                elemento.q7_sim += 1
-                professor.q7_sim += 1
-            elif auxiliar['6.0'] == u' não ':
-                elemento.q7_nao += 1
-                professor.q7_nao += 1
+                if auxiliar['4.0'] == u' dificil ':
+                    elemento.q5_dificil += 1
+                    disciplina.q5_dificil += 1
+                elif auxiliar['4.0'] == u' normal ':
+                    elemento.q5_normal += 1
+                    disciplina.q5_normal += 1
+                elif auxiliar['4.0'] == u' facil ':
+                    elemento.q5_facil += 1
+                    disciplina.q5_facil += 1
 
-            if auxiliar['7.0'] == u' boa ':
-                elemento.q8_boa += 1
-                professor.q8_boa += 1
-            elif auxiliar['7.0'] == u' média ':
-                elemento.q8_media += 1
-                professor.q8_media += 1
-            elif auxiliar['7.0'] == u' ruim ':
-                elemento.q8_ruim += 1
-                professor.q8_ruim += 1
+                if auxiliar['5.0'] == u' dificil ':
+                    elemento.q6_dificil += 1
+                    professor.q6_dificil += 1
+                elif auxiliar['5.0'] == u' normal ':
+                    elemento.q6_normal += 1
+                    professor.q6_normal += 1
+                elif auxiliar['5.0'] == u' facil ':
+                    elemento.q6_facil += 1
+                    professor.q6_facil += 1
 
-            if auxiliar['8.0'] == u' sim ':
-                elemento.q9_sim += 1
-                professor.q9_sim += 1
-            elif auxiliar['8.0'] == u' não ':
-                elemento.q9_nao += 1
-                professor.q9_nao += 1
+                if auxiliar['6.0'] == u' sim ':
+                    elemento.q7_sim += 1
+                    professor.q7_sim += 1
+                elif auxiliar['6.0'] == u' não ':
+                    elemento.q7_nao += 1
+                    professor.q7_nao += 1
 
-            if auxiliar['9.0'] == u' sim ':
-                elemento.q10_sim += 1
-                professor.q10_sim += 1
-            elif auxiliar['9.0'] == u' não ':
-                elemento.q10_nao += 1
-                professor.q10_nao += 1
+                if auxiliar['7.0'] == u' boa ':
+                    elemento.q8_boa += 1
+                    professor.q8_boa += 1
+                elif auxiliar['7.0'] == u' média ':
+                    elemento.q8_media += 1
+                    professor.q8_media += 1
+                elif auxiliar['7.0'] == u' ruim ':
+                    elemento.q8_ruim += 1
+                    professor.q8_ruim += 1
 
-            if auxiliar['10.0'] == u' sim ':
-                elemento.q11_sim += 1
-                professor.q11_sim += 1
-            elif auxiliar['10.0'] == u' não ':
-                elemento.q11_nao += 1
-                professor.q11_nao += 1
+                if auxiliar['8.0'] == u' sim ':
+                    elemento.q9_sim += 1
+                    professor.q9_sim += 1
+                elif auxiliar['8.0'] == u' não ':
+                    elemento.q9_nao += 1
+                    professor.q9_nao += 1
 
-            if auxiliar['11.0'] == u' sim ':
-                elemento.q12_sim += 1
-                professor.q12_sim += 1
-            elif auxiliar['11.0'] == u' não ':
-                elemento.q12_nao += 1
-                professor.q12_nao += 1
+                if auxiliar['9.0'] == u' sim ':
+                    elemento.q10_sim += 1
+                    professor.q10_sim += 1
+                elif auxiliar['9.0'] == u' não ':
+                    elemento.q10_nao += 1
+                    professor.q10_nao += 1
 
-            if auxiliar['12.0'] == u' sim ':
-                elemento.q13_sim += 1
-                professor.q13_sim += 1
-            elif auxiliar['12.0'] == u' não ':
-                elemento.q13_nao += 1
-                professor.q13_nao += 1
+                if auxiliar['10.0'] == u' sim ':
+                    elemento.q11_sim += 1
+                    professor.q11_sim += 1
+                elif auxiliar['10.0'] == u' não ':
+                    elemento.q11_nao += 1
+                    professor.q11_nao += 1
 
-            LocS.commit()
+                if auxiliar['11.0'] == u' sim ':
+                    elemento.q12_sim += 1
+                    professor.q12_sim += 1
+                elif auxiliar['11.0'] == u' não ':
+                    elemento.q12_nao += 1
+                    professor.q12_nao += 1
 
-            UpdateOfferingDisplay(elemento)
-            UpdateTeacherDisplay(professor)
-            UpdateSubjectDisplay(disciplina)
+                if auxiliar['12.0'] == u' sim ':
+                    elemento.q13_sim += 1
+                    professor.q13_sim += 1
+                elif auxiliar['12.0'] == u' não ':
+                    elemento.q13_nao += 1
+                    professor.q13_nao += 1
 
-            raise web.seeother(self.OfferingInst.EncodeURL())
-#            try:
-#
-#
-#            except:
-#                LocS.rollback()
-#                return True
+                LocS.commit()
+
+                UpdateOfferingDisplay(elemento)
+                UpdateTeacherDisplay(professor)
+                UpdateSubjectDisplay(disciplina)
+
+                raise web.seeother(self.OfferingInst.EncodeURL())
+    #            try:
+    #
+    #
+    #            except:
+    #                LocS.rollback()
+    #                return True
 
     '''
     class FaqPage:
@@ -1215,6 +1224,11 @@ def Setup():
         def GET(self):
             IsLogged()
             return Render.about(Render)
+
+    class StatsPage:
+        def GET(self):
+            IsLogged()
+            return Render.stats(Render)
 
     class SemesterPage:
         SemesterInst = Semester()
@@ -1379,6 +1393,7 @@ def Setup():
 
     Map(IndexPage, "/")
     Map(AboutPage, "/sobre")
+    Map(StatsPage, "/estatisticas")
     Map(LoginPage, "/login")
     Map(RegisterPage, "/registrar")
     Map(LogoutPage, "/logout")

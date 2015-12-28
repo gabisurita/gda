@@ -21,30 +21,39 @@ $ Questions = S.query(QuestionsOffering)
       <div class="row">
         <div class="col-sm-7">
           <h4>Busca de oferecimentos para o
-          $SemesterInst.semº semestre de $SemesterInst.year</h4>
-          <br>
-          <input type="text" class="search" placeholder="Busca por disciplina ou docente">
-        </div>
+            $SemesterInst.semº semestre de $SemesterInst.year</h4>
+            <br>
+            <div class="col-sm-9">
+              <div class="row">
+                <input type="text" class="search" placeholder="Busca por disciplina ou docente"/>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <h6 class="text-muted text-right">
+                Avaliação Oficial
+              </h6>
+            </div>
+          </div>
           <div class="col-sm-5">
             <div class="panel panel-default">
               <table class="table table-condensed">
-                  <tr>
-                    <td class="col-sm-6"> <b>A</b> &nbsp; Planejamento da Bibliografia  </td>
-                    <td> <b>D</b> &nbsp; Relacionamento com alunos  </td>
-                  </tr>
-                </table>
-                <table class="table table-condensed">
-                    <tr>
-                      <td class="col-sm-6"> <b>B</b> &nbsp; Didática e Técnica de Ensino </td>
-                      <td> <b>E</b> &nbsp; Adequação da avaliação   </td>
-                    </tr>
-                  </table>
-                  <table class="table table-condensed">
-                      <tr>
-                        <td class="col-sm-6"> <b>C</b> &nbsp; Interesse pelo Aluno  </td>
-                        <td> <b>F</b> &nbsp; Contribuição para aprendizado  </td>
-                      </tr>
-                    </table>
+                <tr>
+                  <td class="col-sm-6"> <b>A</b> &nbsp; Planejamento da Bibliografia  </td>
+                  <td> <b>D</b> &nbsp; Relacionamento com alunos  </td>
+                </tr>
+              </table>
+              <table class="table table-condensed">
+                <tr>
+                  <td class="col-sm-6"> <b>B</b> &nbsp; Didática e Técnica de Ensino </td>
+                  <td> <b>E</b> &nbsp; Adequação da avaliação   </td>
+                </tr>
+              </table>
+              <table class="table table-condensed">
+                <tr>
+                  <td class="col-sm-6"> <b>C</b> &nbsp; Interesse pelo Aluno  </td>
+                  <td> <b>F</b> &nbsp; Contribuição para aprendizado  </td>
+                </tr>
+              </table>
             </div>
           </div>
         </div>
@@ -72,7 +81,7 @@ $ Questions = S.query(QuestionsOffering)
                   $for Lin in SearchRate:
                     $ Rate = Lin
                     $ Rated = 1
-                  <tr class="clickable-row" data-url="$URL">
+                  <tr class="clickable-row" data-url="$URL" data-toggle="tooltip" title="$Line.subject.name">
                     <td style="min-width: 100px;"><a class = "codigo black-link" href="$URL">$Code</a></td>
                     <td><a class = "docente black-link" href="$Line.teacher.EncodeURL()">$Line.teacher.name</a></td>
                     $if Rated:
