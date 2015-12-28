@@ -2,6 +2,7 @@
 #### Grupo de Avaliação Discente (GDA) da Faculdade de Engenharia Elétrica e de Computação (FEEC) da Universidade de Campinas (Unicamp)
 
 Visite nossa página: http://tiny.cc/gda
+
 Conheça nossa história: http://www.cabs.fee.unicamp.br/?t=52_GDA
 
 Nosso trabalho é reunir informações sobre as disciplinas ministradas a cada semestre e apresentá-las de forma compreensível e construtiva para os alunos e professores da Faculdade. Essa página foi feita para substituir os antigos guias impressos.
