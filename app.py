@@ -631,17 +631,25 @@ def Setup():
             else:
                 S = sessionmaker(bind=DB)()
 
-                Match = re.search(r'[\w.-]+@[\w.-]+.unicamp.br', Form['E-mail'].value)
+                check_email = re.search(r'[\w.-]+@[\w.-]+.unicamp.br', Form['E-mail'].value)
 
-                check_email = S.query(User).filter(
+                check_RA = re.search(r'[\d]', Form['RA'].value)
+
+                match_email = S.query(User).filter(
                     User.email == Form['E-mail'].value)
 
-                check_ra = S.query(Student).filter(
+                match_ra = S.query(Student).filter(
                     Student.ra == Form['RA'].value)
 
 
-                if Match == None or check_email.count() != 0 or check_ra.count() != 0:
-                    return Render.register(Form,"Error", Render)
+                if check_email == None:
+                    return Render.register(Form,"E-mail inválido! Favor utilizar um E-mail [.unicamp.br]. Por exemplo, o email da DAC no formato a123456@dac.unicamp.br", Render)
+
+                elif check_RA == None:
+                    return Render.register(Form,"RA inválido!", Render)
+
+                elif match_email.count() != 0 or match_ra.count() != 0:
+                    return Render.register(Form,"Usuário já está cadastrado!", Render)
 
                 NewStudent = Student(
                 ra = int(Form['RA'].value),
@@ -666,6 +674,8 @@ def Setup():
 
                 UserCall = S.query(User).filter(
                     User.email == Form['E-mail'].value).one()
+
+                Map(StudentPage, NewStudent.EncodeURL(), dict(StudentInst=NewStudent))
 
                 Session.user_id = UserCall.id
                 raise web.seeother('/')

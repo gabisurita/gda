@@ -12,7 +12,7 @@ $def with (Form, Error, Render)
     <!-- Begin page content -->
     <div class="container login">
       <div class="col-lg-9">
-        <h1> <a href="/login" class="black-link"> GDA </h1>
+        <h1><a href="/login" class="black-link"> GDA</a></h1>
       </div>
       <div class="col-lg-3">
         <form class="form-signin" method="POST" action="/registrar">
@@ -22,7 +22,7 @@ $def with (Form, Error, Render)
           <label for="Nome" class="sr-only">Nome</label>
           <input type="text" class="form-control" placeholder="Nome" name="Nome" required>
           <label for="E-mail" class="sr-only">Email</label>
-          <input type="text" class="form-control" placeholder="Email" name="E-mail" required>
+          <input type="text" class="form-control" placeholder="Email institucional &nbsp; &nbsp;  &nbsp; &nbsp; UNICAMP" name="E-mail" required>
           <label for="Senha" class="sr-only">Senha</label>
           <input type="password" class="form-control" placeholder="Senha" name="Senha" required>
           <br>
@@ -30,6 +30,12 @@ $def with (Form, Error, Render)
         </form>
       </div>
     </div>
-    $:Render.footer()
+    <footer class="footer">
+      <div class="container">
+        <p class="text-footer text-center">
+         <a class="black-link" href="http://www.github.com/faraj7/gda">
+          Grupo Discente de Avaliação &nbsp; - &nbsp; Conheça este projeto</a> </p>
+      </div>
+    </footer>
   </body>
 </html>
