@@ -1,32 +1,29 @@
 # GDA Web App
 #### Grupo de Avaliação Discente (GDA) da Faculdade de Engenharia Elétrica e de Computação (FEEC) da Universidade de Campinas (Unicamp)
-Olá, conheça a página de desenvolvimento do GDA.
 
-Estamos atualmente em fase de desenvolvimento, sendo assim, o conteúdo aqui disponível ainda não está disponibilizado para usuários. Porém se você quer participar do desenvolvimento ou acompanhar o andamento do nosso trabalho, leia o conteúdo desta página.
+Visite nossa página: http://tiny.cc/gda
+Conheça nossa história: http://www.cabs.fee.unicamp.br/?t=52_GDA
 
-Para mais informações, consulte (e contribua) com [nossa wiki](https://github.com/rodrigosurita/gda/wiki).
+Nosso trabalho é reunir informações sobre as disciplinas ministradas a cada semestre e apresentá-las de forma compreensível e construtiva para os alunos e professores da Faculdade. Essa página foi feita para substituir os antigos guias impressos.
 
-## 1. Especificação
-Para o lançamento da versão Beta, este projeto deve possuir as seguintes funcionalidades:
+Estamos atualmente em nossa versão inicial. Ainda temos muito que melhorar! 
 
- 1. Ferramenta de coleta da avaliação de disciplinas por estudantes de maneira anônima
- 2. Ferramentas para análise dos dados coletados
- 3. Mural de informações para publicação das análises
+Descrevemos abaixo um pouco do que usamos para fazer esse projeto e como você pode ajudar. Nenhum conhecimento prévio é necessário, apenas seu interesse e sua disposição. Ficou interessado? Fale conosco.
 
+Ali Faraj [faraj7 at gmail dot com]
 
-## 2. Linhas de desenvolvimento
-O projeto do GDA atualmente consta com algumas linhas principais de desenvolvimento:
+Raul Cecato [raulcecato at gmail dot com]
+ 
+## 1. Como você pode ajudar
 
- 1. Elaboração dos formulários de avaliação
- 2. Desenvolvimento de aplicações Web
- 3. Planejamento de interfaces
- 4. Relações públicas
+* Assuntos acadêmicos : como usar os dados obtidos para melhorar nosso curso e nossa faculdade
+* Desenvolvimento de aplicações Web : back-end, programação em Python e SQL
+* Planejamento de interfaces : design, identidade visual, front-end (html, css, js)
 
 
-## 3. Ferramentas e requisitos
+## 2. Como o projeto foi feito
 Nesta versão de desenvolvimento contamos com as seguintes ferramentas:
 
-* [Google Forms](https://docs.google.com/forms/d/1kVaQlGR9AQPtNVwuB56Hqzo8EzI-fpofSHnAO8TEa1M/edit), utilizado na prototipagem do formulário
 * [Web.py](https://github.com/webpy/webpy) *framework web* em linguagem Python
 * [SQLalchemy](http://www.sqlalchemy.org/), ferramenta para bancos de dados com suporte à ORM (mapeamento relacional de objetos)
 * [LXML](http://lxml.de/), biblioteca para processamento de HTML e XML
@@ -41,7 +38,7 @@ Para a execução local da Web App é necessário instalar:
  3. [SQLalchemy](http://www.sqlalchemy.org/)
  
 
-## 4. Organização deste repositório
+## 3. Organização deste repositório
 Este repositório está organizado como segue, qualquer submissão de conteúdo (commit) deve obedecer esta organização.
 
 ```
@@ -49,15 +46,13 @@ Este repositório está organizado como segue, qualquer submissão de conteúdo 
    README.md (Este documento)
    LICENSE (Nossa licença - GPL 3.0)
    net/ (web app)
-     app.py (Aplicação Web, páginas)
-     models.py (Classes para ORM)
-     constants.py (Configuração básica do servidor)
-     test.db (Banco de dados SQLite para testes)
-     templates/ (HTML das páginas de apresentação)
-     static/ (Conteúdo estático - img, css, etc)
-     sessions/ (armazena informações de login)
-     api/ (Aplicações secundárias - parsers, crawlers, etc)
-   
-   old/ (conteúdo antigo, pré versão web)
-   doc/ (qualquer documentação)
+   app.py (Aplicação Web, páginas)
+   models.py (Classes para ORM)
+   constants.py (Configuração básica do servidor)
+   test.db (Banco de dados SQLite para testes)
+   templates/ (HTML das páginas de apresentação)
+   static/ (Conteúdo estático - img, css, etc)
+   sessions/ (armazena informações de login)
+   api/ (Aplicações secundárias - parsers, crawlers, etc)
+
 ```
