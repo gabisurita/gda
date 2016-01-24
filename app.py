@@ -712,7 +712,7 @@ def Setup():
                         conf_code += choice(caracters)
 
                 web.sendmail('gda.noreply@gmail.com', Form['E-mail'].value, 'Confirmar E-mail - GDA', 'O código de confirmação gerado para seu e-mail foi: '+
-                conf_code+'\n \n Para proceder com a confirmação de sua conta e poder avaliar oferecimentos, clique no link abaixo:\n\n faraj7.pythonanywhere.com/confirmacao')
+                conf_code+'\n \n Para proceder com a confirmação de sua conta e poder avaliar oferecimentos, clique no link abaixo:\n\n faraj7.pythonanywhere.com/')
 
                 NewConfirm = ConfirmationRoll(
                     user = NewUser,
@@ -836,7 +836,7 @@ def Setup():
                     adress = S.query(User).filter(User.id == Session.user_id).one()
 
                     web.sendmail('gda.noreply@gmail.com', str(adress.email) , 'Confirmar E-mail - GDA', 'O código de confirmação gerado para seu e-mail foi: '+
-                    str(conf_code.activation_code)+'\n \n Para proceder com a confirmação de sua conta e poder avaliar oferecimentos, clique no link abaixo:\n\n faraj7.pythonanywhere.com/confirmacao')
+                    str(conf_code.activation_code)+'\n \n Para proceder com a confirmação de sua conta e poder avaliar oferecimentos, clique no link abaixo:\n\n faraj7.pythonanywhere.com/')
                     return Render.confirmationpage(Form,"E-mail alterado com sucesso! Verifique o novo endereço para ativação do registro do GDA", Render)
 
             elif auxiliar.has_key('reenviar'):
@@ -844,7 +844,7 @@ def Setup():
                 adress = S.query(User).filter(User.id == Session.user_id).one()
 
                 web.sendmail('gda.noreply@gmail.com', str(adress.email) , 'Confirmar E-mail - GDA', 'O código de confirmação gerado para seu e-mail foi: '+
-                str(conf_code.activation_code)+'\n \n Para proceder com a confirmação de sua conta e poder avaliar oferecimentos, clique no link abaixo:\n\n faraj7.pythonanywhere.com/confirmacao')
+                str(conf_code.activation_code)+'\n \n Para proceder com a confirmação de sua conta e poder avaliar oferecimentos, clique no link abaixo:\n\n faraj7.pythonanywhere.com/')
                 return Render.confirmationpage(Form,"E-mail reenviado!", Render)
 
     class StudentPage:
