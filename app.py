@@ -711,7 +711,7 @@ def Setup():
                 for char in xrange(8):
                         conf_code += choice(caracters)
 
-                web.sendmail('gda.noreply@gmail.com', Form['E-mail'].value, 'Confirmação de E-mail - GDA', 'O código de confirmação gerado para seu e-mail foi: '+
+                web.sendmail('gda.noreply@gmail.com', Form['E-mail'].value, 'Confirmar E-mail - GDA', 'O código de confirmação gerado para seu e-mail foi: '+
                 conf_code+'\n \n Para proceder com a confirmação de sua conta e poder avaliar oferecimentos, clique no link abaixo:\n\n faraj7.pythonanywhere.com/confirmacao')
 
                 NewConfirm = ConfirmationRoll(
@@ -835,16 +835,15 @@ def Setup():
                     conf_code = S.query(ConfirmationRoll).filter(ConfirmationRoll.user_id == Session.user_id).one()
                     adress = S.query(User).filter(User.id == Session.user_id).one()
 
-                    web.sendmail('gda.noreply@gmail.com', str(adress.email) , 'Confirmação de E-mail - GDA', 'O código de confirmação gerado para seu e-mail foi: '+
+                    web.sendmail('gda.noreply@gmail.com', str(adress.email) , 'Confirmar E-mail - GDA', 'O código de confirmação gerado para seu e-mail foi: '+
                     str(conf_code.activation_code)+'\n \n Para proceder com a confirmação de sua conta e poder avaliar oferecimentos, clique no link abaixo:\n\n faraj7.pythonanywhere.com/confirmacao')
-                    return Render.confirmationpage(Form,"E-mail reenviado!", Render)
                     return Render.confirmationpage(Form,"E-mail alterado com sucesso! Verifique o novo endereço para ativação do registro do GDA", Render)
 
             elif auxiliar.has_key('reenviar'):
                 conf_code = S.query(ConfirmationRoll).filter(ConfirmationRoll.user_id == Session.user_id).one()
                 adress = S.query(User).filter(User.id == Session.user_id).one()
 
-                web.sendmail('gda.noreply@gmail.com', str(adress.email) , 'Confirmação de E-mail - GDA', 'O código de confirmação gerado para seu e-mail foi: '+
+                web.sendmail('gda.noreply@gmail.com', str(adress.email) , 'Confirmar E-mail - GDA', 'O código de confirmação gerado para seu e-mail foi: '+
                 str(conf_code.activation_code)+'\n \n Para proceder com a confirmação de sua conta e poder avaliar oferecimentos, clique no link abaixo:\n\n faraj7.pythonanywhere.com/confirmacao')
                 return Render.confirmationpage(Form,"E-mail reenviado!", Render)
 
@@ -1373,7 +1372,7 @@ def Setup():
                 for char in xrange(8):
                         newpass += choice(caracters)
 
-                web.sendmail('gda.noreply@gmail.com', auxiliar['email'], 'Recuperação de Senha - GDA', 'Sua nova senha é: '+
+                web.sendmail('gda.noreply@gmail.com', auxiliar['email'], 'Recuperar Senha - GDA', 'Sua nova senha é: '+
                 newpass+'\n \n Caso ache necessário, você pode mudar sua senha na página de alteração de dados cadatrais do GDA.')
 
                 stmt = update(User).where(auxiliar['email'] == User.email).values(password=newpass)

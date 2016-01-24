@@ -13,7 +13,7 @@ $ ThisUser = S.query(User).filter(User.id == Render.user_id).one()
   </head>
   <body>
     $if Error != "":
-      <script>BootstrapDialog.show({type: BootstrapDialog.TYPE_DANGER, size: BootstrapDialog.SIZE_SMALL, title: 'Erro', message: '$:Error' });</script>
+      <script>BootstrapDialog.show({type: BootstrapDialog.TYPE_DANGER, size: BootstrapDialog.SIZE_SMALL, title: 'Aviso', message: '$:Error' });</script>
     <!-- Begin page content -->
     <div class="container login">
       <div class="col-lg-9">
