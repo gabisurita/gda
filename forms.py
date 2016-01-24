@@ -8,7 +8,7 @@ from models import *
 
 # Form Handlers
 LoginForm = web.form.Form(
-    web.form.Textbox('email', web.form.notnull, Class="form-control"),
+    web.form.Textbox('ra', web.form.notnull, Class="form-control"),
     web.form.Password('senha', web.form.notnull, Class="form-control"),
     web.form.Button('login', Class="btn btn-primary"),
 )
@@ -25,6 +25,15 @@ SearchForm = web.form.Form(
     web.form.Textbox('Busca', Class="form-control"),
 )
 
+ForgottenForm = web.form.Form(
+    web.form.Textbox('email', web.form.notnull, Class="form-control"),
+    web.form.Button('Enviar', Class="btn btn-primary"),
+)
+
+ConfirmationForm = web.form.Form(
+    web.form.Textbox('Codigo de confirmacao', web.form.notnull, Class="form-control"),
+    web.form.Button('Submeter', Class="btn btn-primary"),
+)
 
 semesters = []
 teachers = []

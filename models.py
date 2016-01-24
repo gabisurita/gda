@@ -10,6 +10,8 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, ForeignKey, Integer, String, Boolean
 from sqlalchemy.orm import relationship, sessionmaker
 from sqlalchemy import desc
+from sqlalchemy import update
+from sqlalchemy import delete
 
 DB = create_engine(SystemDB, echo=False)
 Base = declarative_base()
@@ -200,6 +202,16 @@ class QuestionsSubject(Base):
 
     id = Column('question_id', Integer, primary_key=True)
     question = Column('question', String)
+
+class ConfirmationRoll(Base):
+    __tablename__ = "confirmation_roll"
+
+    id = Column('confirmation_id', Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('user.user_id'))
+    user = relationship(User)
+
+    activation_code = Column('activation_code', String)
+
 
 
 class OfferingRate(Base):

@@ -6,6 +6,8 @@
 from __future__ import division
 from constants import *
 
+from random import choice
+
 import web
 import os
 import codecs
@@ -24,6 +26,13 @@ def Setup():
                                  cache=False, globals=globals())
 
     """Initial server configuration."""
+
+    # Initialize mailing features
+    web.config.smtp_server = 'smtp.gmail.com'
+    web.config.smtp_port = 587
+    web.config.smtp_username = 'gda.noreply@gmail.com'
+    web.config.smtp_password = 'provasantigas2016'
+    web.config.smtp_starttls = True
 
     # initialize the application
     App = web.application(mapping=(), fvars=globals())
@@ -68,6 +77,28 @@ def Setup():
         except AttributeError:
             if Redirect:
                 raise web.seeother('/login')
+            else:
+                return False
+
+    def IsConfirmed(Redirect=True):
+        """ Define confirmed area"""
+
+        LocDB = create_engine(UserDB, echo=False)
+        LocS = sessionmaker(bind=LocDB)()
+        ob = LocS.query(User).filter(Session.user_id == User.id).first()
+
+        try:
+            if ob.count() == 1:
+                return True
+            else:
+                if Redirect:
+                    raise web.seeother('/confirmacao')
+                else:
+                    return False
+
+        except AttributeError:
+            if Redirect:
+                raise web.seeother('/confirmacao')
             else:
                 return False
 
@@ -586,9 +617,8 @@ def Setup():
             else:
                 S = sessionmaker(bind=DB)()
 
-                UserCall = S.query(User).filter(
-                    User.email == Form['email'].value)
-
+                StudentCall = S.query(Student).filter(
+                    Student.ra == Form['ra'].value)
                 # Students disabled
 #                StudentCall = S.query(Student).filter(
 #                    Student.ra == int(Form['RA'].value))
@@ -602,12 +632,15 @@ def Setup():
 #                    return Render.login(
 #                        Form, "Usuário não cadastrado.", Render)
 
-                if UserCall.count():
-                    UserCall = UserCall.one()
+                if StudentCall.count():
+                    StudentCall = StudentCall.one()
+                    UserCall = S.query(User).filter(StudentCall.id == User.student_id).one()
                     if UserCall.password == Form['senha'].value:
-                        # TODO Check email confirmation
                         Session.user_id = UserCall.id
-                        raise web.seeother('/')
+                        if UserCall.confirmed == 1:
+                            raise web.seeother('/')
+                        else:
+                            raise web.seeother('/confirmacao')
                     else:
                         return Render.login(Form, "Senha inválida", Render)
                 else:
@@ -665,12 +698,29 @@ def Setup():
                 NewUser = User(
                 email = Form['E-mail'].value,
                 password = Form['Senha'].value,
-                confirmed = True,
+                confirmed = False,
                 student = StudentCall
                 )
 
                 S.add(NewUser)
                 S.commit()
+
+                # Adding confirmation key to table of confirmations
+                caracters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+                conf_code = ''
+                for char in xrange(8):
+                        conf_code += choice(caracters)
+
+                web.sendmail('gda.noreply@gmail.com', Form['E-mail'].value, 'Confirmação de E-mail - GDA', 'O código de confirmação gerado para seu e-mail foi: '+
+                conf_code+'\n \n Para proceder com a confirmação de sua conta e poder avaliar oferecimentos, clique no link abaixo:\n\n faraj7.pythonanywhere.com/confirmacao')
+
+                NewConfirm = ConfirmationRoll(
+                    user = NewUser,
+                    activation_code = conf_code
+                )
+                S.add(NewConfirm)
+                S.commit()
+
 
                 UserCall = S.query(User).filter(
                     User.email == Form['E-mail'].value).one()
@@ -678,7 +728,7 @@ def Setup():
                 Map(StudentPage, NewStudent.EncodeURL(), dict(StudentInst=NewStudent))
 
                 Session.user_id = UserCall.id
-                raise web.seeother('/')
+                raise web.seeother('/confirmacao')
 
 
                 # Students disabled
@@ -750,11 +800,60 @@ def Setup():
             Session.user_id = False
             raise web.seeother('/')
 
+    class ConfirmationPage:
+
+        def GET(self):
+            IsLogged()
+            Form = ConfirmationForm
+            return Render.confirmationpage(Form, "", Render)
+
+        def POST(self):
+            Form = ConfirmationForm
+            auxiliar = POSTParse(web.data())
+
+            S = sessionmaker(bind=DB)()
+            LocDB = create_engine(UserDB, echo=False)
+
+            if auxiliar.has_key('confirmar'):
+                cont = 0
+                for Line in S.query(ConfirmationRoll):
+                    if auxiliar['conf_code'] == Line.activation_code:
+                        LocDB.execute(update(User).where(User.id == Line.user_id).values(confirmed=1))
+                        LocDB.execute(delete(ConfirmationRoll).where(ConfirmationRoll.id == Line.id))
+                        cont = 1
+                if cont == 0:
+                    return Render.confirmationpage(Form, "Código de confirmação incorreto", Render)
+                else:
+                    raise web.seeother('/login')
+            elif auxiliar.has_key('alterar'):
+                check_email = re.search(r'[\w.-]+@[\w.-]+.unicamp.br', auxiliar['email'])
+
+                if check_email == None:
+                    return Render.confirmationpage(Form,"E-mail inválido! Favor utilizar um E-mail [.unicamp.br]. Por exemplo, o email da DAC no formato a123456@dac.unicamp.br", Render)
+                else:
+                    LocDB.execute(update(User).where(User.id == Session.user_id).values(email=auxiliar['email']))
+                    conf_code = S.query(ConfirmationRoll).filter(ConfirmationRoll.user_id == Session.user_id).one()
+                    adress = S.query(User).filter(User.id == Session.user_id).one()
+
+                    web.sendmail('gda.noreply@gmail.com', str(adress.email) , 'Confirmação de E-mail - GDA', 'O código de confirmação gerado para seu e-mail foi: '+
+                    str(conf_code.activation_code)+'\n \n Para proceder com a confirmação de sua conta e poder avaliar oferecimentos, clique no link abaixo:\n\n faraj7.pythonanywhere.com/confirmacao')
+                    return Render.confirmationpage(Form,"E-mail reenviado!", Render)
+                    return Render.confirmationpage(Form,"E-mail alterado com sucesso! Verifique o novo endereço para ativação do registro do GDA", Render)
+
+            elif auxiliar.has_key('reenviar'):
+                conf_code = S.query(ConfirmationRoll).filter(ConfirmationRoll.user_id == Session.user_id).one()
+                adress = S.query(User).filter(User.id == Session.user_id).one()
+
+                web.sendmail('gda.noreply@gmail.com', str(adress.email) , 'Confirmação de E-mail - GDA', 'O código de confirmação gerado para seu e-mail foi: '+
+                str(conf_code.activation_code)+'\n \n Para proceder com a confirmação de sua conta e poder avaliar oferecimentos, clique no link abaixo:\n\n faraj7.pythonanywhere.com/confirmacao')
+                return Render.confirmationpage(Form,"E-mail reenviado!", Render)
+
     class StudentPage:
         StudentInst = Student()
 
         def GET(self):
             IsLogged()
+            IsConfirmed()
             return Render.studentpage(self.StudentInst, Render)
 
     class TeacherPage:
@@ -762,6 +861,7 @@ def Setup():
 
         def GET(self):
             IsLogged()
+            IsConfirmed()
 
             LocDB = create_engine(UserDB, echo=False)
             LocS = sessionmaker(bind=LocDB)()
@@ -776,6 +876,7 @@ def Setup():
 
         def POST(self):
             IsLogged()
+            IsConfirmed()
             Response = POSTParse(web.data())
 #            CommitComment(self.TeacherInst, Response)
 
@@ -786,10 +887,12 @@ def Setup():
 
         def GET(self):
             IsLogged()
+            IsConfirmed()
             return Render.subjectpage(self.SubjectInst, Render)
 
         def POST(self):
             IsLogged()
+            IsConfirmed()
             Response = POSTParse(web.data())
 #            CommitComment(self.SubjectInst, Response)
 
@@ -800,6 +903,7 @@ def Setup():
 
         def GET(self):
             IsLogged()
+            IsConfirmed()
             form = RateOffering()
 
             already_evaluated = False
@@ -820,6 +924,7 @@ def Setup():
 
         def POST(self):
             IsLogged()
+            IsConfirmed()
         #    Response = POSTParse(web.data())
 #            CommitComment(self.OfferingInst, Response)
         #    form = RateOffering()
@@ -880,6 +985,7 @@ def Setup():
 #
 #        def GET(self):
 #            IsLogged()
+#            IsConfirmed()
 #            return Render.offeringpage(self.OfferingInst, Render)
 
 #        def POST(self):
@@ -894,18 +1000,21 @@ def Setup():
     class SearchTeacher:
         def GET(self):
             IsLogged()
+            IsConfirmed()
 
             return Render.searchteacher(Render)
 
     class SearchSubject:
         def GET(self):
             IsLogged()
+            IsConfirmed()
 
             return Render.searchsubject(Render)
 
     class SearchOffering:
         def GET(self):
             IsLogged()
+            IsConfirmed()
 
             return Render.searchoffering(Render)
 
@@ -914,10 +1023,13 @@ def Setup():
 
         def GET(self):
             IsLogged()
+            IsConfirmed()
+
             return Render.evaluatepage(self.OfferingInst, Render)
 
         def POST(self):
             IsLogged()
+            IsConfirmed()
             auxiliar = POSTParse(web.data())
 
             LocDB = create_engine(UserDB, echo=False)
@@ -929,6 +1041,7 @@ def Setup():
 
             if already_evaluated:
                 IsLogged()
+                IsConfirmed()
                 return Render.evaluatepage(self.OfferingInst, Render)
 
             else:
@@ -1112,6 +1225,7 @@ def Setup():
     class FaqPage:
         def GET(self):
             IsLogged()
+            IsConfirmed()
 
             return Render.faq(Render)
 
@@ -1213,6 +1327,7 @@ def Setup():
     class IndexPage:
         def GET(self):
             IsLogged()
+            IsConfirmed()
             return Render.index(Render)
 
 #    class ContactPage:
@@ -1223,11 +1338,13 @@ def Setup():
     class AboutPage:
         def GET(self):
             IsLogged()
+            IsConfirmed()
             return Render.about(Render)
 
     class StatsPage:
         def GET(self):
             IsLogged()
+            IsConfirmed()
             return Render.stats(Render)
 
     class SemesterPage:
@@ -1235,12 +1352,40 @@ def Setup():
 
         def GET(self):
             IsLogged()
+            IsConfirmed()
             return Render.semesterpage(self.SemesterInst, Render)
 
+    class ForgottenPassword:
+        def GET(self):
+            Form = ForgottenForm
+            return Render.forgottenpassword(Form, "", Render)
+
+        def POST(self):
+            auxiliar = POSTParse(web.data())
+            Form = ForgottenForm
+
+            S = sessionmaker(bind=DB)()
+            LocDB = create_engine(UserDB, echo=False)
+
+            if S.query(User).filter(auxiliar['email'] == User.email).count() == 1:
+                caracters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+                newpass = ''
+                for char in xrange(8):
+                        newpass += choice(caracters)
+
+                web.sendmail('gda.noreply@gmail.com', auxiliar['email'], 'Recuperação de Senha - GDA', 'Sua nova senha é: '+
+                newpass+'\n \n Caso ache necessário, você pode mudar sua senha na página de alteração de dados cadatrais do GDA.')
+
+                stmt = update(User).where(auxiliar['email'] == User.email).values(password=newpass)
+                LocDB.execute(stmt)
+
+            else:
+                return Render.forgottenpassword(Form, "Não existe usuário cadastrado com o e-mail fornecido", Render)
     '''
     class Database:
         def GET(self):
             IsLogged()
+            IsConfirmed()
             UpdateLists()
             form1 = AddSemester()
             form2 = AddOffering()
@@ -1400,6 +1545,8 @@ def Setup():
     Map(SearchTeacher, "/docentes")
     Map(SearchSubject, "/disciplinas")
     Map(SearchOffering, "/oferecimentos")
+    Map(ForgottenPassword, "/esqueci")
+    Map(ConfirmationPage, "/confirmacao")
 
     #Map(ContactPage, "/contato")
     #Map(FaqPage, "/faq")

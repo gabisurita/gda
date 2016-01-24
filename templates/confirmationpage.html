@@ -1,0 +1,80 @@
+$def with (Form, Error, Render)
+
+$ S = sessionmaker(bind=DB)()
+
+$ ThisUser = S.query(User).filter(User.id == Render.user_id).one()
+
+<!DOCTYPE html>
+<html>
+  <head>
+    $:Render.includes()
+    <title>$BaseTitle - Confirmação de E-mail</title>
+
+  </head>
+  <body>
+    $if Error != "":
+      <script>BootstrapDialog.show({type: BootstrapDialog.TYPE_DANGER, size: BootstrapDialog.SIZE_SMALL, title: 'Erro', message: '$:Error' });</script>
+    <!-- Begin page content -->
+    <div class="container login">
+      <div class="col-lg-9">
+        <h1> GDA </h1>
+      </div>
+      <div class="col-lg-3">
+        <form class="form-signin" method="POST" action="/confirmacao">
+          <h2 class="form-signin-heading">Confirmação de E-mail</h2>
+          <label for="conf_code" class="sr-only">Código: </label>
+          <input type="text" class="form-control" placeholder="Código de confirmação" name="conf_code" required autofocus>
+          <!--
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" value="remember-me"> Lembre-me
+            </label>
+          </div>
+        -->
+          <br>
+          <button class="btn btn-primary btn-block" type="submit" name="confirmar">Confirmar</button>
+        </form>
+        <form class="form-signin" method="POST" action="/confirmacao">
+          <h2 class="form-signin-heading">Alteração de E-mail</h2>
+          <br>
+          <h8>O e-mail cadastrado é: $ThisUser.email. Caso este e-mail não esteja correto, bla'blá blá</h8>
+          <label for="email" class="sr-only">Novo e-mail: </label>
+          <input type="text" class="form-control" placeholder="E-mail válido" name="email" required autofocus>
+          <!--
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" value="remember-me"> Lembre-me
+            </label>
+          </div>
+        -->
+          <br>
+          <button class="btn btn-primary btn-block" type="submit" name="alterar">Alterar</button>
+        </form>
+        <li><a href="/logout">Log Out &nbsp; <i class="fa fa-sign-out"></i></a></li>
+        <br>
+        <h8></h8>
+        <form class="form-signin" method="POST" action="/confirmacao">
+          <h2 class="form-signin-heading">Reenvio</h2>
+          <br>
+          <h8>Reenviar e-mail de confirmação para $ThisUser.email</h8>
+          <!--
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" value="remember-me"> Lembre-me
+            </label>
+          </div>
+        -->
+          <br>
+          <button class="btn btn-primary btn-block" type="submit" name="reenviar">Reenviar</button>
+        </form>
+      </div>
+    </div>
+    <footer class="footer">
+      <div class="container">
+        <p class="text-footer text-center">
+         <a class="black-link" href="http://www.github.com/faraj7/gda">
+          Grupo Discente de Avaliação &nbsp; - &nbsp; Conheça este projeto</a> </p>
+      </div>
+    </footer>
+  </body>
+</html>
