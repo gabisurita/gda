@@ -85,10 +85,10 @@ def Setup():
 
         LocDB = create_engine(UserDB, echo=False)
         LocS = sessionmaker(bind=LocDB)()
-        ob = LocS.query(User).filter(Session.user_id == User.id).first()
+        ob = LocS.query(User).filter(Session.user_id == User.id).one()
 
         try:
-            if ob.count() == 1:
+            if ob.confirmed == 1:
                 return True
             else:
                 if Redirect:
@@ -817,7 +817,7 @@ def Setup():
             if auxiliar.has_key('confirmar'):
                 cont = 0
                 for Line in S.query(ConfirmationRoll):
-                    if auxiliar['conf_code'] == Line.activation_code:
+                    if auxiliar['conf_code'] == Line.activation_code and Session.user_id == Line.user_id:
                         LocDB.execute(update(User).where(User.id == Line.user_id).values(confirmed=1))
                         LocDB.execute(delete(ConfirmationRoll).where(ConfirmationRoll.id == Line.id))
                         cont = 1
