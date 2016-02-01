@@ -12,12 +12,12 @@ $def with (Form, Error, Render)
       <script>BootstrapDialog.show({type: BootstrapDialog.TYPE_DANGER, size: BootstrapDialog.SIZE_SMALL, title: 'Erro', message: '$:Error' });</script>
     <!-- Begin page content -->
     <div class="container login">
-      <div class="col-lg-9">
-        <h1> GDA </h1>
-      </div>
-      <div class="col-lg-3">
+      <div class="col-sm-5"></div>
+
+      <div class="col-sm-2 text-center">
+        <h1 class="font-effect-outline" style="font-size:96px;">gda</h1>
+        <br>
         <form class="form-signin" method="POST" action="/login">
-          <h2 class="form-signin-heading">Log In</h2>
           <label for="ra" class="sr-only">RA</label>
           <input type="text" class="form-control" placeholder="RA" name="ra" required autofocus>
           <label for="senha" class="sr-only">Senha</label>
@@ -32,9 +32,9 @@ $def with (Form, Error, Render)
           <br>
           <button class="btn btn-primary btn-block" type="submit">Entrar</button>
         </form>
-        <br>
-        <p> Não tem login? Registre-se <a href="/registrar"> aqui </a> .</p>
-        <p> Esqueci minha senha  <a href="/esqueci"> e agora o que faço?? </a> .</p>
+        <br><br>
+        <p> <i class="fa fa-user-plus fa-lg"></i> <a class="black-link" href="/registrar"> &nbsp; Não sou cadastrado </a></p>
+        <p> <i class="fa fa-question-circle fa-lg"></i> <a class="black-link" href="/esqueci"> &nbsp; Esqueci minha senha </a></p>
       </div>
     </div>
     <footer class="footer">

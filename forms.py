@@ -35,6 +35,16 @@ ConfirmationForm = web.form.Form(
     web.form.Button('Submeter', Class="btn btn-primary"),
 )
 
+UserForm = web.form.Form(
+    web.form.Textbox('RA', web.form.notnull, Class="form-control"),
+    web.form.Textbox('Nome', web.form.notnull, Class="form-control"),
+    web.form.Password('Current', Class="form-control"),
+    web.form.Password('New', Class="form-control"),
+    web.form.Password('Repeat', Class="form-control"),
+    web.form.Button('Login', Class="btn btn-primary"),
+)
+
+
 semesters = []
 teachers = []
 subjects = []

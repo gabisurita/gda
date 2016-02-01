@@ -822,14 +822,16 @@ def Setup():
                         LocDB.execute(delete(ConfirmationRoll).where(ConfirmationRoll.id == Line.id))
                         cont = 1
                 if cont == 0:
-                    return Render.confirmationpage(Form, "Código de confirmação incorreto", Render)
+                    return Render.confirmationpage(Form, "Código de confirmação incorreto!", Render)
                 else:
-                    raise web.seeother('/login')
+                    raise web.seeother('/')
             elif auxiliar.has_key('alterar'):
                 check_email = re.search(r'[\w.-]+@[\w.-]+.unicamp.br', auxiliar['email'])
-
+                match_email = LocS.query(User).filter(User.email == auxiliar['email'])
                 if check_email == None:
                     return Render.confirmationpage(Form,"E-mail inválido! Favor utilizar um E-mail [.unicamp.br]. Por exemplo, o email da DAC no formato a123456@dac.unicamp.br", Render)
+                elif match_email.count():
+                    return Render.confirmationpage(Form,"Já existe um usuário cadastrado com esse e-mail! Parece que você digitou um endereço igual o atual ou um que já está associado a outro usuário.", Render)
                 else:
                     LocDB.execute(update(User).where(User.id == Session.user_id).values(email=auxiliar['email']))
                     conf_code = S.query(ConfirmationRoll).filter(ConfirmationRoll.user_id == Session.user_id).one()
@@ -854,6 +856,52 @@ def Setup():
             IsLogged()
             IsConfirmed()
             return Render.studentpage(self.StudentInst, Render)
+
+    class UserPage:
+        def GET(self):
+            IsLogged()
+            IsConfirmed()
+            Form = UserForm()
+            return Render.userpage(Form,"",Render)
+        def POST(self):
+            Form = UserForm()
+            if not Form.validates():
+                return Render.userpage(Form,"Algo deu errado! Por favor, tente novamente.", Render)
+            else:
+                LocDB = create_engine(UserDB, echo=False)
+                LocS = sessionmaker(bind=LocDB)()
+                MyUser = LocS.query(User).filter(User.id == Render.user_id).one()
+
+                check_RA = re.search(r'[\d]', Form['RA'].value)
+                if check_RA == None:
+                    return Render.userpage(Form,"RA inválido!", Render)
+                elif (int(Form['RA'].value) != MyUser.student.ra):
+                    match_ra = LocS.query(Student).filter(Student.ra == Form['RA'].value)
+                    if(match_ra.count() != 0):
+                        return Render.userpage(Form,"Já existe um usuário cadastrado com esse RA!", Render)
+                    else:
+                        update_ra = update(Student).where(Student.id == MyUser.student_id).values(ra=Form['RA'].value)
+                        LocDB.execute(update_ra)
+
+                if (Form['Nome'].value != MyUser.student.name):
+                    update_name = update(Student).where(Student.id == MyUser.student_id).values(name=Form['Nome'].value)
+                    LocDB.execute(update_name)
+
+                if(Form['Current'].value != ""):
+                    if(Form['New'].value == ""):
+                        return  Render.userpage(Form,"Informe uma senha nova!", Render)
+                    else:
+                        if(Form['Current'].value != MyUser.password):
+                            return Render.userpage(Form,"Senha atual não confere!",Render)
+                        else:
+                            if(Form['New'].value != Form['Repeat'].value):
+                                return Render.userpage(Form,"Senha nova não confere com a repetição!",Render)
+                            else:
+                                update_password = update(User).where(Render.user_id == User.id).values(password=Form['New'].value)
+                                LocDB.execute(update_password)
+
+            raise web.seeother('/user')
+
 
     class TeacherPage:
         TeacherInst = Teacher()
@@ -1365,21 +1413,25 @@ def Setup():
 
             S = sessionmaker(bind=DB)()
             LocDB = create_engine(UserDB, echo=False)
+            Me = S.query(Student).filter(Student.ra == auxiliar['ra'])
 
-            if S.query(User).filter(auxiliar['email'] == User.email).count() == 1:
+            if Me.count():
                 caracters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'
                 newpass = ''
                 for char in xrange(8):
                         newpass += choice(caracters)
 
-                web.sendmail('gda.noreply@gmail.com', auxiliar['email'], 'Recuperar Senha - GDA', 'Sua nova senha é: '+
+                ThisUser = S.query(User).filter(User.student_id == Me.one().id).one()
+
+                web.sendmail('gda.noreply@gmail.com', Me.one().email, 'Recuperar Senha - GDA', 'Sua nova senha é: '+
                 newpass+'\n \n Caso ache necessário, você pode mudar sua senha na página de alteração de dados cadatrais do GDA.')
 
                 stmt = update(User).where(auxiliar['email'] == User.email).values(password=newpass)
                 LocDB.execute(stmt)
+                raise web.seeother('/login')
 
             else:
-                return Render.forgottenpassword(Form, "Não existe usuário cadastrado com o e-mail fornecido", Render)
+                return Render.forgottenpassword(Form, "Não existe usuário cadastrado com o RA fornecido!", Render)
     '''
     class Database:
         def GET(self):
@@ -1546,6 +1598,7 @@ def Setup():
     Map(SearchOffering, "/oferecimentos")
     Map(ForgottenPassword, "/esqueci")
     Map(ConfirmationPage, "/confirmacao")
+    Map(UserPage, "/user")
 
     #Map(ContactPage, "/contato")
     #Map(FaqPage, "/faq")

@@ -11,25 +11,32 @@ $def with (Form, Error, Render)
       <script>BootstrapDialog.show({type: BootstrapDialog.TYPE_DANGER, size: BootstrapDialog.SIZE_SMALL, title: 'Erro', message: '$:Error' });</script>
     <!-- Begin page content -->
     <div class="container login">
-      <div class="col-lg-9">
-        <h1><a href="/login" class="black-link"> GDA</a></h1>
-      </div>
-      <div class="col-lg-3">
+      <div class="col-sm-4"></div>
+      <div class="col-sm-4 text-center">
+        <h1 class="font-effect-outline" style="font-size:96px;">gda</h1>
+        <br>
+        <div class="row">
+          <div class="col-sm-2"></div>
+          <div class="col-sm-8">
         <form class="form-signin" method="POST" action="/registrar">
-          <h2 class="form-signin-heading">Registrar</h2>
+
           <label for="RA" class="sr-only">RA</label>
           <input type="text" class="form-control" placeholder="RA" name="RA" required autofocus>
           <label for="Nome" class="sr-only">Nome</label>
           <input type="text" class="form-control" placeholder="Nome e Sobrenome" name="Nome" required>
           <label for="E-mail" class="sr-only">Email</label>
-          <input type="text" class="form-control" placeholder="Email institucional &nbsp; &nbsp;  &nbsp; &nbsp; UNICAMP" name="E-mail" required>
+          <input type="text" class="form-control" placeholder="E-mail da UNICAMP" name="E-mail" required>
           <label for="Senha" class="sr-only">Senha</label>
           <input type="password" class="form-control" placeholder="Senha" name="Senha" required>
           <br>
           <button class="btn btn-primary btn-block" type="submit">Registrar</button>
         </form>
+        <br> <br>
+        <p> <i class="fa fa-sign-in fa-lg"></i> &nbsp; <a class="black-link" href="/login">Voltar para o login</a></p>
       </div>
     </div>
+    </div>
+  </div>
     <footer class="footer">
       <div class="container">
         <p class="text-footer text-center">
