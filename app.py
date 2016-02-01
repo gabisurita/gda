@@ -1082,6 +1082,9 @@ def Setup():
             LocDB = create_engine(UserDB, echo=False)
             LocS = sessionmaker(bind=LocDB)()
 
+            if Session.user_id == 78:
+                return web.seeother("/")
+
             already_evaluated = LocS.query(StudentRate).filter(
                 StudentRate.user_id == Session.user_id).filter(
                 StudentRate.offering_id == self.OfferingInst.id).count()
