@@ -711,7 +711,7 @@ def Setup():
                 for char in xrange(8):
                         conf_code += choice(caracters)
 
-                web.sendmail('gda.noreply@gmail.com', Form['E-mail'].value, 'Confirmar E-mail - GDA', 'O código de confirmação gerado para seu e-mail foi: '+
+                web.sendmail('gda.noreply@gmail.com', str(Form['E-mail'].value), 'Confirmar E-mail - GDA', 'O código de confirmação gerado para seu e-mail foi: '+
                 conf_code+'\n \n Para proceder com a confirmação de sua conta e poder avaliar oferecimentos, clique no link abaixo:\n\n faraj7.pythonanywhere.com/')
 
                 NewConfirm = ConfirmationRoll(
