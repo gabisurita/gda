@@ -597,6 +597,18 @@ def Setup():
         LocS.add(NewAnswerSumSubject)
         LocS.commit()
 
+    #function used to protect database against simply looking at it
+    def encode(string):
+        aux = (''.join(x.encode('hex') for x in string))
+        print aux
+        return str(aux)
+
+    #function used to protect database against simply looking at it
+    def decode(string):
+        aux = string.decode("hex")
+        print aux
+        return str(aux)
+
 
     # Page classes (handlers)
     class LoginPage:
@@ -635,7 +647,7 @@ def Setup():
                 if StudentCall.count():
                     StudentCall = StudentCall.one()
                     UserCall = S.query(User).filter(StudentCall.id == User.student_id).one()
-                    if UserCall.password == Form['senha'].value:
+                    if UserCall.password == encode(Form['senha'].value):
                         Session.user_id = UserCall.id
                         if UserCall.confirmed == 1:
                             raise web.seeother('/')
@@ -891,7 +903,7 @@ def Setup():
                     if(Form['New'].value == ""):
                         return  Render.userpage(Form,"Informe uma senha nova!", Render)
                     else:
-                        if(Form['Current'].value != MyUser.password):
+                        if(encode(Form['Current'].value) != MyUser.password):
                             return Render.userpage(Form,"Senha atual não confere!",Render)
                         else:
                             if(Form['New'].value != Form['Repeat'].value):
