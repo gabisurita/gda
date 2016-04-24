@@ -709,7 +709,7 @@ def Setup():
 
                 NewUser = User(
                 email = Form['E-mail'].value,
-                password = Form['Senha'].value,
+                password = encode(Form['Senha'].value),
                 confirmed = False,
                 student = StudentCall
                 )
@@ -909,7 +909,7 @@ def Setup():
                             if(Form['New'].value != Form['Repeat'].value):
                                 return Render.userpage(Form,"Senha nova não confere com a repetição!",Render)
                             else:
-                                update_password = update(User).where(Render.user_id == User.id).values(password=Form['New'].value)
+                                update_password = update(User).where(Render.user_id == User.id).values(password=encode(Form['New'].value))
                                 LocDB.execute(update_password)
 
             raise web.seeother('/user')
@@ -1441,7 +1441,7 @@ def Setup():
                 web.sendmail('gda.noreply@gmail.com', str(ThisUser.email), 'Recuperar Senha - GDA', 'Sua nova senha é: '+
                 newpass+'\n \n Caso ache necessário, você pode mudar sua senha na página de alteração de dados cadatrais do GDA.')
 
-                stmt = update(User).where(ThisUser.email == User.email).values(password=newpass)
+                stmt = update(User).where(ThisUser.email == User.email).values(password=encode(newpass))
                 LocDB.execute(stmt)
                 raise web.seeother('/login')
 
