@@ -167,41 +167,7 @@ class OfferingComment(Base):
   offering = relationship(Offering)
 
 
-class SubjectComment(Base):
-  __tablename__ = "subject_comments"
-
-  id = Column('subject_comment_id', Integer, primary_key=True)
-  text = Column('text', String)
-  anonymous = Column('anonymous', Boolean)
-  user_id = Column(Integer, ForeignKey('user.user_id'))
-  user = relationship(User)
-  subject_id = Column(Integer, ForeignKey('subject.subject_id'))
-  subject = relationship(Subject)
-
-
 # TODO Add type (w. mimes) and Offering/Teacher support
-
-class FileUploads(Base):
-  __tablename__ = "file_uploads"
-
-  id = Column('upload_id', Integer, primary_key=True)
-  filename = Column('filename', String)
-  user_id = Column(Integer, ForeignKey('user.user_id'))
-  user = relationship(User)
-  subject_id = Column(Integer, ForeignKey('subject.subject_id'))
-  subject = relationship(Subject)
-
-class QuestionsOffering(Base):
-    __tablename__ = "questions_offering"
-
-    id = Column('question_id', Integer, primary_key=True)
-    question = Column('question', String)
-
-class QuestionsSubject(Base):
-    __tablename__ = "questions_subject"
-
-    id = Column('question_id', Integer, primary_key=True)
-    question = Column('question', String)
 
 class ConfirmationRoll(Base):
     __tablename__ = "confirmation_roll"
@@ -211,7 +177,6 @@ class ConfirmationRoll(Base):
     user = relationship(User)
 
     activation_code = Column('activation_code', String)
-
 
 
 class OfferingRate(Base):
