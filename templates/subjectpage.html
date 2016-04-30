@@ -6,7 +6,6 @@ $ ThisOfferings = S.query(Offering).filter(Offering.subject == SubjectInst).join
 
 $ ThisTeachers = [Of.teacher for Of in ThisOfferings]
 
-$ ThisComments = S.query(SubjectComment).filter(SubjectComment.subject == SubjectInst) #.order_by(Subject.semester.year, Offering.semester.sem)
 
 $ display_line = S.query(SubjectDisplay).filter(SubjectDisplay.subject_id == SubjectInst.id).one()
 $ sum_line = S.query(AnswerSumSubject).filter(AnswerSumSubject.subject_id == SubjectInst.id).one()
