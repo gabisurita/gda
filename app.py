@@ -1618,7 +1618,6 @@ def Setup():
     #Map(ContactPage, "/contato")
     #Map(FaqPage, "/faq")
     #Map(Database, "/database")
-    #Map(UploadHandler, "/upload")
 
     for Line in S.query(Student):
         Map(StudentPage, Line.EncodeURL(), dict(StudentInst=Line))

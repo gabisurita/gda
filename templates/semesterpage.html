@@ -4,9 +4,6 @@ $ S = sessionmaker(bind=DB)()
 
 $ ThisOfferings = S.query(Offering).filter(Offering.semester == SemesterInst).join(Offering.subject).order_by(Subject.code)
 
-$ Questions = S.query(QuestionsOffering)
-
-
 <!DOCTYPE html>
 <html>
   <head>

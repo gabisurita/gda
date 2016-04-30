@@ -3,7 +3,6 @@ $def with (Render)
 $ S = sessionmaker(bind=DB)()
 
 $ SubjectsList = S.query(Subject).order_by(Subject.code)
-$ Questions = S.query(QuestionsSubject)
 
 <!DOCTYPE html>
 <html>
