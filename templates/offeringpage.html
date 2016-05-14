@@ -118,7 +118,9 @@ $for Line in SearchRate:
         </div>
         <div class="col-sm-3">
           $if already_evaluated:
-            <button class="btn btn-success btn-block" disabled>Você já avaliou este oferecimento</button>
+            <form method="GET" action="$OfferingInst.EvaluationURL()">
+              <button class="btn btn-success btn-block " type="submit">Modificar avaliação</button>
+            </form>
           $else:
             <form method="GET" action="$OfferingInst.EvaluationURL()">
               <button class="btn btn-primary btn-block" type="submit">Avaliar este oferecimento</button>
