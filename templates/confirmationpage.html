@@ -1,0 +1,91 @@
+$def with (Form, Error, Render)
+
+$ S = sessionmaker(bind=DB)()
+
+$ ThisUser = S.query(User).filter(User.id == Render.user_id).one()
+
+<!DOCTYPE html>
+<html>
+  <head>
+    $:Render.includes()
+    <title>$BaseTitle - Confirmação</title>
+
+  </head>
+  <body>
+    $if Error != "":
+      <script>BootstrapDialog.show({type: BootstrapDialog.TYPE_DANGER, size: BootstrapDialog.SIZE_SMALL, title: 'Aviso', message: '$:Error' });</script>
+    <!-- Begin page content -->
+
+    <!--
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand font-effect-outline" href="/">gda</a>
+        </div>
+      </div>
+    </nav>
+  -->
+    $:Render.navbar(Render.user_id)
+    <div class="container">
+      <div class="col-sm-12">
+        <br>
+        <h4>Confirme o seu E-mail</h4>
+        <br>
+      </div>
+      <div class="col-sm-4">
+        <br>
+        <p class="text-justify"> Olá, $ThisUser.student.name! Enviamos um código de confirmação para o endereço $ThisUser.email. </p>
+        <p class="text-justify"> Se você não recebeu a mensagem, podemos reenviá-la. Aguarde um pouco, pode demorar alguns minutos.</p>
+        <p class="text-justify">  Caso esse endereço não esteja correto, por favor, informe outro endereço válido da UNICAMP. </p>
+
+      </div>
+      <div class="col-sm-1"> </div>
+      <div class="col-sm-4">
+
+        <div class="row">
+        <form class="" method="POST" action="/confirmacao">
+          <div class="form-group">
+            <label class="control-label"></label>
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Código de confirmação" name="conf_code">
+              <span class="input-group-btn">
+                <button style="width:110px" class="btn btn-default" type="submit" name="confirmar">Confirmar</button>
+              </span>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="row">
+        <form class="" method="POST" action="/confirmacao">
+          <div class="form-group">
+            <label class="control-label"></label>
+            <div class="input-group">
+              <input type="text" class="form-control" value="$ThisUser.email" name="conf_code" disabled="">
+              <span class="input-group-btn">
+                <button style="width:110px" class="btn btn-default" type="submit" name="reenviar">Reenviar</button>
+              </span>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="row">
+        <form class="" method="POST" action="/confirmacao">
+          <div class="form-group">
+            <label class="control-label"></label>
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="E-mail válido" name="email">
+              <span class="input-group-btn">
+                <button  style="width:110px"class="btn btn-default" type="submit" name="alterar">Alterar</button>
+              </span>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  $:Render.footer()
+  </body>
+</html>

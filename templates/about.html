@@ -1,0 +1,153 @@
+$def with (Render)
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  $:Render.includes()
+  <title>$BaseTitle</title>
+</head>
+<body>
+  <!-- Fixed navbar -->
+  $:Render.navbar(Render.user_id)
+  <!-- Begin page content -->
+  <div class="container">
+    <h3 class="text-center"> Grupo Discente de Avaliação</h4>
+      <br>
+      <div class="col-sm-6">
+        <p class="text-justify">
+          O Grupo Discente de Avaliação é formado por alunos da Faculdade de Engenharia Elétrica e de Computação da UNICAMP.
+          Nosso trabalho é reunir informações sobre as disciplinas ministradas a cada semestre e apresentá-las de forma compreensível e construtiva.
+          Essa página foi feita para substituir os antigos guias impressos.
+          Para conhecer mais sobre o que fizemos, visite a página desse projeto no
+          <a class="black-link" href="https://github.com/faraj7/gda" target="_blank"><strong>GitHub</strong></a>.
+        </p>
+        <br>
+        <h5 class="text-center">  Avaliação </h5>
+        <p class="text-justify" > <strong>A avaliação oficial</strong> feita pela coordenação da FEEC pode ser consultada pelos links:
+          <div class="well well-sm">
+            &nbsp;  &nbsp;
+            &nbsp; &nbsp; &nbsp;
+            <i class="fa fa-file-text-o"></i> &nbsp; <a href="https://drive.google.com/folderview?id=0B8SJcJVfl_c4cXlDWENLWDYxMW8&usp=sharing" class="black-link" target="_blank">
+              Relatórios semestrais</a>
+              &nbsp; &nbsp; &nbsp; &nbsp;
+              Questionários:  &nbsp; &nbsp;
+              <i class="fa fa-pencil"></i> &nbsp; <a href="https://drive.google.com/file/d/0B8SJcJVfl_c4OUs1ZXgyTkJibGM/view?usp=sharing" class="black-link" target="_blank">
+                Teoria</a>
+                &nbsp; &nbsp;  &nbsp; &nbsp;
+                <i class="fa fa-flask"></i> &nbsp;<a href="https://drive.google.com/file/d/0B8SJcJVfl_c4UTZXS2ZFTkJBb3c/view?usp=sharing" class="black-link" target="_blank">
+                  Laboratório</a>
+                </div>
+              </p>
+              <p class="text-justify"> Observação: As avaliacões oficias são liberadas somente no meio do semestre seguinte, por isso ainda não temos os dados do segundo semestre de 2015.</p>
+              Aqui no GDA, disponilizaremos dados oficias relativos aos seguintes critérios:
+              <div class="panel panel-default">
+                <table class="table table-condensed">
+                  <tr>
+                    <td class="col-sm-6"> <b>A</b> &nbsp; Planejamento da Bibliografia  </td>
+                    <td> <b>D</b> &nbsp; Relacionamento com alunos  </td>
+                  </tr>
+                </table>
+                <table class="table table-condensed">
+                  <tr>
+                    <td class="col-sm-6"> <b>B</b> &nbsp; Didática e Técnica de Ensino </td>
+                    <td> <b>E</b> &nbsp; Adequação da avaliação   </td>
+                  </tr>
+                </table>
+                <table class="table table-condensed">
+                  <tr>
+                    <td class="col-sm-6"> <b>C</b> &nbsp; Interesse pelo Aluno  </td>
+                    <td> <b>F</b> &nbsp; Contribuição para aprendizado  </td>
+                  </tr>
+                </table>
+              </div>
+              <p class="text-justify">
+                Os critérios <strong>Pontualidade</strong>, <strong>Assiduidade</strong> e <strong>Cumprimento do Programa</strong> não foram considerados
+                porque todos os docentes receberam nota máxima em todas as avaliações consideradas.
+                Não consideramos a <strong>Média Global</strong> porque quereremos evitar que os professores sejam rankeados.
+                O critério <strong>Atendimento Extra-classe</strong> também não foi considerado porque acreditamos que esses dados trazem mais informações
+                sobre os auxiliares PED ou PAD e não especificamente sobre o docente.
+                Além disso, as perguntas sobre esse critério não foram respondidas em muitos casos.
+              </p>
+
+
+              <p class="text-justify"> <strong>A nossa avaliação</strong> contém algumas perguntas que seriam equivalentes aos critérios da avaliação oficial.
+                Isso nos possibilita fornecer uma fonte alternativa de dados e ainda questionar o formato atual da avaliação oficial.
+                Além disso, criamos perguntas para avaliar a <strong>disciplina</strong>, não somente o docente. Também disponibilizamos espaços para <strong>comentários</strong>,
+                que julgamos mais importantes do que as perguntas objetivas, porque estes podem conter informações muito mais relevantes e específicas.
+              </p>
+
+
+            </div>
+            <div class="col-sm-6 text-center">
+
+              <h5 class="text-center">Objetivos</h5>
+              <ul class="fa-ul text-justify">
+                <li><i class="fa-li fa fa-angle-right"></i> Fornecer um guia para que os alunos possam se preparar melhor para o curso.  </li>
+                <li><i class="fa-li fa fa-angle-right"></i> Estabelecer uma ferramenta eficiente de feedback entre alunos e professores.  </li>
+                <li><i class="fa-li fa fa-angle-right"></i> Disponibilizar a consulta aberta a avaliação oficial dos professores.</li>
+              </ul>
+
+              <br>
+
+              <h5>  Contato </h5>
+              <p class="text-justify">
+                Estamos só começando e ainda temos muito que melhorar! Precisamos de ajuda para
+                <strong>desenvolvimento</strong>, <strong>design</strong> e <strong>assuntos acadêmicos</strong>.
+                Nenhum conhecimento prévio é necessário, apenas seu interesse e sua disposição.
+                Ficou interessado? Fale conosco.
+                <br>
+                <br>
+                <br>
+              </p>
+              <div class="col-sm-6">
+                <img src="static/images/faraj.jpg"
+                class="img-circle" alt="" width="50" height="50">
+                <h5> Ali Faraj </h5>
+                <div class="text-left">
+                  <div class="col-sm-1">
+                  </div>
+                  <div class="col-sm-10">
+                    <i class="fa fa-facebook-square"></i> &nbsp; facebook.com/faraj7
+                    <br>
+                    <i class="fa fa-envelope"></i> &nbsp; faraj7g@gmail.com
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <img src="static/images/bira.jpg"
+                class="img-circle" alt="" width="50" height="50">
+                <h5> Raul Cecato </h5>
+                <div class="text-left">
+                  <div class="col-sm-1">
+                  </div>
+                  <div class="col-sm-11">
+                    <i class="fa fa-facebook-square"></i> &nbsp; facebook.com/raul.cecato
+                    <br>
+                    <i class="fa fa-envelope"></i> &nbsp; raulcecato@gmail.com
+                  </div>
+                </div>
+              </div>
+              <br><br><br><br><br><br><br><br>
+              <br><br>
+              <h5>  Agradecimentos </h5>
+              <div class="col-sm-9">
+                <p class="text-justify">
+
+                  Agradecemos o apoio do <a class="black-link" href="http://www.cabs.fee.unicamp.br/" target="_blank"><strong>Centro Acadêmico Bernardo Sayão</strong></a>
+                  e a contribuição de <a class="black-link" href="https://github.com/rodrigosurita" target="_blank"><strong>R de Castro Surita</strong></a>
+                  por ter iniciado esse projeto e possibilitado sua continuidade. Não estamos vinculados a coordenação da FEEC, mas agradecemos por nos fornecerem os dados
+                  das avaliações oficias. Também não estamos acessando nenhum banco de dados da UNICAMP e estamos em um servidor externo.
+                </p>
+              </div>
+              <div class="col-sm-3">
+
+                <a href="http://www.cabs.fee.unicamp.br/" target="_blank">
+                  <img src="static/images/logocabs.jpg" alt="" class="img-responsive">
+                </a>
+              </div>
+            </div>
+          </div>
+          $:Render.footer()
+        </body>
+        </html>

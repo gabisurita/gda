@@ -1,4 +1,3 @@
-/net/sessions/*
+/sessions/*
 *.pyc
-/net/test.db
-/net/models.pyc
+/models.pyc

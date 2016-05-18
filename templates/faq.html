@@ -1,0 +1,109 @@
+$def with (Render)
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  $:Render.includes()
+  <title>$BaseTitle</title>
+  <script language="javascript" type="text/javascript">   /* Mover ??? */
+  function FaqResp(shID) {
+    if (document.getElementById(shID).style.display != 'block') {
+      document.getElementById(shID).style.display = 'block';
+    }
+    else {
+      document.getElementById(shID).style.display = 'none';
+    }
+  }
+  </script>
+</head>
+<body>
+  <!-- Fixed navbar -->
+  $:Render.navbar(Render.user_id)
+  <!-- Begin page content -->
+  <!--    Pergunta e resposta, troque os id's, mantenha o sufixo 'Resp'
+  <div id="Pergunta1">
+  <a href="#" class="FaqPerg" onclick="FaqResp('Pergunta1Resp');return false;">Pergunta</a>
+  <div class="FaqResp" id="Pergunta1Resp">
+  Resposta
+</div>
+</div> <!-- Fim Pergunta -->
+<div class="container">
+  <div class="col-sm-6">
+    <h1>FAQ</h1><br><br>
+    <div id="SobreGDA">  <!-- Inicio Pergunta -->
+      <a href="#" class="FaqPerg" onclick="FaqResp('SobreGDAResp');return false;">O que é o GDA?</a>
+      <div class="FaqResp" id="SobreGDAResp">
+        O GDA (Grupo Discente de Avaliação) é um dos mais importantes instrumentos de manifestação acadêmica dos alunos. Seu objetivo é monitorar a qualidade do curso e dos professores da Engenharia Elétrica da UNICAMP de acordo com o ponto de vista estudantil, contando, para isso, com o apoio do CABS. Para saber mais sobre a história do grupo clique aqui.
+        <div id="Trabalho">
+          <a href="#" class="FaqPerg" onclick="FaqResp('TrabalhoResp');return false;">O que o GDA faz?</a>
+          <div class="FaqResp" id="TrabalhoResp">
+            O principal trabalho do GDA é colher informações sobre as disciplinas ministradas a cada semestre e torná-las acessíveis tanto ao corpo discente quanto ao docente. O fácil acesso não se limita apenas à disponibilidade dos dados recolhidos, mas também em apresentá-los analiticamente, visando a compreensão espontânea do leitor.
+          </div>
+        </div> <!-- Fim Pergunta -->
+        <div id="Oficial">
+          <a href="#" class="FaqPerg" onclick="FaqResp('OficialResp');return false;">Essa é a avaliação oficial?</a>
+          <div class="FaqResp" id="OficialResp">
+            Não. Essa avaliação é feita por alunos independendemente da avaliação oficial.
+          </div>
+        </div> <!-- Fim Pergunta -->
+        <div id="Diferenca">
+          <a href="#" class="FaqPerg" onclick="FaqResp('DiferencaResp');return false;">Qual a diferença em relação à avaliação oficial?</a>
+          <div class="FaqResp" id="DiferencaResp">
+            A nossa avaliação se diferencia por avaliar o professor de maneira subjetiva, abrindo um maior espaço para o aluno poder criticar ou elogiar suas técnicas de ensino. Desta forma, o próprio professor pode saber onde está agradando ou não os seus alunos. Mesmo as questões objetivas contaram com uma dedicação extra para que as diversas características relevantes em um professor fossem abordadas.<br>
+            Para saber mais sobre as nossas diretrizes clique aqui[link].
+          </div>
+        </div> <!-- Fim Pergunta -->
+        <div id="Ajuda">
+          <a href="#" class="FaqPerg" onclick="FaqResp('AjudaResp');return false;">Como posso ajudar?</a>
+          <div class="FaqResp" id="AjudaResp">
+            As avaliações promovidas pelo GDA só são possíveis graças ao empenho e espírito voluntário de alguns alunos. Toda ajuda é bem-vinda! Para participar, entre em contato conosco: (forma de contato?)
+          </div>
+        </div> <!-- Fim Pergunta -->
+        <div id="Guia">
+          <a href="#" class="FaqPerg" onclick="FaqResp('GuiaResp');return false;">Vocês vão continuar com a versão impressa do guia?</a>
+          <div class="FaqResp" id="GuiaResp">
+            Provavelmente não. <br>
+            Com a nova versão do GDA não estamos mais limitados a divulgação de guias semestrais e podemos ...
+          </div>
+        </div> <!-- Fim Pergunta -->
+        <div id="GuiaAnt">
+          <a href="#" class="FaqPerg" onclick="FaqResp('GuiaAntResp');return false;">Onde posso consultar os guias antigos?</a>
+          <div class="FaqResp" id="GuiaAntResp">
+            Os guias antigos estão disponíveis no site do <a href="http://www.cabs.fee.unicamp.br/gda" target="_blank">CABS</a> e aqui[link].
+          </div>
+        </div> <!-- Fim Pergunta -->
+      </div>
+    </div> <!-- Fim Seção "O que é o GDA" -->
+  </div>
+  <div class="col-sm-6">
+      <a href="#oficial" data-toggle="collapse"> <h5>Essa é a avaliação oficial?</h5> </a>
+      <div class="collapse" id="oficial">
+        Não. Essa avaliação é feita por alunos independendemente da avaliação oficial.
+      </div>
+      <a href="#objetivos" data-toggle="collapse"> <h5>Quais são os objetivos do GDA?</h5> </a>
+      <div class="collapse" id="objetivos">
+        Para os alunos, queremos fornecer um guia para que eles possam se preparar melhor para o curso.
+        <br>
+        Para os professores, queremos estabelecer uma ferramenta eficiente de feedback.
+        <br>
+        Para a coordenação, queremos disponibilizar a consulta aberta a avaliação oficial dos professores.
+      </div>
+      <p>
+        O GDA (Grupo Discente de Avaliação) é um instrumento de manifestação acadêmica dos alunos.
+        <br>
+        Seu objetivo é monitorar  qualidade do curso e dos professores da Engenharia Elétrica.
+        <br>
+        O principal trabalho do GDA é colher informações sobre as disciplinas ministradas a cada semestre e apresentá-las de forma compreensível e construtiva.
+        <br>
+        A nossa avaliação se diferencia por tentar avaliar professores e disciplinas de maneira subjetiva, abrindo um maior espaço para o aluno se expressar. Desta forma, os interessados podem fornecer, ou ler, opiniões elaboradas.
+        <br>
+        Gostou da ideia? Toda ajuda é bem-vinda. Entre em contato[link] conosco!
+        <br>
+        Para saber mais sobre a história do GDA e acessar os guias antigos (até 2012) clique aqui.
+      </p>
+  </div>
+</div>
+$:Render.footer()
+</body>
+</html>

@@ -1,0 +1,74 @@
+$def with (Render, form1, form2, form3, form4)
+
+$ S = sessionmaker(bind=DB)()
+
+$ SemestersList = S.query(Semester).order_by(desc((Semester.year)*2 + Semester.sem))
+
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    $:Render.includes()
+    <title>$BaseTitle - Database </title>
+  </head>
+  <body>
+    $:Render.navbar(Render.user_id)
+    <div class="container">
+      <div class = "col-sm-8">
+        <h3>Adicionar Semestre</h3>
+        <form name="one" method="post">
+          $:form1.render()
+          <br></br>
+        </form>
+
+        <h3>Adicionar Oferecimento</h3>
+        <form name="one" method="post">
+          $:form2.render()
+          <br></br>
+        </form>
+
+        <h3>Adicionar Professor</h3>
+        <form name="one" method="post">
+          $:form3.render()
+          <br></br>
+        </form>
+
+        <h3>Adicionar Disciplina</h3>
+        <form name="one" method="post">
+          $:form4.render()
+          <br></br>
+        </form>
+      </div>
+      <div class="col-sm-4">
+        <div class="panel-group" id="accordion">
+          <h4>Lista de Oferecimentos</h4>
+
+          $for Line in SemestersList:
+            <div class="panel panel-default">
+             <div class="panel-heading">
+               <h4 class="panel-title">
+                 <a href="#$Line.id" data-toggle="collapse" data-parent="#accordion"> $Line.semº semestre de $Line.year </a>
+               </h4>
+             </div>
+             <div id="$Line.id" class="panel-collapse collapse">
+               <div class="panel-body">
+                 $ Offerings = S.query(Offering).filter(Offering.semester_id == Line.id)
+                 <ol class="list-unstyled">
+                   $if S.query(Offering).filter(Offering.semester_id == Line.id).count() == 0:
+                     <li>Ainda não há oferecimentos para esse semestre.</li>
+                   $for Offer in Offerings:
+                     $ URL = Line.EncodeURL()
+                     $ Code = '%s %s' % (Offer.subject.code, Offer.code)
+                     $ Mat = '%s' % (Offer.students)
+                     <li><a href="$URL">$Code</a> - $Offer.teacher.name - $Mat matriculados</li>
+                 </ol>
+               </div>
+             </div>
+            </div>
+        </div>
+      </div>
+    </div>
+    $:Render.footer()
+  </body>
+</html>
