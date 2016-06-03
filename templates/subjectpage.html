@@ -10,6 +10,21 @@ $ ThisComments = S.query(SubjectComment).filter(SubjectComment.subject == Subjec
 
 $ Questions = S.query(QuestionsOffering)
 
+$ quest1 = []
+$ quest2 = []
+$ quest3 = []
+$ quest4 = []
+$ quest5 = []
+$ quest6 = []
+$for Line in ThisOfferings:
+  $ SearchRate = S.query(OfferingRate).filter(OfferingRate.offering_id == Line.id)
+  $for Rate in SearchRate:
+    $ quest1.append(Rate.question1)
+    $ quest2.append(Rate.question2)
+    $ quest3.append(Rate.question3)
+    $ quest4.append(Rate.question4)
+    $ quest5.append(Rate.question5)
+    $ quest6.append(Rate.question6)
 
 $ display_line = S.query(SubjectDisplay).filter(SubjectDisplay.subject_id == SubjectInst.id).one()
 $ sum_line = S.query(AnswerSumSubject).filter(AnswerSumSubject.subject_id == SubjectInst.id).one()
@@ -48,8 +63,8 @@ $if s5!=0:
   $ porc5_facil = int(100*sum_line.q5_facil/s5)
 
 
-<!DOCTYPE html>
-<html>
+  <!DOCTYPE html>
+  <html>
   <head>
     $:Render.includes()
     <title>$BaseTitle - $SubjectInst.code</title>
@@ -59,72 +74,35 @@ $if s5!=0:
     $:Render.navbar(Render.user_id)
     <!-- Begin page content -->
     <div class="container">
-      <h3>$SubjectInst.code -   $SubjectInst.name</h3>
+      <h3 class="text-center">$SubjectInst.code -   $SubjectInst.name</h3>
       <div class="row">
+        <div class="col-sm-3"> </div>
         <div class="col-sm-6">
-          <div class="panel panel-default">
-            <div class="panel-heading col-sm-6">Ementa</div>
-            <div class="panel-heading col-sm-6 text-right">$SubjectInst.credits créditos</div>
-            <div class="panel-body text-justify" style="min-height: 211px;">$SubjectInst.summary</div>
-          </div>
+          <p class="text-justify"> Ementa: $SubjectInst.summary</p>
+          <p class="text-justify"> $SubjectInst.credits créditos</p>
         </div>
-        <div class="col-sm-6">
-          <div class="panel panel-default">
-            <table class="table table-column-border">
-              <thead>
-                <th class="text-right col-sm-3"> Dedicação </th>
-                <th class="text-right col-sm-3"> Dificuldade </th>
-                <th class="text-right col-sm-3"> Ementa </th>
-                <th class="text-right col-sm-3"> Necessária </th>
-              </thead>
-              <tbody style="text-align: right;">
-                <tr>
-                  <td> Alta $porc4_alta% </td>
-                  <td> Difícil $porc5_dificil% </td>
-                  <td> Longa $porc3_longa% </td>
-                  <td> Sim $porc1_sim% </td>
-                </tr>
-                <tr>
-                  <td> Normal $porc4_normal% </td>
-                  <td> Normal $porc5_normal% </td>
-                  <td> Adequada $porc3_adequada% </td>
-                  <td> Não $porc1_nao%</td>
-                </tr>
-                <tr>
-                  <td> Baixa $porc4_baixa%</td>
-                  <td> Fácil $porc5_facil% </td>
-                  <td> Curta $porc3_curta%</td>
-                  <td> $s1 respostas </td>
-                </tr>
-                <tr>
-                  <td> $s4 respostas </td>
-                  <td> $s5 respostas </td>
-                  <td> $s3 respostas </td>
-                  <td class="text-muted small"> Avaliação GDA </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
+        <div class="col-sm-3"> </div>
       </div>
-      <div id='docentes'>
-        <div class="row">
-          <div class="col-sm-3">
-            <h3>Oferecimentos</h3>
-          </div>
-          <div class="col-sm-4">
-            <br>
-            <input type="text" class="search" placeholder="Busca por professor">
-          </div>
-          <div class="col-sm-2">
-            <h6 class="text-muted text-center">
-              <br><br>
-              Avaliação Oficial
-            </h6>
-          </div>
+      <div class="row">
+        <div class="col-sm-4"> </div>
+        <div class="col-sm-4">
+          <ul class="nav nav-pills nav-justified">
+            <li class="active"><a data-toggle="tab" href="#oficial">Oferecimentos</a></li>
+            <li><a data-toggle="tab" href="#gda">Avaliação</a></li>
+          </ul>
         </div>
-        <div class="row">
-          <div class="col-sm-9">
+        <div class="col-sm-4"> </div>
+      </div>
+      <div class="tab-content">
+        <div id="oficial" class="tab-pane fade in active">
+          <div class="row">
+            <div class="col-sm-2"></div>
+            <div id="div1" style="height: 400px" class="col-sm-8"></div>
+
+          </div>
+          <div class="col-sm-2"></div>
+          <div class="col-sm-8">
+            <input type="text" class="search" placeholder="Busca por professor">
             <table class="table table-striped table-condensed sortable table-hover">
               <thead>
                 <tr>
@@ -141,58 +119,194 @@ $if s5!=0:
                 </tr>
               </thead>
               <tbody class="list">
-              $for Line in ThisOfferings:
-                $ URL = Line.EncodeURL()
-                $ Code = '%s' % (Line.code)
-                $ Enrolled = '%s' % (Line.students)
-                $ Sem = '%ss%s' % (Line.semester.sem, Line.semester.year)
-                $ SearchRate = S.query(OfferingRate).filter(OfferingRate.offering_id == Line.id)
-                $ Rated = 0
-                $for Lin in SearchRate:
-                  $ Rate = Lin
-                  $ Rated = 1
-                <tr class="clickable-row" data-url="$URL">
-                  <td style="min-width: 100px;"><a class="year black-link"href="$Line.semester.EncodeURL()">$Sem</a></td>
-                  <td>$Code</td>
-                  <td>$Enrolled</td>
-                  <td><a class="nome black-link" href="$Line.teacher.EncodeURL()">$Line.teacher.name</a></td>
-                  $if Rated:
-                    <td>$Rate.question1</td>
-                    <td>$Rate.question2</td>
-                    <td>$Rate.question3</td>
-                    <td>$Rate.question4</td>
-                    <td>$Rate.question5</td>
-                    <td>$Rate.question6</td>
-                  $else:
-                    $for i in range(0,6):
-                      <td> - </td>
-                </tr>
+                $for Line in ThisOfferings:
+                  $ URL = Line.EncodeURL()
+                  $ Code = '%s' % (Line.code)
+                  $ Enrolled = '%s' % (Line.students)
+                  $ Sem = '%ss%s' % (Line.semester.sem, Line.semester.year)
+                  $ SearchRate = S.query(OfferingRate).filter(OfferingRate.offering_id == Line.id)
+                  $ Rated = 0
+                  $for Lin in SearchRate:
+                    $ Rate = Lin
+                    $ Rated = 1
+
+                  <tr class="clickable-row" data-url="$URL">
+                    <td style="min-width: 100px;"><a class="year black-link"href="$Line.semester.EncodeURL()">$Sem</a></td>
+                    <td>$Code</td>
+                    <td>$Enrolled</td>
+                    <td><a class="nome black-link" href="$Line.teacher.EncodeURL()">$Line.teacher.name</a></td>
+                    $if Rated:
+                      <td>$Rate.question1</td>
+                      <td>$Rate.question2</td>
+                      <td>$Rate.question3</td>
+                      <td>$Rate.question4</td>
+                      <td>$Rate.question5</td>
+                      <td>$Rate.question6</td>
+                    $else:
+                      $for i in range(0,6):
+                        <td> - </td>
+                    </tr>
               </tbody>
             </table>
             <script>
-              var options = {
-                valueNames: ['nome','year']
-              };
-              var userList = new List('docentes', options);
+            var options = {
+              valueNames: ['nome','year']
+            };
+            var userList = new List('docentes', options);
             </script>
           </div>
-          <div class="col-sm-3">
-            <div class="panel panel-default">
-              <div  class="panel-body">
-                <ol class="list-unstyled">
-                  <li> <b>A</b>&nbsp; Planejamento da Bibliografia  </li>
-                  <li> <b>B</b>&nbsp; Didática e Técnica de Ensino </li>
-                  <li> <b>C</b>&nbsp; Interesse pelo Aluno  </li>
-                  <li> <b>D</b>&nbsp; Relacionamento com alunos  </li>
-                  <li> <b>E</b>&nbsp; Adequação da avaliação   </li>
-                  <li> <b>F</b>&nbsp; Contribuição para aprendizado  </li>
-                </ol>
+        </div>
+        <div id="gda" class="tab-pane fade">
+            <div class="col-sm-6">
+              <div class="panel panel-default">
+                <table class="table table-column-border">
+                  <thead>
+                    <th class="text-right col-sm-3"> Dedicação </th>
+                    <th class="text-right col-sm-3"> Dificuldade </th>
+                    <th class="text-right col-sm-3"> Ementa </th>
+                    <th class="text-right col-sm-3"> Necessária </th>
+                  </thead>
+                  <tbody style="text-align: right;">
+                    <tr>
+                      <td> Alta $porc4_alta% </td>
+                      <td> Difícil $porc5_dificil% </td>
+                      <td> Longa $porc3_longa% </td>
+                      <td> Sim $porc1_sim% </td>
+                    </tr>
+                    <tr>
+                      <td> Normal $porc4_normal% </td>
+                      <td> Normal $porc5_normal% </td>
+                      <td> Adequada $porc3_adequada% </td>
+                      <td> Não $porc1_nao%</td>
+                    </tr>
+                    <tr>
+                      <td> Baixa $porc4_baixa%</td>
+                      <td> Fácil $porc5_facil% </td>
+                      <td> Curta $porc3_curta%</td>
+                      <td> $s1 respostas </td>
+                    </tr>
+                    <tr>
+                      <td> $s4 respostas </td>
+                      <td> $s5 respostas </td>
+                      <td> $s3 respostas </td>
+                      <td class="text-muted small"> Avaliação GDA </td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
+        </div>
+      </div>
     </div>
+
+
+    <!--
+    <div class="row">
+
+
   </div>
+  <div id='docentes'>
+  <div class="row">
+  <div class="col-sm-3">
+  <h3>Oferecimentos</h3>
 </div>
-    $:Render.footer()
-  </body>
+<div class="col-sm-4">
+<br>
+
+</div>
+<div class="col-sm-2">
+<h6 class="text-muted text-center">
+<br><br>
+Avaliação Oficial
+</h6>
+</div>
+</div>
+<div class="row">
+
+<div class="col-sm-3">
+<div class="panel panel-default">
+<div  class="panel-body">
+<ol class="list-unstyled">
+<li> <b>A</b>&nbsp; Planejamento da Bibliografia  </li>
+<li> <b>B</b>&nbsp; Didática e Técnica de Ensino </li>
+<li> <b>C</b>&nbsp; Interesse pelo Aluno  </li>
+<li> <b>D</b>&nbsp; Relacionamento com alunos  </li>
+<li> <b>E</b>&nbsp; Adequação da avaliação   </li>
+<li> <b>F</b>&nbsp; Contribuição para aprendizado  </li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+-->
+<script>
+var xData = ['(A)<br>Planejamento<br>da Bibliografia', '(B)<br>Didática e<br> Técnica de Ensino', '(C)<br>Interesse<br>pelo Aluno', '(D)<br>Relacionamento<br>com alunos', '(E)<br>Adequação<br>da Avaliação ', '(F)<br>Contribuição<br>para aprendizado'];
+var yData1 = [
+  $quest1 ,
+  $quest2 ,
+  $quest3 ,
+  $quest4 ,
+  $quest5 ,
+  $quest6 ,
+];
+var data1 = [];
+for ( var i = 0; i < xData.length; i ++ ) {
+  var result = {
+    type: 'box',
+    y: yData1[i],
+    name: xData[i],
+    boxpoints: 'all',
+    jitter: 0.3,
+    whiskerwidth: 0.2,
+    fillcolor: 'cls',
+    marker: {
+      size: 4
+    },
+    line: {
+      width: 1
+    }
+  };
+  data1.push(result);
+};
+/*
+var trace1 = {
+name: 'ThisTeacher',
+x: xData,
+y: ThisOfferingRating ,
+mode: 'markers',
+marker: { size: 10, color: 'black', symbol: 'diamond'},
+type: 'scatter'
+};
+data1.push(trace1);
+*/
+var layout1 = {
+  title: 'Busca de oferecimentos',
+  yaxis: {
+    autorange: true,
+    showgrid: true,
+    zeroline: false,
+    dtick: 5,
+    gridcolor: 'rgb(255, 255, 255)',
+    gridwidth: 1,
+  },
+  margin: {
+    l: 40,
+    r: 30,
+    b: 80,
+    t: 100
+  },
+  //  paper_bgcolor: 'rgb(243, 243, 243)',
+  //  plot_bgcolor: 'rgb(243, 243, 243)',
+  //  width: 700,
+  //  height: 500,
+  showlegend: false
+};
+Plotly.newPlot('div1', data1, layout1, {displaylogo: false});
+</script>
+$:Render.footer()
+</body>
 </html>

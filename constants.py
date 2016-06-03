@@ -23,7 +23,7 @@ AppStaticHandler = True
 StaticDirs = ["static"]
 
 # Disable debug and enable Sessions
-web.config.debug = False
+#web.config.debug = False
 
 # Databases
 SystemDB = 'sqlite:///../test.db'
