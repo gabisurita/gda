@@ -69,18 +69,63 @@ $ MyUser = S.query(User).filter(User.id == Me).one()
   </div>
 </nav>
 <script>
+jQuery.widget( "custom.catcomplete", jQuery.ui.autocomplete, {
+  _create: function() {
+    this._super();
+    this.widget().menu( "option", "items", "> :not(.ui-autocomplete-category)" );
+  },
+  _renderMenu: function( ul, items ) {
+    var that = this,
+      currentCategory = "";
+    jQuery.each( items, function( index, item ) {
+      var li;
+      if ( item.category != currentCategory ) {
+        ul.append( "<li class='ui-autocomplete-category'> <b>" + item.category  + " </b> </li>" );
+        currentCategory = item.category;
+      }
+      li = that._renderItemData( ul, item );
+      if ( item.category ) {
+        li.attr( "aria-label", item.category + " : " + item.label );
+      }
+    });
+  }
+});
+</script>
+<script>
    jQuery(document).ready(function() {
-    jQuery("input#autocomplete").autocomplete({
-        source: [
-          $for Line in TeachersList:
-            $ Name = Line.name
-            $ URL = Line.EncodeURL()
-             { value: "$Name", url: '$URL' },
-          $for Line in SubjectsList:
-            $ Name = '%s - %s' % (Line.code, Line.name)
-            $ URL = Line.EncodeURL()
-             { value: "$Name", url: '$URL' },
-        ],
+     var accentMap = {
+        "á": "a",
+        "ô": "o"
+      };
+      var normalize = function( term ) {
+        var ret = "";
+        for ( var i = 0; i < term.length; i++ ) {
+          ret += accentMap[ term.charAt(i) ] || term.charAt(i);
+        }
+        return ret;
+      };
+     var data = [
+       $for Line in TeachersList:
+         $ Name = Line.name
+         $ URL = Line.EncodeURL()
+          { label: "$Name", url: '$URL', category: "Professores"},
+       $for Line in SubjectsList:
+         $ Name = '%s - %s' % (Line.code, Line.name)
+         $ URL = Line.EncodeURL()
+          { label: "$Name", url: '$URL',  category: "Disciplinas"},
+     ];
+    jQuery("input#autocomplete").catcomplete({
+        delay: 100,
+        autoFocus: true,
+        minLength: 3,
+        source: data,
+        source: function( request, response ) {
+          var matcher = new RegExp( "\\b" + jQuery.ui.autocomplete.escapeRegex( request.term ), "i" );
+          response( jQuery.grep( data, function( value ) {
+            value = value.label || value.value || value;
+            return matcher.test( value ) || matcher.test( normalize( value ) );
+          }) );
+        },
         select: function (event, ui) {
             window.location = ui.item.url;
         }

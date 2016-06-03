@@ -302,3 +302,11 @@ input[type=radio][value=" curta "]:checked + label:before{
     border-bottom-width: 0;
   }
   */
+
+#ui-id-1 {
+  z-index: 3 !important;
+}
+
+.navbar {
+  z-index: 2 !important;
+}
