@@ -25,6 +25,7 @@ $for Line in ThisOfferings:
     $ quest4.append(Rate.question4)
     $ quest5.append(Rate.question5)
     $ quest6.append(Rate.question6)
+$ yData = [quest1 ,quest2 ,quest3 ,quest4 ,quest5 , quest6]
 
 $ display_line = S.query(SubjectDisplay).filter(SubjectDisplay.subject_id == SubjectInst.id).one()
 $ sum_line = S.query(AnswerSumSubject).filter(AnswerSumSubject.subject_id == SubjectInst.id).one()
@@ -67,6 +68,7 @@ $if s5!=0:
   <html>
   <head>
     $:Render.includes()
+
     <title>$BaseTitle - $SubjectInst.code</title>
   </head>
   <body>
@@ -76,87 +78,11 @@ $if s5!=0:
     <div class="container">
       <h3 class="text-center">$SubjectInst.code -   $SubjectInst.name</h3>
       <div class="row">
-        <div class="col-sm-3"> </div>
         <div class="col-sm-6">
           <p class="text-justify"> Ementa: $SubjectInst.summary</p>
           <p class="text-justify"> $SubjectInst.credits créditos</p>
         </div>
-        <div class="col-sm-3"> </div>
-      </div>
-      <div class="row">
-        <div class="col-sm-4"> </div>
-        <div class="col-sm-4">
-          <ul class="nav nav-pills nav-justified">
-            <li class="active"><a data-toggle="tab" href="#oficial">Oferecimentos</a></li>
-            <li><a data-toggle="tab" href="#gda">Avaliação</a></li>
-          </ul>
-        </div>
-        <div class="col-sm-4"> </div>
-      </div>
-      <div class="tab-content">
-        <div id="oficial" class="tab-pane fade in active">
-          <div class="row">
-            <div class="col-sm-2"></div>
-            <div id="div1" style="height: 400px" class="col-sm-8"></div>
-
-          </div>
-          <div class="col-sm-2"></div>
-          <div class="col-sm-8">
-            <input type="text" class="search" placeholder="Busca por professor">
-            <table class="table table-striped table-condensed sortable table-hover">
-              <thead>
-                <tr>
-                  <th>Semestre</th>
-                  <th>Turma</th>
-                  <th>Matriculados</th>
-                  <th>Docente</th>
-                  <th style="min-width: 35px;"> A </th>
-                  <th style="min-width: 35px;"> B </th>
-                  <th style="min-width: 35px;"> C </th>
-                  <th style="min-width: 35px;"> D </th>
-                  <th style="min-width: 35px;"> E </th>
-                  <th style="min-width: 35px;"> F </th>
-                </tr>
-              </thead>
-              <tbody class="list">
-                $for Line in ThisOfferings:
-                  $ URL = Line.EncodeURL()
-                  $ Code = '%s' % (Line.code)
-                  $ Enrolled = '%s' % (Line.students)
-                  $ Sem = '%ss%s' % (Line.semester.sem, Line.semester.year)
-                  $ SearchRate = S.query(OfferingRate).filter(OfferingRate.offering_id == Line.id)
-                  $ Rated = 0
-                  $for Lin in SearchRate:
-                    $ Rate = Lin
-                    $ Rated = 1
-
-                  <tr class="clickable-row" data-url="$URL">
-                    <td style="min-width: 100px;"><a class="year black-link"href="$Line.semester.EncodeURL()">$Sem</a></td>
-                    <td>$Code</td>
-                    <td>$Enrolled</td>
-                    <td><a class="nome black-link" href="$Line.teacher.EncodeURL()">$Line.teacher.name</a></td>
-                    $if Rated:
-                      <td>$Rate.question1</td>
-                      <td>$Rate.question2</td>
-                      <td>$Rate.question3</td>
-                      <td>$Rate.question4</td>
-                      <td>$Rate.question5</td>
-                      <td>$Rate.question6</td>
-                    $else:
-                      $for i in range(0,6):
-                        <td> - </td>
-                    </tr>
-              </tbody>
-            </table>
-            <script>
-            var options = {
-              valueNames: ['nome','year']
-            };
-            var userList = new List('docentes', options);
-            </script>
-          </div>
-        </div>
-        <div id="gda" class="tab-pane fade">
+        <div id="gda">
             <div class="col-sm-6">
               <div class="panel panel-default">
                 <table class="table table-column-border">
@@ -196,117 +122,78 @@ $if s5!=0:
               </div>
             </div>
           </div>
+      </div>
+      <div class="row">
+
+        <div id="oficial" class="row">
+          <div class="col-sm-6">
+            <input type="text" class="search" placeholder="Busca por professor">
+            <table class="table table-striped table-condensed sortable table-hover">
+              <thead>
+                <tr>
+                  <th>Semestre</th>
+                  <th>Turma</th>
+                  <th><i class="fa fa-users" aria-hidden="true" data-toggle="tooltip" title="Matriculados"></i></th>
+                  <th>Docente</th>
+                  <th> A </th>
+                  <th> B </th>
+                  <th> C </th>
+                  <th> D </th>
+                  <th> E </th>
+                  <th> F </th>
+                </tr>
+              </thead>
+              <tbody class="list">
+                $for Line in ThisOfferings:
+                  $ URL = Line.EncodeURL()
+                  $ Code = '%s' % (Line.code)
+                  $ Enrolled = '%s' % (Line.students)
+                  $ Sem = '%ss%s' % (Line.semester.sem, Line.semester.year)
+                  $ SearchRate = S.query(OfferingRate).filter(OfferingRate.offering_id == Line.id)
+                  $ Rated = 0
+                  $for Lin in SearchRate:
+                    $ Rate = Lin
+                    $ Rated = 1
+
+                  <tr class="clickable-row" data-url="$URL">
+                    <td><a class="semestre black-link"href="$Line.semester.EncodeURL()">$Sem</a></td>
+                    <td>$Code</td>
+                    <td>$Enrolled</td>
+                    <td><a class="docente black-link" href="$Line.teacher.EncodeURL()">$Line.teacher.name</a></td>
+                    $if Rated:
+                      <td id="q1">$Rate.question1</td>
+                      <td id="q2">$Rate.question2</td>
+                      <td id="q3">$Rate.question3</td>
+                      <td id="q4">$Rate.question4</td>
+                      <td id="q5">$Rate.question5</td>
+                      <td id="q6">$Rate.question6</td>
+                    $else:
+                      $for i in range(0,6):
+                        <td> - </td>
+                    </tr>
+              </tbody>
+            </table>
+            <script>
+            var options = {
+              valueNames: ['docente','year']
+            };
+            var userList = new List('docente', options);
+            </script>
+          </div>
+          <div class="col-sm-6">
+            <h4 class="text-center" id="graph_title"> <span>Selecione um Professor</span> </h4>
+            <div id="graph"></div>
+        </div>
         </div>
       </div>
     </div>
-
-
-    <!--
-    <div class="row">
-
-
-  </div>
-  <div id='docentes'>
-  <div class="row">
-  <div class="col-sm-3">
-  <h3>Oferecimentos</h3>
-</div>
-<div class="col-sm-4">
-<br>
-
-</div>
-<div class="col-sm-2">
-<h6 class="text-muted text-center">
-<br><br>
-Avaliação Oficial
-</h6>
-</div>
-</div>
-<div class="row">
-
-<div class="col-sm-3">
-<div class="panel panel-default">
-<div  class="panel-body">
-<ol class="list-unstyled">
-<li> <b>A</b>&nbsp; Planejamento da Bibliografia  </li>
-<li> <b>B</b>&nbsp; Didática e Técnica de Ensino </li>
-<li> <b>C</b>&nbsp; Interesse pelo Aluno  </li>
-<li> <b>D</b>&nbsp; Relacionamento com alunos  </li>
-<li> <b>E</b>&nbsp; Adequação da avaliação   </li>
-<li> <b>F</b>&nbsp; Contribuição para aprendizado  </li>
-</ol>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-
--->
-<script>
-var xData = ['(A)<br>Planejamento<br>da Bibliografia', '(B)<br>Didática e<br> Técnica de Ensino', '(C)<br>Interesse<br>pelo Aluno', '(D)<br>Relacionamento<br>com alunos', '(E)<br>Adequação<br>da Avaliação ', '(F)<br>Contribuição<br>para aprendizado'];
-var yData1 = [
-  $quest1 ,
-  $quest2 ,
-  $quest3 ,
-  $quest4 ,
-  $quest5 ,
-  $quest6 ,
-];
-var data1 = [];
-for ( var i = 0; i < xData.length; i ++ ) {
-  var result = {
-    type: 'box',
-    y: yData1[i],
-    name: xData[i],
-    boxpoints: 'all',
-    jitter: 0.3,
-    whiskerwidth: 0.2,
-    fillcolor: 'cls',
-    marker: {
-      size: 4
-    },
-    line: {
-      width: 1
-    }
-  };
-  data1.push(result);
-};
-/*
-var trace1 = {
-name: 'ThisTeacher',
-x: xData,
-y: ThisOfferingRating ,
-mode: 'markers',
-marker: { size: 10, color: 'black', symbol: 'diamond'},
-type: 'scatter'
-};
-data1.push(trace1);
-*/
-var layout1 = {
-  title: 'Busca de oferecimentos',
-  yaxis: {
-    autorange: true,
-    showgrid: true,
-    zeroline: false,
-    dtick: 5,
-    gridcolor: 'rgb(255, 255, 255)',
-    gridwidth: 1,
-  },
-  margin: {
-    l: 40,
-    r: 30,
-    b: 80,
-    t: 100
-  },
-  //  paper_bgcolor: 'rgb(243, 243, 243)',
-  //  plot_bgcolor: 'rgb(243, 243, 243)',
-  //  width: 700,
-  //  height: 500,
-  showlegend: false
-};
-Plotly.newPlot('div1', data1, layout1, {displaylogo: false});
-</script>
 $:Render.footer()
 </body>
 </html>
+<script>
+  //function boxplot(yData, title_default,title_custom)
+  yData = $(yData);
+  title_default = "Selecione um docente";
+  title_custom = [".docente", ".semestre"];
+  boxplot(yData, title_default,title_custom);
+</script>

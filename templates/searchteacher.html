@@ -5,6 +5,14 @@ $ S = sessionmaker(bind=DB)()
 $ TeachersList = S.query(Teacher).order_by(Teacher.name)
 $ Questions = S.query(QuestionsOffering)
 
+$ quest1 = []
+$ quest2 = []
+$ quest3 = []
+$ quest4 = []
+$ quest5 = []
+$ quest6 = []
+
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -15,54 +23,23 @@ $ Questions = S.query(QuestionsOffering)
     <!-- Fixed navbar -->
     $:Render.navbar(Render.user_id)
     <!-- Begin page content -->
-    <div class="container" id="docentes">
-      <div class="row">
-        <div class="col-sm-4">
-          <h3>Busca de Docentes</h3>
-          <br>
-          <input type="text" class="search" placeholder="Busca por nome">
+    <div class="container">
+		<div class="row">
+			<div class="col-sm-6">
+				<input type="text" class="search" placeholder="Busca por nome">
+			</div>
         </div>
-        <div class="col-sm-2">
-          <h6 class="text-muted text-center">
-              <br><br><br><br><br><br>
-            Avaliação Oficial
-          </h6>
-        </div>
-          <div class="col-sm-6">
-            <br>
-            <div class="panel panel-default">
-              <table class="table table-condensed">
-                  <tr>
-                    <td class="col-sm-6"> <b>A</b> &nbsp; Planejamento da Bibliografia  </td>
-                    <td> <b>D</b> &nbsp; Relacionamento com alunos  </td>
-                  </tr>
-                </table>
-                <table class="table table-condensed">
-                    <tr>
-                      <td class="col-sm-6"> <b>B</b> &nbsp; Didática e Técnica de Ensino </td>
-                      <td> <b>E</b> &nbsp; Adequação da avaliação   </td>
-                    </tr>
-                  </table>
-                  <table class="table table-condensed">
-                      <tr>
-                        <td class="col-sm-6"> <b>C</b> &nbsp; Interesse pelo Aluno  </td>
-                        <td> <b>F</b> &nbsp; Contribuição para aprendizado  </td>
-                      </tr>
-                    </table>
-            </div>
-          </div>
-        </div>
-        <div class="scrollable-area" style="overflow-y: auto; height:368px;">
+        <div class="scrollable-area col-sm-6">
           <table class="table table-striped table-condensed sortable table-hover">
-            <thead>
+			<thead>
               <tr>
-                <th class="col-sm-6">Nome</th>
-                <th class="col-sm-1"> A </th>
-                <th class="col-sm-1"> B </th>
-                <th class="col-sm-1"> C </th>
-                <th class="col-sm-1"> D </th>
-                <th class="col-sm-1"> E </th>
-                <th class="col-sm-1"> F </th>
+                <th class="col-sm-5">Nome</th>
+                <th> A </th>
+                <th> B </th>
+                <th> C </th>
+                <th> D </th>
+                <th> E </th>
+                <th> F </th>
               </tr>
             </thead>
             <tbody class="list">
@@ -71,7 +48,7 @@ $ Questions = S.query(QuestionsOffering)
               $ URL = Line.EncodeURL()
               <tr class='clickable-row' data-url='$URL'>
                 <td>
-                  <a class="nome black-link" href="$URL">$Name</a>
+                  <a class="docente black-link" href="$URL">$Name</a>
                 </td>
                 $ Rated = 0
                 $ Q = [0]*6
@@ -87,23 +64,74 @@ $ Questions = S.query(QuestionsOffering)
                     $ Q[5] += Rate.question6
                     $ Rated += 1
                 $if Rated:
-                  $for i in range(0,6):
-                    <td>$(Q[i]/Rated)</td>
+					<td id="q1">$(Q[0]/Rated)</td>
+					<td id="q2">$(Q[1]/Rated)</td>
+					<td id="q3">$(Q[2]/Rated)</td>
+					<td id="q4">$(Q[3]/Rated)</td>
+					<td id="q5">$(Q[4]/Rated)</td>
+					<td id="q6">$(Q[5]/Rated)</td>
+					$ quest1.append(Q[0]/Rated)
+					$ quest2.append(Q[1]/Rated)
+					$ quest3.append(Q[2]/Rated)
+					$ quest4.append(Q[3]/Rated)
+					$ quest5.append(Q[4]/Rated)
+					$ quest6.append(Q[5]/Rated)
                 $else:
                   $for i in range(0,6):
                     <td> <i class="fa fa-minus"></i> </td>
+
               </tr>
             </tbody>
           </table>
         </div>
-        <script>
+		<script>
           var options = {
-            valueNames: ['nome']
+            valueNames: ['docente']
           };
-          var userList = new List('docentes', options);
+          var userList = new List('docente', options);
         </script>
-      </div>
-    </div>
+		<div class="col-sm-4">
+			<div data-spy="affix">
+          <h4 class="text-center" id="graph_title"> <span>Selecione um docente</span> </h4>
+					<div id="graph"></div>
+			</div>
+		</div>
+		<div class="col-sm-2">
+			<div data-spy="affix">
+				<br><br><br><br>
+				<div class="panel panel-default">
+					<table class="table table-condensed">
+						<tr>
+							<td> <b>A</b> </td><td> Planejamento da Bibliografia  </td>
+						</tr>
+						<tr>
+							<td> <b>B</b> </td><td> Didática e Técnica de Ensino </td>
+						</tr>
+						<tr>
+							<td> <b>C</b> </td><td> Interesse pelo Aluno  </td>
+						</tr>
+						<tr>
+							<td> <b>D</b> </td><td> Relacionamento com alunos  </td>
+						</tr>
+						<tr>
+							<td> <b>E</b> </td><td> Adequação da avaliação   </td>
+						</tr>
+						<tr>
+							<td> <b>F</b> </td><td> Contribuição para aprendizado  </td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
     $:Render.footer()
   </body>
 </html>
+$ yData = [quest1 ,quest2 ,quest3 ,quest4 ,quest5 , quest6]
+<script>
+  //function boxplot(yData, title_default,title_custom)
+  yData = $(yData);
+  title_default = "Selecione um docente";
+  title_custom = [".docente"];
+  boxplot(yData, title_default,title_custom);
+</script>
