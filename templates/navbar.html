@@ -3,6 +3,8 @@ $def with (Me)
 $ S = sessionmaker(bind=DB)()
 
 $ SemestersList = S.query(Semester).order_by(desc((Semester.year)*2 + Semester.sem))
+$ TeachersList = S.query(Teacher).order_by(Teacher.name)
+$ SubjectsList = S.query(Subject).order_by(Subject.code)
 
 $ MyUser = S.query(User).filter(User.id == Me).one()
 
@@ -27,7 +29,7 @@ $ MyUser = S.query(User).filter(User.id == Me).one()
         <li><a href="/disciplinas">Disciplinas</a></li>
         <li><a href="/docentes">Docentes</a></li>
         <li class="dropdown">
-          <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Oferecimentos <span class="caret"></span></a>
+          <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Semestre <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
             $ count = 0
             $for Line in SemestersList:
@@ -47,6 +49,12 @@ $ MyUser = S.query(User).filter(User.id == Me).one()
         <li><a href="/faq">FAQ</a></li>
         -->
       </ul>
+      <form class="navbar-form navbar-left" role="search">
+        <div class="form-group">
+          <input id="autocomplete" class="form-control" placeholder="Busca" type="text">
+        </div>
+        <button type="submit" class="btn" style="background-color:inherit; box-shadow:none; color:white" ><i class="fa fa-search" aria-hidden="true"></i></button>
+      </form>
         <ul class="nav navbar-nav navbar-right">
           <li class="dropdown">
             <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-graduation-cap"></i> $MyUser.student.name <span class="caret"></span></a>
@@ -60,3 +68,67 @@ $ MyUser = S.query(User).filter(User.id == Me).one()
     </div><!--/.nav-collapse -->
   </div>
 </nav>
+<script>
+jQuery.widget( "custom.catcomplete", jQuery.ui.autocomplete, {
+  _create: function() {
+    this._super();
+    this.widget().menu( "option", "items", "> :not(.ui-autocomplete-category)" );
+  },
+  _renderMenu: function( ul, items ) {
+    var that = this,
+      currentCategory = "";
+    jQuery.each( items, function( index, item ) {
+      var li;
+      if ( item.category != currentCategory ) {
+        ul.append( "<li class='ui-autocomplete-category'> <b>" + item.category  + " </b> </li>" );
+        currentCategory = item.category;
+      }
+      li = that._renderItemData( ul, item );
+      if ( item.category ) {
+        li.attr( "aria-label", item.category + " : " + item.label );
+      }
+    });
+  }
+});
+</script>
+<script>
+   jQuery(document).ready(function() {
+     var accentMap = {
+        "á": "a",
+        "ô": "o"
+      };
+      var normalize = function( term ) {
+        var ret = "";
+        for ( var i = 0; i < term.length; i++ ) {
+          ret += accentMap[ term.charAt(i) ] || term.charAt(i);
+        }
+        return ret;
+      };
+     var data = [
+       $for Line in TeachersList:
+         $ Name = Line.name
+         $ URL = Line.EncodeURL()
+          { label: "$Name", url: '$URL', category: "Professores"},
+       $for Line in SubjectsList:
+         $ Name = '%s - %s' % (Line.code, Line.name)
+         $ URL = Line.EncodeURL()
+          { label: "$Name", url: '$URL',  category: "Disciplinas"},
+     ];
+    jQuery("input#autocomplete").catcomplete({
+        delay: 100,
+        autoFocus: true,
+        minLength: 3,
+        source: data,
+        source: function( request, response ) {
+          var matcher = new RegExp( "\\b" + jQuery.ui.autocomplete.escapeRegex( request.term ), "i" );
+          response( jQuery.grep( data, function( value ) {
+            value = value.label || value.value || value;
+            return matcher.test( value ) || matcher.test( normalize( value ) );
+          }) );
+        },
+        select: function (event, ui) {
+            window.location = ui.item.url;
+        }
+    });
+});
+ </script>

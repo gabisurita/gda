@@ -4,6 +4,27 @@ $ S = sessionmaker(bind=DB)()
 
 $ ThisOfferings = S.query(Offering).filter(Offering.semester == SemesterInst).join(Offering.subject).order_by(Subject.code)
 
+<<<<<<< HEAD
+
+$ quest1 = []
+$ quest2 = []
+$ quest3 = []
+$ quest4 = []
+$ quest5 = []
+$ quest6 = []
+$for Line in ThisOfferings:
+  $ SearchRate = S.query(OfferingRate).filter(OfferingRate.offering_id == Line.id)
+  $for Rate in SearchRate:
+    $ quest1.append(Rate.question1)
+    $ quest2.append(Rate.question2)
+    $ quest3.append(Rate.question3)
+    $ quest4.append(Rate.question4)
+    $ quest5.append(Rate.question5)
+    $ quest6.append(Rate.question6)
+$ yData = [quest1 ,quest2 ,quest3 ,quest4 ,quest5 , quest6]
+
+
+>>>>>>> graph
 <!DOCTYPE html>
 <html>
   <head>
@@ -16,56 +37,23 @@ $ ThisOfferings = S.query(Offering).filter(Offering.semester == SemesterInst).jo
     <!-- Begin page content -->
     <div class="container" id="oferecimentos">
       <div class="row">
-        <div class="col-sm-7">
-          <h4>Busca de oferecimentos para o
-            $SemesterInst.semº semestre de $SemesterInst.year</h4>
-            <br>
-            <div class="col-sm-9">
-              <div class="row">
-                <input type="text" class="search" placeholder="Busca por disciplina ou docente"/>
-              </div>
-            </div>
-            <div class="col-sm-3">
-              <h6 class="text-muted text-right">
-                Avaliação Oficial
-              </h6>
-            </div>
-          </div>
-          <div class="col-sm-5">
-            <div class="panel panel-default">
-              <table class="table table-condensed">
-                <tr>
-                  <td class="col-sm-6"> <b>A</b> &nbsp; Planejamento da Bibliografia  </td>
-                  <td> <b>D</b> &nbsp; Relacionamento com alunos  </td>
-                </tr>
-              </table>
-              <table class="table table-condensed">
-                <tr>
-                  <td class="col-sm-6"> <b>B</b> &nbsp; Didática e Técnica de Ensino </td>
-                  <td> <b>E</b> &nbsp; Adequação da avaliação   </td>
-                </tr>
-              </table>
-              <table class="table table-condensed">
-                <tr>
-                  <td class="col-sm-6"> <b>C</b> &nbsp; Interesse pelo Aluno  </td>
-                  <td> <b>F</b> &nbsp; Contribuição para aprendizado  </td>
-                </tr>
-              </table>
-            </div>
-          </div>
+        <div class="col-sm-6">
+          <input type="text" class="search" placeholder="Busca por disciplina ou docente"/>
         </div>
-          <div class="scrollable-area" style="overflow-y: auto; height:400px;">
-            <table class="table table-striped table-condensed sortable table-hover">
+      </div>
+        <div class="row">
+        <div class="scrollable-area col-sm-6">
+          <table class="table table-striped table-condensed sortable table-hover">
                 <thead>
                   <tr>
-                    <th style="min-width: 100px;">Código</th>
-                    <th style="min-width: 250px;">Docente</th>
-                    <th style="min-width: 35px;"> A </th>
-                    <th style="min-width: 35px;"> B </th>
-                    <th style="min-width: 35px;"> C </th>
-                    <th style="min-width: 35px;"> D </th>
-                    <th style="min-width: 35px;"> E </th>
-                    <th style="min-width: 35px;"> F </th>
+                    <th class="col-sm-3"> Código</th>
+                    <th class="col-sm-4">Docente</th>
+                    <th> A </th>
+                    <th> B </th>
+                    <th> C </th>
+                    <th> D </th>
+                    <th> E </th>
+                    <th> F </th>
                   </tr>
                 </thead>
                 <tbody class="list">
@@ -79,15 +67,15 @@ $ ThisOfferings = S.query(Offering).filter(Offering.semester == SemesterInst).jo
                     $ Rate = Lin
                     $ Rated = 1
                   <tr class="clickable-row" data-url="$URL" data-toggle="tooltip" title="$Line.subject.name">
-                    <td style="min-width: 100px;"><a class = "codigo black-link" href="$URL">$Code</a></td>
+                    <td><a class = "black-link" href="$URL"> <span class="codigo"> $(Line.subject.code) </span> $(Line.code)</a></td>
                     <td><a class = "docente black-link" href="$Line.teacher.EncodeURL()">$Line.teacher.name</a></td>
                     $if Rated:
-                      <td>$Rate.question1</td>
-                      <td>$Rate.question2</td>
-                      <td>$Rate.question3</td>
-                      <td>$Rate.question4</td>
-                      <td>$Rate.question5</td>
-                      <td>$Rate.question6</td>
+                      <td id="q1">$Rate.question1</td>
+                      <td id="q2">$Rate.question2</td>
+                      <td id="q3">$Rate.question3</td>
+                      <td id="q4">$Rate.question4</td>
+                      <td id="q5">$Rate.question5</td>
+                      <td id="q6">$Rate.question6</td>
                     $else:
                       $for i in range(0,6):
                         <td> <i class="fa fa-minus"></i> </td>
@@ -101,7 +89,48 @@ $ ThisOfferings = S.query(Offering).filter(Offering.semester == SemesterInst).jo
           var userList = new List('oferecimentos', options);
         </script>
       </div>
+      <div class="col-sm-4">
+        <div data-spy="affix">
+          <h4 class="text-center" id="graph_title"> <span>Selecione um oferecimento</span> </h4>
+          <div id="graph"></div>
+        </div>
+      </div>
+      <div class="col-sm-2">
+        <div data-spy="affix">
+          <br><br><br><br>
+          <div class="panel panel-default">
+            <table class="table table-condensed">
+              <tr>
+                <td> <b>A</b> </td><td> Planejamento da Bibliografia  </td>
+              </tr>
+              <tr>
+                <td> <b>B</b> </td><td> Didática e Técnica de Ensino </td>
+              </tr>
+              <tr>
+                <td> <b>C</b> </td><td> Interesse pelo Aluno  </td>
+              </tr>
+              <tr>
+                <td> <b>D</b> </td><td> Relacionamento com alunos  </td>
+              </tr>
+              <tr>
+                <td> <b>E</b> </td><td> Adequação da avaliação   </td>
+              </tr>
+              <tr>
+                <td> <b>F</b> </td><td> Contribuição para aprendizado  </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
     $:Render.footer()
   </body>
 </html>
+<script>
+  //function boxplot(yData, title_default,title_custom)
+  yData = $(yData);
+  title_default = "Selecione um oferecimento";
+  title_custom = [".codigo",".docente"];
+  boxplot(yData, 0 ,"#graph" ,title_default,title_custom);
+</script>

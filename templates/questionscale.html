@@ -1,0 +1,32 @@
+$def with (rating, icon)
+
+$if (rating > .9):
+  <i class="$(icon) icon-fill" aria-hidden="true"></i>
+  <i class="$(icon) icon-fill" aria-hidden="true"></i>
+  <i class="$(icon) icon-fill" aria-hidden="true"></i>
+  <i class="$(icon) icon-fill" aria-hidden="true"></i>
+  <i class="$(icon) icon-fill" aria-hidden="true"></i>
+$elif (rating > .8):
+  <i class="$(icon) icon-fill" aria-hidden="true"></i>
+  <i class="$(icon) icon-fill" aria-hidden="true"></i>
+  <i class="$(icon) icon-fill" aria-hidden="true"></i>
+  <i class="$(icon) icon-fill" aria-hidden="true"></i>
+  <i class="$(icon) icon-empty" aria-hidden="true"></i>
+$elif (rating > .6):
+  <i class="$(icon) icon-fill" aria-hidden="true"></i>
+  <i class="$(icon) icon-fill" aria-hidden="true"></i>
+  <i class="$(icon) icon-fill" aria-hidden="true"></i>
+  <i class="$(icon) icon-empty" aria-hidden="true"></i>
+  <i class="$(icon) icon-empty" aria-hidden="true"></i>
+$elif (rating > .4):
+  <i class="$(icon) icon-fill" aria-hidden="true"></i>
+  <i class="$(icon) icon-fill" aria-hidden="true"></i>
+  <i class="$(icon) icon-empty" aria-hidden="true"></i>
+  <i class="$(icon) icon-empty" aria-hidden="true"></i>
+  <i class="$(icon) icon-empty" aria-hidden="true"></i>
+$elif (rating > .2):
+  <i class="$(icon) icon-fill" aria-hidden="true"></i>
+  <i class="$(icon) icon-empty" aria-hidden="true"></i>
+  <i class="$(icon) icon-empty" aria-hidden="true"></i>
+  <i class="$(icon) icon-empty" aria-hidden="true"></i>
+  <i class="$(icon) icon-empty" aria-hidden="true"></i>

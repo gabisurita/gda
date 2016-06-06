@@ -8,42 +8,57 @@ $ SubjectsList = S.query(Subject).order_by(Subject.code)
 <html>
   <head>
     $:Render.includes()
-    <title>$BaseTitle - Busca de Disciplinas</title>
+    <title>$BaseTitle - Disciplinas</title>
   </head>
   <body>
     <!-- Fixed navbar -->
     $:Render.navbar(Render.user_id)
     <!-- Begin page content -->
-    <div class="container"  id="disciplinas">
-      <div class="row">
-        <div class="col-sm-6">
-          <h3>Busca de Disciplinas</h3>
-          <input type="text" class="search" placeholder="Busca por código, nome ou critério"> <br>
-        </div>
-        <div class="col-sm-6">
-          <h6 class="text-muted text-center">
-              <br><br><br><br><br>
-            Avaliação GDA
-          </h6>
-        </div>
-      </div>
-            <div class="scrollable-area" style="overflow-y: auto; height:400px;">
+    <div class="container" id="disciplinas">
+            <div class="scrollable-area;">
+              <input type="text" class="search" placeholder="Busca por disciplina">
               <table class="table table-striped table-condensed sortable table-hover">
                 <thead>
                   <tr>
                     <th style="width:5%">Código</th>
                     <th>Nome</th>
-                    <th style="width:14%" class="text-right"> Necessária </th>
-                    <th style="width:14%" class="text-right"> Ementa </th>
-                    <th style="width:14%" class="text-right"> Dedicação </th>
-                    <th style="width:14%" class="text-right"> Dificuldade </th>
+                    <!--
+                    <th style="width:14%"> Necessária </th>
+                  -->
+                    <th style="width:14%"> Ementa </th>
+                    <th style="width:14%"> Dedicação </th>
+                    <th style="width:14%"> Dificuldade </th>
 
                   </tr>
                 </thead>
                 <tbody class="list">
                 $for Line in SubjectsList:
                   $ URL = Line.EncodeURL()
-                  $ line_of_interest = S.query(SubjectDisplay).filter(Line.id == SubjectDisplay.subject_id).one()
+                  $ sum_line = S.query(AnswerSumSubject).filter(AnswerSumSubject.subject_id == Line.id).one()
+                  $ sum_q1 = sum_line.q1_sim + sum_line.q1_nao
+                  $ sum_q3 = sum_line.q3_curta + sum_line.q3_adequada + sum_line.q3_longa
+                  $ sum_q4 = sum_line.q4_baixa + sum_line.q4_normal + sum_line.q4_alta
+                  $ sum_q5 = sum_line.q5_facil + sum_line.q5_normal + sum_line.q5_dificil
+                  $if sum_q1:
+                    $ p1 = [(100*sum_line.q1_sim/sum_q1), (100*sum_line.q1_nao/sum_q1)]
+                    $ q1 = (1.0*sum_line.q1_sim/sum_q1)
+                  $else:
+                    $ q1 = -1
+                  $if sum_q3:
+                    $ p3 = [(100*sum_line.q3_curta/sum_q3), (100*sum_line.q3_adequada/sum_q3), (100*sum_line.q3_longa/sum_q3)]
+                    $ q3 = (0.5*sum_line.q3_adequada + 1.0*sum_line.q3_longa)/sum_q3
+                  $else:
+                    $ q3 = -1
+                  $if sum_q4:
+                    $ p4 = [(100*sum_line.q4_baixa/sum_q4), (100*sum_line.q4_normal/sum_q4), (100*sum_line.q4_alta/sum_q4)]
+                    $ q4 = (0.5*sum_line.q4_normal +  1.0*sum_line.q4_alta)/sum_q4
+                  $else:
+                    $ q4 = -1
+                  $if sum_q5:
+                    $ p5 = [(100*sum_line.q5_facil/sum_q5), (100*sum_line.q5_normal/sum_q5), (100*sum_line.q5_dificil/sum_q5)]
+                    $ q5 = (0.5*sum_line.q5_normal +  1.0*sum_line.q5_dificil)/sum_q5
+                  $else:
+                    $ q5 = -1
                   <tr class="clickable-row" data-url="$URL">
                     <td>
                       <a class="codigo black-link" href="$URL">$Line.code</a>
@@ -51,34 +66,12 @@ $ SubjectsList = S.query(Subject).order_by(Subject.code)
                     <td>
                       <a class="nome black-link" href="$URL">$Line.name</a>
                     </td>
-                    $ s1 = line_of_interest.q1_resp
-                    $ p1 = line_of_interest.q1_porc
-                    $ q1 = ' %s %d%%' % (s1,p1)
-                    $ s3 = line_of_interest.q3_resp
-                    $ p3 = line_of_interest.q3_porc
-                    $ q3 = ' %s %d%%' % (s3,p3)
-                    $ s4 = line_of_interest.q4_resp
-                    $ p4 = line_of_interest.q4_porc
-                    $ q4 = ' %s %d%%' % (s4,p4)
-                    $ s5 = line_of_interest.q5_resp
-                    $ p5 = line_of_interest.q5_porc
-                    $ q5 = ' %s %d%%' % (s5,p5)
-                    $if p1:
-                      <td class="text-right">$q1</td>
-                    $else:
-                      <td class="text-right"><i class="fa fa-minus"></i></td>
-                    $if p3:
-                      <td class="text-right">$q3</td>
-                    $else:
-                      <td class="text-right"><i class="fa fa-minus"></i></td>
-                    $if p4:
-                      <td class="text-right">$q4</td>
-                    $else:
-                      <td class="text-right"><i class="fa fa-minus"></i></td>
-                    $if p5:
-                      <td class="text-right">$q5</td>
-                    $else:
-                      <td class="text-right"><i class="fa fa-minus"></i></td>
+                    <!--
+                    <td>$:Render.questionscale(q1, "fa fa-circle")</td>
+                  -->
+                    <td>$:Render.questionscale(q3, "fa fa-book")</td>
+                    <td>$:Render.questionscale(q4, "fa fa-clock-o")</td>
+                    <td>$:Render.questionscale(q5, "fa fa-bomb")</td>
                   </tr>
                 </tbody>
               </table>
