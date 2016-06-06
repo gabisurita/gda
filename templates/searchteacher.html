@@ -17,21 +17,22 @@ $ quest6 = []
 <html>
   <head>
     $:Render.includes()
-    <title>$BaseTitle - Busca de Docentes</title>
+    <title>$BaseTitle - Docentes</title>
   </head>
   <body>
     <!-- Fixed navbar -->
     $:Render.navbar(Render.user_id)
     <!-- Begin page content -->
-    <div class="container">
+    <div class="container" id="docentes">
 		<div class="row">
 			<div class="col-sm-6">
 				<input type="text" class="search" placeholder="Busca por nome">
 			</div>
         </div>
+        <div class="row">
         <div class="scrollable-area col-sm-6">
           <table class="table table-striped table-condensed sortable table-hover">
-			<thead>
+			      <thead>
               <tr>
                 <th class="col-sm-5">Nome</th>
                 <th> A </th>
@@ -88,7 +89,7 @@ $ quest6 = []
           var options = {
             valueNames: ['docente']
           };
-          var userList = new List('docente', options);
+          var userList = new List('docentes', options);
         </script>
 		<div class="col-sm-4">
 			<div data-spy="affix">
@@ -124,6 +125,7 @@ $ quest6 = []
 			</div>
 		</div>
 	</div>
+</div>
     $:Render.footer()
   </body>
 </html>
@@ -133,5 +135,5 @@ $ yData = [quest1 ,quest2 ,quest3 ,quest4 ,quest5 , quest6]
   yData = $(yData);
   title_default = "Selecione um docente";
   title_custom = [".docente"];
-  boxplot(yData, title_default,title_custom);
+  boxplot(yData, 0 ,"#graph" ,title_default,title_custom);
 </script>

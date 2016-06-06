@@ -1,11 +1,11 @@
-function boxplot(yData, title_default,title_custom) {
+function boxplot(yData, xdt , location, title_default,title_custom) {
 
   var d3 = Plotly.d3;
 
   var WIDTH_IN_PERCENT_OF_PARENT = 100,
   HEIGHT_IN_PERCENT_OF_PARENT = 60;
 
-  var gd3 = d3.select('#graph')
+  var gd3 = d3.select(location)
   .append('div')
   .style({
     width: WIDTH_IN_PERCENT_OF_PARENT + '%',
@@ -95,23 +95,31 @@ function boxplot(yData, title_default,title_custom) {
       title_customized = title_customized + " - " + jQuery( this ).find(title_custom[i]).text();
     }
     jQuery("#graph_title").find("span").text(title_customized);
-    var trace = {
-      x: xData,
-      y: rating ,
-      mode: 'markers',
-      showlegend: false,
-      marker: { size: 10, color: 'black', symbol: 'diamond'},
-      type: 'scatter'
-    };
-    Plotly.addTraces(gd, trace);
+    Plotly.addTraces(gd, scatter_trace(rating));
   })
   .mouseout(function() {
     Plotly.deleteTraces(gd,[-1]);
     jQuery("#graph_title").find("span").text(title_default);
   });
 
+  if(xdt){
+    Plotly.addTraces(gd, scatter_trace(xdt));
+  }
 
   window.onresize = function() {
     Plotly.Plots.resize(gd);
   };
+}
+
+function scatter_trace(yData){
+  var xData = ['A', 'B', 'C', 'D', 'E', 'F'];
+  var trace = {
+    x: xData,
+    y: yData,
+    mode: 'markers',
+    showlegend: false,
+    marker: { size: 10, color: 'black', symbol: 'diamond'},
+    type: 'scatter'
+  };
+  return trace;
 }

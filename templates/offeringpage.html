@@ -53,6 +53,10 @@ $for Line in ThisOfferings:
     $ subject5.append(Rate.question5)
     $ subject6.append(Rate.question6)
 
+$ yDataQ = [quest1, quest2, quest3, quest4, quest5, quest6]
+$ yDataT = [teacher1, teacher2, teacher3, teacher4, teacher5, teacher6]
+$ yDataS = [subject1, subject2, subject3, subject4, subject5, subject6]
+
 $ SearchRate = S.query(OfferingRate).filter(OfferingRate.offering_id == OfferingInst.id)
 $ Rated = 0
 
@@ -66,6 +70,372 @@ $ ThisTeacher = S.query(Teacher).filter(Teacher.id == OfferingInst.teacher_id).o
 
 $ display_line = S.query(OfferingDisplay).filter(OfferingDisplay.offering_id == OfferingInst.id).one()
 $ sum_line = S.query(AnswerSum).filter(AnswerSum.offering_id == OfferingInst.id).one()
+
+
+
+
+<!DOCTYPE html>
+<html>
+  <head>
+    $:Render.includes()
+    <title>$BaseTitle - $OfferingInst.subject.code$OfferingInst.code $(OfferingInst.semester.sem)s$OfferingInst.semester.year</title>
+  </head>
+  <body>
+    <!-- Fixed navbar -->
+    $:Render.navbar(Render.user_id)
+    <!-- Begin page content -->
+    <div class="container">
+      <div class="row">
+        <div class="text-center col-sm-6" id="heading">
+          <h5>
+            $OfferingInst.subject.code $OfferingInst.code
+            <a class="black-link" href="$OfferingInst.subject.EncodeURL()">
+              $OfferingInst.subject.name</a>
+              Professor: <a class="black-link" href="$ThisTeacher.EncodeURL()">
+                $ThisTeacher.name
+              </a>
+              $OfferingInst.semester.semº semestre de $OfferingInst.semester.year
+            </h5>
+          </div>
+          <div class="col-sm-2" id="avaliar">
+            $if already_evaluated:
+              <button class="btn btn-success" disabled>Você já avaliou este oferecimento</button>
+            $else:
+              <a href="$OfferingInst.EvaluationURL()" class="btn btn-primary" role="button">Avaliar oferecimento</a>
+          </div>
+          <div class="col-sm-4 text-right" id="troca">
+            <ul class="nav nav-pills">
+              <li class="active"><a data-toggle="tab" href="#oficial">oficial</a></li>
+              <li><a data-toggle="tab" href="#gda">gda</a></li>
+              <li><a data-toggle="tab" href="#comments">comentarios</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="tab-content">
+          <div id="oficial" class="tab-pane fade in active">
+            $if Rated:
+              <div class="row">
+                <div id="semestre" class="col-sm-3">
+                  <h5 class="text-center"> $(OfferingInst.semester.sem)s$(OfferingInst.semester.year)</h5>
+                  <div id="graphQ"></div>
+                </div>
+                <div id="profs" class="col-sm-3">
+                  <h5 class="text-center"> $ThisTeacher.name </h5>
+                  <div id="graphT"></div>
+                </div>
+                <div id="subject" class="col-sm-3">
+                  <h5 class="text-center"> $OfferingInst.subject.code </h5>
+                  <div id="graphS"></div>
+                </div>
+                <div class="col-sm-3">
+                  <div class="panel panel-default">
+                    <div class="panel-heading">Avaliação Oficial - $Rate.answers respostas de $OfferingInst.students matriculados</div>
+                    <table class="table">
+                      <tbody>
+                        <tr>
+                          <td class="col-sm-9"> Planejamento da Bibliografia </td>
+                          <td class="text-right"> $Rate.question1 </td>
+                        </tr>
+                        <tr>
+                          <td> Didática e Técnica de Ensino </td>
+                          <td class="text-right"> $Rate.question2 </td>
+                        </tr>
+                        <tr>
+                          <td> Interesse pelo Aluno </td>
+                          <td class="text-right"> $Rate.question3 </td>
+                        </tr>
+                        <tr>
+                          <td> Relacionamento com alunos </td>
+                          <td class="text-right"> $Rate.question4 </td>
+                        </tr>
+                        <tr>
+                          <td> Adequação da avaliação </td>
+                          <td class="text-right"> $Rate.question5 </td>
+                        </tr>
+                        <tr>
+                          <td> Contribuição para aprendizado </td>
+                          <td class="text-right"> $Rate.question6 </td>
+                        </tr>
+                        <tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+            $else:
+              <p class="text-muted"> Ainda não foi avaliado. </p>
+            </div>
+          <div id="gda" class="tab-pane fade">
+                <div class="tab-content">
+                <div class="row">
+                  <!-- CANTA EDITANDO AQUI -->
+                  <div class="col-sm-3">
+                    <div id="respostas">
+                      <div class="panel panel-default">
+                        <table class="table">
+                          <tbody>
+                            $:Render.questionlowmedhigh(sum_line.q3_longa,sum_line.q3_adequada,sum_line.q3_curta, "Como você avalia a ementa da disciplina?", "fa fa-book")
+                            $:Render.questionlowmedhigh(sum_line.q4_alta,sum_line.q4_normal,sum_line.q4_baixa," Como você avalia a dedicação exigida pela disciplina?","fa fa-clock-o")
+                            $:Render.questionlowmedhigh(sum_line.q5_dificil,sum_line.q5_normal,sum_line.q5_facil,"Como você avalia a dificuldade inerente à disciplina?", "fa fa-bomb")
+                            $:Render.questionlowmedhigh(sum_line.q6_dificil,sum_line.q6_normal,sum_line.q6_facil,"Como você avalia a dificuldade inerente ao professor?", "fa fa-bomb")
+                            $:Render.questionlowmedhigh(sum_line.q8_boa,sum_line.q8_media,sum_line.q8_ruim, "Como você avalia a didática do professor?", "fa fa-star")
+
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-3">
+                    <div id="respostas">
+                      <div class="panel panel-default">
+                        <table class="table">
+                          <tbody>
+                            $:Render.questionyesno(sum_line.q1_sim,sum_line.q1_nao, "A disciplina é necessária ao currículo?")
+                            $:Render.questionyesno(sum_line.q7_sim,sum_line.q7_nao, "A bibliografia recomendada foi adequada?")
+                            $:Render.questionyesno(sum_line.q9_sim,sum_line.q9_nao, "O professor se preocupou em tornar as aulas interessantes?")
+                            $:Render.questionyesno(sum_line.q10_sim,sum_line.q10_nao, " O professor se mostrou acessível para tirar dúvidas?")
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-3">
+                    <div id="respostas">
+                      <div class="panel panel-default">
+                        <table class="table">
+                          <tbody>
+                            $:Render.questionyesno(sum_line.q11_sim,sum_line.q11_nao, "As avaliações foram coerentes?")
+                            $:Render.questionyesno(sum_line.q12_sim,sum_line.q12_nao, "Ir às aulas foi importante?")
+                            $:Render.questionyesno(sum_line.q13_sim,sum_line.q13_nao, "Faria outra disciplina com o professor?")
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-3">
+                    <div id="respostas">
+                      <div class="panel panel-default">
+                        <table class="table">
+                          <tbody>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div><!-- CANTA TERMINA AQUI -->
+              </div>
+            </div>
+            <div id="comments" class="tab-pane fade">
+                <div class="panel panel-default">
+                  <div class="panel-body">
+                    $if ThisComments.first() != None:
+                      $:Render.commentsoffering(ThisComments)
+                    $else:
+                      <p class="text-center text-muted"> Ainda não há comentários. <p>
+                  </div>
+                </div>
+          </div>
+          </div>
+        </div>
+    $:Render.footer()
+  </body>
+</html>
+<script>
+  //function boxplot(yData, title_default,title_custom)
+  boxplot($(yDataQ), $(ThisOfferingRating) ,"#graphQ" ,"","");
+  boxplot($(yDataS), $(ThisOfferingRating) ,"#graphS" ,"","");
+  boxplot($(yDataT), $(ThisOfferingRating), "#graphT" ,"","");
+</script>
+
+
+
+<!--
+        <form id="comment-form" action="" method="POST" enctype="multipart/form-data">
+          <input type="hidden" name="trigger" value="upload">
+          <input type="file" name="upfile">
+          <input class="btn btn-submit" value="Enviar" type="submit">
+      </div>
+-->
+
+
+<!--
+<script>
+
+        var xData = ['Planejamento<br>da Bibliografia', 'Didática e<br> Técnica de Ensino', 'Interesse<br>pelo Aluno', 'Relacionamento<br>com alunos', 'Adequação<br>da Avaliação ', 'Contribuição<br>para aprendizado'];
+        var yData1 = [
+          $quest1 ,
+          $quest2 ,
+          $quest3 ,
+          $quest4 ,
+          $quest5 ,
+          $quest6 ,
+        ];
+        var yData2 = [
+          $teacher1 ,
+          $teacher2 ,
+          $teacher3 ,
+          $teacher4 ,
+          $teacher5 ,
+          $teacher6 ,
+        ];
+        var yData3 = [
+          $subject1 ,
+          $subject2 ,
+          $subject3 ,
+          $subject4 ,
+          $subject5 ,
+          $subject6 ,
+        ];
+        var data1 = [];
+        for ( var i = 0; i < xData.length; i ++ ) {
+          var result = {
+            type: 'box',
+            y: yData1[i],
+            name: xData[i],
+            boxpoints: 'all',
+            jitter: 0.3,
+            whiskerwidth: 0.2,
+            fillcolor: 'cls',
+            marker: {
+              size: 4
+            },
+            line: {
+              width: 1
+            }
+          };
+          data1.push(result);
+        };
+
+        var data2 = [];
+        for ( var i = 0; i < xData.length; i ++ ) {
+          var result = {
+            type: 'box',
+            y: yData2[i],
+            name: xData[i],
+            boxpoints: 'all',
+            jitter: 0,
+            whiskerwidth: 0.2,
+            fillcolor: 'cls',
+            marker: {
+              size: 8
+            },
+            line: {
+              width: 1
+            }
+          };
+          data2.push(result);
+        };
+
+        var data3 = [];
+        for ( var i = 0; i < xData.length; i ++ ) {
+          var result = {
+            type: 'box',
+            y: yData3[i],
+            name: xData[i],
+            boxpoints: 'all',
+            jitter: 0,
+            whiskerwidth: 0.2,
+            fillcolor: 'cls',
+            marker: {
+              size: 8
+            },
+            line: {
+              width: 1
+            }
+          };
+          data3.push(result);
+        };
+
+
+
+        var trace1 = {
+          name: '$(ThisTeacher.name)',
+          x: xData,
+          y: $ThisOfferingRating ,
+          mode: 'markers',
+          marker: { size: 10, color: 'black', symbol: 'diamond'},
+          type: 'scatter'
+        };
+        data1.push(trace1);
+        data2.push(trace1);
+        data3.push(trace1);
+
+        var layout1 = {
+            title: 'Comparação com outros oferecimentos do $OfferingInst.semester.semº semestre de $OfferingInst.semester.year',
+            yaxis: {
+                autorange: true,
+                showgrid: true,
+                zeroline: false,
+                dtick: 5,
+                gridcolor: 'rgb(255, 255, 255)',
+                gridwidth: 1,
+            },
+            margin: {
+                l: 40,
+                r: 30,
+                b: 80,
+                t: 100
+            },
+          //  paper_bgcolor: 'rgb(243, 243, 243)',
+          //  plot_bgcolor: 'rgb(243, 243, 243)',
+          //  width: 700,
+          //  height: 500,
+            showlegend: false
+        };
+        var layout2 = {
+            title: 'Comparação com outros oferecimentos de $ThisTeacher.name',
+            yaxis: {
+                autorange: true,
+                showgrid: true,
+                zeroline: false,
+                dtick: 5,
+                gridcolor: 'rgb(255, 255, 255)',
+                gridwidth: 1,
+            },
+            margin: {
+                l: 40,
+                r: 30,
+                b: 80,
+                t: 100
+            },
+          //  paper_bgcolor: 'rgb(243, 243, 243)',
+          //  plot_bgcolor: 'rgb(243, 243, 243)',
+          //  width: 700,
+          //  height: 500,
+            showlegend: false
+        };
+        var layout3 = {
+            title: 'Comparação com outros oferecimentos de $OfferingInst.subject.code',
+            yaxis: {
+                autorange: true,
+                showgrid: true,
+                zeroline: false,
+                dtick: 5,
+                gridcolor: 'rgb(255, 255, 255)',
+                gridwidth: 1,
+            },
+            margin: {
+                l: 40,
+                r: 30,
+                b: 80,
+                t: 100
+            },
+          //  paper_bgcolor: 'rgb(243, 243, 243)',
+          //  plot_bgcolor: 'rgb(243, 243, 243)',
+          //  width: 700,
+          //  height: 500,
+            showlegend: false
+        };
+        Plotly.newPlot('div1', data1, layout1, {displaylogo: false});
+        Plotly.newPlot('div2', data2, layout2, {displaylogo: false});
+        Plotly.newPlot('div3', data3, layout3, {displaylogo: false});
+      </script>
+
+-->
+
+
+<!--
 
 $ s1 = (sum_line.q1_sim)+(sum_line.q1_nao)
 $if s1:
@@ -140,487 +510,4 @@ $if s13:
 $else:
   $ q13 = ""
 
-
-<!DOCTYPE html>
-<html>
-  <head>
-    $:Render.includes()
-    <title>$BaseTitle - $OfferingInst.subject.code$OfferingInst.code $(OfferingInst.semester.sem)s$OfferingInst.semester.year</title>
-  </head>
-  <body>
-    <!-- Fixed navbar -->
-    $:Render.navbar(Render.user_id)
-    <!-- Begin page content -->
-    <div class="container">
-      <div class="text-center" id="heading">
-      <h3>
-        $OfferingInst.subject.code $OfferingInst.code
-      <h3>
-      <h5>
-        <a class="black-link" href="$OfferingInst.subject.EncodeURL()">
-        $OfferingInst.subject.name</a>
-      </h5>
-          <h4>Professor: <a class="black-link" href="$ThisTeacher.EncodeURL()">
-            $ThisTeacher.name
-          </a></h4>
-          <h4> $OfferingInst.semester.semº semestre de $OfferingInst.semester.year </h4>
-          $if already_evaluated:
-            <button class="btn btn-success" disabled>Você já avaliou este oferecimento</button>
-          $else:
-            <form method="GET" action="$OfferingInst.EvaluationURL()">
-              <button class="btn btn-primary" type="submit">Avaliar oferecimento</button>
-            </form>
-      <br>
-    </div>
-    <div class="row">
-      <div class="col-sm-4"> </div>
-      <div class="col-sm-4">
-        <ul class="nav nav-pills nav-justified">
-          <li class="active"><a data-toggle="tab" href="#oficial">oficial</a></li>
-          <li><a data-toggle="tab" href="#gda">gda</a></li>
-        </ul>
-       </div>
-      <div class="col-sm-4"> </div>
-     </div>
-
-        <div class="tab-content">
-          <div id="oficial" class="tab-pane fade in active">
-          <div class="col-sm-2"> </div>
-          <div class="col-sm-8">
-              <ul class="nav nav-tabs nav-justified">
-                <li class="active"><a data-toggle="tab" href="#home">Semestre</a></li>
-                <li><a data-toggle="tab" href="#menu1">Professor</a></li>
-                <li><a data-toggle="tab" href="#menu2">Disciplina</a></li>
-              </ul>
-              <div class="tab-content">
-                <div id="home" class="tab-pane fade in active">
-                  <div id="div1" style="height: 400px"></div>
-                </div>
-                <div id="menu1" class="tab-pane fade">
-                  <div id="div2" style="height: 400px;"></div>
-                </div>
-                <div id="menu2" class="tab-pane fade">
-                  <div id="div3" style="height: 400px;"></div>
-                </div>
-              </div>
-          </div>
-          <div class="col-sm-2"> </div>
-          <div class="col-sm-4"></div>
-          <div class="col-sm-4">
-            <div class="panel panel-default">
-              $if Rated:
-                <div class="panel-heading">Avaliação Oficial - $Rate.answers respostas de $OfferingInst.students matriculados</div>
-                  <table class="table">
-                    <tbody>
-                      <tr>
-                        <td class="col-sm-9"> Planejamento da Bibliografia </td>
-                        <td class="text-right"> $Rate.question1 </td>
-                      </tr>
-                      <tr>
-                        <td> Didática e Técnica de Ensino </td>
-                        <td class="text-right"> $Rate.question2 </td>
-                      </tr>
-                      <tr>
-                        <td> Interesse pelo Aluno </td>
-                        <td class="text-right"> $Rate.question3 </td>
-                      </tr>
-                      <tr>
-                        <td> Relacionamento com alunos </td>
-                        <td class="text-right"> $Rate.question4 </td>
-                      </tr>
-                      <tr>
-                        <td> Adequação da avaliação </td>
-                        <td class="text-right"> $Rate.question5 </td>
-                      </tr>
-                      <tr>
-                        <td> Contribuição para aprendizado </td>
-                        <td class="text-right"> $Rate.question6 </td>
-                      </tr>
-                      <tr>
-                    </tbody>
-                  </table>
-              $else:
-                  <div class="panel-heading col-sm-4">Avaliação Oficial</div>
-                  <div class="panel-heading col-sm-4 text-center">Não foi avaliado</div>
-                  <div class="panel-heading col-sm-4 text-right">$OfferingInst.students matriculados</div>
-                  <table class="table">
-                    <tbody>
-                      <tr>
-                        <td class="col-sm-3"> Planejamento da Bibliografia </td>
-                        <td class="col-sm-1" > <i class="fa fa-minus"></i> </td>
-                        <td class="col-sm-3"> Didática e Técnica de Ensino </td>
-                        <td class="col-sm-1"> <i class="fa fa-minus"></i> </td>
-                        <td class="col-sm-3"> Interesse pelo Aluno </td>
-                        <td class="col-sm-1 text-right"> <i class="fa fa-minus"></i> </td>
-                      </tr>
-                      <tr>
-                        <td> Relacionamento com alunos </td>
-                        <td> <i class="fa fa-minus"></i> </td>
-                        <td> Adequação da avaliação </td>
-                        <td> <i class="fa fa-minus"></i> </td>
-                        <td> Contribuição para aprendizado </td>
-                        <td class="text-right"> <i class="fa fa-minus"></i> </td>
-                      </tr>
-                    </tbody>
-                  </table>
-            </div>
-        </div>
-        </div>
-          <div id="gda" class="tab-pane fade">
-            <div class="col-sm-2"> </div>
-            <div class="col-sm-8">
-                <ul class="nav nav-tabs nav-justified">
-                  <li class="active"><a data-toggle="tab" href="#respostas">Respostas</a></li>
-                  <li><a data-toggle="tab" href="#comentarios">Comentários ($(ThisComments.count()))</a></li>
-                </ul>
-                <div class="tab-content">
-                  <div id="respostas" class="tab-pane fade in active">
-                    <div class="panel panel-default">
-                        <table class="table">
-                        <tbody>
-                          <tr>
-                            <td> A disciplina é necessária ao currículo?
-                          <br>
-                            <p class="text-right"> $(sum_line.q1_sim) <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
-
-                                $(sum_line.q1_nao) <i class="fa fa-thumbs-o-down" aria-hidden="true"></i>  </p>
-                                <div class="progress">
-                                  $ width1 = 100*sum_line.q1_sim/(sum_line.q1_sim + sum_line.q1_nao)
-                                  <div class="progress-bar" style="width: $(width1)%;"></div>
-                                </div>
-                          </tr>
-                          <tr>
-                            <td> Como você avalia a ementa da disciplina?
-                            <p class="text-right"> $(sum_line.q3_longa) <i class="fa fa-clock-o" aria-hidden="true"></i> <i class="fa fa-clock-o" aria-hidden="true"></i>
-
-                                $(sum_line.q3_adequada) <i class="fa fa-check" aria-hidden="true"></i>
-
-                                $(sum_line.q3_curta) <i class="fa fa-clock-o" aria-hidden="true"></i> </p>
-                              </td>
-                          </tr>
-                          <tr>
-                            <td> A dedicação exigida pela disciplina foi:
-                            <p class="text-right"> $(sum_line.q4_alta) <i class="fa fa-clock-o" aria-hidden="true"></i> <i class="fa fa-clock-o" aria-hidden="true"></i>
-
-                                $(sum_line.q4_normal) <i class="fa fa-check" aria-hidden="true"></i>
-
-                                $(sum_line.q4_baixa) <i class="fa fa-clock-o" aria-hidden="true"></i></p>
-                          </tr>
-                          <tr>
-                            <td> Como você avalia a dificuldade inerente à disciplina?
-                            <p class="text-right"> $(sum_line.q5_dificil) <i class="fa fa-bomb" aria-hidden="true"></i>
-
-                                $(sum_line.q5_normal) <i class="fa fa-check" aria-hidden="true"></i>
-
-                                $(sum_line.q5_facil) <i class="fa fa-hand-peace-o" aria-hidden="true"></i></p>
-                          </tr>
-                          <tr>
-                            <td> Como você avalia a dificuldade inerente ao professor?
-                            <p class="text-right"> $(sum_line.q6_dificil) <i class="fa fa-bomb" aria-hidden="true"></i>
-
-                                $(sum_line.q6_normal) <i class="fa fa-check" aria-hidden="true"></i>
-
-                                $(sum_line.q6_facil) <i class="fa fa-hand-peace-o" aria-hidden="true"></i></p>
-                          </tr>
-                          <tr>
-                            <td> A bibliografia recomendada foi adequada?
-
-                            <p class="text-right"> $(sum_line.q7_sim) <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
-
-                                $(sum_line.q7_nao) <i class="fa fa-thumbs-o-down" aria-hidden="true"></i>  </p>
-                                <div class="progress">
-                                  $ width7 = 100*sum_line.q7_sim/(sum_line.q7_sim + sum_line.q7_nao)
-                                  <div class="progress-bar" style="width: $(width7)%;"></div>
-                                </div>
-                          </tr>
-                          <tr>
-                            <td> Como você avalia a didática do professor?
-                            <p class="text-right"> $(sum_line.q8_boa) <i class="fa fa-smile-o" aria-hidden="true"></i>
-
-                                $(sum_line.q8_media) <i class="fa fa-meh-o" aria-hidden="true"></i>
-
-                                $(sum_line.q8_ruim) <i class="fa fa-frown-o" aria-hidden="true"></i></p>
-                                <div class="progress">
-                                  <div class="progress-bar progress-bar-success" style="width: 35%"></div>
-                                  <div class="progress-bar progress-bar-warning" style="width: 20%"></div>
-                                  <div class="progress-bar progress-bar-danger" style="width: 45%"></div>
-                                </div>
-                          </tr>
-
-                          <tr>
-                            <td> O professor se preocupou em tornar as aulas interessantes?
-
-                            <p class="text-right"> $(sum_line.q9_sim) <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
-
-                                $(sum_line.q9_nao) <i class="fa fa-thumbs-o-down" aria-hidden="true"></i></p>
-                                <div class="progress">
-                                  $ width9 = 100*sum_line.q9_sim/(sum_line.q9_sim + sum_line.q9_nao)
-                                  <div class="progress-bar" style="width: $(width9)%;"></div>
-                                </div>
-                          </tr>
-
-
-                          <tr>
-                            <td> O professor se mostrou acessível para tirar dúvidas?
-
-                            <p class="text-right"> $(sum_line.q10_sim) <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
-
-                                $(sum_line.q10_nao) <i class="fa fa-thumbs-o-down" aria-hidden="true"></i>  </p>
-                                <div class="progress">
-                                  $ width10 = 100*sum_line.q10_sim/(sum_line.q10_sim + sum_line.q10_nao)
-                                  <div class="progress-bar" style="width: $(width10)%;"></div>
-                                </div>
-                          </tr>
-                          <tr>
-                            <td > As avaliações foram coerentes?
-
-                            <p class="text-right"> $(sum_line.q11_sim) <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
-
-                                $(sum_line.q11_nao) <i class="fa fa-thumbs-o-down" aria-hidden="true"></i> </p>
-                                <div class="progress">
-                                  $ width11 = 100*sum_line.q11_sim/(sum_line.q11_sim + sum_line.q11_nao)
-                                  <div class="progress-bar" style="width: $(width11)%;"></div>
-                                </div>
-                          </tr>
-                          <tr>
-                            <td> Ir às aulas foi importante?
-
-                            <p class="text-right"> $(sum_line.q12_sim) <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
-
-                                $(sum_line.q12_nao) <i class="fa fa-thumbs-o-down" aria-hidden="true"></i> </p>
-                                <div class="progress">
-                                  $ width12 = 100*sum_line.q12_sim/(sum_line.q12_sim + sum_line.q12_nao)
-                                  <div class="progress-bar" style="width: $(width12)%;"></div>
-                                </div>
-                          </tr>
-                          <tr>
-                            <td> Faria outra disciplina com este professor?
-
-                            <p class="text-right"> $(sum_line.q13_sim) <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
-
-                                $(sum_line.q13_nao) <i class="fa fa-thumbs-o-down" aria-hidden="true"></i> </p>
-                                <div class="progress">
-                                  $ width13 = 100*sum_line.q13_sim/(sum_line.q13_sim + sum_line.q13_nao)
-                                  <div class="progress-bar" style="width: $(width13)%;"></div>
-                                </div>
-                          </tr>
-                        </tbody>
-                      </table>
-                  </div>
-                  </div>
-                  <div id="comentarios" class="tab-pane fade">
-                    <div class="panel panel-default">
-                      <div class="panel-body">
-                        $if ThisComments.first() != None:
-                          $:Render.commentsoffering(ThisComments)
-                        $else:
-                          <p class="text-center text-muted"> Ainda não há comentários. <p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-            </div>
-            <div class="col-sm-2">
-            </div>
-          </div>
-          </div>
-        </div>
-
-
-<!--      <div class="row">
-        <div>
-          $if Rated == 0:
-            <h3>Avaliar Oferecimento</h3>
-            <form name="one" method="post">
-              $:form.render()
-            </form>
-        </div>
-    </div>
--->
-  <!--divisão de espaço para o gráfico-->
-        <script>
-
-                var xData = ['Planejamento<br>da Bibliografia', 'Didática e<br> Técnica de Ensino', 'Interesse<br>pelo Aluno', 'Relacionamento<br>com alunos', 'Adequação<br>da Avaliação ', 'Contribuição<br>para aprendizado'];
-                var yData1 = [
-                  $quest1 ,
-                  $quest2 ,
-                  $quest3 ,
-                  $quest4 ,
-                  $quest5 ,
-                  $quest6 ,
-                ];
-                var yData2 = [
-                  $teacher1 ,
-                  $teacher2 ,
-                  $teacher3 ,
-                  $teacher4 ,
-                  $teacher5 ,
-                  $teacher6 ,
-                ];
-                var yData3 = [
-                  $subject1 ,
-                  $subject2 ,
-                  $subject3 ,
-                  $subject4 ,
-                  $subject5 ,
-                  $subject6 ,
-                ];
-                var data1 = [];
-                for ( var i = 0; i < xData.length; i ++ ) {
-                  var result = {
-                    type: 'box',
-                    y: yData1[i],
-                    name: xData[i],
-                    boxpoints: 'all',
-                    jitter: 0.3,
-                    whiskerwidth: 0.2,
-                    fillcolor: 'cls',
-                    marker: {
-                      size: 4
-                    },
-                    line: {
-                      width: 1
-                    }
-                  };
-                  data1.push(result);
-                };
-
-                var data2 = [];
-                for ( var i = 0; i < xData.length; i ++ ) {
-                  var result = {
-                    type: 'box',
-                    y: yData2[i],
-                    name: xData[i],
-                    boxpoints: 'all',
-                    jitter: 0,
-                    whiskerwidth: 0.2,
-                    fillcolor: 'cls',
-                    marker: {
-                      size: 8
-                    },
-                    line: {
-                      width: 1
-                    }
-                  };
-                  data2.push(result);
-                };
-
-                var data3 = [];
-                for ( var i = 0; i < xData.length; i ++ ) {
-                  var result = {
-                    type: 'box',
-                    y: yData3[i],
-                    name: xData[i],
-                    boxpoints: 'all',
-                    jitter: 0,
-                    whiskerwidth: 0.2,
-                    fillcolor: 'cls',
-                    marker: {
-                      size: 8
-                    },
-                    line: {
-                      width: 1
-                    }
-                  };
-                  data3.push(result);
-                };
-
-
-
-                var trace1 = {
-                  name: '$(ThisTeacher.name)',
-                  x: xData,
-                  y: $ThisOfferingRating ,
-                  mode: 'markers',
-                  marker: { size: 10, color: 'black', symbol: 'diamond'},
-                  type: 'scatter'
-                };
-                data1.push(trace1);
-                data2.push(trace1);
-                data3.push(trace1);
-
-                var layout1 = {
-                    title: 'Comparação com outros oferecimentos do $OfferingInst.semester.semº semestre de $OfferingInst.semester.year',
-                    yaxis: {
-                        autorange: true,
-                        showgrid: true,
-                        zeroline: false,
-                        dtick: 5,
-                        gridcolor: 'rgb(255, 255, 255)',
-                        gridwidth: 1,
-                    },
-                    margin: {
-                        l: 40,
-                        r: 30,
-                        b: 80,
-                        t: 100
-                    },
-                  //  paper_bgcolor: 'rgb(243, 243, 243)',
-                  //  plot_bgcolor: 'rgb(243, 243, 243)',
-                  //  width: 700,
-                  //  height: 500,
-                    showlegend: false
-                };
-                var layout2 = {
-                    title: 'Comparação com outros oferecimentos de $ThisTeacher.name',
-                    yaxis: {
-                        autorange: true,
-                        showgrid: true,
-                        zeroline: false,
-                        dtick: 5,
-                        gridcolor: 'rgb(255, 255, 255)',
-                        gridwidth: 1,
-                    },
-                    margin: {
-                        l: 40,
-                        r: 30,
-                        b: 80,
-                        t: 100
-                    },
-                  //  paper_bgcolor: 'rgb(243, 243, 243)',
-                  //  plot_bgcolor: 'rgb(243, 243, 243)',
-                  //  width: 700,
-                  //  height: 500,
-                    showlegend: false
-                };
-                var layout3 = {
-                    title: 'Comparação com outros oferecimentos de $OfferingInst.subject.code',
-                    yaxis: {
-                        autorange: true,
-                        showgrid: true,
-                        zeroline: false,
-                        dtick: 5,
-                        gridcolor: 'rgb(255, 255, 255)',
-                        gridwidth: 1,
-                    },
-                    margin: {
-                        l: 40,
-                        r: 30,
-                        b: 80,
-                        t: 100
-                    },
-                  //  paper_bgcolor: 'rgb(243, 243, 243)',
-                  //  plot_bgcolor: 'rgb(243, 243, 243)',
-                  //  width: 700,
-                  //  height: 500,
-                    showlegend: false
-                };
-                Plotly.newPlot('div1', data1, layout1, {displaylogo: false});
-                Plotly.newPlot('div2', data2, layout2, {displaylogo: false});
-                Plotly.newPlot('div3', data3, layout3, {displaylogo: false});
-              </script>
-  </div>
-    $:Render.footer()
-  </body>
-</html>
-
-
-
-
-<!--
-        <form id="comment-form" action="" method="POST" enctype="multipart/form-data">
-          <input type="hidden" name="trigger" value="upload">
-          <input type="file" name="upfile">
-          <input class="btn btn-submit" value="Enviar" type="submit">
-      </div>
 -->
