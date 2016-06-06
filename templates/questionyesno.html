@@ -1,0 +1,27 @@
+$def with (sum_yes, sum_no, question)
+
+<div id="quest1">
+  <tr>
+    <td> $question
+      <p class="text-right">
+        <span class="label label-success">
+          $(sum_yes)
+          <i class="fa fa-thumbs-o-up" aria-hidden="true"></i></span>&nbsp
+          <span class="label label-danger">
+            $(sum_no)
+            <i class="fa fa-thumbs-o-down" aria-hidden="true"></i></span>
+          </p>
+        $if (sum_yes + sum_no):
+          <div class="progress">
+            $ width = 100*sum_yes/(sum_yes + sum_no)
+            $if(width < 34):
+              $ color = "danger"
+            $elif(width < 67):
+              $ color = "warning"
+            $else:
+              $ color = "success"
+            <div class="progress-bar progress-bar-$(color)" style="width: $(width)%;"></div>
+          </div>
+      </td>
+    </tr>
+  </div>

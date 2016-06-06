@@ -1,0 +1,38 @@
+$def with (sum_high, sum_medium, sum_low, question, icon)
+
+<div>
+  <tr>
+    <td> $question
+      <p class="text-right">
+        <span class="label label-success">
+          $(sum_low)
+          <i class="$(icon)" aria-hidden="true"></i>
+        </span>
+        &nbsp
+        <span class="label label-primary">
+          $(sum_medium)
+          <i class="$(icon)" aria-hidden="true"></i>
+          <i class="$(icon)" aria-hidden="true"></i>
+        </span>
+        &nbsp
+        <span class="label label-danger">
+          $(sum_high)
+          <i class="$(icon)" aria-hidden="true"></i>
+          <i class="$(icon)" aria-hidden="true"></i>
+          <i class="$(icon)" aria-hidden="true"></i>
+        </span>
+      </p>
+      $if (sum_high + sum_medium + sum_low):
+        <div class="progress">
+          $ width = (100*sum_high + 50*sum_medium)/(sum_high + sum_medium + sum_low)
+          $if(width < 34):
+            $ color = "success"
+          $elif(width < 67):
+            $ color = "primary"
+          $else:
+            $ color = "danger"
+          <div class="progress-bar progress-bar-$(color)" style="width: $(width)%;"></div>
+        </div>
+    </td>
+  </tr>
+</div>
