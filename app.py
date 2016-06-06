@@ -645,6 +645,18 @@ def Setup():
             else:
                 S = sessionmaker(bind=DB)()
 
+                if Form['ra'].get_value()==0000 and Form['senha'].get_value()==0000:
+                    if Form['face_id'].get_value()!=0 and Form['face_id'].get_value()!=None:
+                        f = S.query(FaceUser).filter(FaceUser.face_id == Form['face_id'].get_value()).one()
+                        if f!=0:
+                            Session.user_id = f.user_id
+                            conf = S.query(User).filter(User.id == Session.user.id).one()
+                            conf = conf.confirmed
+                            if conf == 1:
+                                raise web.seeother('/')
+                            else:
+                                raise web.seeother('/confirmacao')
+
                 StudentCall = S.query(Student).filter(
                     Student.ra == Form['ra'].value)
                 # Students disabled
@@ -927,6 +939,18 @@ def Setup():
                             else:
                                 update_password = update(User).where(Render.user_id == User.id).values(password=encode(Form['New'].value))
                                 LocDB.execute(update_password)
+
+                face = Form['Face_id'].get_value()
+                auth = LocS.query(FaceUser).filter(Render.user_id == FaceUser.user_id)
+                c = auth.count()
+                if face!=0 and c==0:
+                    NewFaceLogin = FaceUser(
+                    face_id = face,
+                    user_id = Render.user_id
+                    )
+                    LocS.add(NewFaceLogin)
+                    LocS.commit()
+
 
             raise web.seeother('/user')
 

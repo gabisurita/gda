@@ -10,6 +10,7 @@ from models import *
 LoginForm = web.form.Form(
     web.form.Textbox('ra', web.form.notnull, Class="form-control"),
     web.form.Password('senha', web.form.notnull, Class="form-control"),
+    web.form.Textbox('face_id', Class="form-control"),
     web.form.Button('login', Class="btn btn-primary"),
 )
 
@@ -41,6 +42,7 @@ UserForm = web.form.Form(
     web.form.Password('Current', Class="form-control"),
     web.form.Password('New', Class="form-control"),
     web.form.Password('Repeat', Class="form-control"),
+    web.form.Textbox('Face_id', Class="form-control"),
     web.form.Button('Login', Class="btn btn-primary"),
 )
 

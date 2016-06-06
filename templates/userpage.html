@@ -4,6 +4,11 @@ $ S = sessionmaker(bind=DB)()
 
 $ MyUser = S.query(User).filter(User.id == Render.user_id).one()
 
+$ face = S.query(FaceUser).filter(Render.user_id == FaceUser.user_id)
+$ auth = face.count()
+
+$if auth==1:
+  $ face=face.one()
 
 <!DOCTYPE html>
 <html>
@@ -45,7 +50,12 @@ $ MyUser = S.query(User).filter(User.id == Render.user_id).one()
     <input type="password" class="form-control" placeholder="Senha atual" name="Current">
     <input type="password" class="form-control" placeholder="Senha nova" name="New">
     <input type="password" class="form-control" placeholder="Repita a senha nova" name="Repeat">
+    $if auth==1:
+      <input type="text" class="form-control" name="Face_id" value="$face.face_id">
+    $else:
+      <input type="text" class="form-control" name="Face_id" value="0">
     <br>
+
     <button class="btn btn-primary btn-block" type="submit">Submeter</button>
   </fieldset>
   </form>

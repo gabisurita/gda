@@ -37,7 +37,14 @@ class Teacher(Base):
   def EncodeURL(self):
     return str("/docentes/%s" % self.name.lower().replace(" ","_").encode('utf8'))
 
+class TeacherNick(Base):
+  __tablename__ = "teachernick"
 
+  id = Column('teachernick_id', Integer, primary_key=True)
+  name_dac = Column('name_dac', String)
+  name_short = Column('name_short', String)
+  teacher_id = Column(Integer, ForeignKey('teacher.teacher_id'))
+  teacher = relationship(Teacher)
 
 class Subject(Base):
   __tablename__ = "subject"
@@ -138,6 +145,13 @@ class User(Base):
   student_id = Column(Integer, ForeignKey('student.student_id'))
   student = relationship(Student)
 
+class FaceUser(Base):
+    __tablename__ = "faceuser"
+
+    id = Column('faceuser_id', Integer, primary_key=True)
+    face_id = Column('face_id', Integer)
+    user_id = Column(Integer, ForeignKey('user.user_id'))
+    user = relationship(User)
 
 # TODO Add Timestamps
 
