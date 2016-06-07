@@ -21,55 +21,14 @@ $ Enrolls = S.query(Enrollment).filter(Enrollment.student_id == MyUser.id)
   $:Render.navbar(Render.user_id)
   <!-- Begin page content -->
   <div class="container">
-    <div class="col-sm-7">
-      <div class="col-sm-6">
+      <div class="col-sm-4">
         <br>
         <a href="http://www.cabs.fee.unicamp.br/?t=52_GDA" target="_blank">
-          <img class="img-responsive" src="/static/images/old/GDA$random.randrange(1,16)_capa.jpg" alt="Chania">
+          <img class="img-responsive" src="/static/images/old/GDA$random.randrange(1,16)_capa.jpg" alt="gda">
         </a>
       </div>
-
-      <div class="col-sm-6 text-center">
-        <!--
-        <h3 class="text-center"> Grupo Discente de Avaliação</h3>
-      -->
-      <div class="well well-sm text-primary">
-        Olá, <name class="text-primary">$MyUser.student.name</name>!
-        Essa é sua contribuição para o GDA.
-      </div>
-      <h5 id="teste"> Oferecimentos avaliados por você: $Ratings.count() </h5>
-
-      <br>
-
-      <a class="home-link" href="/sobre">
-        <i class="fa fa-check-square-o home-icon"></i>
-        <h5> Avaliação </h5>
-      </a>
-
-      Conheça nossos objetivos e o que nos motivou a construir essa plataforma.
-      Descubra como você pode ajudar.
-
-      <br>
-      <br>
-
-      <a class="home-link" href="http://www.cabs.fee.unicamp.br/?t=52_GDA" target="_blank">
-        <i class="fa fa-book home-icon"></i>
-        <h5> Guias antigos </h5>
-      </a>
-      Consulte os guias digitalizados no site do CABS para conhecer a história do GDA.
-
-      <br>
-      <br>
-
-      <a class="home-link" href="/estatisticas">
-        <i class="fa fa-bar-chart home-icon"></i>
-        <h5> Estatísticas </h5>
-      </a>
-      Confira o resumo dos dados até o momento <br> e a contribuição de nossos usuários.
-    </div>
-
-  </div>
   <div class="col-sm-4" id="oferecimentos">
+    <br>
     <div class="panel-group" id="accordion">
     $ i=0
     $for thissemester in S.query(Semester).order_by(desc((Semester.year)*2 + Semester.sem)):
@@ -109,7 +68,7 @@ $ Enrolls = S.query(Enrollment).filter(Enrollment.student_id == MyUser.id)
                        $if S.query(StudentRate).filter(StudentRate.user_id == MyUser.id).filter(StudentRate.offering_id == enroll.offering_id).count():
                           <td> <a href="$URL" class="btn btn-default btn-sm"><i class="fa fa-check-square-o" aria-hidden="true"></i></a></td>
                        $else:
-                          <td> <a href="$URL" class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>
+                          <td> <a href="$enroll.offering.EvaluationURL()" class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>
                      </tr>
                  </tbody>
                </table>

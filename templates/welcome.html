@@ -1,10 +1,10 @@
 $def with (Render)
-
+$ S = sessionmaker(bind=DB)()
 <!DOCTYPE html>
 <html>
 <head>
   <meta name="robots" content="noindex,nofollow" />
-  <title>$BaseTitle - 404</title>
+  <title>gda</title>
   $:Render.includes()
 </head>
 <body>
@@ -22,21 +22,84 @@ $def with (Render)
     </div>
   </nav>
   <div class="container">
-    <div class="col-sm-2"> </div>
-    <div class="col-sm-8">
-      <br><br>
-      <h1 class="text-center"> <i class="fa fa-exclamation-triangle"></i> SAI DAQUI CARAIO
-        <br><br>
-        <button class="btn btn-primary btn-block " onclick="goBack()"> <i class="fa fa-arrow-left"></i> Voltar</button>
-      </h1>
-    </div>
-    <div class="col-sm-2"> </div>
+    <div class="col-sm-6 text-center">
+      <!--
+      <h3 class="text-center"> Grupo Discente de Avaliação</h3>
+    -->
+
+
+    <a class="home-link" href="/sobre">
+      <i class="fa fa-check-square-o home-icon"></i>
+      <h5> Avaliação </h5>
+    </a>
+
+    Conheça nossos objetivos e o que nos motivou a construir essa plataforma.
+    Descubra como você pode ajudar.
+
+    <br>
+    <br>
+
+    <a class="home-link" href="http://www.cabs.fee.unicamp.br/?t=52_GDA" target="_blank">
+      <i class="fa fa-book home-icon"></i>
+      <h5> Guias antigos </h5>
+    </a>
+    Consulte os guias digitalizados no site do CABS para conhecer a história do GDA.
+
+    <br>
+    <br>
+
+    <a class="home-link" href="/estatisticas">
+      <i class="fa fa-bar-chart home-icon"></i>
+      <h5> Estatísticas </h5>
+    </a>
+    Confira o resumo dos dados até o momento <br> e a contribuição de nossos usuários.
   </div>
-  <script>
-  function goBack() {
-    window.history.back();
-  }
-  </script>
+  <div class="col-sm-5">
+    <div data-spy="affix">
+      <br>
+      <br>
+      <div class="row">
+        <div class="col-sm-9">
+          <h3> Estatísticas FEEC</h3>
+          <ul class="fa-ul" style="font-size:16px">
+            <li><i class="fa-li fa fa-book"></i> $S.query(Subject).count() disciplinas</li>
+            <li><i class="fa-li fa fa-child"></i> $S.query(Teacher).count() professores </li>
+            <li><i class="fa-li fa fa-pencil-square-o"></i>$S.query(Offering).count() oferecimentos em $S.query(Semester).count() semestres  </li>
+          </ul>
+        </div>
+        <div class="col-sm-3">
+          <br>
+          <h3> <i class="fa fa-university fa-2x"></i></h3>
+          <p class="small">
+            2012 - 2016
+          </p>
+        </div>
+      </div>
+
+      <br>
+      <br>
+      <br>
+
+      <div class="row">
+        <div class="col-sm-3">
+          <br>
+          <br>
+          <h3> <i class="fa fa-line-chart fa-2x"></i></h3>
+        </div>
+        <div class="col-sm-1">
+        </div>
+        <div class="col-sm-8">
+          <h3> Nossos Dados</h3>
+          <ul class="fa-ul" style="font-size:16px">
+            <li><i class="fa-li  fa fa-users"></i>$S.query(Student).count() estudantes cadastrados  </li>
+            <li><i class="fa-li  fa fa-check-square-o"></i> $S.query(StudentRate).count() avaliações submetidas</li>
+            <li><i class="fa-li  fa fa-commenting"></i> $(S.query(TeacherComment).count() + S.query(OfferingComment).count()) comentários</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
   $:Render.footer()
 </body>
 </html>
