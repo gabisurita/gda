@@ -652,8 +652,10 @@ def Setup():
                 if ra=='000000' and senha=='000000':
                     if face_id!=0 and face_id!=None:
                         print face_id
-                        f = S.query(FaceUser).filter(FaceUser.face_id == face_id).one()
+                        aux = S.query(FaceUser).filter(FaceUser.face_id == face_id)
+                        f = aux.count()
                         if f!=0:
+                            f = aux.one()
                             Session.user_id = f.user_id
                             conf = S.query(User).filter(User.id == Session.user_id).one()
                             conf = conf.confirmed
@@ -661,6 +663,9 @@ def Setup():
                                 raise web.seeother('/index')
                             else:
                                 raise web.seeother('/confirmacao')
+                        else:
+                            return Render.login(
+                                Form, "Sua conta no facebook não está registrada no nosso banco de dados. Para fazer o registro, entre com seu RA e senha e acessem a página de Alteração de Dados para mais informações.", Render)
 
                 StudentCall = S.query(Student).filter(
                     Student.ra == Form['ra'].value)
@@ -1784,6 +1789,14 @@ def Setup():
     Map(ConfirmationPage, "/confirmacao")
     Map(UserPage, "/user")
     Map(WelcomePage, "/welcome")
+
+
+    #LocDB = create_engine(UserDB, echo=False)
+    #LocS = sessionmaker(bind=LocDB)()
+    #random_user = LocS.query(User).filter(User.id == 1100).one()
+    #newpass = decode(random_user.password)
+    #web.sendmail('gda.noreply@gmail.com', "raulcecato@gmail.com", 'Cadastro Compulsório [Teste] - GDA', 'Sua senha aleatória que não serve pra nada é: '+
+    #newpass+'\n \n Caso ache necessário, vá para a puta que o pariu.')
 
     #Map(ContactPage, "/contato")
     #Map(FaqPage, "/faq")

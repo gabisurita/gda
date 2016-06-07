@@ -1,5 +1,7 @@
 $def with (Form, Error, Render)
 
+$ S = sessionmaker(bind=DB)()
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -22,13 +24,13 @@ $def with (Form, Error, Render)
           testAPI();
         } else if (response.status === 'not_authorized') {
           // The person is logged into Facebook, but not your app.
-          document.getElementById('status').innerHTML = 'Please log ' +
-            'into this app.';
+          //TODO document.getElementById('status').innerHTML = 'Please log ' +
+            //'into this app.';
         } else {
           // The person is not logged into Facebook, so we're not sure if
           // they are logged into this app or not.
-          document.getElementById('status').innerHTML = 'Please log ' +
-            'into Facebook.';
+          // TODO document.getElementById('status').innerHTML = 'Please log ' +
+            //'into Facebook.';
         }
       }
 
@@ -87,7 +89,6 @@ $def with (Form, Error, Render)
             'Thanks for logging in, ' + response.name + '!';
         });
         FB.api('/me', function(response) {
-            console.log(JSON.stringify(response.id));
             jQuery("#ra_id").val("000000");
             jQuery("#psw_id").val("000000");
             jQuery("#fb_id").val(response.id);
@@ -123,8 +124,12 @@ $def with (Form, Error, Render)
           <button class="btn btn-primary btn-block" id="submit_id" type="submit">Entrar</button>
         </form>
         <br><br>
-        <fb:login-button scope="public_profile,email,user_friends" onlogin="checkLoginState();">
-        </fb:login-button>
+        $ aux = S.query(FaceUser).filter(FaceUser.user_id == 1).count()
+        $if aux==1:
+          <fb:login-button scope="public_profile,email,user_friends" onlogin="checkLoginState();">
+          </fb:login-button>
+        $else:
+          <h8>Caso queira vincular sua conta do gda à do facebook, acesse a seção de Alteração de Dados do site</h8>
 
         <div id="status">
         </div>
