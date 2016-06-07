@@ -1,18 +1,21 @@
-$def with (sum_high, sum_medium, sum_low, question, icon)
-    <td class="bottom-column"> $question
+$def with (sum_high, sum_medium, sum_low, question, icon, label_high, label_medium, label_low)
+<div class="panel">
+  <div class="panel-heading">
+    $question
+  </div>
       <p class="text-right">
-        <span class="label label-success">
+        <span class="label label-$(label_low)">
           $(sum_low)
           <i class="$(icon)" aria-hidden="true"></i>
         </span>
         &nbsp
-        <span class="label label-primary">
+        <span class="label label-$(label_medium)">
           $(sum_medium)
           <i class="$(icon)" aria-hidden="true"></i>
           <i class="$(icon)" aria-hidden="true"></i>
         </span>
         &nbsp
-        <span class="label label-danger">
+        <span class="label label-$(label_high)">
           $(sum_high)
           <i class="$(icon)" aria-hidden="true"></i>
           <i class="$(icon)" aria-hidden="true"></i>
@@ -22,12 +25,12 @@ $def with (sum_high, sum_medium, sum_low, question, icon)
       $if (sum_high + sum_medium + sum_low):
         <div class="progress">
           $ width = (100*sum_high + 50*sum_medium)/(sum_high + sum_medium + sum_low)
-          $if(width < 34):
-            $ color = "success"
+          $if(width < 40):
+            $ color = label_low
           $elif(width < 67):
-            $ color = "primary"
+            $ color = label_medium
           $else:
-            $ color = "danger"
+            $ color = label_high
           <div class="progress-bar progress-bar-$(color)" style="width: $(width)%;"></div>
         </div>
-    </td>
+    </div>

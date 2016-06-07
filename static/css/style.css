@@ -332,9 +332,3 @@ input[type=radio][value=" curta "]:checked + label:before{
   vertical-align: baseline;
   border-radius: .25em;
 }
-
-.bottom-column{
-    float: none;
-    display: table-cell;
-    vertical-align: bottom;
-}

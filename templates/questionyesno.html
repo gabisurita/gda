@@ -1,5 +1,8 @@
 $def with (sum_yes, sum_no, question)
-    <td class="bottom-column"> $question
+       <div class="panel">
+         <div class="panel-heading">
+           $question
+         </div>
       <p class="text-right">
         <span class="label label-success">
           $(sum_yes)
@@ -19,4 +22,4 @@ $def with (sum_yes, sum_no, question)
               $ color = "success"
             <div class="progress-bar progress-bar-$(color)" style="width: $(width)%;"></div>
           </div>
-      </td>
+        </div>

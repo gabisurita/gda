@@ -89,34 +89,18 @@ $else:
       <h3>$TeacherInst.name </h3>
       <div id="gda-row" class="row">
 
-        <div id="comments" class="panel panel-default col-sm-6">
-          <div class="panel-heading">Comentários</div>
-          <div class="panel-body text-justify">
-            $:Render.commentsteacher(ThisComments)
-          </div>
-        </div>
-
-        <div id="gda" class="panel panel-default col-sm-6">
-            <table class="table">
-              <tbody>
-                <tr class="bottom-column">
+        <div id="gda" class="col-sm-6">
                   $:Render.questionyesno(sum_line.q7_sim,sum_line.q7_nao, "A bibliografia recomendada foi adequada?")
                   $:Render.questionyesno(sum_line.q9_sim,sum_line.q9_nao, "O professor se preocupou em tornar as aulas interessantes?")
-                </tr>
-                <tr>
                   $:Render.questionyesno(sum_line.q10_sim,sum_line.q10_nao, " O professor se mostrou acessível para tirar dúvidas?")
                   $:Render.questionyesno(sum_line.q11_sim,sum_line.q11_nao, "As avaliações foram coerentes?")
-                </tr>
-                <tr>
+        </div>
+        <div id="gda" class="col-sm-6">
                   $:Render.questionyesno(sum_line.q12_sim,sum_line.q12_nao, "Ir às aulas foi importante?")
-                  $:Render.questionlowmedhigh(sum_line.q6_dificil,sum_line.q6_normal,sum_line.q6_facil,"Como você avalia a dificuldade inerente ao professor?", "fa fa-bomb")
-                </tr>
-                <tr>
-                  $:Render.questionlowmedhigh(sum_line.q8_boa,sum_line.q8_media,sum_line.q8_ruim, "Como você avalia a didática do professor?", "fa fa-star")
+                  $:Render.questionlowmedhigh(sum_line.q6_dificil,sum_line.q6_normal,sum_line.q6_facil,"Como você avalia a dificuldade inerente ao professor?", "fa fa-bomb", "danger","primary","success")
+                  $:Render.questionlowmedhigh(sum_line.q8_boa,sum_line.q8_media,sum_line.q8_ruim, "Como você avalia a didática do professor?", "fa fa-star","success","primary","danger")
                   $:Render.questionyesno(sum_line.q13_sim,sum_line.q13_nao, "Faria outra disciplina com o professor?")
-                </tr>
-              </tbody>
-            </table>
+
         </div>
       </div>
       <div id="offering-row" class="row">
@@ -183,6 +167,12 @@ $else:
         <div class="col-sm-2">
             $:Render.legendboxplot()
         </div>
+      </div>
+    </div>
+    <div id="comments" class="panel panel-default col-sm-2">
+      <div class="panel-heading">Comentários</div>
+      <div class="panel-body text-justify">
+        $:Render.commentsteacher(ThisComments)
       </div>
     </div>
     $:Render.footer()

@@ -65,20 +65,25 @@ $else:
   <div class="container" id="docentes">
     <h3 class="text-center">$SubjectInst.code -   $SubjectInst.name</h3>
     <div class="row">
-      <div class="col-sm-6">
+      <div class="col-sm-8">
         <p class="text-justify"> Ementa: $SubjectInst.summary</p>
         <p class="text-justify"> $SubjectInst.credits créditos</p>
       </div>
       <div id="gda">
-          <div class="col-sm-6">
+          <div class="col-sm-3">
             <div id="gda-icon">
-              <p> Conteúdo $:Render.questionscale(q3, "fa fa-book")</p>
-              <p> Dedicação $:Render.questionscale(q4, "fa fa-clock-o") </p>
-              <p> Dificuldade $:Render.questionscale(q5, "fa fa-bomb") </p>
+              <div class="panel">
+                <div class="panel-body">
+
+              <p> Conteúdo: <span class="pull-right">$:Render.questionscale(q3, "fa fa-book")</span></p>
+              <p> Dedicação: <span class="pull-right"> $:Render.questionscale(q4, "fa fa-clock-o")</span></p>
+              <p> Dificuldade: <span class="pull-right"> $:Render.questionscale(q5, "fa fa-bomb")</span></p>
               <p> $(max(sum_q1,sum_q3,sum_q4,sum_q5)) respostas<p>
+              </div>
             </div>
           </div>
         </div>
+      </div>
     </div>
     <div class="row">
 
