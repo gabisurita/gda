@@ -173,47 +173,85 @@ input[type=radio] + label:before {
 
 
 input[type=radio] + label:before {
-    content:"\f1db  "; /*  circle-thin */
-    color: #4DA2B3;
+    color: #cccccc;
     cursor: pointer;
+}
+
+input[type=radio]:checked + label:before{
+    color:black;
 }
 
 input[type=radio]:checked + label:before {
     content:"\f00c"; /* check */
 }
-input[type=radio][value=" sim "]:checked + label:before{
+input[type=radio][value=" sim "] + label:before{
     content:"\f087"; /* thumbs-o-up */
 }
-input[type=radio][value=" não "]:checked + label:before{
+
+input[type=radio][value=" não "] + label:before{
     content:"\f088"; /* thumbs-o-down */
 }
-input[type=radio][value=" alta "]:checked + label:before{
-    content:"\f017 \f017"; /* clock-o */
+
+input[type=radio][id="2.3"] + label:before{
+    content:"\f02d \f02d \f02d"; /* clock */
 }
-input[type=radio][value=" dificil "]:checked + label:before{
+
+input[type=radio][id="2.1"] + label:before{
+    content:"\f02d \f02d"; /* clock */
+}
+
+input[type=radio][id="2.2"] + label:before{
+    content:"\f02d"; /* clock */
+}
+
+input[type=radio][id="3.1"] + label:before{
+    content:"\f017 \f017 \f017"; /* clock */
+}
+
+input[type=radio][id="3.2"] + label:before{
+    content:"\f017 \f017"; /* clock */
+}
+
+input[type=radio][id="3.3"] + label:before{
+    content:"\f017"; /* clock */
+}
+
+input[type=radio][id="4.1"] + label:before{
+    content:"\f1e2 \f1e2 \f1e2"; /* bomb */
+}
+
+input[type=radio][id="4.2"] + label:before{
+    content:"\f1e2 \f1e2"; /* bomb */
+}
+
+input[type=radio][id="4.3"] + label:before{
     content:"\f1e2"; /* bomb */
 }
-input[type=radio][value=" baixa "]:checked + label:before{
-    content:"\f017"; /* hand-peace-o */
+
+input[type=radio][id="5.1"] + label:before{
+    content:"\f1e2 \f1e2 \f1e2"; /* bomb */
 }
-input[type=radio][value=" facil "]:checked + label:before{
-    content:"\f25b"; /* hand-peace-o */
+
+input[type=radio][id="5.2"] + label:before{
+    content:"\f1e2 \f1e2"; /* bomb */
 }
-input[type=radio][value=" boa "]:checked + label:before{
-    content:"\f118"; /* smile-o */
+
+input[type=radio][id="5.3"] + label:before{
+    content:"\f1e2"; /* bomb */
 }
-input[type=radio][value=" média "]:checked + label:before{
-    content:"\f11a"; /* meh-o */
+
+input[type=radio][id="7.1"] + label:before{
+    content:"\f005 \f005 \f005"; /* star */
 }
-input[type=radio][value=" ruim "]:checked + label:before{
-    content:"\f119"; /* frown-o */
+
+input[type=radio][id="7.2"] + label:before{
+    content:"\f005 \f005"; /* star */
 }
-input[type=radio][value=" longa "]:checked + label:before{
-    content:"\f00d"; /* times */
+
+input[type=radio][id="7.3"] + label:before{
+    content:"\f005"; /* star */
 }
-input[type=radio][value=" curta "]:checked + label:before{
-    content:"\f00d"; /* times */
-}
+
 
 /* ********** Login Page ********** */
 
