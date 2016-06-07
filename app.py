@@ -1129,8 +1129,15 @@ def Setup():
         def GET(self):
             IsLogged()
             IsConfirmed()
+            LocDB = create_engine(UserDB, echo=False)
+            LocS = sessionmaker(bind=LocDB)()
 
-            return Render.evaluatepage(self.OfferingInst, Render)
+            UserId = LocS.query(User).filter(User.id == Session.user_id).one()
+            allowed = LocS.query(Enrollment).filter(Enrollment.student_id == UserId.student_id).filter(Enrollment.offering_id == self.OfferingInst.id).count()
+            if allowed==1:
+                return Render.evaluatepage(self.OfferingInst, Render)
+            else:
+                return web.seeother("/index")
 
         def POST(self):
             IsLogged()
@@ -1141,7 +1148,7 @@ def Setup():
             LocS = sessionmaker(bind=LocDB)()
 
             if Session.user_id == 78:
-                return web.seeother("/")
+                return web.seeother("/index")
 
             already_evaluated = LocS.query(StudentRate).filter(
                 StudentRate.user_id == Session.user_id).filter(

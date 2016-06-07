@@ -72,7 +72,9 @@ $ display_line = S.query(OfferingDisplay).filter(OfferingDisplay.offering_id == 
 $ sum_line = S.query(AnswerSum).filter(AnswerSum.offering_id == OfferingInst.id).one()
 
 $ StudentList = S.query(Enrollment).filter(Enrollment.offering_id == OfferingInst.id).join(Enrollment.student).order_by(Student.ra)
-
+$ UserId = S.query(User).filter(User.id == Render.user_id).one().student_id
+$ EnrollmentList = S.query(Enrollment).filter(Enrollment.student_id == UserId).filter(Enrollment.offering_id == OfferingInst.id)
+$ Enrolled = EnrollmentList.count()
 <!DOCTYPE html>
 <html>
   <head>
@@ -100,7 +102,10 @@ $ StudentList = S.query(Enrollment).filter(Enrollment.offering_id == OfferingIns
             $if already_evaluated:
               <a href="$OfferingInst.EvaluationURL()" class="btn btn-success" role="button">Modificar avaliação</a>
             $else:
-              <a href="$OfferingInst.EvaluationURL()" class="btn btn-primary" role="button">Avaliar oferecimento</a>
+              $if(Enrolled==1):
+                <a href="$OfferingInst.EvaluationURL()" class="btn btn-primary" role="button">Avaliar oferecimento</a>
+              $else:
+                <a class="btn btn-primary" role="button" disabled>Você não pode avaliar este oferecimento</a>
           </div>
           <div class="col-sm-4 text-right" id="troca">
             <ul class="nav nav-pills">
