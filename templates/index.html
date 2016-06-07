@@ -6,6 +6,9 @@ $ MyUser = S.query(User).filter(User.id == Render.user_id).one()
 
 $ Ratings = S.query(StudentRate).filter(StudentRate.user_id == MyUser.id).join(StudentRate.offering).join(Offering.semester).order_by(desc((Semester.year)*2 + Semester.sem))
 
+$ Ratings = S.query(Enrollment).filter(Enrollment.student_id == MyUser.id).join(Enrollment.offering).join(Offering.semester).order_by(desc((Semester.year)*2 + Semester.sem))
+
+$ Enrolls = S.query(Enrollment).filter(Enrollment.student_id == MyUser.id)
 
 <!DOCTYPE html>
 <html>
@@ -30,6 +33,11 @@ $ Ratings = S.query(StudentRate).filter(StudentRate.user_id == MyUser.id).join(S
         <!--
         <h3 class="text-center"> Grupo Discente de Avaliação</h3>
       -->
+      <div class="well well-sm text-primary">
+        Olá, <name class="text-primary">$MyUser.student.name</name>!
+        Essa é sua contribuição para o GDA.
+      </div>
+      <h5 id="teste"> Oferecimentos avaliados por você: $Ratings.count() </h5>
 
       <br>
 
@@ -61,41 +69,52 @@ $ Ratings = S.query(StudentRate).filter(StudentRate.user_id == MyUser.id).join(S
     </div>
 
   </div>
-  <div class="col-sm-5" id="oferecimentos">
-    <div class="well well-sm text-primary">
-      Olá, <name class="text-primary">$MyUser.student.name</name>!
-      Essa é sua contribuição para o GDA.
-    </div>
-    <h5> Oferecimentos avaliados por você: $Ratings.count() </h5>
-    <input type="text" class="search" placeholder="Busca por semestre, disciplina ou docente"> <br>
-    <div class="scrollable-area" style="overflow-y: auto; max-height:380px;">
-      <table class="table table-striped table-condensed sortable table-hover">
-        <thead>
-          <tr>
-            <th class="col-sm-3">Semestre</th>
-            <th class="col-sm-3">Disciplina</th>
-            <th style="col-sm-6">Docente</th>
-          </tr>
-        </thead>
-        <tbody class="list">
-          $for Line in Ratings:
-            $ URL = Line.offering.EncodeURL()
-            $ Code = '%s %s' % (Line.offering.subject.code, Line.offering.code)
-            $ Sem = '%ss%s' % (Line.offering.semester.sem, Line.offering.semester.year)
-            <tr class="clickable-row" data-url="$URL" data-toggle="tooltip" title="$Line.offering.subject.name">
-              <td><a class = "semestre black-link" href="$URL">$Sem</a></td>
-              <td><a class = "disciplina black-link" href="$URL">$Code</a></td>
-              <td><a class = "docente black-link" href="$Line.offering.teacher.EncodeURL()">$Line.offering.teacher.name</a></td>
-            </tr>
-        </tbody>
-      </table>
-    </div>
-    <script>
-    var options = {
-      valueNames: ['disciplina', 'docente', 'semestre']
-    };
-    var userList = new List('oferecimentos', options);
-    </script>
+  <div class="col-sm-4" id="oferecimentos">
+    <div class="panel-group" id="accordion">
+    $ i=0
+    $for thissemester in S.query(Semester).order_by(desc((Semester.year)*2 + Semester.sem)):
+      $ EnrollSemester = S.query(Enrollment).filter(Enrollment.student_id == MyUser.id).join(Enrollment.offering).filter(Offering.semester_id == thissemester.id)
+      $if EnrollSemester.count():
+        $ i = i + 1
+        $ semesterRated = 0
+        $for enroll in EnrollSemester:
+          $ semesterRated = semesterRated + S.query(StudentRate).filter(StudentRate.user_id == MyUser.id).filter(StudentRate.offering_id == enroll.offering_id).count()
+        $if semesterRated == EnrollSemester.count():
+          $ lab = "label-default"
+        $else:
+          $ lab = "label-primary"
+        <div class="panel panel-default">
+           <div class="panel-heading">
+             <h4 class="panel-title">
+               <a  class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapse$(i)">
+               $(thissemester.year).$(thissemester.sem)
+               <span class="label $(lab) pull-right">
+                 <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                 $(semesterRated) de $(EnrollSemester.count())</span>
+              </a>
+             </h4>
+           </div>
+           $if(i==1):
+            $ panel_show_hide = "panel-collapse collapse in"
+          $else:
+            $ panel_show_hide = "panel-collapse collapse"
+           <div id="collapse$(i)" class="$(panel_show_hide)">
+               <table class="table table-condensed table-hover">
+                 <tbody class="list">
+                  $for enroll in EnrollSemester:
+                     $ URL = enroll.offering.EncodeURL()
+                     <tr>
+                       <td><a class = "black-link" href="$URL">$(enroll.offering.subject.code)$enroll.offering.code</a></td>
+                       <td><a class = "black-link" href="$enroll.offering.teacher.EncodeURL()">$enroll.offering.teacher.name</a></td>
+                       $if S.query(StudentRate).filter(StudentRate.user_id == MyUser.id).filter(StudentRate.offering_id == enroll.offering_id).count():
+                          <td> <a href="$URL" class="btn btn-default btn-sm"><i class="fa fa-check-square-o" aria-hidden="true"></i></a></td>
+                       $else:
+                          <td> <a href="$URL" class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>
+                     </tr>
+                 </tbody>
+               </table>
+           </div>
+         </div>
   </div>
 </div>
 $:Render.footer()

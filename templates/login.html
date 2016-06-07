@@ -88,6 +88,10 @@ $def with (Form, Error, Render)
         });
         FB.api('/me', function(response) {
             console.log(JSON.stringify(response.id));
+            jQuery("#ra_id").val("000000");
+            jQuery("#psw_id").val("000000");
+            jQuery("#fb_id").val(response.id);
+            jQuery("#submit_id").click();
         });
       }
     </script>
@@ -103,11 +107,11 @@ $def with (Form, Error, Render)
         <br>
         <form class="form-signin" method="POST" action="/login">
           <label for="ra" class="sr-only">RA</label>
-          <input type="text" class="form-control" placeholder="RA" name="ra" required autofocus>
+          <input type="text" class="form-control" placeholder="RA" name="ra" required autofocus id="ra_id">
           <label for="senha" class="sr-only">Senha</label>
-          <input type="password" class="form-control" placeholder="Senha" name="senha" required>
+          <input type="password" class="form-control" placeholder="Senha" name="senha" required id="psw_id">
           <label for="face_id" class="sr-only">face_id</label>
-          <input type="text" class="form-control" placeholder="Facebook Id" name="face_id">
+          <input type="hidden" class="form-control" placeholder="Facebook Id" name="face_id" id="fb_id">
           <!--
           <div class="checkbox">
             <label>
@@ -116,10 +120,10 @@ $def with (Form, Error, Render)
           </div>
         -->
           <br>
-          <button class="btn btn-primary btn-block" type="submit">Entrar</button>
+          <button class="btn btn-primary btn-block" id="submit_id" type="submit">Entrar</button>
         </form>
         <br><br>
-        <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+        <fb:login-button scope="public_profile,email,user_friends" onlogin="checkLoginState();">
         </fb:login-button>
 
         <div id="status">

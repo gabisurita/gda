@@ -8,6 +8,93 @@ $ SubjectsList = S.query(Subject).order_by(Subject.code)
 
 $ MyUser = S.query(User).filter(User.id == Me).one()
 
+<script>
+// This is called with the results from from FB.getLoginStatus().
+function statusChangeCallback(response) {
+  console.log('statusChangeCallback');
+  console.log(response);
+  // The response object is returned with a status field that lets the
+  // app know the current login status of the person.
+  // Full docs on the response object can be found in the documentation
+  // for FB.getLoginStatus().
+  if (response.status === 'connected') {
+    // Logged into your app and Facebook.
+  } else if (response.status === 'not_authorized') {
+    // The person is logged into Facebook, but not your app.
+    document.getElementById('status').innerHTML = 'Please log ' +
+      'into this app.';
+  } else {
+    // The person is not logged into Facebook, so we're not sure if
+    // they are logged into this app or not.
+    document.getElementById('status').innerHTML = 'Please log ' +
+      'into Facebook.';
+  }
+}
+
+// This function is called when someone finishes with the Login
+// Button.  See the onlogin handler attached to it in the sample
+// code below.
+function checkLoginState() {
+  FB.getLoginStatus(function(response) {
+    statusChangeCallback(response);
+  });
+}
+
+window.fbAsyncInit = function() {
+FB.init({
+  appId      : '1685706398346162',
+  cookie     : true,  // enable cookies to allow the server to access
+                      // the session
+  xfbml      : true,  // parse social plugins on this page
+  version    : 'v2.2' // use version 2.2
+});
+
+// Now that we've initialized the JavaScript SDK, we call
+// FB.getLoginStatus().  This function gets the state of the
+// person visiting this page and can return one of three states to
+// the callback you provide.  They can be:
+//
+// 1. Logged into your app ('connected')
+// 2. Logged into Facebook, but not your app ('not_authorized')
+// 3. Not logged into Facebook and can't tell if they are logged into
+//    your app or not.
+//
+// These three cases are handled in the callback function.
+
+FB.getLoginStatus(function(response) {
+  statusChangeCallback(response);
+});
+
+};
+
+// Load the SDK asynchronously
+(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
+
+jQuery(document).ready(function(){
+  $ u = S.query(FaceUser).filter(FaceUser.user_id == MyUser.id);
+  $if u.count()==0:
+    jQuery("#user_img").attr("src","http://www.artifacting.com/blog/wp-content/uploads/2010/11/Batman-150x126.jpg");
+  $else:
+    $ j = u.one()
+    $ k = j.face_id
+    jQuery("#user_img").attr("src",ProfileUrl($k));
+  jQuery("#logout").click(function() {
+    FB.logout();
+  });
+});
+
+function ProfileUrl(id){
+  var m = "http://graph.facebook.com/"+JSON.stringify(id)+"/picture";
+  return m;
+};
+
+</script>
 <nav class="navbar navbar-inverse navbar-fixed-top">
   <div class="container">
     <div class="navbar-header">
@@ -17,7 +104,7 @@ $ MyUser = S.query(User).filter(User.id == Me).one()
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand font-effect-outline" href="/">gda</a>
+      <a class="navbar-brand font-effect-outline" href="/index">gda</a>
       <!--
       <a href="/">
         <img src="/static/logo.png" style="height:55px;padding:5px;margin-right:20px;">
@@ -57,13 +144,15 @@ $ MyUser = S.query(User).filter(User.id == Me).one()
       </form>
         <ul class="nav navbar-nav navbar-right">
           <li class="dropdown">
-            <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-graduation-cap"></i> $MyUser.student.name <span class="caret"></span></a>
+            <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+              <img src="" width="28" height="28" class="img-rounded" id="user_img" ></img>  &nbsp;
+              $MyUser.student.name.split()[0] <span class="caret"></span></a>
             <ul class="dropdown-menu" role="menu">
               <li><a href="$MyUser.student.EncodeURL()">Oferecimentos avaliados</a></li>
               <li><a href="/user">Alterar meus dados</a></li>
             </ul>
           </li>
-          <li><a href="/logout">Log Out &nbsp; <i class="fa fa-sign-out"></i></a></li>
+          <li><a href="/logout" id="logout">Sair &nbsp; <i class="fa fa-sign-out"></i></a></li>
         </ul>
     </div><!--/.nav-collapse -->
   </div>

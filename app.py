@@ -633,7 +633,7 @@ def Setup():
                 Form = LoginForm
                 return Render.login(Form, "", Render)
             else:
-                raise web.seeother('/')
+                raise web.seeother('/index')
 
         def POST(self):
             Form = LoginForm
@@ -645,15 +645,20 @@ def Setup():
             else:
                 S = sessionmaker(bind=DB)()
 
-                if Form['ra'].get_value()==0000 and Form['senha'].get_value()==0000:
-                    if Form['face_id'].get_value()!=0 and Form['face_id'].get_value()!=None:
-                        f = S.query(FaceUser).filter(FaceUser.face_id == Form['face_id'].get_value()).one()
+                face_id = Form['face_id'].get_value()
+                ra = Form['ra'].get_value()
+                senha = Form['senha'].get_value()
+
+                if ra=='000000' and senha=='000000':
+                    if face_id!=0 and face_id!=None:
+                        print face_id
+                        f = S.query(FaceUser).filter(FaceUser.face_id == face_id).one()
                         if f!=0:
                             Session.user_id = f.user_id
-                            conf = S.query(User).filter(User.id == Session.user.id).one()
+                            conf = S.query(User).filter(User.id == Session.user_id).one()
                             conf = conf.confirmed
                             if conf == 1:
-                                raise web.seeother('/')
+                                raise web.seeother('/index')
                             else:
                                 raise web.seeother('/confirmacao')
 
@@ -678,7 +683,7 @@ def Setup():
                     if UserCall.password == encode(Form['senha'].value):
                         Session.user_id = UserCall.id
                         if UserCall.confirmed == 1:
-                            raise web.seeother('/')
+                            raise web.seeother('/index')
                         else:
                             raise web.seeother('/confirmacao')
                     else:
@@ -693,7 +698,7 @@ def Setup():
                 Form = RegisterForm()
                 return Render.register(Form,"",Render)
             else:
-                raise web.seeother('/')
+                raise web.seeother('/index')
 
         def POST(self):
             Form = RegisterForm()
@@ -802,7 +807,7 @@ def Setup():
 #                    if UserCall.password == Form['Senha'].value:
                         # TODO Check confirmation
 #                        Session.user_id = UserCall.id
-#                        raise web.seeother('/')
+#                        raise web.seeother('/index')
 #                    else:
 #                        return "Meh"
 
@@ -838,7 +843,7 @@ def Setup():
     class LogoutPage:
         def GET(self):
             Session.user_id = False
-            raise web.seeother('/')
+            raise web.seeother('/welcome')
 
     class ConfirmationPage:
 
@@ -864,7 +869,7 @@ def Setup():
                 if cont == 0:
                     return Render.confirmationpage(Form, "Código de confirmação incorreto!", Render)
                 else:
-                    raise web.seeother('/')
+                    raise web.seeother('/index')
             elif auxiliar.has_key('alterar'):
                 check_email = re.search(r'[\w.-]+@[\w.-]+.unicamp.br', auxiliar['email'])
                 match_email = LocS.query(User).filter(User.email == auxiliar['email'])
@@ -903,6 +908,7 @@ def Setup():
             IsConfirmed()
             Form = UserForm()
             return Render.userpage(Form,"",Render)
+
         def POST(self):
             Form = UserForm()
             if not Form.validates():
@@ -1538,6 +1544,9 @@ def Setup():
                     S.add(NewSum)
                     S.commit()
                 '''
+    class WelcomePage:
+        def GET(self):
+            return Render.welcome(Render)
 
     class IndexPage:
         def GET(self):
@@ -1755,7 +1764,7 @@ def Setup():
     # URL Mappings
     S = sessionmaker(bind=DB)()
 
-    Map(IndexPage, "/")
+    Map(IndexPage, "/index")
     Map(AboutPage, "/sobre")
     Map(StatsPage, "/estatisticas")
     Map(LoginPage, "/login")
@@ -1767,6 +1776,7 @@ def Setup():
     Map(ForgottenPassword, "/esqueci")
     Map(ConfirmationPage, "/confirmacao")
     Map(UserPage, "/user")
+    Map(WelcomePage, "/welcome")
 
     #Map(ContactPage, "/contato")
     #Map(FaqPage, "/faq")

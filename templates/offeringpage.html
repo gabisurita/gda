@@ -71,8 +71,7 @@ $ ThisTeacher = S.query(Teacher).filter(Teacher.id == OfferingInst.teacher_id).o
 $ display_line = S.query(OfferingDisplay).filter(OfferingDisplay.offering_id == OfferingInst.id).one()
 $ sum_line = S.query(AnswerSum).filter(AnswerSum.offering_id == OfferingInst.id).one()
 
-
-
+$ StudentList = S.query(Enrollment).filter(Enrollment.offering_id == OfferingInst.id).join(Enrollment.student).order_by(Student.ra)
 
 <!DOCTYPE html>
 <html>
@@ -108,12 +107,13 @@ $ sum_line = S.query(AnswerSum).filter(AnswerSum.offering_id == OfferingInst.id)
               <li class="active"><a data-toggle="tab" href="#oficial">oficial</a></li>
               <li><a data-toggle="tab" href="#gda">gda</a></li>
               <li><a data-toggle="tab" href="#comments">comentarios</a></li>
+              <li><a data-toggle="tab" href="#students">alunos</a></li>
             </ul>
           </div>
         </div>
 
         <div class="tab-content">
-          <div id="oficial" class="tab-pane fade in active">
+          <div id="oficial" class="tab-pane fade">
             $if Rated:
               <div class="row">
                 <div id="semestre" class="col-sm-3">
@@ -235,6 +235,27 @@ $ sum_line = S.query(AnswerSum).filter(AnswerSum.offering_id == OfferingInst.id)
                       <p class="text-center text-muted"> Ainda não há comentários. <p>
                   </div>
                 </div>
+          </div>
+          <div id="students" class="tab-pane fade in active">
+            <div class="col-sm-4">
+              <div class="panel panel-primary">
+                <div class="panel-heading">
+                  <h3 class="panel-title"> Matriculados <span class="badge">$(StudentList.count())</span> </h3>
+                </div>
+                <div class="panel-body">
+                  $ i = 0
+                  $for enroll in StudentList:
+                    $ i=i+1
+                    <div class="text-center col-sm-3">
+                      <a href="/estudantes/$(enroll.student.ra)">
+                        <img src="http://lorempixel.com/50/50/people/$(i%10)"
+                        class="" alt="ops" width="50" height="50">
+                      </a>
+                      <p> $(enroll.student.name.split()[0])</p>
+                    </div>
+                </div>
+              </div>
+            </div>
           </div>
           </div>
         </div>
