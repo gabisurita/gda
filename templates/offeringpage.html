@@ -126,38 +126,44 @@ $ Enrolled = EnrollmentList.count()
                   <h5 class="text-center"> $OfferingInst.subject.code </h5>
                   <div id="graphS"></div>
                 </div>
-                <div class="col-sm-3">
-                  <div class="panel panel-default">
-                    <div class="panel-heading">Avaliação Oficial - $Rate.answers respostas de $OfferingInst.students matriculados</div>
+                <div class="col-sm-3 bottom-column">
+                  <div class="panel panel-default small">
                     <table class="table">
                       <tbody>
                         <tr>
+                          <td> <b>A</b> </td>
                           <td class="col-sm-9"> Planejamento da Bibliografia </td>
                           <td class="text-right"> $Rate.question1 </td>
                         </tr>
                         <tr>
+                          <td> <b>B</b> </td>
                           <td> Didática e Técnica de Ensino </td>
                           <td class="text-right"> $Rate.question2 </td>
                         </tr>
                         <tr>
+                          <td> <b>C</b> </td>
                           <td> Interesse pelo Aluno </td>
                           <td class="text-right"> $Rate.question3 </td>
                         </tr>
                         <tr>
+                          <td> <b>D</b> </td>
                           <td> Relacionamento com alunos </td>
                           <td class="text-right"> $Rate.question4 </td>
                         </tr>
                         <tr>
+                          <td> <b>E</b> </td>
                           <td> Adequação da avaliação </td>
                           <td class="text-right"> $Rate.question5 </td>
                         </tr>
                         <tr>
+                          <td> <b>F</b> </td>
                           <td> Contribuição para aprendizado </td>
                           <td class="text-right"> $Rate.question6 </td>
                         </tr>
                         <tr>
                         </tbody>
                       </table>
+                      <div class="panel-footer text-right">$Rate.answers respostas de $OfferingInst.students matriculados</div>
                     </div>
                   </div>
                 </div>
@@ -209,20 +215,20 @@ $ Enrolled = EnrollmentList.count()
           </div>
           <div id="students">
             <div class="col-sm-4">
-              <div class="panel panel-primary">
+              <div class="panel panel-default">
                 <div class="panel-heading">
                   <h3 class="panel-title"> Matriculados <span class="badge">$(StudentList.count())</span> </h3>
                 </div>
-                <div class="panel-body">
+                <div class="panel-body" style="max-height:400px; overflow-y:auto">
                   $ i = 0
                   $for enroll in StudentList:
                     $ i=i+1
-                    <div class="text-center col-sm-3">
+                    <div class="col-lg-3 col-md-4 col-xs-6 thumb">
                       <a href="/estudantes/$(enroll.student.ra)">
-                        <img src="http://lorempixel.com/50/50/people/$(i%10)"
-                        class="" alt="ops" width="50" height="50">
+                        <img src="http://lorempixel.com/50/50/sports/$(i%10)"
+                        class="img-responsive img-rounded" alt="ops" width="50" height="50">
                       </a>
-                      <p> $(enroll.student.name.split()[0])</p>
+                      <p class="small"> $(enroll.student.name.split()[0])</p>
                     </div>
                 </div>
               </div>

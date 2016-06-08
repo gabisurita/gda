@@ -45,14 +45,12 @@ $ FaceLoger = S.query(FaceUser).filter(FaceUser.user_id == MyUser.id).count()
         $else:
           $ lab = "label-primary"
         <div class="panel panel-default">
-           <div class="panel-heading">
+           <div class="panel-heading accordion-toggle panel-index" data-toggle="collapse" data-parent="#accordion" href="#collapse$(i)" style="">
              <h4 class="panel-title">
-               <a  class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapse$(i)">
                $(thissemester.year).$(thissemester.sem)
                <span class="label $(lab) pull-right">
                  <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                  $(semesterRated) de $(EnrollSemester.count())</span>
-              </a>
              </h4>
            </div>
            $if(i==1):
@@ -79,31 +77,14 @@ $ FaceLoger = S.query(FaceUser).filter(FaceUser.user_id == MyUser.id).count()
   </div>
 </div>
 <div class="col-sm-4">
-  <br></br>
-  $if FaceLoger==1:
-    <img id="user_img0" width="60" height="60" class="img-rounded" src="" ></img>  &nbsp;&nbsp;
-    <img id="user_img1" width="60" height="60" class="img-rounded" src="" ></img>  &nbsp;&nbsp;
-    <img id="user_img2" width="60" height="60" class="img-rounded" src="" ></img>  &nbsp;&nbsp;
-    <br></br>
-    <img id="user_img3" width="60" height="60" class="img-rounded" src="" ></img>  &nbsp;&nbsp;
-    <img id="user_img4" width="60" height="60" class="img-rounded" src="" ></img>  &nbsp;&nbsp;
-    <img id="user_img5" width="60" height="60" class="img-rounded" src="" ></img>  &nbsp;&nbsp;
-    <br></br>
-    <img id="user_img6" width="60" height="60" class="img-rounded" src="" ></img>  &nbsp;&nbsp;
-    <img id="user_img7" width="60" height="60" class="img-rounded" src="" ></img>  &nbsp;&nbsp;
-    <img id="user_img8" width="60" height="60" class="img-rounded" src="" ></img>  &nbsp;&nbsp;
-  $else:
-    <img width="60" height="60" class="img-rounded" src="http://www.artifacting.com/blog/wp-content/uploads/2010/11/Batman-150x126.jpg" ></img>  &nbsp;&nbsp;
-    <img width="60" height="60" class="img-rounded" src="http://www.artifacting.com/blog/wp-content/uploads/2010/11/Batman-150x126.jpg" ></img>  &nbsp;&nbsp;
-    <img width="60" height="60" class="img-rounded" src="http://www.artifacting.com/blog/wp-content/uploads/2010/11/Batman-150x126.jpg" ></img>  &nbsp;&nbsp;
-    <br></br>
-    <img width="60" height="60" class="img-rounded" src="http://www.artifacting.com/blog/wp-content/uploads/2010/11/Batman-150x126.jpg" ></img>  &nbsp;&nbsp;
-    <img width="60" height="60" class="img-rounded" src="http://www.artifacting.com/blog/wp-content/uploads/2010/11/Batman-150x126.jpg" ></img>  &nbsp;&nbsp;
-    <img width="60" height="60" class="img-rounded" src="http://www.artifacting.com/blog/wp-content/uploads/2010/11/Batman-150x126.jpg" ></img>  &nbsp;&nbsp;
-    <br></br>
-    <img width="60" height="60" class="img-rounded" src="http://www.artifacting.com/blog/wp-content/uploads/2010/11/Batman-150x126.jpg" ></img>  &nbsp;&nbsp;
-    <img width="60" height="60" class="img-rounded" src="http://www.artifacting.com/blog/wp-content/uploads/2010/11/Batman-150x126.jpg" ></img>  &nbsp;&nbsp;
-    <img width="60" height="60" class="img-rounded" src="http://www.artifacting.com/blog/wp-content/uploads/2010/11/Batman-150x126.jpg" ></img>  &nbsp;&nbsp;
+  <br>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title"> Amigos que usam o GDA <span class="badge"> 42 </span> </h3>
+  </div>
+  <div class="panel-body" id="imagediv" style="max-height:400px; overflow-y:auto">
+</div>
+</div>
 </div>
 $:Render.footer()
 </body>
@@ -186,26 +167,22 @@ $:Render.footer()
       var name;
       var lenght = response.data.length;
       var i=0;
-      var j=0;
       var tag_img;
       var tag_name;
-      var nmax = 9;
 
-      for (i=0; i<nmax; i++){
+    for(j=0; j<13; j++){
+      for (i=0; i<lenght; i++){
         tag_img = "#user_img"+JSON.stringify(i);
         tag_name = "#user_name"+JSON.stringify(i);
+        id = response.data[i].id;
+        name = response.data[i].name;
+        console.log(ProfileUrl(id));
 
-        if (i<lenght){
-          id = response.data[i].id;
-          name = response.data[i].name;
-          console.log(ProfileUrl(id));
-          jQuery(tag_img).attr("src",ProfileUrl(id));
-          //jQuery(tag_name).val(name);
-        }else{
-          jQuery(tag_img).attr("src","http://www.artifacting.com/blog/wp-content/uploads/2010/11/Batman-150x126.jpg");
-          //jQuery(tag_name).val("");
-        }
+        var img = jQuery('<img/>').attr('src', ProfileUrl(id)).addClass("img-responsive img-rounded");
+        var thumbdiv = jQuery('<div/>').addClass("col-lg-3 col-md-4 col-xs-6 thumb").append(img);
+        thumbdiv.appendTo(jQuery('#imagediv'));
       }
+    }
   });
   }
 
@@ -214,3 +191,31 @@ $:Render.footer()
     return m;
   };
 </script>
+
+<!--
+<br></br>
+$if FaceLoger==1:
+  <img id="user_img0" width="60" height="60" class="img-rounded" src="" ></img>  &nbsp;&nbsp;
+  <img id="user_img1" width="60" height="60" class="img-rounded" src="" ></img>  &nbsp;&nbsp;
+  <img id="user_img2" width="60" height="60" class="img-rounded" src="" ></img>  &nbsp;&nbsp;
+  <br></br>
+  <img id="user_img3" width="60" height="60" class="img-rounded" src="" ></img>  &nbsp;&nbsp;
+  <img id="user_img4" width="60" height="60" class="img-rounded" src="" ></img>  &nbsp;&nbsp;
+  <img id="user_img5" width="60" height="60" class="img-rounded" src="" ></img>  &nbsp;&nbsp;
+  <br></br>
+  <img id="user_img6" width="60" height="60" class="img-rounded" src="" ></img>  &nbsp;&nbsp;
+  <img id="user_img7" width="60" height="60" class="img-rounded" src="" ></img>  &nbsp;&nbsp;
+  <img id="user_img8" width="60" height="60" class="img-rounded" src="" ></img>  &nbsp;&nbsp;
+$else:
+  <img width="60" height="60" class="img-rounded" src="http://www.artifacting.com/blog/wp-content/uploads/2010/11/Batman-150x126.jpg" ></img>  &nbsp;&nbsp;
+  <img width="60" height="60" class="img-rounded" src="http://www.artifacting.com/blog/wp-content/uploads/2010/11/Batman-150x126.jpg" ></img>  &nbsp;&nbsp;
+  <img width="60" height="60" class="img-rounded" src="http://www.artifacting.com/blog/wp-content/uploads/2010/11/Batman-150x126.jpg" ></img>  &nbsp;&nbsp;
+  <br></br>
+  <img width="60" height="60" class="img-rounded" src="http://www.artifacting.com/blog/wp-content/uploads/2010/11/Batman-150x126.jpg" ></img>  &nbsp;&nbsp;
+  <img width="60" height="60" class="img-rounded" src="http://www.artifacting.com/blog/wp-content/uploads/2010/11/Batman-150x126.jpg" ></img>  &nbsp;&nbsp;
+  <img width="60" height="60" class="img-rounded" src="http://www.artifacting.com/blog/wp-content/uploads/2010/11/Batman-150x126.jpg" ></img>  &nbsp;&nbsp;
+  <br></br>
+  <img width="60" height="60" class="img-rounded" src="http://www.artifacting.com/blog/wp-content/uploads/2010/11/Batman-150x126.jpg" ></img>  &nbsp;&nbsp;
+  <img width="60" height="60" class="img-rounded" src="http://www.artifacting.com/blog/wp-content/uploads/2010/11/Batman-150x126.jpg" ></img>  &nbsp;&nbsp;
+  <img width="60" height="60" class="img-rounded" src="http://www.artifacting.com/blog/wp-content/uploads/2010/11/Batman-150x126.jpg" ></img>  &nbsp;&nbsp;
+-->

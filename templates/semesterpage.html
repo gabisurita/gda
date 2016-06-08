@@ -4,8 +4,6 @@ $ S = sessionmaker(bind=DB)()
 
 $ ThisOfferings = S.query(Offering).filter(Offering.semester == SemesterInst).join(Offering.subject).order_by(Subject.code)
 
-<<<<<<< HEAD
-
 $ quest1 = []
 $ quest2 = []
 $ quest3 = []
@@ -23,8 +21,6 @@ $for Line in ThisOfferings:
     $ quest6.append(Rate.question6)
 $ yData = [quest1 ,quest2 ,quest3 ,quest4 ,quest5 , quest6]
 
-
->>>>>>> graph
 <!DOCTYPE html>
 <html>
   <head>
@@ -98,28 +94,7 @@ $ yData = [quest1 ,quest2 ,quest3 ,quest4 ,quest5 , quest6]
       <div class="col-sm-2">
         <div data-spy="affix">
           <br><br><br><br>
-          <div class="panel panel-default">
-            <table class="table table-condensed">
-              <tr>
-                <td> <b>A</b> </td><td> Planejamento da Bibliografia  </td>
-              </tr>
-              <tr>
-                <td> <b>B</b> </td><td> Didática e Técnica de Ensino </td>
-              </tr>
-              <tr>
-                <td> <b>C</b> </td><td> Interesse pelo Aluno  </td>
-              </tr>
-              <tr>
-                <td> <b>D</b> </td><td> Relacionamento com alunos  </td>
-              </tr>
-              <tr>
-                <td> <b>E</b> </td><td> Adequação da avaliação   </td>
-              </tr>
-              <tr>
-                <td> <b>F</b> </td><td> Contribuição para aprendizado  </td>
-              </tr>
-            </table>
-          </div>
+          $:Render.legendboxplot()
         </div>
       </div>
     </div>

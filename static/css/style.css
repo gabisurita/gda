@@ -370,3 +370,17 @@ input[type=radio][id="7.3"] + label:before{
   vertical-align: baseline;
   border-radius: .25em;
 }
+
+.panel-index:hover {
+ cursor:pointer;
+}
+
+.thumb {
+    margin-bottom: 30px;
+}
+
+.bottom-column{
+    float: none;
+    display: table-cell;
+    vertical-align: bottom;
+}
