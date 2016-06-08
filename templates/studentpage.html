@@ -6,6 +6,7 @@ $ ThisUser = S.query(User).filter(User.student_id == StudentInst.id).one()
 
 $ Ratings = S.query(Enrollment).filter(Enrollment.student_id == StudentInst.id).join(Enrollment.offering).join(Offering.semester).order_by(desc((Semester.year)*2 + Semester.sem))
 
+$ ThisComments = S.query(TeacherComment).filter(TeacherComment.user == ThisUser)
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,17 +17,122 @@ $ Ratings = S.query(Enrollment).filter(Enrollment.student_id == StudentInst.id).
   <!-- Fixed navbar -->
   $:Render.navbar(Render.user_id)
   <!-- Begin page content -->
-  <div class="container" id="oferecimentos">
-    <h3>$:StudentInst.name</h3>
-    <div class="row">
-      <div class="col-sm-6">
-        <input type="text" class="search" placeholder="Busca por semestre, disciplina ou docente">
-      </div>
-      <div class="col-sm-6 text-right">
-        <h5> Oferecimentos abertos para avaliação : $Ratings.count() </h4>
+  <div class="container">
+  <div class="col-sm-4" id="profile" class="text-center">
+      <br>
+      <div data-spy="affix">
+      <div class="row">
+        <div class="col-sm-3">
+          <img src="" class="img-rounded" id="student_img" height="50" width="50"></img>
+        </div>
+        <div class="col-sm-9">
+          <h5>$:StudentInst.name</h4>
+          <h6>RA: $:StudentInst.ra</h5>
+          $ cr = "%.4f" % (random.gauss(0.65, 0.15))
+          <h6 class="text-muted"> CR:  $cr</h5>
         </div>
       </div>
+          <br>
+          <div class="panel-group" id="accordion">
+          $ i=0
+          $for thissemester in S.query(Semester).order_by(desc((Semester.year)*2 + Semester.sem)):
+            $ EnrollSemester = S.query(Enrollment).filter(Enrollment.student_id == ThisUser.id).join(Enrollment.offering).filter(Offering.semester_id == thissemester.id)
+            $if EnrollSemester.count():
+              $ i = i + 1
+              $ semesterRated = 0
+              $for enroll in EnrollSemester:
+                $ semesterRated = semesterRated + S.query(StudentRate).filter(StudentRate.user_id == ThisUser.id).filter(StudentRate.offering_id == enroll.offering_id).count()
+              $if semesterRated == EnrollSemester.count():
+                $ lab = "label-default"
+              $else:
+                $ lab = "label-primary"
+              <div class="panel panel-default">
+                 <div class="panel-heading accordion-toggle panel-index" data-toggle="collapse" data-parent="#accordion" href="#collapse$(i)" style="">
+                   <h4 class="panel-title">
+                     $(thissemester.year).$(thissemester.sem)
+                     <span class="label $(lab) pull-right">
+                       <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                       $(semesterRated) de $(EnrollSemester.count())</span>
+                   </h4>
+                 </div>
+                 <div id="collapse$(i)" class="panel-collapse collapse">
+                     <table class="table table-condensed table-hover">
+                       <tbody class="list">
+                        $for enroll in EnrollSemester:
+                           $ URL = enroll.offering.EncodeURL()
+                           <tr>
+                             <td><a class = "black-link" href="$URL">$(enroll.offering.subject.code)$enroll.offering.code</a></td>
+                             <td><a class = "black-link" href="$enroll.offering.teacher.EncodeURL()">$enroll.offering.teacher.name</a></td>
+                             $if S.query(StudentRate).filter(StudentRate.user_id == ThisUser.id).filter(StudentRate.offering_id == enroll.offering_id).count():
+                                <td> <a href="$URL" class="btn btn-default btn-sm"><i class="fa fa-check-square-o" aria-hidden="true"></i></a></td>
+                             $else:
+                                <td> <a href="$enroll.offering.EvaluationURL()" class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>
+                           </tr>
+                       </tbody>
+                     </table>
+                 </div>
+              </div>
+          </div>
+    </div>
+  </div>
 
+  <div class="col-sm-8" id="comentarios">
+          <br>
+    <div id="comments" class="panel panel-default row">
+      <div class="panel-heading"> <i class="fa fa-comment-o fa-lg" aria-hidden="true"></i>  &nbsp; Comentários</div>
+      <div class="text-justify">
+        $if ThisComments.count():
+          <table class="table table-condensed">
+            <tbody class="list">
+            $for Comment in ThisComments:
+              $ AboutOffer = S.query(Offering).filter(Offering.id == Comment.offering_id).one()
+              $ OfferLink = AboutOffer.EncodeURL()
+              $ TeacherLink = AboutOffer.teacher.EncodeURL()
+              <tr>
+                <td>
+                  <blockquote>
+                    <p>$Comment.text</p>
+                    <small><b>$Comment.user.student.name.split()[0]</b> sobre
+                    <a class="black-link" href="$OfferLink"><b>$S.query(TeacherNick).filter(TeacherNick.teacher_id == AboutOffer.teacher_id).one().name_short </b></a>
+                    em <a class="black-link" href="$OfferLink"><b>$AboutOffer.subject.code
+                     $(AboutOffer.semester.year).$(AboutOffer.semester.sem)</b></a></small>
+                  </blockquote>
+                <td>
+              </tr>
+            </tbody>
+          </table>
+        $else:
+          <p class="text-muted text-center"> Este usuário ainda não fez nenhum comentário. <p>
+      </div>
+    </div>
+  </div>
+</div>
+    $:Render.footer()
+</body>
+</html>
+
+<script>
+jQuery(document).ready(function(){
+  $ queryuser = S.query(FaceUser).filter(FaceUser.user_id == ThisUser.id)
+  $if queryuser.count():
+    $ fbuser = queryuser.one()
+    $ fbid = fbuser.face_id
+    jQuery("#student_img").attr("src",ProfileUrl($fbid));
+    console.log(ProfileUrl($fbid));
+  $else:
+    jQuery("#student_img").attr("src","http://www.artifacting.com/blog/wp-content/uploads/2010/11/Batman-150x126.jpg");
+});
+
+function ProfileUrl(id){
+  return "http://graph.facebook.com/"+JSON.stringify(id)+"/picture";
+};
+</script>
+
+
+
+<!--
+
+<div class="col-sm-8">
       <table class="table table-striped table-condensed sortable table-hover">
         <thead>
           <tr>
@@ -47,13 +153,6 @@ $ Ratings = S.query(Enrollment).filter(Enrollment.student_id == StudentInst.id).
             </tr>
         </tbody>
       </table>
-      <script>
-      var options = {
-        valueNames: ['disciplina', 'docente', 'semestre']
-      };
-      var userList = new List('oferecimentos', options);
-      </script>
     </div>
-    $:Render.footer()
-</body>
-</html>
+
+-->

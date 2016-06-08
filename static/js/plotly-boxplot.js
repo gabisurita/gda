@@ -78,7 +78,7 @@ function boxplot(yData, xdt , location, title_default,title_custom) {
     //  showlegend: true
   };
 
-  Plotly.plot(gd, data, layout, {displaylogo: false});
+  Plotly.plot(gd, data, layout, {displaylogo: false, displayModeBar: false});
 
   var rating = [1,2,3,4,5,6];
   jQuery( ".clickable-row" )
