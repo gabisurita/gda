@@ -11,8 +11,9 @@ $ S = sessionmaker(bind=DB)()
         <b>$Comment.user.student.name</b> sobre
         <a class="black-link" href="$OfferLink"><b>$AboutOffer.subject.code
          $(AboutOffer.semester.sem)s$(AboutOffer.semester.year)</b></a>
-        <br>
-        $Comment.text
+         $if (Comment.user_id == Render.user_id):
+          <a href="$Comment.offering.EvaluationURL()" class="btn btn-default btn-sm"><i class="fa fa-check-square-o" aria-hidden="true"></i></a>
+         $Comment.text
       </div>
   </div>
 </div>

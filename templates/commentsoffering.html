@@ -9,6 +9,8 @@ $ S = sessionmaker(bind=DB)()
         <b>$Comment.user.student.name</b>
         <br>
         $Comment.text
+        $if (Comment.user_id == Render.user_id):
+         <a href="$Comment.offering.EvaluationURL()" class="btn btn-default btn-sm"><i class="fa fa-check-square-o" aria-hidden="true"></i></a>
       </div>
   </div>
 </div>
