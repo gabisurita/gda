@@ -6,6 +6,8 @@
 from __future__ import division
 from constants import *
 
+import datetime
+
 from random import choice
 
 import web
@@ -697,6 +699,14 @@ def Setup():
                     return Render.login(
                         Form, "Usuário não cadastrado.", Render)
 
+    class BeginPage:
+        def GET(self):
+            if not IsLogged(Redirect=False):
+                raise web.seeother("/welcome")
+            else:
+                web.seeother("/login")
+
+
     class RegisterPage:
         def GET(self):
             if not IsLogged(Redirect=False):
@@ -1334,6 +1344,14 @@ def Setup():
             LocS.add(NewEvaluation)
             LocS.commit()
 
+            NewStamp = TimeStamp(
+            time = datetime.datetime.utcnow(),
+            evaluation = NewEvaluation
+            )
+
+            LocS.add(NewStamp)
+            LocS.commit()
+
             if auxiliar['0.0'] == u' sim ':
                 elemento.q1_sim += 1
                 disciplina.q1_sim += 1
@@ -1789,6 +1807,7 @@ def Setup():
     Map(ConfirmationPage, "/confirmacao")
     Map(UserPage, "/user")
     Map(WelcomePage, "/welcome")
+    Map(BeginPage, "/")
 
 
     #LocDB = create_engine(UserDB, echo=False)

@@ -231,6 +231,17 @@ class StudentRate(Base):
     user = relationship(User)
     offering = relationship(Offering)
 
+#Tabela que lida com as Timestamps das avaliações
+class TimeStamp(Base):
+    __tablename__ = "timestamps"
+
+    id = Column('answersum_id', Integer, primary_key=True)
+    time = Column('time', String)
+    evaluation_id = Column(Integer, ForeignKey('studentrate.studentrate_id'))
+
+    evaluation = relationship(StudentRate)
+
+
 #Tabela que contém a soma das avaliações
 class AnswerSum(Base):
     __tablename__ = "answersum"
