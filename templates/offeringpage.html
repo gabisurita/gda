@@ -86,8 +86,7 @@ $ Enrolled = EnrollmentList.count()
     $:Render.navbar(Render.user_id)
     <!-- Begin page content -->
     <div class="container">
-      <div class="row">
-        <div class="text-center col-sm-6" id="heading">
+        <div class="well" id="heading">
           <h5>
             $OfferingInst.subject.code $OfferingInst.code
             <a class="black-link" href="$OfferingInst.subject.EncodeURL()">
@@ -99,17 +98,12 @@ $ Enrolled = EnrollmentList.count()
               <br>
               $OfferingInst.semester.semº semestre de $OfferingInst.semester.year
             </h5>
-          </div>
-          <div class="col-sm-2" id="avaliar">
             $if already_evaluated:
               <a href="$OfferingInst.EvaluationURL()" class="btn btn-success" role="button">Modificar avaliação</a>
             $else:
               $if(Enrolled==1):
                 <a href="$OfferingInst.EvaluationURL()" class="btn btn-primary" role="button">Avaliar oferecimento</a>
-              $else:
-                <a class="btn btn-primary" role="button" disabled>Você não pode avaliar este oferecimento</a>
           </div>
-        </div>
 
           <div id="oficial">
             $if Rated:
@@ -176,7 +170,7 @@ $ Enrolled = EnrollmentList.count()
                   <h4 class="text-center"> Perguntas sobre a Disciplina </h4> <br>
                   <div class="col-sm-6">
                     $:Render.questionyesno(sum_line.q1_sim,sum_line.q1_nao, "A disciplina é necessária ao currículo?")
-                    $:Render.questionlowmedhigh(sum_line.q3_longa,sum_line.q3_adequada,sum_line.q3_curta, "Como você avalia a ementa da disciplina?", "fa fa-book", "danger","primary","success")
+                    $:Render.questionlowmedhigh(sum_line.q3_longa,sum_line.q3_adequada,sum_line.q3_curta, "Como você avalia o conteúdo da disciplina?", "fa fa-book", "danger","primary","success")
                   </div>
                   <div class="col-sm-6">
                     $:Render.questionlowmedhigh(sum_line.q4_alta,sum_line.q4_normal,sum_line.q4_baixa," Como você avalia a dedicação exigida pela disciplina?","fa fa-clock-o", "danger","primary","success")
@@ -203,23 +197,16 @@ $ Enrolled = EnrollmentList.count()
             </div>
 
             <div class="row">
-            <div class="col-sm-8" id="comments">
-                <div class="panel panel-default">
-                  <div class="panel-body text-justify">
-                    $if ThisComments.first() != None:
-                      $:Render.commentsoffering(ThisComments)
-                    $else:
-                      <p class="text-center text-muted"> Ainda não há comentários. <p>
-                  </div>
-                </div>
-          </div>
-          <div id="students">
+            <div class="col-sm-8">
+                  $:Render.comments(ThisComments)
+              </div>
+          <div id="matriculados">
             <div class="col-sm-4">
               <div class="panel panel-default">
                 <div class="panel-heading">
                   <h3 class="panel-title"> Matriculados <span class="badge">$(StudentList.count())</span> </h3>
                 </div>
-                <div class="panel-body" style="max-height:400px; overflow-y:auto">
+                <div class="panel-body" id="students">
                   $ i = 0
                   $for enroll in StudentList:
                     $ i=i+1
@@ -244,4 +231,11 @@ $ Enrolled = EnrollmentList.count()
   boxplot($(yDataQ), $(ThisOfferingRating) ,"#graphQ" ,"","");
   boxplot($(yDataS), $(ThisOfferingRating) ,"#graphS" ,"","");
   boxplot($(yDataT), $(ThisOfferingRating), "#graphT" ,"","");
+
+  jQuery('#comments').slimScroll({
+      height: '65vh'
+  });
+  jQuery('#students').slimScroll({
+      height: '66vh'
+  });
 </script>

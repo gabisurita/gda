@@ -80,10 +80,12 @@ jQuery(document).ready(function(){
   $ u = S.query(FaceUser).filter(FaceUser.user_id == MyUser.id);
   $if u.count()==0:
     jQuery("#user_img").attr("src","http://www.artifacting.com/blog/wp-content/uploads/2010/11/Batman-150x126.jpg");
+    jQuery("#muser_img").attr("src","http://www.artifacting.com/blog/wp-content/uploads/2010/11/Batman-150x126.jpg");
   $else:
     $ j = u.one()
     $ k = j.face_id
     jQuery("#user_img").attr("src",ProfileUrl($k));
+    jQuery("#muser_img").attr("src",ProfileUrl($k));
   jQuery("#logout").click(function() {
     FB.logout();
   });
@@ -95,7 +97,7 @@ function ProfileUrl(id){
 };
 
 </script>
-<nav class="navbar navbar-inverse navbar-fixed-top">
+<nav class="navbar navbar-inverse navbar-fixed-to desktop">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -105,11 +107,6 @@ function ProfileUrl(id){
         <span class="icon-bar"></span>
       </button>
       <a class="navbar-brand font-effect-outline" href="/index">gda</a>
-      <!--
-      <a href="/">
-        <img src="/static/logo.png" style="height:55px;padding:5px;margin-right:20px;">
-      </a>
-    -->
     </div>
     <div id="navbar" class="collapse navbar-collapse">
       <ul class="nav navbar-nav">
@@ -155,6 +152,43 @@ function ProfileUrl(id){
           <li><a href="/logout" id="logout">Sair &nbsp; <i class="fa fa-sign-out"></i></a></li>
         </ul>
     </div><!--/.nav-collapse -->
+  </div>
+</nav>
+
+
+<nav class="navbar navbar-inverse navbar-fixed-top mobile">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#mnavbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#nnavbar" aria-expanded="false" aria-controls="navbar" style="color:white">
+          <i class="fa fa-search fa-lg" aria-hidden="true"></i>
+        </button>
+      <a class="navbar-brand font-effect-outline" href="/index">gda</a>
+    </div>
+    <div id="mnavbar" class="collapse navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li>
+          <a href="$MyUser.student.EncodeURL()" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+            <img src="" width="28" height="28" class="img-rounded" id="muser_img" ></img>  &nbsp;
+            $MyUser.student.name.split()[0]
+          </a>
+        </li>
+        <li><a href="/user">Alterar meus dados</a></li>
+        <li><a href="/logout" id="logout">Sair &nbsp; <i class="fa fa-sign-out"></i></a></li>
+      </ul>
+    </div><!--/.nav-collapse -->
+    <div id="nnavbar" class="collapse navbar-collapse">
+        <form class="navbar-form" role="search">
+          <div class="form-group">
+            <input id="autocomplete" class="form-control" placeholder="Busca por disciplina ou docente" type="text" autofocus>
+          </div>
+        </form>
+    </div>
   </div>
 </nav>
 <script>

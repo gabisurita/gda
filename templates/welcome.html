@@ -17,89 +17,90 @@ $ S = sessionmaker(bind=DB)()
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand font-effect-outline" href="/index">gda</a>
+        <a class="navbar-brand font-effect-outline" href="/">gda</a>
       </div>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/registrar"> <i class="fa fa-user-plus"></i> &nbsp; Registrar </a></li>
+        <li><a href="/login"> <i class="fa fa-sign-in"></i> &nbsp; Entrar </a></li>
+      </ul>
     </div>
   </nav>
   <div class="container">
-    <div class="col-sm-6 text-center">
-      <!--
-      <h3 class="text-center"> Grupo Discente de Avaliação</h3>
-    -->
-
-
-    <a class="home-link" href="/sobre">
-      <i class="fa fa-check-square-o home-icon"></i>
-      <h5> Avaliação </h5>
-    </a>
-
-    Conheça nossos objetivos e o que nos motivou a construir essa plataforma.
-    Descubra como você pode ajudar.
-
-    <br>
-    <br>
-
-    <a class="home-link" href="http://www.cabs.fee.unicamp.br/?t=52_GDA" target="_blank">
-      <i class="fa fa-book home-icon"></i>
-      <h5> Guias antigos </h5>
-    </a>
-    Consulte os guias digitalizados no site do CABS para conhecer a história do GDA.
-
-    <br>
-    <br>
-
-    <a class="home-link" href="/estatisticas">
-      <i class="fa fa-bar-chart home-icon"></i>
-      <h5> Estatísticas </h5>
-    </a>
-    Confira o resumo dos dados até o momento <br> e a contribuição de nossos usuários.
-  </div>
-  <div class="col-sm-5">
-    <div data-spy="affix">
-      <br>
-      <br>
-      <div class="row">
-        <div class="col-sm-9">
-          <h3> Estatísticas FEEC</h3>
-          <ul class="fa-ul" style="font-size:16px">
-            <li><i class="fa-li fa fa-book"></i> $S.query(Subject).count() disciplinas</li>
-            <li><i class="fa-li fa fa-child"></i> $S.query(Teacher).count() professores </li>
-            <li><i class="fa-li fa fa-pencil-square-o"></i>$S.query(Offering).count() oferecimentos em $S.query(Semester).count() semestres  </li>
-          </ul>
-        </div>
-        <div class="col-sm-3">
-          <br>
-          <h3> <i class="fa fa-university fa-2x"></i></h3>
-          <p class="small">
-            2012 - 2016
-          </p>
-        </div>
+    <div class="row">
+      <div class="col-sm-3">
+        <br>
+        <a href="http://www.cabs.fee.unicamp.br/?t=52_GDA" target="_blank">
+          <img class="img-responsive" src="/static/images/old/GDA11_capa.jpg" alt="gda">
+        </a>
+      </div>
+      <div class="col-sm-9">
+      <h3> Grupo de Ajuda </h3>
+      <p class="text-justify">
+        O Grupo Discente de Avaliação é formado por alunos da Faculdade de Engenharia Elétrica e de Computação da UNICAMP.
+        Nosso trabalho é reunir informações sobre as disciplinas ministradas a cada semestre e apresentá-las de forma compreensível e construtiva.
+        Essa página foi feita para substituir os antigos guias impressos.
+      </p>
+      <h5>Objetivos</h5>
+      <ul class="fa-ul text-justify">
+        <li><i class="fa-li fa fa-angle-right"></i> Fornecer um guia para que os alunos possam se preparar melhor para o curso.  </li>
+        <li><i class="fa-li fa fa-angle-right"></i> Estabelecer uma ferramenta eficiente de feedback entre alunos e professores.  </li>
+        <li><i class="fa-li fa fa-angle-right"></i> Disponibilizar a consulta aberta a avaliação oficial dos professores.</li>
+      </ul>
       </div>
 
-      <br>
-      <br>
-      <br>
-
+    </div>
       <div class="row">
-        <div class="col-sm-3">
-          <br>
-          <br>
-          <h3> <i class="fa fa-line-chart fa-2x"></i></h3>
-        </div>
-        <div class="col-sm-1">
-        </div>
-        <div class="col-sm-8">
+        <div class="col-sm-6">
+            <h3> Estatísticas FEEC</h3>
+            <h3> <i class="fa fa-university fa-2x"></i></h3>
+            <p class="small">2012 - 2016</p>
+            <ul class="fa-ul" style="font-size:16px">
+              <li><i class="fa-li fa fa-book"></i> $S.query(Subject).count() disciplinas</li>
+              <li><i class="fa-li fa fa-child"></i> $S.query(Teacher).count() professores </li>
+              <li><i class="fa-li fa fa-pencil-square-o"></i>$S.query(Offering).count() oferecimentos em $S.query(Semester).count() semestres  </li>
+            </ul>
+          </div>
+      <div class="col-sm-6">
+          <h3> <i class="fa fa-bar-chart fa-2x"></i></h3>
           <h3> Nossos Dados</h3>
           <ul class="fa-ul" style="font-size:16px">
             <li><i class="fa-li  fa fa-users"></i>$S.query(Student).count() estudantes cadastrados  </li>
             <li><i class="fa-li  fa fa-check-square-o"></i> $S.query(StudentRate).count() avaliações submetidas</li>
             <li><i class="fa-li  fa fa-commenting"></i> $(S.query(TeacherComment).count() + S.query(OfferingComment).count()) comentários</li>
           </ul>
-        </div>
       </div>
     </div>
+    <div class="row">
+      <div class="col-sm-6">
+        <h4>  Contato </h4>
+        <p class="text-justify">
+          Esta não é uma página oficial da UNICAMP. Não estamos vinculados a coordenação da FEEC, mas agradecemos por nos fornecerem os dados das avaliações oficias.
+        </p>
+    </div>
+      <div class="col-sm-3">
+        <h4 class="text-center"> Apoio </h4>
+        <div class="col-sm-6">
+          <a href="http://www.cabs.fee.unicamp.br/" target="_blank">
+            <img src="static/images/logocabs.jpg" alt="" class="img-responsive">
+          </a>
+        </div>
+        <div class="col-sm-6">
+          <a href="https://www.facebook.com/IEEE-Student-Branch-Unicamp-274162865931184/" target="_blank">
+            <img src="static/images/logoieee.jpg" alt="" class="img-responsive">
+          </a>
+        </div>
+      </div>
   </div>
-  </div>
-  $:Render.footer()
+</div>
+    <footer class="footer">
+      <div class="container">
+        <p class="text-footer text-center">
+        <a class="black-link"  href="http://www.github.com/faraj7/gda">
+          <i class="fa fa-github fa-lg"></i> Conheça esse projeto
+        </a>
+        Esta não é uma página oficial da Unicamp.
+      </p>
+    </div>
+  </footer>
 </body>
 </html>

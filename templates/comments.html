@@ -1,0 +1,31 @@
+$def with (ThisComments)
+
+$ S = sessionmaker(bind=DB)()
+
+<div class="panel panel-default">
+  <div class="panel-heading"> <i class="fa fa-comment-o fa-lg" aria-hidden="true"></i>  &nbsp; Comentários</div>
+  <div class="text-justify" id="comments">
+    $if ThisComments.count():
+      <table class="table table-condensed">
+        <tbody class="list">
+        $for Comment in ThisComments:
+          $ AboutOffer = S.query(Offering).filter(Offering.id == Comment.offering_id).one()
+          $ OfferLink = AboutOffer.EncodeURL()
+          $ TeacherLink = AboutOffer.teacher.EncodeURL()
+          <tr>
+            <td>
+              <blockquote>
+                <p>$Comment.text</p>
+                <small><a class="black-link" href="/estudantes/$(Comment.user.student.ra)"><b>$Comment.user.student.name.split()[0]</b></a> sobre
+                <a class="black-link" href="$OfferLink"><b>$S.query(TeacherNick).filter(TeacherNick.teacher_id == AboutOffer.teacher_id).one().name_short </b></a>
+                em <a class="black-link" href="$OfferLink"><b>$AboutOffer.subject.code
+                 $(AboutOffer.semester.year).$(AboutOffer.semester.sem)</b></a></small>
+              </blockquote>
+            <td>
+          </tr>
+        </tbody>
+      </table>
+    $else:
+      <p class="text-muted text-center"> Ainda não há comentários. <p>
+  </div>
+</div>

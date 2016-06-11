@@ -20,7 +20,6 @@ $ ThisComments = S.query(TeacherComment).filter(TeacherComment.user == ThisUser)
   <div class="container">
   <div class="col-sm-4" id="profile" class="text-center">
       <br>
-      <div data-spy="affix">
       <div class="row">
         <div class="col-sm-3">
           <img src="" class="img-rounded" id="student_img" height="50" width="50"></img>
@@ -73,38 +72,10 @@ $ ThisComments = S.query(TeacherComment).filter(TeacherComment.user == ThisUser)
                  </div>
               </div>
           </div>
-    </div>
   </div>
 
   <div class="col-sm-8" id="comentarios">
-          <br>
-    <div id="comments" class="panel panel-default row">
-      <div class="panel-heading"> <i class="fa fa-comment-o fa-lg" aria-hidden="true"></i>  &nbsp; Comentários</div>
-      <div class="text-justify">
-        $if ThisComments.count():
-          <table class="table table-condensed">
-            <tbody class="list">
-            $for Comment in ThisComments:
-              $ AboutOffer = S.query(Offering).filter(Offering.id == Comment.offering_id).one()
-              $ OfferLink = AboutOffer.EncodeURL()
-              $ TeacherLink = AboutOffer.teacher.EncodeURL()
-              <tr>
-                <td>
-                  <blockquote>
-                    <p>$Comment.text</p>
-                    <small><b>$Comment.user.student.name.split()[0]</b> sobre
-                    <a class="black-link" href="$OfferLink"><b>$S.query(TeacherNick).filter(TeacherNick.teacher_id == AboutOffer.teacher_id).one().name_short </b></a>
-                    em <a class="black-link" href="$OfferLink"><b>$AboutOffer.subject.code
-                     $(AboutOffer.semester.year).$(AboutOffer.semester.sem)</b></a></small>
-                  </blockquote>
-                <td>
-              </tr>
-            </tbody>
-          </table>
-        $else:
-          <p class="text-muted text-center"> Este usuário ainda não fez nenhum comentário. <p>
-      </div>
-    </div>
+          $:Render.comments(ThisComments)
   </div>
 </div>
     $:Render.footer()
@@ -112,6 +83,9 @@ $ ThisComments = S.query(TeacherComment).filter(TeacherComment.user == ThisUser)
 </html>
 
 <script>
+jQuery('#comments').slimScroll({
+    height: '530px'
+});
 jQuery(document).ready(function(){
   $ queryuser = S.query(FaceUser).filter(FaceUser.user_id == ThisUser.id)
   $if queryuser.count():
@@ -127,32 +101,3 @@ function ProfileUrl(id){
   return "http://graph.facebook.com/"+JSON.stringify(id)+"/picture";
 };
 </script>
-
-
-
-<!--
-
-<div class="col-sm-8">
-      <table class="table table-striped table-condensed sortable table-hover">
-        <thead>
-          <tr>
-            <th class="col-sm-1">Semestre</th>
-            <th class="col-sm-6">Disciplina</th>
-            <th style="col-sm-2">Docente</th>
-          </tr>
-        </thead>
-        <tbody class="list">
-          $for Line in Ratings:
-            $ URL = Line.offering.EncodeURL()
-            $ Code = '%s %s - %s' % (Line.offering.subject.code, Line.offering.code, Line.offering.subject.name)
-            $ Sem = '%ss%s' % (Line.offering.semester.sem, Line.offering.semester.year)
-            <tr class="clickable-row" data-url="$URL">
-              <td><a class = "semestre black-link" href="$URL">$Sem</a></td>
-              <td><a class = "disciplina black-link" href="$URL">$Code</a></td>
-              <td><a class = "docente black-link" href="$Line.offering.teacher.EncodeURL()">$Line.offering.teacher.name</a></td>
-            </tr>
-        </tbody>
-      </table>
-    </div>
-
--->

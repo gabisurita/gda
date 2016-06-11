@@ -22,7 +22,7 @@ $ FaceLoger = S.query(FaceUser).filter(FaceUser.user_id == MyUser.id).count()
   <!-- Fixed navbar -->
   $:Render.navbar(Render.user_id)
   <!-- Begin page content -->
-  <div class="container">
+  <div class="container desktop">
       <div class="col-sm-4">
         <br>
         <a href="http://www.cabs.fee.unicamp.br/?t=52_GDA" target="_blank">
@@ -80,12 +80,58 @@ $ FaceLoger = S.query(FaceUser).filter(FaceUser.user_id == MyUser.id).count()
   <br>
 <div class="panel panel-default">
   <div class="panel-heading">
-    <h3 class="panel-title"> <i class="fa fa-facebook-square fa-lg" aria-hidden="true"></i> Amigos que usam o GDA <span class="badge"> 42 </span> </h3>
+    <h3 class="panel-title"> <i class="fa fa-facebook-square fa-lg" aria-hidden="true"></i> Amigos que usam o GDA <span class="badge" id="friends"> </span> </h3>
   </div>
-  <div class="panel-body" id="imagediv" style="max-height:400px; overflow-y:auto">
+  <div class="panel-body" id="imagediv">
 </div>
 </div>
 </div>
+</div>
+<div class="container mobile">
+    <div class="panel-group" id="maccordion">
+    $ i=0
+    $for thissemester in S.query(Semester).order_by(desc((Semester.year)*2 + Semester.sem)):
+      $ EnrollSemester = S.query(Enrollment).filter(Enrollment.student_id == MyUser.id).join(Enrollment.offering).filter(Offering.semester_id == thissemester.id)
+      $if EnrollSemester.count():
+        $ i = i + 1
+        $ semesterRated = 0
+        $for enroll in EnrollSemester:
+          $ semesterRated = semesterRated + S.query(StudentRate).filter(StudentRate.user_id == MyUser.id).filter(StudentRate.offering_id == enroll.offering_id).count()
+        $if semesterRated == EnrollSemester.count():
+          $ lab = "label-default"
+        $else:
+          $ lab = "label-primary"
+        <div class="panel panel-default">
+           <div class="panel-heading accordion-toggle panel-index" data-toggle="collapse" data-parent="#maccordion" href="#mcollapse$(i)" style="">
+             <h4 class="panel-title">
+               $(thissemester.year).$(thissemester.sem)
+               <span class="label $(lab) pull-right">
+                 <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                 $(semesterRated) de $(EnrollSemester.count())</span>
+             </h4>
+           </div>
+           $if(i==1):
+            $ panel_show_hide = "panel-collapse collapse in"
+          $else:
+            $ panel_show_hide = "panel-collapse collapse"
+           <div id="mcollapse$(i)" class="$(panel_show_hide)">
+               <table class="table table-condensed table-hover">
+                 <tbody class="list">
+                  $for enroll in EnrollSemester:
+                     $ URL = enroll.offering.EncodeURL()
+                     <tr>
+                       <td><a class = "black-link" href="$URL">$(enroll.offering.subject.code)$enroll.offering.code</a></td>
+                       <td><a class = "black-link" href="$enroll.offering.teacher.EncodeURL()">$enroll.offering.teacher.name</a></td>
+                       $if S.query(StudentRate).filter(StudentRate.user_id == MyUser.id).filter(StudentRate.offering_id == enroll.offering_id).count():
+                          <td> <a href="$URL" class="btn btn-default btn-sm"><i class="fa fa-check-square-o" aria-hidden="true"></i></a></td>
+                       $else:
+                          <td> <a href="$enroll.offering.EvaluationURL()" class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>
+                     </tr>
+                 </tbody>
+               </table>
+           </div>
+         </div>
+  </div>
 </div>
 $:Render.footer()
 </body>
@@ -167,11 +213,12 @@ $:Render.footer()
       var id;
       var name;
       var lenght = response.data.length;
+      jQuery('#friends').html(lenght);
       var i=0;
       var tag_img;
       var tag_name;
 
-    for(j=0; j<13; j++){
+    for(j=0; j<1; j++){
       for (i=0; i<lenght; i++){
         tag_img = "#user_img"+JSON.stringify(i);
         tag_name = "#user_name"+JSON.stringify(i);
@@ -191,32 +238,8 @@ $:Render.footer()
     var m = "http://graph.facebook.com/"+id+"/picture";
     return m;
   };
-</script>
 
-<!--
-<br></br>
-$if FaceLoger==1:
-  <img id="user_img0" width="60" height="60" class="img-rounded" src="" ></img>  &nbsp;&nbsp;
-  <img id="user_img1" width="60" height="60" class="img-rounded" src="" ></img>  &nbsp;&nbsp;
-  <img id="user_img2" width="60" height="60" class="img-rounded" src="" ></img>  &nbsp;&nbsp;
-  <br></br>
-  <img id="user_img3" width="60" height="60" class="img-rounded" src="" ></img>  &nbsp;&nbsp;
-  <img id="user_img4" width="60" height="60" class="img-rounded" src="" ></img>  &nbsp;&nbsp;
-  <img id="user_img5" width="60" height="60" class="img-rounded" src="" ></img>  &nbsp;&nbsp;
-  <br></br>
-  <img id="user_img6" width="60" height="60" class="img-rounded" src="" ></img>  &nbsp;&nbsp;
-  <img id="user_img7" width="60" height="60" class="img-rounded" src="" ></img>  &nbsp;&nbsp;
-  <img id="user_img8" width="60" height="60" class="img-rounded" src="" ></img>  &nbsp;&nbsp;
-$else:
-  <img width="60" height="60" class="img-rounded" src="http://www.artifacting.com/blog/wp-content/uploads/2010/11/Batman-150x126.jpg" ></img>  &nbsp;&nbsp;
-  <img width="60" height="60" class="img-rounded" src="http://www.artifacting.com/blog/wp-content/uploads/2010/11/Batman-150x126.jpg" ></img>  &nbsp;&nbsp;
-  <img width="60" height="60" class="img-rounded" src="http://www.artifacting.com/blog/wp-content/uploads/2010/11/Batman-150x126.jpg" ></img>  &nbsp;&nbsp;
-  <br></br>
-  <img width="60" height="60" class="img-rounded" src="http://www.artifacting.com/blog/wp-content/uploads/2010/11/Batman-150x126.jpg" ></img>  &nbsp;&nbsp;
-  <img width="60" height="60" class="img-rounded" src="http://www.artifacting.com/blog/wp-content/uploads/2010/11/Batman-150x126.jpg" ></img>  &nbsp;&nbsp;
-  <img width="60" height="60" class="img-rounded" src="http://www.artifacting.com/blog/wp-content/uploads/2010/11/Batman-150x126.jpg" ></img>  &nbsp;&nbsp;
-  <br></br>
-  <img width="60" height="60" class="img-rounded" src="http://www.artifacting.com/blog/wp-content/uploads/2010/11/Batman-150x126.jpg" ></img>  &nbsp;&nbsp;
-  <img width="60" height="60" class="img-rounded" src="http://www.artifacting.com/blog/wp-content/uploads/2010/11/Batman-150x126.jpg" ></img>  &nbsp;&nbsp;
-  <img width="60" height="60" class="img-rounded" src="http://www.artifacting.com/blog/wp-content/uploads/2010/11/Batman-150x126.jpg" ></img>  &nbsp;&nbsp;
--->
+  jQuery('#imagediv').slimScroll({
+      height: '65vh'
+  });
+</script>

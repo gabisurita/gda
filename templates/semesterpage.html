@@ -31,7 +31,7 @@ $ yData = [quest1 ,quest2 ,quest3 ,quest4 ,quest5 , quest6]
     <!-- Fixed navbar -->
     $:Render.navbar(Render.user_id)
     <!-- Begin page content -->
-    <div class="container" id="oferecimentos">
+    <div class="container desktop" id="oferecimentos">
       <div class="row">
         <div class="col-sm-6">
           <input type="text" class="search" placeholder="Busca por disciplina ou docente"/>
@@ -86,18 +86,48 @@ $ yData = [quest1 ,quest2 ,quest3 ,quest4 ,quest5 , quest6]
         </script>
       </div>
       <div class="col-sm-4">
-        <div data-spy="affix">
-          <h4 class="text-center" id="graph_title"> <span>Selecione um oferecimento</span> </h4>
-          <div id="graph"></div>
-        </div>
+        $if (SemesterInst.id == 9):
+          <div class="well text-center">
+             A avaliação oficial dos oferecimentos desse semestre ainda não foi liberada.
+          </div>
+        $else:
+          <div data-spy="affix">
+            <h5 class="text-center" id="graph_title"> <span>Selecione um oferecimento</span> </h5>
+            <div id="graph"></div>
+          </div>
       </div>
       <div class="col-sm-2">
         <div data-spy="affix">
-          <br><br><br><br>
+          <div class="well text-center">
+          $(SemesterInst.sem)º semestre de $(SemesterInst.year)
+          </div>
           $:Render.legendboxplot()
         </div>
       </div>
     </div>
+  </div>
+  <div class="container mobile" id="moferecimentos">
+    <div class="well well-sm text-center">
+      $(SemesterInst.sem)º semestre de $(SemesterInst.year)
+    </div>
+    <input type="text" class="search" placeholder="Busca por disciplina ou docente"/>
+      <table class="table table-striped table-condensed sortable table-hover">
+        <thead>
+          <tr>
+            <th> Código</th>
+            <th>Docente</th>
+          </tr>
+        </thead>
+        <tbody class="list">
+        $for Line in ThisOfferings:
+          $ URL = Line.EncodeURL()
+          $ Code = '%s %s' % (Line.subject.code, Line.code)
+          <tr class="clickable-row" data-url="$URL" data-toggle="tooltip" title="$Line.subject.name">
+            <td><a class = "black-link" href="$URL"> <span class="codigo"> $(Line.subject.code) </span> $(Line.code)</a></td>
+            <td><a class = "docente black-link" href="$Line.teacher.EncodeURL()">$Line.teacher.name</a></td>
+          </tr>
+        </tbody>
+      </table>
   </div>
     $:Render.footer()
   </body>
@@ -108,4 +138,11 @@ $ yData = [quest1 ,quest2 ,quest3 ,quest4 ,quest5 , quest6]
   title_default = "Selecione um oferecimento";
   title_custom = [".codigo",".docente"];
   boxplot(yData, 0 ,"#graph" ,title_default,title_custom);
+</script>
+<script>
+  var options = {
+    valueNames: ['codigo', 'docente']
+  };
+  var userList = new List('oferecimentos', options);
+  var userList = new List('moferecimentos', options);
 </script>

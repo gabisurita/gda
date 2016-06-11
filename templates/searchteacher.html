@@ -22,7 +22,7 @@ $ quest6 = []
     <!-- Fixed navbar -->
     $:Render.navbar(Render.user_id)
     <!-- Begin page content -->
-    <div class="container" id="docentes">
+    <div class="container desktop" id="docentes">
 		<div class="row">
 			<div class="col-sm-6">
 				<input type="text" class="search" placeholder="Busca por nome">
@@ -84,12 +84,6 @@ $ quest6 = []
             </tbody>
           </table>
         </div>
-		<script>
-          var options = {
-            valueNames: ['docente']
-          };
-          var userList = new List('docentes', options);
-        </script>
 		<div class="col-sm-4">
 			<div data-spy="affix">
           <h4 class="text-center" id="graph_title"> <span>Selecione um docente</span> </h4>
@@ -99,31 +93,30 @@ $ quest6 = []
 		<div class="col-sm-2">
 			<div data-spy="affix">
 				<br><br><br><br>
-				<div class="panel panel-default">
-					<table class="table table-condensed">
-						<tr>
-							<td> <b>A</b> </td><td> Planejamento da Bibliografia  </td>
-						</tr>
-						<tr>
-							<td> <b>B</b> </td><td> Didática e Técnica de Ensino </td>
-						</tr>
-						<tr>
-							<td> <b>C</b> </td><td> Interesse pelo Aluno  </td>
-						</tr>
-						<tr>
-							<td> <b>D</b> </td><td> Relacionamento com alunos  </td>
-						</tr>
-						<tr>
-							<td> <b>E</b> </td><td> Adequação da avaliação   </td>
-						</tr>
-						<tr>
-							<td> <b>F</b> </td><td> Contribuição para aprendizado  </td>
-						</tr>
-					</table>
-				</div>
+        $:Render.legendboxplot()
 			</div>
 		</div>
 	</div>
+</div>
+<div class="container mobile" id="mdocentes">
+    <input type="text" class="search" placeholder="Busca por nome">
+      <table class="table table-striped table-condensed sortable table-hover">
+        <thead>
+          <tr>
+            <th>Docentes</th>
+          </tr>
+        </thead>
+        <tbody class="list">
+        $for Line in TeachersList:
+          $ Name = Line.name
+          $ URL = Line.EncodeURL()
+          <tr class='clickable-row' data-url='$URL'>
+            <td>
+              <a class="docente black-link" href="$URL">$Name</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
 </div>
     $:Render.footer()
   </body>
@@ -135,4 +128,11 @@ $ yData = [quest1 ,quest2 ,quest3 ,quest4 ,quest5 , quest6]
   title_default = "Selecione um docente";
   title_custom = [".docente"];
   boxplot(yData, 0 ,"#graph" ,title_default,title_custom);
+</script>
+<script>
+      var options = {
+        valueNames: ['docente']
+      };
+      var userList = new List('docentes', options);
+      var userList = new List('mdocentes', options);
 </script>
