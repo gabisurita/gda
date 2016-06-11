@@ -238,6 +238,16 @@ $:Render.footer()
     var m = "http://graph.facebook.com/"+id+"/picture";
     return m;
   };
+<<<<<<< Updated upstream
+=======
+
+  function VerifyRA(fb_id){
+    jQuery.get( "http://0.0.0.0:8080/whichra", {"face_id": fb_id}, function( data ) {
+      return data;
+    });
+  };
+</script>
+>>>>>>> Stashed changes
 
   jQuery('#imagediv').slimScroll({
       height: '65vh'

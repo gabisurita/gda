@@ -629,6 +629,22 @@ def Setup():
 
 
     # Page classes (handlers)
+    class WhichRA:
+        def GET(self):
+            LocDB = create_engine(UserDB, echo=False)
+            LocS = sessionmaker(bind=LocDB)()
+            face_id = web.input()['face_id']
+
+            try:
+                s = LocS.query(FaceUser).filter(FaceUser.face_id == face_id).one()
+                us = LocS.query(User).filter(User.id == s.user_id).one()
+                student = LocS.query(Student).filter(Student.id == us.student_id).one()
+                return student.ra
+            except:
+                return "000000"
+
+
+
     class LoginPage:
         def GET(self):
             if not IsLogged(Redirect=False):
@@ -1808,6 +1824,7 @@ def Setup():
     Map(UserPage, "/user")
     Map(WelcomePage, "/welcome")
     Map(BeginPage, "/")
+    Map(WhichRA, "/whichra")
 
 
     #LocDB = create_engine(UserDB, echo=False)
