@@ -217,20 +217,25 @@ $:Render.footer()
       var i=0;
       var tag_img;
       var tag_name;
-
-    for(j=0; j<1; j++){
+      var ra;
+      var img;
+      var imglink;
+      var thumbdiv;
+      var fb_string = "";
       for (i=0; i<lenght; i++){
-        tag_img = "#user_img"+JSON.stringify(i);
-        tag_name = "#user_name"+JSON.stringify(i);
-        id = response.data[i].id;
-        name = response.data[i].name;
-        console.log(ProfileUrl(id));
-
-        var img = jQuery('<img/>').attr('src', ProfileUrl(id)).addClass("img-responsive img-rounded");
-        var thumbdiv = jQuery('<div/>').addClass("col-lg-3 col-md-4 col-xs-6 thumb").append(img);
-        thumbdiv.appendTo(jQuery('#imagediv'));
+        fb_string = fb_string + response.data[i].id + " ";
       }
-    }
+      jQuery.get( "http://0.0.0.0:8080/whichra", {"face_id":fb_string }, function( data ) {
+        ra_array = data.split(" ");
+        fb_array = fb_string.split(" ");
+        var len = ra_array.length;
+        for (i =0; i<len; i++){
+          img = jQuery('<img/>').attr('src', ProfileUrl(fb_array[i])).addClass("img-responsive img-rounded");
+          imglink = jQuery('<a/>').attr('href', "/estudantes/" + ra_array[i]).append(img);
+          thumbdiv = jQuery('<div/>').addClass("col-lg-3 col-md-4 col-xs-6 thumb").append(imglink);
+          thumbdiv.appendTo(jQuery('#imagediv'));
+        }
+      });
   });
   }
 
@@ -240,9 +245,12 @@ $:Render.footer()
   };
 
   function VerifyRA(fb_id){
+    var data;
     jQuery.get( "http://0.0.0.0:8080/whichra", {"face_id": fb_id}, function( data ) {
-      return data;
+      console.log(data);
+      //return data;
     });
+    return data;
   };
 
   jQuery('#imagediv').slimScroll({

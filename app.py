@@ -633,15 +633,22 @@ def Setup():
         def GET(self):
             LocDB = create_engine(UserDB, echo=False)
             LocS = sessionmaker(bind=LocDB)()
-            face_id = web.input()['face_id']
+            fb = web.input()['face_id']
+            fb_list = fb.split()
+            ra_list = []
+            for person in fb_list:
+                try:
+                    s = LocS.query(FaceUser).filter(FaceUser.face_id == person).one()
+                    us = LocS.query(User).filter(User.id == s.user_id).one()
+                    student = LocS.query(Student).filter(Student.id == us.student_id).one()
+                    ra_list.append(str(student.ra))
+                except:
+                    ra_list.append("000000")
 
-            try:
-                s = LocS.query(FaceUser).filter(FaceUser.face_id == face_id).one()
-                us = LocS.query(User).filter(User.id == s.user_id).one()
-                student = LocS.query(Student).filter(Student.id == us.student_id).one()
-                return student.ra
-            except:
-                return "000000"
+            spc = " "
+            ra_string = spc.join(ra_list)
+            return ra_string
+
 
 
 
