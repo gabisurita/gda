@@ -37,7 +37,7 @@ ConfirmationForm = web.form.Form(
 )
 
 UserForm = web.form.Form(
-    web.form.Textbox('RA', web.form.notnull, Class="form-control"),
+    #web.form.Textbox('RA', web.form.notnull, Class="form-control"),
     web.form.Textbox('Nome', web.form.notnull, Class="form-control"),
     web.form.Password('Current', Class="form-control"),
     web.form.Password('New', Class="form-control"),

@@ -79,8 +79,8 @@ FB.getLoginStatus(function(response) {
 jQuery(document).ready(function(){
   $ u = S.query(FaceUser).filter(FaceUser.user_id == MyUser.id);
   $if u.count()==0:
-    jQuery("#user_img").attr("src","http://www.artifacting.com/blog/wp-content/uploads/2010/11/Batman-150x126.jpg");
-    jQuery("#muser_img").attr("src","http://www.artifacting.com/blog/wp-content/uploads/2010/11/Batman-150x126.jpg");
+    jQuery("#user_img").attr("src","/static/images/student.png");
+    jQuery("#muser_img").attr("src","/static/images/student.png");
   $else:
     $ j = u.one()
     $ k = j.face_id
@@ -145,7 +145,7 @@ function ProfileUrl(id){
               <img src="" width="28" height="28" class="img-rounded" id="user_img" ></img>  &nbsp;
               $MyUser.student.name.split()[0] <span class="caret"></span></a>
             <ul class="dropdown-menu" role="menu">
-              <li><a href="$MyUser.student.EncodeURL()">Oferecimentos avaliados</a></li>
+              <li><a href="$MyUser.student.EncodeURL()">Meu Perfil</a></li>
               <li><a href="/user">Alterar meus dados</a></li>
             </ul>
           </li>
@@ -257,5 +257,5 @@ jQuery.widget( "custom.catcomplete", jQuery.ui.autocomplete, {
  </script>
 
  <script>
-  jQuery("nav.navbar-fixed-top").autoHidingNavbar();
+//  jQuery("nav.navbar-fixed-top").autoHidingNavbar();
 </script>

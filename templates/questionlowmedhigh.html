@@ -27,7 +27,7 @@ $def with (sum_high, sum_medium, sum_low, question, icon, label_high, label_medi
           $ width = (100*sum_high + 50*sum_medium)/(sum_high + sum_medium + sum_low)
           $if(width < 40):
             $ color = label_low
-          $elif(width < 67):
+          $elif(width < 70):
             $ color = label_medium
           $else:
             $ color = label_high

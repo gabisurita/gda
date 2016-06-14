@@ -649,7 +649,36 @@ def Setup():
             ra_string = spc.join(ra_list)
             return ra_string
 
-
+    class FriendsTeacher:
+        def GET(self):
+            LocDB = create_engine(UserDB, echo=False)
+            LocS = sessionmaker(bind=LocDB)()
+            fb = web.input()['face_id']
+            print fb
+            ThisTeacher = web.input()['teacher_id']
+            print ThisTeacher
+            fb_list = fb.split()
+            final_string = ""
+            for person in fb_list:
+                try:
+                    s = LocS.query(FaceUser).filter(FaceUser.face_id == person).one()
+                    us = LocS.query(User).filter(User.id == s.user_id).one()
+                    thisStudent = LocS.query(Student).filter(Student.id == us.student_id).one()
+                    enrollTeacher = LocS.query(Enrollment).filter(Enrollment.student_id == thisStudent.id).join(Enrollment.offering).filter(Offering.teacher_id == ThisTeacher)
+                    if enrollTeacher.count():
+                        person_string = str(person) + "+" + str(thisStudent.ra)
+                        enroll_string = ""
+                        for enroll in enrollTeacher:
+                            offering_string = str(enroll.offering.subject.code) + str(enroll.offering.code) + "@" + str(enroll.offering.semester.sem) + "s" + str(enroll.offering.semester.year)
+                            enroll_string =  enroll_string + offering_string + ":"
+                        enroll_string = enroll_string[:-1]
+                        person_string = person_string + "+" + enroll_string
+                        final_string = final_string + person_string + " "
+                except:
+                    print "hi"
+            final_string = final_string[:-1]
+            print final_string
+            return final_string
 
 
     class LoginPage:
@@ -956,6 +985,7 @@ def Setup():
                 LocS = sessionmaker(bind=LocDB)()
                 MyUser = LocS.query(User).filter(User.id == Render.user_id).one()
 
+''''
                 check_RA = re.search(r'[\d]', Form['RA'].value)
                 if check_RA == None:
                     return Render.userpage(Form,"RA inválido!", Render)
@@ -966,7 +996,7 @@ def Setup():
                     else:
                         update_ra = update(Student).where(Student.id == MyUser.student_id).values(ra=Form['RA'].value)
                         LocDB.execute(update_ra)
-
+''''
                 if (Form['Nome'].value != MyUser.student.name):
                     update_name = update(Student).where(Student.id == MyUser.student_id).values(name=Form['Nome'].value)
                     LocDB.execute(update_name)
@@ -1832,6 +1862,7 @@ def Setup():
     Map(WelcomePage, "/welcome")
     Map(BeginPage, "/")
     Map(WhichRA, "/whichra")
+    Map(FriendsTeacher, "/friendsteacher")
 
 
     #LocDB = create_engine(UserDB, echo=False)

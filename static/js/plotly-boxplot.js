@@ -3,7 +3,7 @@ function boxplot(yData, xdt , location, title_default,title_custom) {
   var d3 = Plotly.d3;
 
   var WIDTH_IN_PERCENT_OF_PARENT = 100,
-  HEIGHT_IN_PERCENT_OF_PARENT = 60;
+  HEIGHT_IN_PERCENT_OF_PARENT = 50;
 
   var gd3 = d3.select(location)
   .append('div')
@@ -11,8 +11,8 @@ function boxplot(yData, xdt , location, title_default,title_custom) {
     width: WIDTH_IN_PERCENT_OF_PARENT + '%',
     'margin-left': (100 - WIDTH_IN_PERCENT_OF_PARENT) / 2 + '%',
 
-    height: HEIGHT_IN_PERCENT_OF_PARENT + 'vh'
-    //'margin-top': (100 - HEIGHT_IN_PERCENT_OF_PARENT) / 2 + 'vh'
+    height: HEIGHT_IN_PERCENT_OF_PARENT + 'vh',
+    //'margin-top': (100 - HEIGHT_IN_PERCENT_OF_PARENT) / 2 + 'vh',
   });
 
   var gd = gd3.node();
@@ -32,7 +32,7 @@ function boxplot(yData, xdt , location, title_default,title_custom) {
       fillcolor: 'white',
       marker: {
         color: plot_color[i],
-        size: 2
+        size: 3
       },
       line: {
         width: 2
@@ -117,6 +117,7 @@ function scatter_trace(yData){
     x: xData,
     y: yData,
     mode: 'markers',
+    name: ' ',
     showlegend: false,
     marker: { size: 10, color: 'black', symbol: 'diamond'},
     type: 'scatter'

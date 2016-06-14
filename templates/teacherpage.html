@@ -6,6 +6,13 @@ $ ThisOfferings = S.query(Offering).filter(Offering.teacher == TeacherInst).join
 
 $ ThisComments = S.query(TeacherComment).filter(TeacherComment.teacher == TeacherInst).join(TeacherComment.offering).order_by(Offering.subject_id,TeacherComment.offering_id)
 
+$ UserId = S.query(User).filter(User.id == Render.user_id).one().student_id
+$ EnrollmentList = []
+$for Line in ThisOfferings:
+  $ EnrollmentQuery = S.query(Enrollment).filter(Enrollment.student_id == UserId).filter(Enrollment.offering_id == Line.id)
+  $if EnrollmentQuery.count():
+    $ EnrollmentList.append(EnrollmentQuery.one())
+
 $ quest1 = []
 $ quest2 = []
 $ quest3 = []
@@ -86,9 +93,30 @@ $else:
     $:Render.navbar(Render.user_id)
     <!-- Begin page content -->
     <div class="container">
-      <h3>$TeacherInst.name </h3>
-      <div id="gda-row" class="row">
 
+          <div class="row">
+            <div class="col-sm-6">
+              <h4>$TeacherInst.name </h4>
+            </div>
+            <div class="col-sm-6">
+            <div class="well">
+              $if len(EnrollmentList):
+                Você cursou:
+                $for Line in EnrollmentList:
+                   &nbsp; <a class="black-link" href="$Line.offering.EncodeURL()">$Line.offering.subject.code$Line.offering.code</a>
+                   em $(Line.offering.semester.year).$(Line.offering.semester.sem)
+                    $if S.query(StudentRate).filter(StudentRate.user_id == UserId).filter(StudentRate.offering_id == Line.offering_id).count():
+                        <a href="$Line.offering.EvaluationURL()" class="btn btn-default btn-sm" data-toggle="tooltip" title="Você avaliou esse oferecimento">
+                          <i class="fa fa-check-square-o" aria-hidden="true"></i></a>
+                    $else:
+                        <a href="$Line.offering.EvaluationURL()" class="btn btn-primary btn-sm" data-toggle="tooltip" title="Avaliar esse oferecimento">
+                          <i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+              $else:
+                  Você não cursou disciplinas com esse docente.
+            </div>
+          </div>
+        </div>
+        <div id="gda-row" class="row">
         <div id="gda" class="col-sm-6">
                   $:Render.questionyesno(sum_line.q7_sim,sum_line.q7_nao, "A bibliografia recomendada foi adequada?")
                   $:Render.questionyesno(sum_line.q9_sim,sum_line.q9_nao, "O professor se preocupou em tornar as aulas interessantes?")
@@ -97,32 +125,31 @@ $else:
         </div>
         <div id="gda" class="col-sm-6">
                   $:Render.questionyesno(sum_line.q12_sim,sum_line.q12_nao, "Ir às aulas foi importante?")
-                  $:Render.questionlowmedhigh(sum_line.q6_dificil,sum_line.q6_normal,sum_line.q6_facil,"Como você avalia a dificuldade inerente ao professor?", "fa fa-bomb", "danger","primary","success")
-                  $:Render.questionlowmedhigh(sum_line.q8_boa,sum_line.q8_media,sum_line.q8_ruim, "Como você avalia a didática do professor?", "fa fa-star","success","primary","danger")
+                  $:Render.questionlowmedhigh(sum_line.q6_dificil,sum_line.q6_normal,sum_line.q6_facil,"Como você avalia a dificuldade inerente ao professor?", "fa fa-bomb", "danger","warning","success")
+                  $:Render.questionlowmedhigh(sum_line.q8_boa,sum_line.q8_media,sum_line.q8_ruim, "Como você avalia a didática do professor?", "fa fa-star","success","warning","danger")
                   $:Render.questionyesno(sum_line.q13_sim,sum_line.q13_nao, "Faria outra disciplina com o professor?")
 
         </div>
       </div>
-      <div id="offering-row" class="row">
-            <div class="col-sm-6">
-              <div class="row">
-                <div class="col-sm-4">
+      <div id="offering-row" class="row full-height-row">
+        <div class="col-sm-12">
+                <div class="col-sm-2">
                     $:Render.legendboxplot()
                 </div>
-                <div class="col-sm-8">
+                <div class="col-sm-4">
                   <!-- <h4 class="text-center" id="graph_title"> <span>Selecione um oferecimento</span> </h4> -->
                   <div id="graph"></div>
               </div>
-            </div>
-            <div class="row">
+              <div class="col-sm-6">
               <input type="text" class="search" placeholder="Busca por disciplina">
+              <div id="offerings">
               <table class="table table-striped table-condensed sortable table-hover">
                 <thead>
                   <tr>
                     <th>Semestre</th>
                     <th><i class="fa fa-users" aria-hidden="true" data-toggle="tooltip" title="Matriculados"></i></th>
                     <th>Turma</th>
-                    <th>Disciplina</th>
+                    <th class="col-sm-3">Disciplina</th>
                     <th> A </th>
                     <th> B </th>
                     <th> C </th>
@@ -136,7 +163,7 @@ $else:
                   $ URL = Line.EncodeURL()
                   $ Code = '%s' % (Line.code)
                   $ Enrolled = '%s' % (Line.students)
-                  $ Sem = '%ss%s' % (Line.semester.sem, Line.semester.year)
+                  $ Sem = '%s.%s' % (Line.semester.year, Line.semester.sem)
                   $ SearchRate = S.query(OfferingRate).filter(OfferingRate.offering_id == Line.id)
                   $ Rated = 0
                   $for Lin in SearchRate:
@@ -162,7 +189,19 @@ $else:
               </table>
           </div>
         </div>
-        <div id="comentarios" class="col-sm-6">
+      </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-4">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+             <i class="fa fa-facebook-square fa-lg" aria-hidden="true"></i> &nbsp; Fizeram disciplinas com $S.query(TeacherNick).filter(TeacherNick.teacher_id == TeacherInst.id).one().name_short
+            </div>
+            <div class="panel-body" id="imagediv">
+            </div>
+          </div>
+        </div>
+        <div id="comentarios" class="col-sm-8">
             $:Render.comments(ThisComments)
         </div>
       </div>
@@ -183,10 +222,145 @@ $else:
   };
   var userList = new List('oferecimentos', options);
 
+  jQuery('#imagediv').slimScroll({
+      height: '65vh'
+  });
+
   jQuery('#comments').slimScroll({
-      height: '90vh'
+      height: '65vh'
   });
-  jQuery('#students').slimScroll({
-      height: '66vh'
+  jQuery('#offerings').slimScroll({
+      height: '50vh'
   });
+
+  // This is called with the results from from FB.getLoginStatus().
+  function statusChangeCallback(response) {
+    console.log('statusChangeCallback');
+    console.log(response);
+    // The response object is returned with a status field that lets the
+    // app know the current login status of the person.
+    // Full docs on the response object can be found in the documentation
+    // for FB.getLoginStatus().
+    if (response.status === 'connected') {
+      // Logged into your app and Facebook.
+      testAPI();
+    } else if (response.status === 'not_authorized') {
+      // The person is logged into Facebook, but not your app.
+      //TODO document.getElementById('status').innerHTML = 'Please log ' +
+        //'into this app.';
+    } else {
+      // The person is not logged into Facebook, so we're not sure if
+      // they are logged into this app or not.
+      // TODO document.getElementById('status').innerHTML = 'Please log ' +
+        //'into Facebook.';
+    }
+  }
+
+  // This function is called when someone finishes with the Login
+  // Button.  See the onlogin handler attached to it in the sample
+  // code below.
+  function checkLoginState() {
+    FB.getLoginStatus(function(response) {
+      statusChangeCallback(response);
+    });
+  }
+
+  window.fbAsyncInit = function() {
+  FB.init({
+    appId      : '1685706398346162',
+    cookie     : true,  // enable cookies to allow the server to access
+                        // the session
+    xfbml      : true,  // parse social plugins on this page
+    version    : 'v2.2' // use version 2.2
+  });
+
+  // Now that we've initialized the JavaScript SDK, we call
+  // FB.getLoginStatus().  This function gets the state of the
+  // person visiting this page and can return one of three states to
+  // the callback you provide.  They can be:
+  //
+  // 1. Logged into your app ('connected')
+  // 2. Logged into Facebook, but not your app ('not_authorized')
+  // 3. Not logged into Facebook and can't tell if they are logged into
+  //    your app or not.
+  //
+  // These three cases are handled in the callback function.
+
+  FB.getLoginStatus(function(response) {
+    statusChangeCallback(response);
+  });
+
+  };
+
+  // Load the SDK asynchronously
+  (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+
+  // Here we run a very simple test of the Graph API after login is
+  // successful.  See statusChangeCallback() for when this call is made.
+  function testAPI() {
+    FB.api('/me/friends', function(response) {
+      var lenght = response.data.length;
+      var i=0;
+      var fb_string = "";
+      for (i=0; i<lenght; i++){
+        fb_string = fb_string + response.data[i].id + " ";
+      }
+      var thisTeacher = $(TeacherInst.id)
+      jQuery.get( "http://0.0.0.0:8080/friendsteacher", {"face_id":fb_string, "teacher_id":thisTeacher}, function( data ) {
+        console.log(data);
+        enroll_array = data.split(" ");
+        console.log(enroll_array);
+        for (i=0; i < enroll_array.length ; i++){
+            enroll_array[i] = enroll_array[i].split("+");
+          }
+        for (i=0; i < enroll_array.length ; i++){
+            enroll_array[i][2] = enroll_array[i][2].split(":");
+          }
+        for (i=0; i < enroll_array.length ; i++){
+          for (j=0; j < enroll_array[i][2].length ; j++){
+            enroll_array[i][2][j] = enroll_array[i][2][j].split("@");
+          }
+        }
+        for (i =0; i<enroll_array.length; i++){
+          img = jQuery('<img/>').attr('src', ProfileUrl(enroll_array[i][0])).addClass("img-responsive img-rounded");
+          imglink = jQuery('<a/>').attr('href', "/estudantes/" + enroll_array[i][1]).append(img);
+          thumbdiv = jQuery('<div/>').addClass("col-lg-3 col-md-4 col-xs-6 thumb").append(imglink);
+          for (j=0; j < enroll_array[i][2].length ; j++){
+              code = enroll_array[i][2][j][0] + "&nbsp;";
+              path = "/oferecimentos/" + enroll_array[i][2][j][1] + "/" + enroll_array[i][2][j][0].toLowerCase();
+              offerlink = jQuery('<a/>').attr('href',path).html(code).addClass("black-link small text-center");
+              offerlink.appendTo(thumbdiv);
+          }
+          thumbdiv.appendTo(jQuery('#imagediv'));
+        }
+      });
+
+
+      /*
+      jQuery.get( "http://0.0.0.0:8080/whichra", {"face_id":fb_string }, function( data ) {
+        ra_array = data.split(" ");
+        fb_array = fb_string.split(" ");
+        var len = ra_array.length;
+        for (i =0; i<len; i++){
+          img = jQuery('<img/>').attr('src', ProfileUrl(fb_array[i])).addClass("img-responsive img-rounded");
+          imglink = jQuery('<a/>').attr('href', "/estudantes/" + ra_array[i]).append(img);
+          thumbdiv = jQuery('<div/>').addClass("col-lg-3 col-md-4 col-xs-6 thumb").append(imglink);
+          thumbdiv.appendTo(jQuery('#imagediv'));
+        }
+      });
+      */
+  });
+  }
+
+  function ProfileUrl(id){
+    var m = "http://graph.facebook.com/"+id+"/picture";
+    return m;
+  };
+
 </script>

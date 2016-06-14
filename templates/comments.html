@@ -17,7 +17,7 @@ $ S = sessionmaker(bind=DB)()
               <blockquote>
                 <p>$Comment.text</p>
                 <small><a class="black-link" href="/estudantes/$(Comment.user.student.ra)"><b>$Comment.user.student.name.split()[0]</b></a> sobre
-                <a class="black-link" href="$OfferLink"><b>$S.query(TeacherNick).filter(TeacherNick.teacher_id == AboutOffer.teacher_id).one().name_short </b></a>
+                <a class="black-link" href="$TeacherLink"><b>$S.query(TeacherNick).filter(TeacherNick.teacher_id == AboutOffer.teacher_id).one().name_short </b></a>
                 em <a class="black-link" href="$OfferLink"><b>$AboutOffer.subject.code
                  $(AboutOffer.semester.year).$(AboutOffer.semester.sem)</b></a></small>
               </blockquote>
