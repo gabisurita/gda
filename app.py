@@ -692,6 +692,19 @@ def Setup():
         def POST(self):
             Form = LoginForm
 
+            if web.input()['face_id']:
+                S = sessionmaker(bind=DB)()
+                face_id = int(web.input()['face_id'])
+                aux = S.query(FaceUser).filter(FaceUser.face_id == face_id)
+                f = aux.count()
+                if f!=0:
+                    j = S.query(User).filter(User.id == aux.one().user_id).one()
+                    Session.user_id = j.id
+                else:
+                    return Render.login(
+                        Form, "Sua conta no facebook não está registrada no nosso banco de dados. Para fazer o registro, entre com seu RA e senha e acessem a página de Alteração de Dados para mais informações.", Render)
+
+
             if not Form.validates():
                 return Render.login(
                     Form, "Ocorreu um erro, tente novamente.", Render)
@@ -702,24 +715,6 @@ def Setup():
                 face_id = Form['face_id'].get_value()
                 ra = Form['ra'].get_value()
                 senha = Form['senha'].get_value()
-
-                if ra==' ' and senha==' ':
-                    if face_id!=0 and face_id!=None:
-                        print face_id
-                        aux = S.query(FaceUser).filter(FaceUser.face_id == face_id)
-                        f = aux.count()
-                        if f!=0:
-                            f = aux.one()
-                            Session.user_id = f.user_id
-                            conf = S.query(User).filter(User.id == Session.user_id).one()
-                            conf = conf.confirmed
-                            if conf == 1:
-                                raise web.seeother('/index')
-                            else:
-                                raise web.seeother('/confirmacao')
-                        else:
-                            return Render.login(
-                                Form, "Sua conta no facebook não está registrada no nosso banco de dados. Para fazer o registro, entre com seu RA e senha e acessem a página de Alteração de Dados para mais informações.", Render)
 
                 StudentCall = S.query(Student).filter(
                     Student.ra == Form['ra'].value)

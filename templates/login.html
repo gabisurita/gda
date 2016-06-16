@@ -89,10 +89,8 @@ $ S = sessionmaker(bind=DB)()
             'Thanks for logging in, ' + response.name + '!';
         });
         FB.api('/me', function(response) {
-            jQuery("#ra_id").val(" ");
-            jQuery("#psw_id").val(" ");
-            jQuery("#fb_id").val(response.id);
-            jQuery("#submit_id").click();
+            Facelogin(response.id);
+            window.location.replace("http://0.0.0.0:8080/index");
         });
       }
     </script>
@@ -146,3 +144,9 @@ $ S = sessionmaker(bind=DB)()
     </footer>
   </body>
 </html>
+
+<script>
+  function Facelogin(fb_id){
+    jQuery.post( "http://0.0.0.0:8080/login", {"face_id": fb_id});
+  };
+</script>
