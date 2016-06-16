@@ -35,7 +35,7 @@ $ ThisComments = S.query(TeacherComment).filter(TeacherComment.user == ThisUser)
           <div class="panel-group" id="accordion">
           $ i=0
           $for thissemester in S.query(Semester).order_by(desc((Semester.year)*2 + Semester.sem)):
-            $ EnrollSemester = S.query(Enrollment).filter(Enrollment.student_id == ThisUser.id).join(Enrollment.offering).filter(Offering.semester_id == thissemester.id)
+            $ EnrollSemester = S.query(Enrollment).filter(Enrollment.student_id == StudentInst.id).join(Enrollment.offering).filter(Offering.semester_id == thissemester.id)
             $if EnrollSemester.count():
               $ i = i + 1
               $ semesterRated = 0

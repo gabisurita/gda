@@ -254,6 +254,67 @@ input[type=radio][id="7.3"] + label:before{
 }
 
 
+input[type=radio][id="m2.3"] + label:before{
+    content:"\f02d \f02d \f02d"; /* clock */
+}
+
+input[type=radio][id="m2.1"] + label:before{
+    content:"\f02d \f02d"; /* clock */
+}
+
+input[type=radio][id="m2.2"] + label:before{
+    content:"\f02d"; /* clock */
+}
+
+input[type=radio][id="m3.1"] + label:before{
+    content:"\f017 \f017 \f017"; /* clock */
+}
+
+input[type=radio][id="m3.2"] + label:before{
+    content:"\f017 \f017"; /* clock */
+}
+
+input[type=radio][id="m3.3"] + label:before{
+    content:"\f017"; /* clock */
+}
+
+input[type=radio][id="m4.1"] + label:before{
+    content:"\f1e2 \f1e2 \f1e2"; /* bomb */
+}
+
+input[type=radio][id="m4.2"] + label:before{
+    content:"\f1e2 \f1e2"; /* bomb */
+}
+
+input[type=radio][id="m4.3"] + label:before{
+    content:"\f1e2"; /* bomb */
+}
+
+input[type=radio][id="m5.1"] + label:before{
+    content:"\f1e2 \f1e2 \f1e2"; /* bomb */
+}
+
+input[type=radio][id="m5.2"] + label:before{
+    content:"\f1e2 \f1e2"; /* bomb */
+}
+
+input[type=radio][id="m5.3"] + label:before{
+    content:"\f1e2"; /* bomb */
+}
+
+input[type=radio][id="m7.1"] + label:before{
+    content:"\f005 \f005 \f005"; /* star */
+}
+
+input[type=radio][id="m7.2"] + label:before{
+    content:"\f005 \f005"; /* star */
+}
+
+input[type=radio][id="m7.3"] + label:before{
+    content:"\f005"; /* star */
+}
+
+
 /* ********** Login Page ********** */
 
 .login .form-signin {
@@ -343,11 +404,11 @@ input[type=radio][id="7.3"] + label:before{
   */
 
 #ui-id-1 {
-  z-index: 3 !important;
+  z-index: 103 !important;
 }
 
 .navbar {
-  z-index: 2 !important;
+  z-index: 102 !important;
 }
 
 .icon-empty{
@@ -385,3 +446,72 @@ input[type=radio][id="7.3"] + label:before{
     display: table-cell;
     vertical-align: bottom;
 }
+
+.navbar-brand-mobile {
+  float: none;
+  font-size: 36px;
+  }
+
+.navbar-center
+{
+    position: absolute;
+    width: 100%;
+    left: 0;
+    top: 0;
+    text-align: center;
+    margin: auto;
+}
+
+.navbar-toggle {
+  z-index: 103 !important;
+}
+
+.navbar-form {
+  z-index: 103 !important;
+}
+
+@media (max-width: 768px) {
+  .nav-justified > li {
+    display: table-cell;
+    width: 1%;
+  }
+  .nav-justified > li > a  {
+    border-bottom: 1px solid #ddd !important;
+    border-radius: 4px 4px 0 0 !important;
+    margin-bottom: 0 !important;
+  }
+}
+
+
+.carousel-control.right, .carousel-control.left {
+    background-image: none;
+    color: #2196f3;
+}
+
+.carousel-indicators li {
+    border-color: #2196f3;
+}
+
+.carousel-indicators li.active {
+    background-color: #2196f3;
+}
+
+.carousel-content {
+    display:flex;
+    align-items:center;
+    padding: 15px;
+}
+
+#myCarousel {
+  width: 100%;
+  height: auto;
+}
+
+blockquote p{
+  font-size: 12px;
+}
+
+@media (max-width: 768px) {
+  .mobile{
+    font-size:12px !important;
+  }

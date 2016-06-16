@@ -34,7 +34,7 @@ $ FaceLoger = S.query(FaceUser).filter(FaceUser.user_id == MyUser.id).count()
     <div class="panel-group" id="accordion">
     $ i=0
     $for thissemester in S.query(Semester).order_by(desc((Semester.year)*2 + Semester.sem)):
-      $ EnrollSemester = S.query(Enrollment).filter(Enrollment.student_id == MyUser.id).join(Enrollment.offering).filter(Offering.semester_id == thissemester.id)
+      $ EnrollSemester = S.query(Enrollment).filter(Enrollment.student_id == MyUser.student_id).join(Enrollment.offering).filter(Offering.semester_id == thissemester.id)
       $if EnrollSemester.count():
         $ i = i + 1
         $ semesterRated = 0
@@ -110,11 +110,7 @@ $ FaceLoger = S.query(FaceUser).filter(FaceUser.user_id == MyUser.id).count()
                  $(semesterRated) de $(EnrollSemester.count())</span>
              </h4>
            </div>
-           $if(i==1):
-            $ panel_show_hide = "panel-collapse collapse in"
-          $else:
-            $ panel_show_hide = "panel-collapse collapse"
-           <div id="mcollapse$(i)" class="$(panel_show_hide)">
+           <div id="mcollapse$(i)" class="panel-collapse collapse">
                <table class="table table-condensed table-hover">
                  <tbody class="list">
                   $for enroll in EnrollSemester:

@@ -703,7 +703,7 @@ def Setup():
                 ra = Form['ra'].get_value()
                 senha = Form['senha'].get_value()
 
-                if ra=='000000' and senha=='000000':
+                if ra==' ' and senha==' ':
                     if face_id!=0 and face_id!=None:
                         print face_id
                         aux = S.query(FaceUser).filter(FaceUser.face_id == face_id)
@@ -985,7 +985,7 @@ def Setup():
                 LocS = sessionmaker(bind=LocDB)()
                 MyUser = LocS.query(User).filter(User.id == Render.user_id).one()
 
-''''
+                """
                 check_RA = re.search(r'[\d]', Form['RA'].value)
                 if check_RA == None:
                     return Render.userpage(Form,"RA inválido!", Render)
@@ -996,7 +996,7 @@ def Setup():
                     else:
                         update_ra = update(Student).where(Student.id == MyUser.student_id).values(ra=Form['RA'].value)
                         LocDB.execute(update_ra)
-''''
+                        """
                 if (Form['Nome'].value != MyUser.student.name):
                     update_name = update(Student).where(Student.id == MyUser.student_id).values(name=Form['Nome'].value)
                     LocDB.execute(update_name)

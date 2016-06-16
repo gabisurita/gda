@@ -55,9 +55,9 @@ $if prev_off_com:
                         </div>
                         <div class="col-sm-3">
                           $if tel['1']==u' não ':
-                            <input name="0.0" type="radio" value=" não " id ="0.2" checked/>
+                            <input name="0.0" type="radio" value=" não " id="0.2" checked/>
                           $else:
-                            <input name="0.0" type="radio" value=" não " id ="0.2" />
+                            <input name="0.0" type="radio" value=" não " id="0.2" />
                           <label for="0.2">Não</label>
                         </div>
                       </div>
@@ -66,11 +66,11 @@ $if prev_off_com:
                       Como você avalia o conteúdo da disciplina? <br>
                       <div class="row">
                         <div class="col-sm-3">
-                          $if tel['2']==' longa ':
-                            <input name="2.0" type="radio" value=" longa " id="2.3" checked/>
+                          $if tel['2']==' curta ':
+                            <input name="2.0" type="radio" value=" curta " id="2.2" checked/>
                           $else:
-                            <input name="2.0" type="radio" value=" longa " id="2.3"/>
-                          <label for="2.3">Longo</label>
+                            <input name="2.0" type="radio" value=" curta " id="2.2"/>
+                          <label for="2.2">Curto</label>
                         </div>
                         <div class="col-sm-3">
                           $if tel['2']==' adequada ':
@@ -80,11 +80,11 @@ $if prev_off_com:
                           <label for="2.1">Normal</label>
                         </div>
                         <div class="col-sm-3">
-                          $if tel['2']==' curta ':
-                            <input name="2.0" type="radio" value=" curta " id="2.2" checked/>
+                          $if tel['2']==' longa ':
+                            <input name="2.0" type="radio" value=" longa " id="2.3" checked/>
                           $else:
-                            <input name="2.0" type="radio" value=" curta " id="2.2"/>
-                          <label for="2.2">Curto</label>
+                            <input name="2.0" type="radio" value=" longa " id="2.3"/>
+                          <label for="2.3">Longo</label>
                         </div>
                       </div>
                     </li>
@@ -92,11 +92,11 @@ $if prev_off_com:
                       Como você avalia a dedicação exigida pela disciplina? <br>
                       <div class="row">
                         <div class="col-sm-3">
-                          $if tel['3']==' alta ':
-                            <input name="3.0" type="radio" value=" alta " id="3.1" checked/>
+                          $if tel['3']==' baixa ':
+                            <input name="3.0" type="radio" value=" baixa " id="3.3" checked/>
                           $else:
-                            <input name="3.0" type="radio" value=" alta " id="3.1"/>
-                          <label for="3.1">Alta</label>
+                            <input name="3.0" type="radio" value=" baixa " id="3.3"/>
+                          <label for="3.3">Baixa</label>
                         </div>
                         <div class="col-sm-3">
                           $if tel['3']==' normal ':
@@ -106,11 +106,11 @@ $if prev_off_com:
                           <label for="3.2">Normal</label>
                         </div>
                         <div class="col-sm-3">
-                          $if tel['3']==' baixa ':
-                            <input name="3.0" type="radio" value=" baixa " id="3.3" checked/>
+                          $if tel['3']==' alta ':
+                            <input name="3.0" type="radio" value=" alta " id="3.1" checked/>
                           $else:
-                            <input name="3.0" type="radio" value=" baixa " id="3.3"/>
-                          <label for="3.3">Baixa</label>
+                            <input name="3.0" type="radio" value=" alta " id="3.1"/>
+                          <label for="3.1">Alta</label>
                         </div>
                       </div>
                     </li>
@@ -118,11 +118,11 @@ $if prev_off_com:
                       Como você avalia a dificuldade inerente à disciplina? <br>
                       <div class="row">
                         <div class="col-sm-3">
-                          $if tel['4']==' dificil ':
-                            <input name="4.0" type="radio" value=" dificil " id="4.1" checked/>
+                          $if tel['4']==' facil ':
+                            <input name="4.0" type="radio" value=" facil " id="4.3" checked/>
                           $else:
-                            <input name="4.0" type="radio" value=" dificil " id="4.1"/>
-                          <label for="4.1">Difícil</label>
+                            <input name="4.0" type="radio" value=" facil " id="4.3"/>
+                          <label for="4.3">Fácil</label>
                         </div>
                         <div class="col-sm-3">
                           $if tel['4']==' normal ':
@@ -132,11 +132,11 @@ $if prev_off_com:
                           <label for="4.2">Normal</label>
                         </div>
                         <div class="col-sm-3">
-                          $if tel['4']==' facil ':
-                            <input name="4.0" type="radio" value=" facil " id="4.3" checked/>
+                          $if tel['4']==' dificil ':
+                            <input name="4.0" type="radio" value=" dificil " id="4.1" checked/>
                           $else:
-                            <input name="4.0" type="radio" value=" facil " id="4.3"/>
-                          <label for="4.3">Fácil</label>
+                            <input name="4.0" type="radio" value=" dificil " id="4.1"/>
+                          <label for="4.1">Difícil</label>
                         </div>
                       </div>
                     </li>
@@ -144,11 +144,11 @@ $if prev_off_com:
                       Como você avalia a dificuldade inerente ao professor? <br>
                       <div class="row">
                         <div class="col-sm-3">
-                          $if tel['5']==' dificil ':
-                            <input name="5.0" type="radio" value=" dificil " id="5.1" checked/>
+                          $if tel['5']==" facil ":
+                            <input name="5.0" type="radio" value=" facil " id="5.3" checked/>
                           $else:
-                            <input name="5.0" type="radio" value=" dificil " id="5.1"/>
-                          <label for="5.1">Difícil</label>
+                            <input name="5.0" type="radio" value=" facil " id="5.3"/>
+                          <label for="5.3">Fácil</label>
                         </div>
                         <div class="col-sm-3">
                           $if tel['5']==' normal ':
@@ -158,11 +158,37 @@ $if prev_off_com:
                           <label for="5.2">Normal</label>
                         </div>
                         <div class="col-sm-3">
-                          $if tel['5']==" facil ":
-                            <input name="5.0" type="radio" value=" facil " id="5.3" checked/>
+                          $if tel['5']==' dificil ':
+                            <input name="5.0" type="radio" value=" dificil " id="5.1" checked/>
                           $else:
-                            <input name="5.0" type="radio" value=" facil " id="5.3"/>
-                          <label for="5.3">Fácil</label>
+                            <input name="5.0" type="radio" value=" dificil " id="5.1"/>
+                          <label for="5.1">Difícil</label>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="list-group-item">
+                      Como você avalia a didática do professor? <br>
+                      <div class="row">
+                        <div class="col-sm-3">
+                          $if tel['7']==' ruim ':
+                            <input name="7.0" type="radio" value=" ruim " id="7.3" checked/>
+                          $else:
+                            <input name="7.0" type="radio" value=" ruim " id="7.3"/>
+                          <label for="7.3">Ruim</label>
+                        </div>
+                        <div class="col-sm-3">
+                          $if tel['7']==u' média ':
+                            <input name="7.0" type="radio" value=" média " id="7.2" checked/>
+                          $else:
+                            <input name="7.0" type="radio" value=" média " id="7.2"/>
+                          <label for="7.2">Média</label>
+                        </div>
+                        <div class="col-sm-3">
+                          $if tel['7']==' boa ':
+                            <input name="7.0" type="radio" value=" boa " id="7.1" checked/>
+                          $else:
+                            <input name="7.0" type="radio" value=" boa " id="7.1"/>
+                          <label for="7.1">Boa</label>
                         </div>
                       </div>
                     </li>
@@ -178,36 +204,10 @@ $if prev_off_com:
                         </div>
                         <div class="col-sm-3">
                           $if tel['6']==u' não ':
-                            <input name="6.0" type="radio" value=" não " id ="6.2" checked/>
+                            <input name="6.0" type="radio" value=" não " id="6.2" checked/>
                           $else:
-                            <input name="6.0" type="radio" value=" não " id ="6.2"/>
+                            <input name="6.0" type="radio" value=" não " id="6.2"/>
                           <label for="6.2">Não</label>
-                        </div>
-                      </div>
-                    </li>
-                    <li class="list-group-item">
-                      Como você avalia a didática do professor? <br>
-                      <div class="row">
-                        <div class="col-sm-3">
-                          $if tel['7']==' boa ':
-                            <input name="7.0" type="radio" value=" boa " id="7.1" checked/>
-                          $else:
-                            <input name="7.0" type="radio" value=" boa " id="7.1"/>
-                          <label for="7.1">Boa</label>
-                        </div>
-                        <div class="col-sm-3">
-                          $if tel['7']==u' média ':
-                            <input name="7.0" type="radio" value=" média " id="7.2" checked/>
-                          $else:
-                            <input name="7.0" type="radio" value=" média " id="7.2"/>
-                          <label for="7.2">Média</label>
-                        </div>
-                        <div class="col-sm-3">
-                          $if tel['7']==' ruim ':
-                            <input name="7.0" type="radio" value=" ruim " id="7.3" checked/>
-                          $else:
-                            <input name="7.0" type="radio" value=" ruim " id="7.3"/>
-                          <label for="7.3">Ruim</label>
                         </div>
                       </div>
                     </li>
@@ -223,9 +223,9 @@ $if prev_off_com:
                         </div>
                         <div class="col-sm-3">
                           $if tel['8']==u' não ':
-                            <input name="8.0" type="radio" value=" não " id ="8.2" checked/>
+                            <input name="8.0" type="radio" value=" não " id="8.2" checked/>
                           $else:
-                            <input name="8.0" type="radio" value=" não " id ="8.2" />
+                            <input name="8.0" type="radio" value=" não " id="8.2" />
                           <label for="8.2">Não</label>
                         </div>
                       </div>
@@ -242,9 +242,9 @@ $if prev_off_com:
                           </div>
                           <div class="col-sm-3">
                             $if tel['9']==u' não ':
-                              <input name="9.0" type="radio" value=" não " id ="9.2" checked/>
+                              <input name="9.0" type="radio" value=" não " id="9.2" checked/>
                             $else:
-                              <input name="9.0" type="radio" value=" não " id ="9.2"/>
+                              <input name="9.0" type="radio" value=" não " id="9.2"/>
                             <label for="9.2">Não</label>
                           </div>
                         </div>
@@ -261,9 +261,9 @@ $if prev_off_com:
                           </div>
                           <div class="col-sm-3">
                             $if tel['10']==u' não ':
-                              <input name="10.0" type="radio" value=" não " id ="10.2" checked/>
+                              <input name="10.0" type="radio" value=" não " id="10.2" checked/>
                             $else:
-                              <input name="10.0" type="radio" value=" não " id ="10.2"/>
+                              <input name="10.0" type="radio" value=" não " id="10.2"/>
                             <label for="10.2">Não</label>
                           </div>
                         </div>
@@ -280,9 +280,9 @@ $if prev_off_com:
                           </div>
                           <div class="col-sm-3">
                             $if tel['11']==u' não ':
-                              <input name="11.0" type="radio" value=" não " id ="11.2" checked/>
+                              <input name="11.0" type="radio" value=" não " id="11.2" checked/>
                             $else:
-                              <input name="11.0" type="radio" value=" não " id ="11.2"/>
+                              <input name="11.0" type="radio" value=" não " id="11.2"/>
                             <label for="11.2">Não</label>
                           </div>
                         </div>
@@ -299,9 +299,9 @@ $if prev_off_com:
                           </div>
                           <div class="col-sm-3">
                             $if tel['12']==u' não ':
-                              <input name="12.0" type="radio" value=" não " id ="12.2" checked/>
+                              <input name="12.0" type="radio" value=" não " id="12.2" checked/>
                             $else:
-                              <input name="12.0" type="radio" value=" não " id ="12.2"/>
+                              <input name="12.0" type="radio" value=" não " id="12.2"/>
                             <label for="12.2">Não</label>
                           </div>
                         </div>
@@ -324,7 +324,7 @@ $if prev_off_com:
             <textarea rows="3" class="form-control comment-field" name="text-teacher"> $teacher_text.text </textarea>
           $else:
             <textarea rows="3" class="form-control comment-field" name="text-teacher"></textarea>
-          <span class="help-block">Críticas, sugestões ou elogios para o/a professor/a. Esse comentário aparecerá na página do docente. </span>
+          <span class="help-block">Críticas, sugestões ou elogios para o/a professor/a. Esse comentário aparecerá também na página do docente. </span>
         </div>
         <div class="panel panel-default">
           <div class="panel-heading"><h4 class="panel-title">Comentários sobre a disciplina</h4></div>
@@ -333,7 +333,7 @@ $if prev_off_com:
             <textarea rows="2" class="form-control comment-field" name="text-offering" > $off_text.text </textarea>
           $else:
             <textarea rows="2" class="form-control comment-field" name="text-offering"></textarea>
-          <span class="help-block"> Dicas para quem vai cursar essa disciplina. Esse comentário aparecerá na página do oferecimento. </span>
+          <span class="help-block"> Dicas para quem vai cursar essa disciplina. Esse comentário aparecerá também na página da disciplina. </span>
         </div>
       $if MyUser.student.ra == 123456:
         <input type="submit" class="btn btn-primary btn-block" value="Submeter" disabled="disabled" data-toggle="tooltip" title="Você não pode avaliar porque está na conta de usuário convidado.">
@@ -353,276 +353,276 @@ $if prev_off_com:
       </div>
         <form id="jsform" action="" method="POST">
         <fieldset>
-              <div class="panel panel-default">
-                <div class="panel-heading"><h3 class="panel-title"> Perguntas <span class="small pull-right"> Deixe em branco as perguntas que você não souber responder<span> </h3> </div>
-                <div id="perguntas-mobile">
-                <ul class="list-group">
-                  <li class="list-group-item">
-                    A disciplina é necessária ao currículo? <br>
-                    <div class="row">
-                      <div class="col-sm-3">
-                        $if tel['1']==' sim ':
-                          <input class="sim" name="0.0" type="radio" value=" sim " id="0.1" checked/>
-                        $else:
-                          <input class="sim" name="0.0" type="radio" value=" sim " id="0.1"/>
-                        <label for="0.1">Sim</label>
-                      </div>
-                      <div class="col-sm-3">
-                        $if tel['1']==u' não ':
-                          <input name="0.0" type="radio" value=" não " id ="0.2" checked/>
-                        $else:
-                          <input name="0.0" type="radio" value=" não " id ="0.2" />
-                        <label for="0.2">Não</label>
-                      </div>
-                    </div>
-                  </li>
-                  <li class="list-group-item">
-                    Como você avalia o conteúdo da disciplina? <br>
-                    <div class="row">
-                      <div class="col-sm-3">
-                        $if tel['2']==' longa ':
-                          <input name="2.0" type="radio" value=" longa " id="2.3" checked/>
-                        $else:
-                          <input name="2.0" type="radio" value=" longa " id="2.3"/>
-                        <label for="2.3">Longo</label>
-                      </div>
-                      <div class="col-sm-3">
-                        $if tel['2']==' adequada ':
-                          <input name="2.0" type="radio" value=" adequada " id="2.1" checked/>
-                        $else:
-                          <input name="2.0" type="radio" value=" adequada " id="2.1"/>
-                        <label for="2.1">Normal</label>
-                      </div>
-                      <div class="col-sm-3">
-                        $if tel['2']==' curta ':
-                          <input name="2.0" type="radio" value=" curta " id="2.2" checked/>
-                        $else:
-                          <input name="2.0" type="radio" value=" curta " id="2.2"/>
-                        <label for="2.2">Curto</label>
-                      </div>
-                    </div>
-                  </li>
-                  <li class="list-group-item">
-                    Como você avalia a dedicação exigida pela disciplina? <br>
-                    <div class="row">
-                      <div class="col-sm-3">
-                        $if tel['3']==' alta ':
-                          <input name="3.0" type="radio" value=" alta " id="3.1" checked/>
-                        $else:
-                          <input name="3.0" type="radio" value=" alta " id="3.1"/>
-                        <label for="3.1">Alta</label>
-                      </div>
-                      <div class="col-sm-3">
-                        $if tel['3']==' normal ':
-                          <input name="3.0" type="radio" value=" normal " id="3.2" checked/>
-                        $else:
-                          <input name="3.0" type="radio" value=" normal " id="3.2"/>
-                        <label for="3.2">Normal</label>
-                      </div>
-                      <div class="col-sm-3">
-                        $if tel['3']==' baixa ':
-                          <input name="3.0" type="radio" value=" baixa " id="3.3" checked/>
-                        $else:
-                          <input name="3.0" type="radio" value=" baixa " id="3.3"/>
-                        <label for="3.3">Baixa</label>
-                      </div>
-                    </div>
-                  </li>
-                  <li class="list-group-item">
-                    Como você avalia a dificuldade inerente à disciplina? <br>
-                    <div class="row">
-                      <div class="col-sm-3">
-                        $if tel['4']==' dificil ':
-                          <input name="4.0" type="radio" value=" dificil " id="4.1" checked/>
-                        $else:
-                          <input name="4.0" type="radio" value=" dificil " id="4.1"/>
-                        <label for="4.1">Difícil</label>
-                      </div>
-                      <div class="col-sm-3">
-                        $if tel['4']==' normal ':
-                          <input name="4.0" type="radio" value=" normal " id="4.2" checked/>
-                        $else:
-                          <input name="4.0" type="radio" value=" normal " id="4.2"/>
-                        <label for="4.2">Normal</label>
-                      </div>
-                      <div class="col-sm-3">
-                        $if tel['4']==' facil ':
-                          <input name="4.0" type="radio" value=" facil " id="4.3" checked/>
-                        $else:
-                          <input name="4.0" type="radio" value=" facil " id="4.3"/>
-                        <label for="4.3">Fácil</label>
-                      </div>
-                    </div>
-                  </li>
-                  <li class="list-group-item">
-                    Como você avalia a dificuldade inerente ao professor? <br>
-                    <div class="row">
-                      <div class="col-sm-3">
-                        $if tel['5']==' dificil ':
-                          <input name="5.0" type="radio" value=" dificil " id="5.1" checked/>
-                        $else:
-                          <input name="5.0" type="radio" value=" dificil " id="5.1"/>
-                        <label for="5.1">Difícil</label>
-                      </div>
-                      <div class="col-sm-3">
-                        $if tel['5']==' normal ':
-                          <input name="5.0" type="radio" value=" normal " id="5.2" checked/>
-                        $else:
-                          <input name="5.0" type="radio" value=" normal " id="5.2"/>
-                        <label for="5.2">Normal</label>
-                      </div>
-                      <div class="col-sm-3">
-                        $if tel['5']==" facil ":
-                          <input name="5.0" type="radio" value=" facil " id="5.3" checked/>
-                        $else:
-                          <input name="5.0" type="radio" value=" facil " id="5.3"/>
-                        <label for="5.3">Fácil</label>
-                      </div>
-                    </div>
-                  </li>
-                  <li class="list-group-item">
-                    A bibliografia recomendada foi adequada? <br>
-                    <div class="row">
-                      <div class="col-sm-3">
-                        $if tel['6']==' sim ':
-                          <input name="6.0" type="radio" value=" sim " id="6.1" checked/>
-                        $else:
-                          <input name="6.0" type="radio" value=" sim " id="6.1"/>
-                        <label for="6.1">Sim</label>
-                      </div>
-                      <div class="col-sm-3">
-                        $if tel['6']==u' não ':
-                          <input name="6.0" type="radio" value=" não " id ="6.2" checked/>
-                        $else:
-                          <input name="6.0" type="radio" value=" não " id ="6.2"/>
-                        <label for="6.2">Não</label>
-                      </div>
-                    </div>
-                  </li>
-                  <li class="list-group-item">
-                    Como você avalia a didática do professor? <br>
-                    <div class="row">
-                      <div class="col-sm-3">
-                        $if tel['7']==' boa ':
-                          <input name="7.0" type="radio" value=" boa " id="7.1" checked/>
-                        $else:
-                          <input name="7.0" type="radio" value=" boa " id="7.1"/>
-                        <label for="7.1">Boa</label>
-                      </div>
-                      <div class="col-sm-3">
-                        $if tel['7']==u' média ':
-                          <input name="7.0" type="radio" value=" média " id="7.2" checked/>
-                        $else:
-                          <input name="7.0" type="radio" value=" média " id="7.2"/>
-                        <label for="7.2">Média</label>
-                      </div>
-                      <div class="col-sm-3">
-                        $if tel['7']==' ruim ':
-                          <input name="7.0" type="radio" value=" ruim " id="7.3" checked/>
-                        $else:
-                          <input name="7.0" type="radio" value=" ruim " id="7.3"/>
-                        <label for="7.3">Ruim</label>
-                      </div>
-                    </div>
-                  </li>
-                  <li class="list-group-item">
-                    O professor se preocupou em tornar as aulas interessantes? <br>
-                    <div class="row">
-                      <div class="col-sm-3">
-                        $if tel['8']==' sim ':
-                          <input name="8.0" type="radio" value=" sim " id="8.1" checked/>
-                        $else:
-                          <input name="8.0" type="radio" value=" sim " id="8.1"/>
-                        <label for="8.1">Sim</label>
-                      </div>
-                      <div class="col-sm-3">
-                        $if tel['8']==u' não ':
-                          <input name="8.0" type="radio" value=" não " id ="8.2" checked/>
-                        $else:
-                          <input name="8.0" type="radio" value=" não " id ="8.2" />
-                        <label for="8.2">Não</label>
-                      </div>
-                    </div>
-                  </li>
-                  <li class="list-group-item">
-                      O professor se mostrou acessível para tirar dúvidas? <br>
-                      <div class="row">
-                        <div class="col-sm-3">
-                          $if tel['9']==' sim ':
-                            <input name="9.0" type="radio" value=" sim " id="9.1" checked/>
-                          $else:
-                            <input name="9.0" type="radio" value=" sim " id="9.1"/>
-                          <label for="9.1">Sim</label>
-                        </div>
-                        <div class="col-sm-3">
-                          $if tel['9']==u' não ':
-                            <input name="9.0" type="radio" value=" não " id ="9.2" checked/>
-                          $else:
-                            <input name="9.0" type="radio" value=" não " id ="9.2"/>
-                          <label for="9.2">Não</label>
-                        </div>
-                      </div>
-                    </li>
-                    <li class="list-group-item">
-                      As avaliações foram coerentes? <br>
-                      <div class="row">
-                        <div class="col-sm-3">
-                          $if tel['10']==' sim ':
-                            <input name="10.0" type="radio" value=" sim " id="10.1" checked/>
-                          $else:
-                            <input name="10.0" type="radio" value=" sim " id="10.1"/>
-                          <label for="10.1">Sim</label>
-                        </div>
-                        <div class="col-sm-3">
-                          $if tel['10']==u' não ':
-                            <input name="10.0" type="radio" value=" não " id ="10.2" checked/>
-                          $else:
-                            <input name="10.0" type="radio" value=" não " id ="10.2"/>
-                          <label for="10.2">Não</label>
-                        </div>
-                      </div>
-                    </li>
-                    <li class="list-group-item">
-                      Ir às aulas foi importante? <br>
-                      <div class="row">
-                        <div class="col-sm-3">
-                          $if tel['11']==' sim ':
-                            <input name="11.0" type="radio" value=" sim " id="11.1" checked/>
-                          $else:
-                            <input name="11.0" type="radio" value=" sim " id="11.1"/>
-                          <label for="11.1">Sim</label>
-                        </div>
-                        <div class="col-sm-3">
-                          $if tel['11']==u' não ':
-                            <input name="11.0" type="radio" value=" não " id ="11.2" checked/>
-                          $else:
-                            <input name="11.0" type="radio" value=" não " id ="11.2"/>
-                          <label for="11.2">Não</label>
-                        </div>
-                      </div>
-                    </li>
-                    <li class="list-group-item">
-                      Faria outra disciplina com este professor? <br>
-                      <div class="row">
-                        <div class="col-sm-3">
-                          $if tel['12']==' sim ':
-                            <input name="12.0" type="radio" value=" sim " id="12.1" checked/>
-                          $else:
-                            <input name="12.0" type="radio" value=" sim " id="12.1"/>
-                          <label for="12.1">Sim</label>
-                        </div>
-                        <div class="col-sm-3">
-                          $if tel['12']==u' não ':
-                            <input name="12.0" type="radio" value=" não " id ="12.2" checked/>
-                          $else:
-                            <input name="12.0" type="radio" value=" não " id ="12.2"/>
-                          <label for="12.2">Não</label>
-                        </div>
-                      </div>
-                    </li>
-                  </ul>
+          <div class="panel panel-default">
+            <div class="panel-heading"><h3 class="panel-title"> Perguntas <span class="small pull-right"> Deixe em branco as perguntas que você não souber responder<span> </h3> </div>
+            <div id="perguntas">
+            <ul class="list-group">
+              <li class="list-group-item">
+                A disciplina é necessária ao currículo? <br>
+                <div class="row">
+                  <div class="col-sm-3">
+                    $if tel['1']==' sim ':
+                      <input class="sim" name="0.0" type="radio" value=" sim " id="m0.1" checked/>
+                    $else:
+                      <input class="sim" name="0.0" type="radio" value=" sim " id="m0.1"/>
+                    <label for="m0.1">Sim</label>
+                  </div>
+                  <div class="col-sm-3">
+                    $if tel['1']==u' não ':
+                      <input name="0.0" type="radio" value=" não " id="m0.2" checked/>
+                    $else:
+                      <input name="0.0" type="radio" value=" não " id="m0.2" />
+                    <label for="m0.2">Não</label>
+                  </div>
                 </div>
-              </div>
+              </li>
+              <li class="list-group-item">
+                Como você avalia o conteúdo da disciplina? <br>
+                <div class="row">
+                  <div class="col-sm-3">
+                    $if tel['2']==' curta ':
+                      <input name="2.0" type="radio" value=" curta " id="m2.2" checked/>
+                    $else:
+                      <input name="2.0" type="radio" value=" curta " id="m2.2"/>
+                    <label for="m2.2">Curto</label>
+                  </div>
+                  <div class="col-sm-3">
+                    $if tel['2']==' adequada ':
+                      <input name="2.0" type="radio" value=" adequada " id="m2.1" checked/>
+                    $else:
+                      <input name="2.0" type="radio" value=" adequada " id="m2.1"/>
+                    <label for="m2.1">Normal</label>
+                  </div>
+                  <div class="col-sm-3">
+                    $if tel['2']==' longa ':
+                      <input name="2.0" type="radio" value=" longa " id="m2.3" checked/>
+                    $else:
+                      <input name="2.0" type="radio" value=" longa " id="m2.3"/>
+                    <label for="m2.3">Longo</label>
+                  </div>
+                </div>
+              </li>
+              <li class="list-group-item">
+                Como você avalia a dedicação exigida pela disciplina? <br>
+                <div class="row">
+                  <div class="col-sm-3">
+                    $if tel['3']==' baixa ':
+                      <input name="3.0" type="radio" value=" baixa " id="m3.3" checked/>
+                    $else:
+                      <input name="3.0" type="radio" value=" baixa " id="m3.3"/>
+                    <label for="m3.3">Baixa</label>
+                  </div>
+                  <div class="col-sm-3">
+                    $if tel['3']==' normal ':
+                      <input name="3.0" type="radio" value=" normal " id="m3.2" checked/>
+                    $else:
+                      <input name="3.0" type="radio" value=" normal " id="m3.2"/>
+                    <label for="m3.2">Normal</label>
+                  </div>
+                  <div class="col-sm-3">
+                    $if tel['3']==' alta ':
+                      <input name="3.0" type="radio" value=" alta " id="m3.1" checked/>
+                    $else:
+                      <input name="3.0" type="radio" value=" alta " id="m3.1"/>
+                    <label for="m3.1">Alta</label>
+                  </div>
+                </div>
+              </li>
+              <li class="list-group-item">
+                Como você avalia a dificuldade inerente à disciplina? <br>
+                <div class="row">
+                  <div class="col-sm-3">
+                    $if tel['4']==' facil ':
+                      <input name="4.0" type="radio" value=" facil " id="m4.3" checked/>
+                    $else:
+                      <input name="4.0" type="radio" value=" facil " id="m4.3"/>
+                    <label for="m4.3">Fácil</label>
+                  </div>
+                  <div class="col-sm-3">
+                    $if tel['4']==' normal ':
+                      <input name="4.0" type="radio" value=" normal " id="m4.2" checked/>
+                    $else:
+                      <input name="4.0" type="radio" value=" normal " id="m4.2"/>
+                    <label for="m4.2">Normal</label>
+                  </div>
+                  <div class="col-sm-3">
+                    $if tel['4']==' dificil ':
+                      <input name="4.0" type="radio" value=" dificil " id="m4.1" checked/>
+                    $else:
+                      <input name="4.0" type="radio" value=" dificil " id="m4.1"/>
+                    <label for="m4.1">Difícil</label>
+                  </div>
+                </div>
+              </li>
+              <li class="list-group-item">
+                Como você avalia a dificuldade inerente ao professor? <br>
+                <div class="row">
+                  <div class="col-sm-3">
+                    $if tel['5']==" facil ":
+                      <input name="5.0" type="radio" value=" facil " id="m5.3" checked/>
+                    $else:
+                      <input name="5.0" type="radio" value=" facil " id="m5.3"/>
+                    <label for="m5.3">Fácil</label>
+                  </div>
+                  <div class="col-sm-3">
+                    $if tel['5']==' normal ':
+                      <input name="5.0" type="radio" value=" normal " id="m5.2" checked/>
+                    $else:
+                      <input name="5.0" type="radio" value=" normal " id="m5.2"/>
+                    <label for="m5.2">Normal</label>
+                  </div>
+                  <div class="col-sm-3">
+                    $if tel['5']==' dificil ':
+                      <input name="5.0" type="radio" value=" dificil " id="m5.1" checked/>
+                    $else:
+                      <input name="5.0" type="radio" value=" dificil " id="m5.1"/>
+                    <label for="m5.1">Difícil</label>
+                  </div>
+                </div>
+              </li>
+              <li class="list-group-item">
+                Como você avalia a didática do professor? <br>
+                <div class="row">
+                  <div class="col-sm-3">
+                    $if tel['7']==' ruim ':
+                      <input name="7.0" type="radio" value=" ruim " id="m7.3" checked/>
+                    $else:
+                      <input name="7.0" type="radio" value=" ruim " id="m7.3"/>
+                    <label for="m7.3">Ruim</label>
+                  </div>
+                  <div class="col-sm-3">
+                    $if tel['7']==u' média ':
+                      <input name="7.0" type="radio" value=" média " id="m7.2" checked/>
+                    $else:
+                      <input name="7.0" type="radio" value=" média " id="m7.2"/>
+                    <label for="m7.2">Média</label>
+                  </div>
+                  <div class="col-sm-3">
+                    $if tel['7']==' boa ':
+                      <input name="7.0" type="radio" value=" boa " id="m7.1" checked/>
+                    $else:
+                      <input name="7.0" type="radio" value=" boa " id="m7.1"/>
+                    <label for="m7.1">Boa</label>
+                  </div>
+                </div>
+              </li>
+              <li class="list-group-item">
+                A bibliografia recomendada foi adequada? <br>
+                <div class="row">
+                  <div class="col-sm-3">
+                    $if tel['6']==' sim ':
+                      <input name="6.0" type="radio" value=" sim " id="m6.1" checked/>
+                    $else:
+                      <input name="6.0" type="radio" value=" sim " id="m6.1"/>
+                    <label for="m6.1">Sim</label>
+                  </div>
+                  <div class="col-sm-3">
+                    $if tel['6']==u' não ':
+                      <input name="6.0" type="radio" value=" não " id="m6.2" checked/>
+                    $else:
+                      <input name="6.0" type="radio" value=" não " id="m6.2"/>
+                    <label for="m6.2">Não</label>
+                  </div>
+                </div>
+              </li>
+              <li class="list-group-item">
+                O professor se preocupou em tornar as aulas interessantes? <br>
+                <div class="row">
+                  <div class="col-sm-3">
+                    $if tel['8']==' sim ':
+                      <input name="8.0" type="radio" value=" sim " id="m8.1" checked/>
+                    $else:
+                      <input name="8.0" type="radio" value=" sim " id="m8.1"/>
+                    <label for="m8.1">Sim</label>
+                  </div>
+                  <div class="col-sm-3">
+                    $if tel['8']==u' não ':
+                      <input name="8.0" type="radio" value=" não " id="m8.2" checked/>
+                    $else:
+                      <input name="8.0" type="radio" value=" não " id="m8.2" />
+                    <label for="m8.2">Não</label>
+                  </div>
+                </div>
+              </li>
+              <li class="list-group-item">
+                  O professor se mostrou acessível para tirar dúvidas? <br>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      $if tel['9']==' sim ':
+                        <input name="9.0" type="radio" value=" sim " id="m9.1" checked/>
+                      $else:
+                        <input name="9.0" type="radio" value=" sim " id="m9.1"/>
+                      <label for="m9.1">Sim</label>
+                    </div>
+                    <div class="col-sm-3">
+                      $if tel['9']==u' não ':
+                        <input name="9.0" type="radio" value=" não " id="m9.2" checked/>
+                      $else:
+                        <input name="9.0" type="radio" value=" não " id="m9.2"/>
+                      <label for="m9.2">Não</label>
+                    </div>
+                  </div>
+                </li>
+                <li class="list-group-item">
+                  As avaliações foram coerentes? <br>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      $if tel['10']==' sim ':
+                        <input name="10.0" type="radio" value=" sim " id="m10.1" checked/>
+                      $else:
+                        <input name="10.0" type="radio" value=" sim " id="m10.1"/>
+                      <label for="m10.1">Sim</label>
+                    </div>
+                    <div class="col-sm-3">
+                      $if tel['10']==u' não ':
+                        <input name="10.0" type="radio" value=" não " id="m10.2" checked/>
+                      $else:
+                        <input name="10.0" type="radio" value=" não " id="m10.2"/>
+                      <label for="m10.2">Não</label>
+                    </div>
+                  </div>
+                </li>
+                <li class="list-group-item">
+                  Ir às aulas foi importante? <br>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      $if tel['11']==' sim ':
+                        <input name="11.0" type="radio" value=" sim " id="m11.1" checked/>
+                      $else:
+                        <input name="11.0" type="radio" value=" sim " id="m11.1"/>
+                      <label for="m11.1">Sim</label>
+                    </div>
+                    <div class="col-sm-3">
+                      $if tel['11']==u' não ':
+                        <input name="11.0" type="radio" value=" não " id="m11.2" checked/>
+                      $else:
+                        <input name="11.0" type="radio" value=" não " id="m11.2"/>
+                      <label for="m11.2">Não</label>
+                    </div>
+                  </div>
+                </li>
+                <li class="list-group-item">
+                  Faria outra disciplina com este professor? <br>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      $if tel['12']==' sim ':
+                        <input name="12.0" type="radio" value=" sim " id="m12.1" checked/>
+                      $else:
+                        <input name="12.0" type="radio" value=" sim " id="m12.1"/>
+                      <label for="m12.1">Sim</label>
+                    </div>
+                    <div class="col-sm-3">
+                      $if tel['12']==u' não ':
+                        <input name="12.0" type="radio" value=" não " id="m12.2" checked/>
+                      $else:
+                        <input name="12.0" type="radio" value=" não " id="m12.2"/>
+                      <label for="m12.2">Não</label>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
 
     <form id="comment-form" action="" method="POST">
       <div class="panel panel-default">
@@ -632,7 +632,7 @@ $if prev_off_com:
           <textarea rows="3" class="form-control comment-field" name="text-teacher"> $teacher_text.text </textarea>
         $else:
           <textarea rows="3" class="form-control comment-field" name="text-teacher"></textarea>
-        <span class="help-block">Críticas, sugestões ou elogios para o/a professor/a. Esse comentário aparecerá na página do docente. </span>
+        <span class="help-block">Críticas, sugestões ou elogios para o/a professor/a. Esse comentário aparecerá também na página do docente. </span>
       </div>
       <div class="panel panel-default">
         <div class="panel-heading"><h4 class="panel-title">Comentários sobre a disciplina</h4></div>
@@ -641,7 +641,7 @@ $if prev_off_com:
           <textarea rows="2" class="form-control comment-field" name="text-offering" > $off_text.text </textarea>
         $else:
           <textarea rows="2" class="form-control comment-field" name="text-offering"></textarea>
-        <span class="help-block"> Dicas para quem vai cursar essa disciplina. Esse comentário aparecerá na página do oferecimento. </span>
+        <span class="help-block"> Dicas para quem vai cursar essa disciplina. Esse comentário aparecerá também na página da disciplina. </span>
       </div>
     $if MyUser.student.ra == 123456:
       <input type="submit" class="btn btn-primary btn-block" value="Submeter" disabled="disabled" data-toggle="tooltip" title="Você não pode avaliar porque está na conta de usuário convidado.">

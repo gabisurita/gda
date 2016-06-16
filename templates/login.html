@@ -89,8 +89,8 @@ $ S = sessionmaker(bind=DB)()
             'Thanks for logging in, ' + response.name + '!';
         });
         FB.api('/me', function(response) {
-            jQuery("#ra_id").val("000000");
-            jQuery("#psw_id").val("000000");
+            jQuery("#ra_id").val(" ");
+            jQuery("#psw_id").val(" ");
             jQuery("#fb_id").val(response.id);
             jQuery("#submit_id").click();
         });

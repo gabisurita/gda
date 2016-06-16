@@ -4,7 +4,7 @@ $ S = sessionmaker(bind=DB)()
 <html>
 <head>
   <meta name="robots" content="noindex,nofollow" />
-  <title>gda</title>
+  <title>GDA</title>
   $:Render.includes()
 </head>
 <body>
@@ -19,11 +19,13 @@ $ S = sessionmaker(bind=DB)()
         </button>
         <a class="navbar-brand font-effect-outline" href="/">gda</a>
       </div>
+      <div id="navbar" class="collapse navbar-collapse">
       <ul class="nav navbar-nav navbar-right">
         <li><a href="/registrar"> <i class="fa fa-user-plus"></i> &nbsp; Registrar </a></li>
         <li><a href="/login"> <i class="fa fa-sign-in"></i> &nbsp; Entrar </a></li>
       </ul>
     </div>
+  </div>
   </nav>
   <div class="container">
     <div class="row">
@@ -33,8 +35,7 @@ $ S = sessionmaker(bind=DB)()
           <img class="img-responsive" src="/static/images/old/GDA11_capa.jpg" alt="gda">
         </a>
       </div>
-      <div class="col-sm-9">
-      <h3> Grupo de Ajuda </h3>
+      <div class="col-sm-6">
       <p class="text-justify">
         O Grupo Discente de Avaliação é formado por alunos da Faculdade de Engenharia Elétrica e de Computação da UNICAMP.
         Nosso trabalho é reunir informações sobre as disciplinas ministradas a cada semestre e apresentá-las de forma compreensível e construtiva.
@@ -47,56 +48,63 @@ $ S = sessionmaker(bind=DB)()
         <li><i class="fa-li fa fa-angle-right"></i> Disponibilizar a consulta aberta a avaliação oficial dos professores.</li>
       </ul>
       </div>
+      <div class="col-sm-3">
+        <h4> Novidades no GDA </h4>
+        <ul class="fa-ul text-justify">
+          <li><i class="fa-li fa fa-facebook-square fa-lg"></i> Login pelo Facebook</li>
+          <li><i class="fa-li fa fa-bar-chart fa-lg"></i> Gráficos  </li>
+          <li><i class="fa-li fa fa-database fa-lg"></i> Dados públicos da DAC</li>
+          <li><i class="fa-li fa fa-mobile fa-lg"></i> Mobile-friendly </li>
+        </ul>
+      </div>
 
     </div>
       <div class="row">
-        <div class="col-sm-6">
-            <h3> Estatísticas FEEC</h3>
-            <h3> <i class="fa fa-university fa-2x"></i></h3>
-            <p class="small">2012 - 2016</p>
-            <ul class="fa-ul" style="font-size:16px">
-              <li><i class="fa-li fa fa-book"></i> $S.query(Subject).count() disciplinas</li>
-              <li><i class="fa-li fa fa-child"></i> $S.query(Teacher).count() professores </li>
-              <li><i class="fa-li fa fa-pencil-square-o"></i>$S.query(Offering).count() oferecimentos em $S.query(Semester).count() semestres  </li>
-            </ul>
-          </div>
-      <div class="col-sm-6">
-          <h3> <i class="fa fa-bar-chart fa-2x"></i></h3>
-          <h3> Nossos Dados</h3>
+        <div class="col-sm-4">
+          <h3> <i class="fa fa-university fa-2x"></i></h3>
+          <p class="small">
+            2012 - 2016
+          </p>
+          <h4> Estatísticas FEEC</h4>
+          <ul class="fa-ul" style="font-size:16px">
+            <li><i class="fa-li fa fa-book"></i> $S.query(Subject).count() disciplinas</li>
+            <li><i class="fa-li fa fa-child"></i> $S.query(Teacher).count() professores </li>
+            <li><i class="fa-li fa fa-pencil-square-o"></i>$S.query(Offering).count() oferecimentos em $S.query(Semester).count() semestres  </li>
+          </ul>
+        </div>
+        <div class="col-sm-4">
+          <h3> <i class="fa fa-line-chart fa-2x"></i></h3>
+          <br>
+          <h4> Nossos Dados</h4>
           <ul class="fa-ul" style="font-size:16px">
             <li><i class="fa-li  fa fa-users"></i>$S.query(Student).count() estudantes cadastrados  </li>
             <li><i class="fa-li  fa fa-check-square-o"></i> $S.query(StudentRate).count() avaliações submetidas</li>
             <li><i class="fa-li  fa fa-commenting"></i> $(S.query(TeacherComment).count() + S.query(OfferingComment).count()) comentários</li>
           </ul>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-sm-6">
-        <h4>  Contato </h4>
-        <p class="text-justify">
-          Esta não é uma página oficial da UNICAMP. Não estamos vinculados a coordenação da FEEC, mas agradecemos por nos fornecerem os dados das avaliações oficias.
-        </p>
-    </div>
-      <div class="col-sm-3">
-        <h4 class="text-center"> Apoio </h4>
-        <div class="col-sm-6">
-          <a href="http://www.cabs.fee.unicamp.br/" target="_blank">
-            <img src="static/images/logocabs.jpg" alt="" class="img-responsive">
-          </a>
         </div>
-        <div class="col-sm-6">
-          <a href="https://www.facebook.com/IEEE-Student-Branch-Unicamp-274162865931184/" target="_blank">
-            <img src="static/images/logoieee.jpg" alt="" class="img-responsive">
-          </a>
+        <div class="col-sm-4">
+          <h4>  Contato </h4>
+          <p class="text-justify">
+            Esta não é uma página oficial da UNICAMP. Não estamos vinculados a coordenação da FEEC, mas agradecemos por nos fornecerem os dados das avaliações oficias.
+          </p>
+          <h4> Apoio </h4>
+          <div class="text-center">
+            <a href="https://www.facebook.com/IEEE-Student-Branch-Unicamp-274162865931184/" target="_blank">
+              <img src="static/images/logoieee.jpg" alt="IEEE" width="100" height="100">
+            </a>
+            &nbsp;
+            <a href="http://www.cabs.fee.unicamp.br/" target="_blank">
+              <img src="static/images/logocabs.jpg" alt="CABS" width="100" height="100">
+            </a>
+          </div>
         </div>
-      </div>
-  </div>
+    </div>
 </div>
     <footer class="footer">
       <div class="container">
         <p class="text-footer text-center">
         <a class="black-link"  href="http://www.github.com/faraj7/gda">
-          <i class="fa fa-github fa-lg"></i> Conheça esse projeto
+          <i class="fa fa-github fa-lg"></i> Conheça esse projeto.
         </a>
         Esta não é uma página oficial da Unicamp.
       </p>

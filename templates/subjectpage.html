@@ -70,7 +70,7 @@ $else:
   <!-- Fixed navbar -->
   $:Render.navbar(Render.user_id)
   <!-- Begin page content -->
-  <div class="container" id="docentes">
+  <div class="container desktop" id="docentes">
     <div class="row">
     <div class="col-sm-12">
       <div class="col-sm-6 source-height">
@@ -190,6 +190,98 @@ $else:
   </div>
   </div>
   </div>
+
+  <div class="container mobile" id="docentes">
+        <h4>$SubjectInst.code -   $SubjectInst.name</h4>
+        <div id="user-info">
+        <div class="alert alert-dismissible alert-warning">
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          $if len(EnrollmentList):
+            Você cursou essa disciplina com
+            $for Line in EnrollmentList:
+                <a class="black-link" href="$Line.offering.teacher.EncodeURL()"><b>$S.query(TeacherNick).filter(TeacherNick.teacher_id == Line.offering.teacher_id).one().name_short</b></a>
+               em $(Line.offering.semester.year).$(Line.offering.semester.sem) &nbsp;
+                $if S.query(StudentRate).filter(StudentRate.user_id == UserId).filter(StudentRate.offering_id == Line.offering_id).count():
+                    <a href="$Line.offering.EvaluationURL()" class="btn btn-default btn-sm" data-toggle="tooltip" title="Você avaliou esse oferecimento">
+                      <i class="fa fa-check-square-o" aria-hidden="true"></i></a>
+                $else:
+                    <a href="$Line.offering.EvaluationURL()" class="btn btn-primary btn-sm" data-toggle="tooltip" title="Avaliar esse oferecimento">
+                      <i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+          $else:
+              Você ainda não cursou essa disciplina.
+        </div>
+      </div>
+      <ul class="nav nav-tabs nav-justified">
+        <li class="active"><a href="#mgda-icon" data-toggle="tab"><i class="fa fa-tasks fa-lg" aria-hidden="true"></i></a></li>
+        <li><a href="#mcomments" data-toggle="tab"><i class="fa fa-comment-o fa-lg" aria-hidden="true"></i></a></li>
+        <li><a href="#mofferings" data-toggle="tab"><i class="fa fa-list-alt fa-lg" aria-hidden="true"></i></a></li>
+      </ul>
+      <div id="myTabContent" class="tab-content">
+        <div class="tab-pane fade active in" id="mgda-icon">
+          $:Render.questionlowmedhigh(sum_line.q3_longa,sum_line.q3_adequada,sum_line.q3_curta, "Como você avalia o conteúdo da disciplina?", "fa fa-book", "danger","warning","success")
+          $:Render.questionlowmedhigh(sum_line.q4_alta,sum_line.q4_normal,sum_line.q4_baixa," Como você avalia a dedicação exigida pela disciplina?","fa fa-clock-o", "danger","warning","success")
+          $:Render.questionlowmedhigh(sum_line.q5_dificil,sum_line.q5_normal,sum_line.q5_facil,"Como você avalia a dificuldade inerente à disciplina?", "fa fa-bomb", "danger","warning","success")
+        </div>
+        <div class="tab-pane fade" id="mcomments">
+          <div class="panel panel-default">
+            <div class="text-justify" id="mcomments">
+                <table class="table table-condensed">
+                  <tbody class="list">
+                $for line in ThisOfferings:
+                  $ ThisComments = S.query(OfferingComment).filter(OfferingComment.offering == line)
+                  $for Comment in ThisComments:
+                    $ AboutOffer = S.query(Offering).filter(Offering.id == Comment.offering_id).one()
+                    $ OfferLink = AboutOffer.EncodeURL()
+                    $ TeacherLink = AboutOffer.teacher.EncodeURL()
+                    <tr>
+                      <td>
+                        <blockquote>
+                          <p>$Comment.text</p>
+                          <small><a class="black-link" href="/estudantes/$(Comment.user.student.ra)"><b>$Comment.user.student.name.split()[0]</b></a> sobre
+                          <a class="black-link" href="$TeacherLink"><b>$S.query(TeacherNick).filter(TeacherNick.teacher_id == AboutOffer.teacher_id).one().name_short </b></a>
+                          em <a class="black-link" href="$OfferLink"><b>$AboutOffer.subject.code
+                           $(AboutOffer.semester.year).$(AboutOffer.semester.sem)</b></a></small>
+                        </blockquote>
+                      <td>
+                    </tr>
+                  </tbody>
+                </table>
+            </div>
+          </div>
+        </div>
+        <div class="tab-pane fade" id="mofferings">
+          <input type="text" class="search" placeholder="Busca por docente ou semestre">
+          <div id="offerings">
+          <table class="table table-striped table-condensed sortable table-hover">
+            <thead>
+              <tr>
+                <th>Semestre</th>
+                <th><i class="fa fa-users" aria-hidden="true" data-toggle="tooltip" title="Matriculados"></i></th>
+                <th> Turma</th>
+                <th class="col-sm-3">Docente</th>
+              </tr>
+            </thead>
+            <tbody class="list">
+              $for Line in ThisOfferings:
+                $ URL = Line.EncodeURL()
+                $ Code = '%s' % (Line.code)
+                $ Enrolled = '%s' % (Line.students)
+                $ Sem = '%s.%s' % (Line.semester.year, Line.semester.sem)
+                <tr class="clickable-row" data-url="$URL">
+                  <td><a class="semestre black-link"href="$Line.semester.EncodeURL()">$Sem</a></td>
+                  <td>$Enrolled</td>
+                  <td>$Code</td>
+                  <td><a class="docente black-link" href="$Line.teacher.EncodeURL()">$S.query(TeacherNick).filter(TeacherNick.teacher_id == Line.teacher_id).one().name_short</a></td>
+                  </tr>
+            </tbody>
+          </table>
+        </div>
+        </div>
+      </div>
+    </div>
+
+
+
 $:Render.footer()
 </body>
 </html>
@@ -199,7 +291,7 @@ $:Render.footer()
   title_default = "Selecione um docente";
   title_custom = [".docente", ".semestre"];
   boxplot(yData, 0 ,"#graph" ,title_default,title_custom);
-  var h = (jQuery('.source-height').height() - jQuery('#comments-heading').height() - jQuery('.well').outerHeight(true)) - 23;
+  var h = (jQuery('.source-height').height() - jQuery('#comments-heading').outerHeight(true) - jQuery('.well').outerHeight(true)) - 50;
   jQuery('#comments').slimScroll({
       height: h
   });

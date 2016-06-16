@@ -92,8 +92,7 @@ $else:
     <!-- Fixed navbar -->
     $:Render.navbar(Render.user_id)
     <!-- Begin page content -->
-    <div class="container">
-
+    <div class="container desktop">
           <div class="row">
             <div class="col-sm-6">
               <h4>$TeacherInst.name </h4>
@@ -206,6 +205,127 @@ $else:
         </div>
       </div>
     </div>
+
+    <div class="container mobile" id="docentes">
+          <h4>$TeacherInst.name </h4>
+          <div id="user-info">
+          <div class="alert alert-dismissible alert-warning">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            $if len(EnrollmentList):
+              Você cursou:
+              $for Line in EnrollmentList:
+                 &nbsp; <a class="black-link" href="$Line.offering.EncodeURL()">$Line.offering.subject.code$Line.offering.code</a>
+                 em $(Line.offering.semester.year).$(Line.offering.semester.sem)
+                  $if S.query(StudentRate).filter(StudentRate.user_id == UserId).filter(StudentRate.offering_id == Line.offering_id).count():
+                      <a href="$Line.offering.EvaluationURL()" class="btn btn-default btn-sm" data-toggle="tooltip" title="Você avaliou esse oferecimento">
+                        <i class="fa fa-check-square-o" aria-hidden="true"></i></a>
+                  $else:
+                      <a href="$Line.offering.EvaluationURL()" class="btn btn-primary btn-sm" data-toggle="tooltip" title="Avaliar esse oferecimento">
+                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+            $else:
+                Você não cursou disciplinas com esse docente.
+          </div>
+        </div>
+        <ul class="nav nav-tabs nav-justified">
+          <li class="active"><a href="#mgda-icon" data-toggle="tab"><i class="fa fa-tasks fa-lg" aria-hidden="true"></i></a></li>
+          <li><a href="#mcomments" data-toggle="tab"><i class="fa fa-comment-o fa-lg" aria-hidden="true"></i></a></li>
+          <li><a href="#mofferings" data-toggle="tab"><i class="fa fa-list-alt fa-lg" aria-hidden="true"></i></a></li>
+        </ul>
+        <div id="myTabContent" class="tab-content">
+          <div class="tab-pane fade active in" id="mgda-icon">
+            $:Render.questionyesno(sum_line.q7_sim,sum_line.q7_nao, "A bibliografia recomendada foi adequada?")
+            $:Render.questionyesno(sum_line.q9_sim,sum_line.q9_nao, "O professor se preocupou em tornar as aulas interessantes?")
+            $:Render.questionyesno(sum_line.q10_sim,sum_line.q10_nao, " O professor se mostrou acessível para tirar dúvidas?")
+            $:Render.questionyesno(sum_line.q11_sim,sum_line.q11_nao, "As avaliações foram coerentes?")
+            $:Render.questionyesno(sum_line.q12_sim,sum_line.q12_nao, "Ir às aulas foi importante?")
+            $:Render.questionlowmedhigh(sum_line.q6_dificil,sum_line.q6_normal,sum_line.q6_facil,"Como você avalia a dificuldade inerente ao professor?", "fa fa-bomb", "danger","warning","success")
+            $:Render.questionlowmedhigh(sum_line.q8_boa,sum_line.q8_media,sum_line.q8_ruim, "Como você avalia a didática do professor?", "fa fa-star","success","warning","danger")
+            $:Render.questionyesno(sum_line.q13_sim,sum_line.q13_nao, "Faria outra disciplina com o professor?")
+          </div>
+
+          <div class="tab-pane fade" id="mcomments">
+            $if ThisComments.count():
+              <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                <ol class="carousel-indicators">
+                  <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                $for i in range(1,ThisComments.count()):
+                  <li data-target="#myCarousel" data-slide-to="$(i)"></li>
+                </ol>
+                <div class="row">
+                  <div>
+                    <!-- Indicators -->
+                    <!-- Wrapper for slides -->
+                    <div class="carousel-inner" role="listbox">
+                        $ i = -1
+                        $for Comment in ThisComments:
+                              $ i = i + 1
+                              $ AboutOffer = S.query(Offering).filter(Offering.id == Comment.offering_id).one()
+                              $ OfferLink = AboutOffer.EncodeURL()
+                              $ TeacherLink = AboutOffer.teacher.EncodeURL()
+                              $if (i):
+                                $ act = " "
+                              $else:
+                                $ act = "active"
+                              <div class="item $(act)">
+                                <div class="carousel-content">
+                                  <blockquote>
+                                    <p class="text-justified">$Comment.text</p>
+                                    <small><a class="black-link" href="/estudantes/$(Comment.user.student.ra)"><b>$Comment.user.student.name.split()[0]</b></a> sobre
+                                      <a class="black-link" href="$TeacherLink"><b>$S.query(TeacherNick).filter(TeacherNick.teacher_id == AboutOffer.teacher_id).one().name_short </b></a>
+                                      em <a class="black-link" href="$OfferLink"><b>$AboutOffer.subject.code
+                                        $(AboutOffer.semester.year).$(AboutOffer.semester.sem)</b></a></small>
+                                      </blockquote>
+                                    </div>
+                                </div>
+                          <!-- Left and right controls -->
+                      <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+                        <i class="fa fa-chevron-left fa-lg" aria-hidden="true"></i>
+                        <span class="sr-only">Previous</span>
+                      </a>
+                      <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+                        <i class="fa fa-chevron-right fa-lg" aria-hidden="true"></i>
+                        <span class="sr-only">Next</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            $else:
+              <p class="text-muted text-center"> Ainda não há comentários. <p>
+
+          </div>
+          <div class="tab-pane fade" id="mofferings">
+            <input type="text" class="search" placeholder="Busca por disciplina">
+            <div id="offerings">
+            <table class="table table-striped table-condensed sortable table-hover">
+              <thead>
+                <tr>
+                  <th>Semestre</th>
+                  <th><i class="fa fa-users" aria-hidden="true" data-toggle="tooltip" title="Matriculados"></i></th>
+                  <th>Turma</th>
+                  <th class="col-sm-3">Disciplina</th>
+                </tr>
+              </thead>
+              <tbody class="list">
+              $for Line in ThisOfferings:
+                $ URL = Line.EncodeURL()
+                $ Code = '%s' % (Line.code)
+                $ Enrolled = '%s' % (Line.students)
+                $ Sem = '%s.%s' % (Line.semester.year, Line.semester.sem)
+                <tr class="clickable-row" data-url='$URL' data-toggle="tooltip" title="$Line.subject.name">
+                  <td><a class="semestre black-link" href="$URL">$Sem</a></td>
+                  <td>$Enrolled</td>
+                  <td>$Code</td>
+                  <td><a class="codigo black-link" href="$Line.subject.EncodeURL()" >$Line.subject.code</a></td>
+                </tr>
+              </tbody>
+            </table>
+        </div>
+          </div>
+        </div>
+      </div>
+
+
     $:Render.footer()
   </body>
 </html>
