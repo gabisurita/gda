@@ -749,7 +749,7 @@ def Setup():
     class BeginPage:
         def GET(self):
             if not IsLogged(Redirect=False):
-                raise web.seeother("/welcome")
+                raise web.seeother("/login")
             else:
                 web.seeother("/login")
 
@@ -771,7 +771,7 @@ def Setup():
             else:
                 S = sessionmaker(bind=DB)()
 
-                check_email = re.search(r'[\w.-]+@[\w.-]+.unicamp.br', Form['E-mail'].value)
+                check_email = re.search(r'[a-z][\d.-]+@dac.unicamp.br', Form['E-mail'].value)
 
                 check_RA = re.search(r'[\d]', Form['RA'].value)
 
@@ -783,7 +783,7 @@ def Setup():
 
 
                 if check_email == None:
-                    return Render.register(Form,"E-mail inválido! Favor utilizar um E-mail [.unicamp.br]. Por exemplo, o email da DAC no formato a123456@dac.unicamp.br", Render)
+                    return Render.register(Form,"E-mail inválido! Favor utilizar o E-mail da DAC [formato: a123456@dac.unicamp.br].", Render)
 
                 elif check_RA == None:
                     return Render.register(Form,"RA inválido!", Render)
@@ -905,7 +905,7 @@ def Setup():
     class LogoutPage:
         def GET(self):
             Session.user_id = False
-            raise web.seeother('/welcome')
+            raise web.seeother('/login')
 
     class ConfirmationPage:
 
@@ -1010,16 +1010,21 @@ def Setup():
                                 LocDB.execute(update_password)
 
                 face = Form['Face_id'].get_value()
-                auth = LocS.query(FaceUser).filter(Render.user_id == FaceUser.user_id)
-                c = auth.count()
-                if face!=0 and c==0:
-                    NewFaceLogin = FaceUser(
-                    face_id = face,
-                    user_id = Render.user_id
-                    )
-                    LocS.add(NewFaceLogin)
-                    LocS.commit()
-
+                print "2134567897654324567898765432"
+                print face
+                if face:
+                    auth = LocS.query(FaceUser).filter(Render.user_id == FaceUser.user_id)
+                    if auth.count():
+                        return  Render.userpage(Form,"Já existe um usuário conectado a essa conta do Facebook,", Render)
+                    else:
+                        NewFaceLogin = FaceUser(
+                        face_id = face,
+                        user_id = Render.user_id
+                        )
+                        LocS.add(NewFaceLogin)
+                        LocS.commit()
+                else:
+                    return  Render.userpage(Form,"Algo deu errado com a conexão com o Facebook! Por favor, tente novamente ou entre em contato.", Render)
 
             raise web.seeother('/user')
 

@@ -17,7 +17,7 @@ $ ThisComments = S.query(TeacherComment).filter(TeacherComment.user == ThisUser)
   <!-- Fixed navbar -->
   $:Render.navbar(Render.user_id)
   <!-- Begin page content -->
-  <div class="container">
+  <div class="container desktop">
   <div class="col-sm-4" id="profile" class="text-center">
       <br>
       <div class="row">
@@ -78,7 +78,84 @@ $ ThisComments = S.query(TeacherComment).filter(TeacherComment.user == ThisUser)
           $:Render.comments(ThisComments)
   </div>
 </div>
-    $:Render.footer()
+
+<div class="container mobile">
+    <div class="row">
+      <div class="col-xs-3">
+        <img src="" class="img-rounded" id="mstudent_img" height="50" width="50"></img>
+      </div>
+      <div class="col-xs-9">
+        <h6>$:StudentInst.name</h6>
+        <h6>RA: $:StudentInst.ra</h6>
+        $ cr = "%.4f" % (random.gauss(0.65, 0.15))
+        <h6 class="text-muted"> CR:  $cr</h6>
+      </div>
+    </div>
+    <ul class="nav nav-tabs nav-justified">
+      <li class="active"><a href="#mcomments" data-toggle="tab"><i class="fa fa-comment-o fa-lg" aria-hidden="true"></i></a></li>
+      <li><a href="#mofferings" data-toggle="tab"><i class="fa fa-list-alt fa-lg" aria-hidden="true"></i></a></li>
+    </ul>
+    <div id="myTabContent" class="tab-content">
+      <div class="tab-pane fade active in" id="mcomments">
+        <div class="text-justify" id="mcomments">
+              $for Comment in ThisComments:
+                $ AboutOffer = S.query(Offering).filter(Offering.id == Comment.offering_id).one()
+                $ OfferLink = AboutOffer.EncodeURL()
+                $ TeacherLink = AboutOffer.teacher.EncodeURL()
+                    <blockquote>
+                      <p>$Comment.text</p>
+                      <small><a class="black-link" href="/estudantes/$(Comment.user.student.ra)"><b>$Comment.user.student.name.split()[0]</b></a> sobre
+                      <a class="black-link" href="$TeacherLink"><b>$S.query(TeacherNick).filter(TeacherNick.teacher_id == AboutOffer.teacher_id).one().name_short </b></a>
+                      em <a class="black-link" href="$OfferLink"><b>$AboutOffer.subject.code
+                       $(AboutOffer.semester.year).$(AboutOffer.semester.sem)</b></a></small>
+                    </blockquote>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="mofferings">
+        <div class="panel-group" id="maccordion">
+        $ i=0
+        $for thissemester in S.query(Semester).order_by(desc((Semester.year)*2 + Semester.sem)):
+          $ EnrollSemester = S.query(Enrollment).filter(Enrollment.student_id == StudentInst.id).join(Enrollment.offering).filter(Offering.semester_id == thissemester.id)
+          $if EnrollSemester.count():
+            $ i = i + 1
+            $ semesterRated = 0
+            $for enroll in EnrollSemester:
+              $ semesterRated = semesterRated + S.query(StudentRate).filter(StudentRate.user_id == ThisUser.id).filter(StudentRate.offering_id == enroll.offering_id).count()
+            $if semesterRated == EnrollSemester.count():
+              $ lab = "label-default"
+            $else:
+              $ lab = "label-primary"
+            <div class="panel panel-default">
+               <div class="panel-heading accordion-toggle panel-index" data-toggle="collapse" data-parent="#maccordion" href="#mcollapse$(i)" style="">
+                 <h4 class="panel-title">
+                   $(thissemester.year).$(thissemester.sem)
+                   <span class="label $(lab) pull-right">
+                     <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                     $(semesterRated) de $(EnrollSemester.count())</span>
+                 </h4>
+               </div>
+               <div id="mcollapse$(i)" class="panel-collapse collapse">
+                   <table class="table table-condensed table-hover">
+                     <tbody class="list">
+                      $for enroll in EnrollSemester:
+                         $ URL = enroll.offering.EncodeURL()
+                         <tr>
+                           <td><a class = "black-link" href="$URL">$(enroll.offering.subject.code)$enroll.offering.code</a></td>
+                           <td><a class = "black-link" href="$enroll.offering.teacher.EncodeURL()">$enroll.offering.teacher.name</a></td>
+                           $if S.query(StudentRate).filter(StudentRate.user_id == ThisUser.id).filter(StudentRate.offering_id == enroll.offering_id).count():
+                              <td> <a href="$URL" class="btn btn-default btn-sm"><i class="fa fa-check-square-o" aria-hidden="true"></i></a></td>
+                           $else:
+                              <td> <a href="$enroll.offering.EvaluationURL()" class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>
+                         </tr>
+                     </tbody>
+                   </table>
+               </div>
+            </div>
+        </div>
+      </div>
+    </div>
+</div>
+$:Render.footer()
 </body>
 </html>
 
@@ -92,9 +169,10 @@ jQuery(document).ready(function(){
     $ fbuser = queryuser.one()
     $ fbid = fbuser.face_id
     jQuery("#student_img").attr("src",ProfileUrl($fbid));
-    console.log(ProfileUrl($fbid));
+    jQuery("#mstudent_img").attr("src",ProfileUrl($fbid));
   $else:
     jQuery("#student_img").attr("src","/static/images/student.png");
+    jQuery("#mstudent_img").attr("src","/static/images/student.png");
 });
 
 function ProfileUrl(id){

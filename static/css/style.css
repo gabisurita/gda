@@ -403,13 +403,32 @@ input[type=radio][id="m7.3"] + label:before{
   }
   */
 
+
+/***********  Z INDEX *******************/
+
 #ui-id-1 {
-  z-index: 103 !important;
+  z-index: 104 !important;
+}
+
+#ui-id-2 {
+  z-index: 104 !important;
 }
 
 .navbar {
   z-index: 102 !important;
 }
+
+.navbar-toggle {
+  z-index: 103 !important;
+}
+
+.navbar-form {
+  z-index: 103 !important;
+}
+
+
+
+/* **********************************/
 
 .icon-empty{
   color: #1a1a1a;
@@ -462,13 +481,6 @@ input[type=radio][id="m7.3"] + label:before{
     margin: auto;
 }
 
-.navbar-toggle {
-  z-index: 103 !important;
-}
-
-.navbar-form {
-  z-index: 103 !important;
-}
 
 @media (max-width: 768px) {
   .nav-justified > li {

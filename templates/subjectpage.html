@@ -192,7 +192,7 @@ $else:
   </div>
 
   <div class="container mobile" id="docentes">
-        <h4>$SubjectInst.code -   $SubjectInst.name</h4>
+        <h6>$SubjectInst.code -   $SubjectInst.name</h6>
         <div id="user-info">
         <div class="alert alert-dismissible alert-warning">
           <button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -223,18 +223,15 @@ $else:
           $:Render.questionlowmedhigh(sum_line.q5_dificil,sum_line.q5_normal,sum_line.q5_facil,"Como você avalia a dificuldade inerente à disciplina?", "fa fa-bomb", "danger","warning","success")
         </div>
         <div class="tab-pane fade" id="mcomments">
-          <div class="panel panel-default">
             <div class="text-justify" id="mcomments">
-                <table class="table table-condensed">
-                  <tbody class="list">
+                $ zerocount = 1
                 $for line in ThisOfferings:
                   $ ThisComments = S.query(OfferingComment).filter(OfferingComment.offering == line)
                   $for Comment in ThisComments:
+                    $ zerocount = 0
                     $ AboutOffer = S.query(Offering).filter(Offering.id == Comment.offering_id).one()
                     $ OfferLink = AboutOffer.EncodeURL()
                     $ TeacherLink = AboutOffer.teacher.EncodeURL()
-                    <tr>
-                      <td>
                         <blockquote>
                           <p>$Comment.text</p>
                           <small><a class="black-link" href="/estudantes/$(Comment.user.student.ra)"><b>$Comment.user.student.name.split()[0]</b></a> sobre
@@ -242,23 +239,22 @@ $else:
                           em <a class="black-link" href="$OfferLink"><b>$AboutOffer.subject.code
                            $(AboutOffer.semester.year).$(AboutOffer.semester.sem)</b></a></small>
                         </blockquote>
-                      <td>
-                    </tr>
-                  </tbody>
-                </table>
+                $if zerocount:
+                    <blockquote>
+                      <p>Ainda não há comentários.</p>
+                    </blockquote>
             </div>
-          </div>
         </div>
         <div class="tab-pane fade" id="mofferings">
           <input type="text" class="search" placeholder="Busca por docente ou semestre">
           <div id="offerings">
-          <table class="table table-striped table-condensed sortable table-hover">
+          <table class="table table-striped table-condensed sortable">
             <thead>
               <tr>
                 <th>Semestre</th>
-                <th><i class="fa fa-users" aria-hidden="true" data-toggle="tooltip" title="Matriculados"></i></th>
-                <th> Turma</th>
                 <th class="col-sm-3">Docente</th>
+                <th> Turma</th>
+                <th><i class="fa fa-users" aria-hidden="true" data-toggle="tooltip" title="Matriculados"></i></th>
               </tr>
             </thead>
             <tbody class="list">
@@ -267,11 +263,11 @@ $else:
                 $ Code = '%s' % (Line.code)
                 $ Enrolled = '%s' % (Line.students)
                 $ Sem = '%s.%s' % (Line.semester.year, Line.semester.sem)
-                <tr class="clickable-row" data-url="$URL">
-                  <td><a class="semestre black-link"href="$Line.semester.EncodeURL()">$Sem</a></td>
-                  <td>$Enrolled</td>
-                  <td>$Code</td>
+                <tr>
+                  <td class="semestre">$Sem</td>
                   <td><a class="docente black-link" href="$Line.teacher.EncodeURL()">$S.query(TeacherNick).filter(TeacherNick.teacher_id == Line.teacher_id).one().name_short</a></td>
+                  <td><a class="black-link" href="$URL">$SubjectInst.code$Code</a></td>
+                  <td>$Enrolled</td>
                   </tr>
             </tbody>
           </table>
