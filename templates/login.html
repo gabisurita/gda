@@ -59,24 +59,37 @@ $ S = sessionmaker(bind=DB)()
 
 <script>
 function fb_login(){
-    FB.login(function(response) {
-        if (response.authResponse) {
-            console.log('Welcome!  Fetching your information.... ');
-            //console.log(response); // dump complete info
-            //access_token = response.authResponse.accessToken; //get access token
-            user_id = response.authResponse.userID; //get FB UID
-            jQuery.post( "http://www.gdaunicamp.com/login", {"face_id": user_id});
-            window.location.replace("http://www.gdaunicamp.com/index");
-          //  FB.api('/me', function(response) {
-            //    user_email = response.email; //get user email
-          // you can store this data into your database
-            //});
-        } else {
-            //user hit cancel button
-            console.log('User cancelled login or did not fully authorize.');
-        }
-    }, {
-        scope: 'public_profile,email,user_friends'
-    });
-}
+    var ra_input = jQuery("#ra_id").val();
+    jQuery.get( "http://www.gdaunicamp.com/fbconnected", {"ra_id": ra_input }, function( data ) {
+      if (data == "not-registered"){
+        BootstrapDialog.show({type: BootstrapDialog.TYPE_DANGER, size: BootstrapDialog.SIZE_SMALL, title: 'Erro', message: 'O RA informado não está cadastrado no GDA.' });
+      }
+      else if (data == "not-connected"){
+        BootstrapDialog.show({type: BootstrapDialog.TYPE_DANGER, size: BootstrapDialog.SIZE_SMALL, title: 'Erro', message: 'Sua conta no GDA ainda não está conectada a uma conta no Facebook. Faça login com sua senha do GDA e conecte sua conta na seção Altere seus dados.' });
+      }
+      else{
+        FB.login(function(response) {
+            if (response.authResponse) {
+                console.log('Welcome!  Fetching your information.... ');
+                //console.log(response); // dump complete info
+                //access_token = response.authResponse.accessToken; //get access token
+                user_id = response.authResponse.userID; //get FB UID
+                if(user_id == data){
+                  jQuery.post( "http://www.gdaunicamp.com/login", {"face_id": user_id});
+                  window.location.replace("http://www.gdaunicamp.com/index");
+                }
+                else{
+                  BootstrapDialog.show({type: BootstrapDialog.TYPE_DANGER, size: BootstrapDialog.SIZE_SMALL, title: 'Erro', message: 'A conta que você logou com Facebook não confere com a conta que está conectada com sua conta no GDA.' });
+                }
+            } else {
+                //user hit cancel button
+                console.log('User cancelled login or did not fully authorize.');
+                BootstrapDialog.show({type: BootstrapDialog.TYPE_DANGER, size: BootstrapDialog.SIZE_SMALL, title: 'Erro', message: 'Algo de errado não está certo com seu login no Facebook. Por favor, tente novamente ou entre em contato.' });
+            }
+        }, {
+            scope: 'public_profile,email,user_friends'
+        });
+      }
+    }
+  });
 </script>

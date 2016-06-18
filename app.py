@@ -647,6 +647,26 @@ def Setup():
             ra_string = spc.join(ra_list)
             return ra_string
 
+    class FacebookConnected:
+        def GET(self):
+            LocDB = create_engine(UserDB, echo=False)
+            LocS = sessionmaker(bind=LocDB)()
+            ra = web.input()['ra_id']
+            student_query = LocS.query(Student).filter(Student.ra == ra)
+            if student_query.count():
+                thisStudent = student_query.one()
+                facebook_query = LocS.query(FaceUser).filter(FaceUser.user_id == thisStudent.user_id)
+                if facebook_query.count():
+                    #facebook cadastrado
+                    face_user = facebook_query.one()
+                    return face_user.face_id
+                else:
+                    return "not-connected"
+                    #facebook nao cadastrado
+            else:
+                # RA nao esta cadastrado
+                return "not-registered"
+
     class FriendsTeacher:
         def GET(self):
             LocDB = create_engine(UserDB, echo=False)
@@ -1856,6 +1876,7 @@ def Setup():
     Map(WelcomePage, "/welcome")
     Map(BeginPage, "/")
     Map(WhichRA, "/whichra")
+    Map(FacebookConnected, "/fbconnected")
     Map(FriendsTeacher, "/friendsteacher")
 
 
