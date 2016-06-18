@@ -72,13 +72,13 @@ def Setup():
                 return True
             else:
                 if Redirect:
-                    raise web.seeother('/welcome')
+                    raise web.seeother('/login')
                 else:
                     return False
 
         except AttributeError:
             if Redirect:
-                raise web.seeother('/welcome')
+                raise web.seeother('/login')
             else:
                 return False
 
@@ -900,7 +900,7 @@ def Setup():
     class LogoutPage:
         def GET(self):
             Session.user_id = False
-            raise web.seeother('/welcome')
+            raise web.seeother('/login')
 
     class ConfirmationPage:
 
@@ -1682,7 +1682,7 @@ def Setup():
 
                 stmt = update(User).where(ThisUser.email == User.email).values(password=encode(newpass))
                 LocDB.execute(stmt)
-                raise web.seeother('/welcome')
+                raise web.seeother('/login')
 
             else:
                 return Render.forgottenpassword(Form, "Não existe usuário cadastrado com o RA fornecido!", Render)
