@@ -744,9 +744,9 @@ def Setup():
     class BeginPage:
         def GET(self):
             if not IsLogged(Redirect=False):
-                raise web.seeother("/welcome")
+                raise web.seeother("/login")
             else:
-                web.seeother("/welcome")
+                web.seeother("/index")
 
 
     class RegisterPage:
