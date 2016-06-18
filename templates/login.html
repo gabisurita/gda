@@ -65,8 +65,8 @@ function fb_login(){
             //console.log(response); // dump complete info
             //access_token = response.authResponse.accessToken; //get access token
             user_id = response.authResponse.userID; //get FB UID
-            jQuery.post( "http://0.0.0.0:8080/login", {"face_id": user_id});
-            window.location.replace("http://0.0.0.0:8080/index");
+            jQuery.post( "http://www.gdaunicamp.com/login", {"face_id": user_id});
+            window.location.replace("http://www.gdaunicamp.com/index");
           //  FB.api('/me', function(response) {
             //    user_email = response.email; //get user email
           // you can store this data into your database

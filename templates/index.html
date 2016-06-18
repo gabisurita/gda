@@ -171,7 +171,7 @@ FB.getLoginStatus(function(response) {
       for (i=0; i<lenght; i++){
         fb_string = fb_string + response.data[i].id + " ";
       }
-      jQuery.get( "http://0.0.0.0:8080/whichra", {"face_id":fb_string }, function( data ) {
+      jQuery.get( "http://www.gdaunicamp.com/whichra", {"face_id":fb_string }, function( data ) {
         ra_array = data.split(" ");
         fb_array = fb_string.split(" ");
         var len = ra_array.length;

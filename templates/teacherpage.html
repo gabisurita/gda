@@ -350,7 +350,7 @@ $else:
         fb_string = fb_string + response.data[i].id + " ";
       }
       var thisTeacher = $(TeacherInst.id)
-      jQuery.get( "http://0.0.0.0:8080/friendsteacher", {"face_id":fb_string, "teacher_id":thisTeacher}, function( data ) {
+      jQuery.get( "http://www.gdaunicamp.com/friendsteacher", {"face_id":fb_string, "teacher_id":thisTeacher}, function( data ) {
         console.log(data);
         enroll_array = data.split(" ");
         console.log(enroll_array);
