@@ -13,8 +13,8 @@
       defaults = {
         disableAutohide: false,
         showOnUpscroll: true,
-        showOnBottom: true,
-        hideOffset: 'auto', // "auto" means the navbar height
+        showOnBottom: false,
+        hideOffset: 20, // "auto" means the navbar height
         animationDuration: 200
       };
 

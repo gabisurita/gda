@@ -10,100 +10,12 @@ $ S = sessionmaker(bind=DB)()
 
   </head>
   <body>
-    <script>
-      // This is called with the results from from FB.getLoginStatus().
-      function statusChangeCallback(response) {
-        console.log('statusChangeCallback');
-        console.log(response);
-        // The response object is returned with a status field that lets the
-        // app know the current login status of the person.
-        // Full docs on the response object can be found in the documentation
-        // for FB.getLoginStatus().
-        if (response.status === 'connected') {
-          // Logged into your app and Facebook.
-          testAPI();
-        } else if (response.status === 'not_authorized') {
-          // The person is logged into Facebook, but not your app.
-          //TODO document.getElementById('status').innerHTML = 'Please log ' +
-            //'into this app.';
-        } else {
-          // The person is not logged into Facebook, so we're not sure if
-          // they are logged into this app or not.
-          // TODO document.getElementById('status').innerHTML = 'Please log ' +
-            //'into Facebook.';
-        }
-      }
-
-      // This function is called when someone finishes with the Login
-      // Button.  See the onlogin handler attached to it in the sample
-      // code below.
-      function checkLoginState() {
-        FB.getLoginStatus(function(response) {
-          statusChangeCallback(response);
-        });
-      }
-
-      window.fbAsyncInit = function() {
-      FB.init({
-        appId      : '1685706398346162',
-        cookie     : true,  // enable cookies to allow the server to access
-                            // the session
-        xfbml      : true,  // parse social plugins on this page
-        version    : 'v2.2' // use version 2.2
-      });
-
-      // Now that we've initialized the JavaScript SDK, we call
-      // FB.getLoginStatus().  This function gets the state of the
-      // person visiting this page and can return one of three states to
-      // the callback you provide.  They can be:
-      //
-      // 1. Logged into your app ('connected')
-      // 2. Logged into Facebook, but not your app ('not_authorized')
-      // 3. Not logged into Facebook and can't tell if they are logged into
-      //    your app or not.
-      //
-      // These three cases are handled in the callback function.
-
-      FB.getLoginStatus(function(response) {
-        statusChangeCallback(response);
-      });
-
-      };
-
-      // Load the SDK asynchronously
-      (function(d, s, id) {
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) return;
-        js = d.createElement(s); js.id = id;
-        js.src = "//connect.facebook.net/en_US/sdk.js";
-        fjs.parentNode.insertBefore(js, fjs);
-      }(document, 'script', 'facebook-jssdk'));
-
-      // Here we run a very simple test of the Graph API after login is
-      // successful.  See statusChangeCallback() for when this call is made.
-      function testAPI() {
-        console.log('Welcome!  Fetching your information.... ');
-        FB.api('/me', function(response) {
-          console.log('Successful login for: ' + response.name);
-          document.getElementById('status').innerHTML =
-            'Thanks for logging in, ' + response.name + '!';
-        });
-        FB.api('/me', function(response) {
-            jQuery("#ra_id").val(" ");
-            jQuery("#psw_id").val(" ");
-            jQuery("#fb_id").val(response.id);
-            jQuery("#submit_id").click();
-        });
-      }
-    </script>
 
     $if Error != "":
       <script>BootstrapDialog.show({type: BootstrapDialog.TYPE_DANGER, size: BootstrapDialog.SIZE_SMALL, title: 'Erro', message: '$:Error' });</script>
     <!-- Begin page content -->
     <div class="container login">
-      <div class="col-sm-5"></div>
-
-      <div class="col-sm-2 text-center">
+      <div class="col-sm-3 center-block text-center">
         <h1 class="font-effect-outline" style="font-size:96px;">gda</h1>
         <br>
         <form class="form-signin" method="POST" action="/login">
@@ -123,18 +35,16 @@ $ S = sessionmaker(bind=DB)()
           <br>
           <button class="btn btn-primary btn-block" id="submit_id" type="submit">Entrar</button>
         </form>
-        <br><br>
-        $ aux = S.query(FaceUser).filter(FaceUser.user_id == 1).count()
-        $if aux==1:
-          <fb:login-button scope="public_profile,email,user_friends" onlogin="checkLoginState();">
-          </fb:login-button>
-        $else:
-          <h8>Caso queira vincular sua conta do gda à do facebook, acesse a seção de Alteração de Dados do site</h8>
+        <br>
+        <a class="btn btn-block btn-social btn-facebook" onclick="fb_login();">
+          <span class="fa fa-facebook"></span> Continuar com Facebook
+        </a>
 
-        <div id="status">
-        </div>
-        <p> <i class="fa fa-user-plus fa-lg"></i> <a class="black-link" href="/registrar"> &nbsp; Não sou cadastrado </a></p>
-        <p> <i class="fa fa-question-circle fa-lg"></i> <a class="black-link" href="/esqueci"> &nbsp; Esqueci minha senha </a></p>
+        <br>
+        <ul class="fa-ul text-justify">
+          <li><i class="fa fa-user-plus fa-lg"></i> <a class="black-link" href="/registrar"> &nbsp; Não sou cadastrado </a></li>
+          <li><i class="fa fa-question-circle fa-lg"></i> <a class="black-link" href="/esqueci"> &nbsp; Esqueci minha senha </a> </li>
+        </ul>
       </div>
     </div>
     <footer class="footer">
@@ -146,3 +56,29 @@ $ S = sessionmaker(bind=DB)()
     </footer>
   </body>
 </html>
+
+<script>
+function fb_login(){
+    FB.login(function(response) {
+        if (response.authResponse) {
+            console.log('Welcome!  Fetching your information.... ');
+            //console.log(response); // dump complete info
+            //access_token = response.authResponse.accessToken; //get access token
+            user_id = response.authResponse.userID; //get FB UID
+            jQuery.post( "http://0.0.0.0:8080/login", {"face_id": user_id});
+            window.location.replace("http://0.0.0.0:8080/index");
+          //  FB.api('/me', function(response) {
+            //    user_email = response.email; //get user email
+          // you can store this data into your database
+            //});
+
+        } else {
+            //user hit cancel button
+            console.log('User cancelled login or did not fully authorize.');
+
+        }
+    }, {
+        scope: 'public_profile,email,user_friends'
+    });
+}
+</script>

@@ -235,17 +235,16 @@ $ Enrolled = EnrollmentList.count()
 
 
         <div class="container mobile">
-          <h4>
-            $OfferingInst.subject.code$OfferingInst.code -
+          <h6>
             <a class="black-link" href="$OfferingInst.subject.EncodeURL()">
-              $OfferingInst.subject.name</a>
-              <br>
-              Professor: <a class="black-link" href="$ThisTeacher.EncodeURL()">
+                $OfferingInst.subject.code$OfferingInst.code</a>
+              -
+              <a class="black-link" href="$ThisTeacher.EncodeURL()">
                 $ThisTeacher.name
               </a>
-              <br>
-              $OfferingInst.semester.semº semestre de $OfferingInst.semester.year
-            </h4>
+              -
+              $OfferingInst.semester.year.$OfferingInst.semester.sem
+            </h6>
               <div id="user-info">
               <div class="alert alert-dismissible alert-warning">
                 <button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -261,11 +260,10 @@ $ Enrolled = EnrollmentList.count()
             <ul class="nav nav-tabs nav-justified">
               <li class="active"><a href="#mgda-icon" data-toggle="tab"><i class="fa fa-tasks fa-lg" aria-hidden="true"></i></a></li>
               <li><a href="#mcomments" data-toggle="tab"><i class="fa fa-comment-o fa-lg" aria-hidden="true"></i></a></li>
-              <li><a href="#mofferings" data-toggle="tab"><i class="fa fa-list-alt fa-lg" aria-hidden="true"></i></a></li>
+              <li><a href="#mofferings" data-toggle="tab"><i class="fa fa-book fa-lg" aria-hidden="true"></i></a></li>
             </ul>
             <div id="myTabContent" class="tab-content">
               <div class="tab-pane fade active in" id="mgda-icon">
-                <h5 class="text-center"> Perguntas sobre o Docente </h5>
                 $:Render.questionlowmedhigh(sum_line.q6_dificil,sum_line.q6_normal,sum_line.q6_facil,"Como você avalia a dificuldade inerente ao professor?", "fa fa-bomb", "danger","warning","success")
                 $:Render.questionlowmedhigh(sum_line.q8_boa,sum_line.q8_media,sum_line.q8_ruim, "Como você avalia a didática do professor?", "fa fa-star", "success","warning","danger")
                 $:Render.questionyesno(sum_line.q7_sim,sum_line.q7_nao, "A bibliografia recomendada foi adequada?")
@@ -274,21 +272,32 @@ $ Enrolled = EnrollmentList.count()
                 $:Render.questionyesno(sum_line.q11_sim,sum_line.q11_nao, "As avaliações foram coerentes?")
                 $:Render.questionyesno(sum_line.q12_sim,sum_line.q12_nao, "Ir às aulas foi importante?")
                 $:Render.questionyesno(sum_line.q13_sim,sum_line.q13_nao, "Faria outra disciplina com o professor?")
-              <h5 class="text-center"> Perguntas sobre a Disciplina </h5>
-                $:Render.questionyesno(sum_line.q1_sim,sum_line.q1_nao, "A disciplina é necessária ao currículo?")
+              </div>
+              <div class="tab-pane fade" id="mcomments">
+                    <div class="text-justify">
+                      $if ThisComments.count():
+                          $for Comment in ThisComments:
+                            $ AboutOffer = S.query(Offering).filter(Offering.id == Comment.offering_id).one()
+                            $ OfferLink = AboutOffer.EncodeURL()
+                            $ TeacherLink = AboutOffer.teacher.EncodeURL()
+                                <blockquote>
+                                  <p>$Comment.text</p>
+                                  <small><a class="black-link" href="/estudantes/$(Comment.user.student.ra)"><b>$Comment.user.student.name.split()[0]</b></a> sobre
+                                  <a class="black-link" href="$TeacherLink"><b>$S.query(TeacherNick).filter(TeacherNick.teacher_id == AboutOffer.teacher_id).one().name_short </b></a>
+                                  em <a class="black-link" href="$OfferLink"><b>$AboutOffer.subject.code
+                                   $(AboutOffer.semester.year).$(AboutOffer.semester.sem)</b></a></small>
+                                </blockquote>
+                      $else:
+                          <blockquote>
+                            <p>Ainda não há comentários.</p>
+                          </blockquote>
+                    </div>
+              </div>
+              <div class="tab-pane fade" id="mofferings">
                 $:Render.questionlowmedhigh(sum_line.q3_longa,sum_line.q3_adequada,sum_line.q3_curta, "Como você avalia o conteúdo da disciplina?", "fa fa-book", "danger","warning","success")
                 $:Render.questionlowmedhigh(sum_line.q4_alta,sum_line.q4_normal,sum_line.q4_baixa," Como você avalia a dedicação exigida pela disciplina?","fa fa-clock-o", "danger","warning","success")
                 $:Render.questionlowmedhigh(sum_line.q5_dificil,sum_line.q5_normal,sum_line.q5_facil,"Como você avalia a dificuldade inerente à disciplina?", "fa fa-bomb", "danger","warning","success")
-              </div>
-              <div class="tab-pane fade" id="mcomments">
-                <div class="panel panel-default">
-                  <div class="text-justify" id="mcomments">
-                    $:Render.comments(ThisComments)
-                  </div>
-                </div>
-              </div>
-              <div class="tab-pane fade" id="mofferings">
-
+                $:Render.questionyesno(sum_line.q1_sim,sum_line.q1_nao, "A disciplina é necessária ao currículo?")
               </div>
             </div>
           </div>
