@@ -72,13 +72,13 @@ def Setup():
                 return True
             else:
                 if Redirect:
-                    raise web.seeother('/login')
+                    raise web.seeother('/welcome')
                 else:
                     return False
 
         except AttributeError:
             if Redirect:
-                raise web.seeother('/login')
+                raise web.seeother('/welcome')
             else:
                 return False
 
@@ -618,13 +618,11 @@ def Setup():
     #function used to protect database against simply looking at it
     def encode(string):
         aux = (''.join(x.encode('hex') for x in string))
-        print aux
         return str(aux)
 
     #function used to protect database against simply looking at it
     def decode(string):
         aux = string.decode("hex")
-        print aux
         return str(aux)
 
 
@@ -654,9 +652,7 @@ def Setup():
             LocDB = create_engine(UserDB, echo=False)
             LocS = sessionmaker(bind=LocDB)()
             fb = web.input()['face_id']
-            print fb
             ThisTeacher = web.input()['teacher_id']
-            print ThisTeacher
             fb_list = fb.split()
             final_string = ""
             for person in fb_list:
@@ -677,7 +673,6 @@ def Setup():
                 except:
                     print "hi"
             final_string = final_string[:-1]
-            print final_string
             return final_string
 
 
@@ -749,9 +744,9 @@ def Setup():
     class BeginPage:
         def GET(self):
             if not IsLogged(Redirect=False):
-                raise web.seeother("/login")
+                raise web.seeother("/welcome")
             else:
-                web.seeother("/login")
+                web.seeother("/welcome")
 
 
     class RegisterPage:
@@ -905,7 +900,7 @@ def Setup():
     class LogoutPage:
         def GET(self):
             Session.user_id = False
-            raise web.seeother('/login')
+            raise web.seeother('/welcome')
 
     class ConfirmationPage:
 
@@ -1008,10 +1003,9 @@ def Setup():
                             else:
                                 update_password = update(User).where(Render.user_id == User.id).values(password=encode(Form['New'].value))
                                 LocDB.execute(update_password)
+                                return  Render.userpage(Form,"Senha alterada com sucesso", Render)
 
                 face = Form['Face_id'].get_value()
-                print "2134567897654324567898765432"
-                print face
                 if face:
                     auth = LocS.query(FaceUser).filter(Render.user_id == FaceUser.user_id)
                     if auth.count():
@@ -1688,7 +1682,7 @@ def Setup():
 
                 stmt = update(User).where(ThisUser.email == User.email).values(password=encode(newpass))
                 LocDB.execute(stmt)
-                raise web.seeother('/login')
+                raise web.seeother('/welcome')
 
             else:
                 return Render.forgottenpassword(Form, "Não existe usuário cadastrado com o RA fornecido!", Render)
