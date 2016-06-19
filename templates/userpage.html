@@ -30,9 +30,11 @@ $if auth==1:
             <img src="" width="50" height="50" class="img-rounded" id="user_img2" alt="profile"></img>
             $if auth==1:
               <h6> Sua conta no GDA está vinculada a sua conta no Facebook.</h6>
+              <div id="not-logged">
+              </div>
             $else:
               <h6> Autorizar login pelo Facebook</h6>
-              <a class="btn btn-social btn-facebook" onclick="fb_login();">
+              <a class="btn btn-social btn-facebook" onclick="fb_connect();">
                 <span class="fa fa-facebook"></span> Conectar
               </a>
             </div>
@@ -86,7 +88,7 @@ $:Render.footer()
 </body>
 </html>
 <script>
-function fb_login(){
+function fb_connect(){
     FB.login(function(response) {
         if (response.authResponse) {
             console.log('Welcome!  Fetching your information.... ');
@@ -103,10 +105,49 @@ function fb_login(){
         scope: 'public_profile,email,user_friends'
     });
 }
+
+function fb_login(){
+    FB.login(function(response) {
+        if (response.authResponse) {
+            console.log('Welcome!  Fetching your information.... ');
+            //console.log(response); // dump complete info
+            //access_token = response.authResponse.accessToken; //get access token
+            location.reload();
+        } else {
+            //user hit cancel button
+            console.log('User cancelled login or did not fully authorize.');
+        }
+    }, {
+        scope: 'public_profile,email,user_friends'
+    });
+}
+
+FB.getLoginStatus(function(response) {
+  if (response.status === 'connected') {
+    // the user is logged in and has authenticated your
+    // app, and response.authResponse supplies
+    // the user's ID, a valid access token, a signed
+    // request, and the time the access token
+    // and signed request each expire
+  } else if (response.status === 'not_authorized') {
+    // the user is logged in to Facebook,
+    // but has not authenticated your app
+  } else {
+    // the user isn't logged in to Facebook.
+      if($(auth)){
+        // user is connected but not logged in to facebook
+        var fblink = "<a class='btn btn-social btn-facebook' onclick='fb_login();'><span class='fa fa-facebook'></span> Login</a>"
+        jQuery('#not-logged').html(fblink);
+      }
+  }
+ });
+
+
   function ProfileUrl(id){
     var m = "http://graph.facebook.com/"+JSON.stringify(id)+"/picture";
     return m;
   };
+
 
 
   jQuery(document).ready(function(){

@@ -17,6 +17,7 @@ $ S = sessionmaker(bind=DB)()
     <div class="container login">
       <div class="col-sm-3 center-block text-center">
         <h1 class="font-effect-outline" style="font-size:96px;">gda</h1>
+        <div id="facelog"></div>
         <br>
         <form class="form-signin" method="POST" action="/login">
           <label for="ra" class="sr-only">RA</label>
@@ -59,6 +60,41 @@ $ S = sessionmaker(bind=DB)()
 
 <script>
 function fb_login(){
+  FB.login(function(response) {
+      if (response.authResponse) {
+          //console.log('Welcome!  Fetching your information.... ');
+          console.log(response); // dump complete info
+          //access_token = response.authResponse.accessToken; //get access token
+          user_id = response.authResponse.userID; //get FB UID
+          jQuery.get( "http://www.gdaunicamp.com/whichra", {"face_id": user_id}, function( data ) {
+            if(data == "000000"){
+              // facebook not connected, user most log in with password
+              jQuery('.btn-facebook').hide();
+              var img = jQuery('<img/>').attr('src',"http://graph.facebook.com/"+user_id+"/picture").attr('height', "50px").attr('width', "50px").addClass("img-rounded");
+              var hello = jQuery('<p/>').html("Olá! Para conectar sua conta do Facebook a sua conta do GDA entre com seu RA e senha.").addClass("text-left");
+              jQuery('#facelog').append(img);
+              jQuery('#facelog').append(hello);
+              jQuery('#fb_id').val(user_id);
+            }
+            else{
+              // facebook account is connected, log user
+              jQuery.post( "http://www.gdaunicamp.com/login", {"face_id": user_id});
+              window.location.replace("http://www.gdaunicamp.com/");
+            }
+          });
+      } else {
+          //user hit cancel button
+          console.log('User cancelled login or did not fully authorize.');
+          BootstrapDialog.show({type: BootstrapDialog.TYPE_DANGER, size: BootstrapDialog.SIZE_SMALL, title: 'Erro', message: 'Algo de errado não está certo com seu login no Facebook. Por favor, tente novamente ou entre em contato.' });
+      }
+  }, {
+      scope: 'public_profile,email,user_friends'
+  });
+}
+</script>
+<!--
+<script>
+function fb_login(){
     var ra_input = jQuery("#ra_id").val();
     jQuery.get( "http://www.gdaunicamp.com/fbconnected", {"ra_id": ra_input }, function( data ) {
       if (data == "not-registered"){
@@ -93,3 +129,4 @@ function fb_login(){
     });
   }
 </script>
+-->

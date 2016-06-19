@@ -647,25 +647,6 @@ def Setup():
             ra_string = spc.join(ra_list)
             return ra_string
 
-    class FacebookConnected:
-        def GET(self):
-            LocDB = create_engine(UserDB, echo=False)
-            LocS = sessionmaker(bind=LocDB)()
-            ra = web.input()['ra_id']
-            student_query = LocS.query(Student).filter(Student.ra == ra)
-            if student_query.count():
-                thisStudent = student_query.one()
-                facebook_query = LocS.query(FaceUser).filter(FaceUser.user_id == thisStudent.user_id)
-                if facebook_query.count():
-                    #facebook cadastrado
-                    face_user = facebook_query.one()
-                    return face_user.face_id
-                else:
-                    return "not-connected"
-                    #facebook nao cadastrado
-            else:
-                # RA nao esta cadastrado
-                return "not-registered"
 
     class FriendsTeacher:
         def GET(self):
@@ -715,10 +696,6 @@ def Setup():
                 if f!=0:
                     j = S.query(User).filter(User.id == aux.one().user_id).one()
                     Session.user_id = j.id
-                else:
-                    return Render.login(
-                        Form, "Sua conta no facebook não está registrada no nosso banco de dados. Para fazer o registro, entre com seu RA e senha e acessem a página de Alteração de Dados para mais informações.", Render)
-
 
             if not Form.validates():
                 return Render.login(
@@ -752,6 +729,18 @@ def Setup():
                     if UserCall.password == encode(Form['senha'].value):
                         Session.user_id = UserCall.id
                         if UserCall.confirmed == 1:
+                            if face_id:
+                                auth = S.query(FaceUser).filter(Render.user_id == FaceUser.user_id)
+                                if auth.count():
+                                    return  Render.login(Form,"Já existe um usuário conectado a essa conta do Facebook.", Render)
+                                else:
+                                    NewFaceLogin = FaceUser(
+                                    face_id = face_id,
+                                    user_id = UserCall.id
+                                    )
+                                    S.add(NewFaceLogin)
+                                    S.commit()
+                                    print "user add"
                             raise web.seeother('/index')
                         else:
                             raise web.seeother('/confirmacao')
@@ -1876,7 +1865,6 @@ def Setup():
     Map(WelcomePage, "/welcome")
     Map(BeginPage, "/")
     Map(WhichRA, "/whichra")
-    Map(FacebookConnected, "/fbconnected")
     Map(FriendsTeacher, "/friendsteacher")
 
 

@@ -147,8 +147,12 @@ FB.getLoginStatus(function(response) {
   } else if (response.status === 'not_authorized') {
     // the user is logged in to Facebook,
     // but has not authenticated your app
+    var fblink = "<p class='text-muted text-center'> <a href='/user'> <i class='fa fa-facebook-square fa-5x' aria-hidden='true'></i> </a> <br> Conecte sua conta do Facebook <br> a sua conta do GDA.</p>"
+    jQuery('#imagediv').html(fblink);
   } else {
     // the user isn't logged in to Facebook.
+    var fblink = "<p class='text-muted text-center'> <a href='/user' class='black-link'> <i class='fa fa-facebook-square fa-5x' aria-hidden='true'></i> </a> <br>  Você não está logado no Facebook.</p>"
+    jQuery('#imagediv').html(fblink);
   }
  });
 
