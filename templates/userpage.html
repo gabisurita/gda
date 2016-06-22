@@ -18,7 +18,15 @@ $if auth==1:
 </head>
 <body>
   $if Error != "":
-    <script>BootstrapDialog.show({type: BootstrapDialog.TYPE_DANGER, size: BootstrapDialog.SIZE_SMALL, title: 'Erro', message: '$:Error' });</script>
+    <script>
+    var error = '$:Error';
+    if (error == 'Senha alterada com sucesso!'){
+      BootstrapDialog.show({type: BootstrapDialog.TYPE_SUCCESS, size: BootstrapDialog.SIZE_SMALL, title: 'Sucesso', message: '$:Error' });
+    }
+    else{
+      BootstrapDialog.show({type: BootstrapDialog.TYPE_DANGER, size: BootstrapDialog.SIZE_SMALL, title: 'Erro', message: '$:Error' });
+    }
+    </script>
   <!-- Fixed navbar -->
   $:Render.navbar(Render.user_id)
   <!-- Begin page content -->
@@ -67,7 +75,7 @@ $if auth==1:
             </div>
             <div class="col-sm-8">
               <input type="password" class="form-control" placeholder="Senha atual" name="Current">
-              <input type="text" class="form-control" placeholder="Senha nova" name="New" id="pp_url">
+              <input type="password" class="form-control" placeholder="Senha nova" name="New" id="pp_url">
               <input type="password" class="form-control" placeholder="Repita a senha nova" name="Repeat">
             </div>
           </div>

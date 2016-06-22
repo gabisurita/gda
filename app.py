@@ -982,7 +982,7 @@ def Setup():
             else:
                 LocDB = create_engine(UserDB, echo=False)
                 LocS = sessionmaker(bind=LocDB)()
-                MyUser = LocS.query(User).filter(User.id == Render.user_id).one()
+                MyUser = LocS.query(User).filter(User.id == Session.user_id).one()
 
                 """
                 check_RA = re.search(r'[\d]', Form['RA'].value)
@@ -1012,13 +1012,14 @@ def Setup():
                             else:
                                 update_password = update(User).where(Render.user_id == User.id).values(password=encode(Form['New'].value))
                                 LocDB.execute(update_password)
-                                return  Render.userpage(Form,"Senha alterada com sucesso", Render)
+                                return  Render.userpage(Form,"Senha alterada com sucesso!", Render)
 
-                face = Form['Face_id'].get_value()
+                #face = Form['Face_id'].get_value()
+                face = web.input()['Face_id']
                 if face:
                     auth = LocS.query(FaceUser).filter(Render.user_id == FaceUser.user_id)
                     if auth.count():
-                        return  Render.userpage(Form,"Já existe um usuário conectado a essa conta do Facebook,", Render)
+                        return  Render.userpage(Form,"Já existe um usuário conectado a essa conta do Facebook.", Render)
                     else:
                         NewFaceLogin = FaceUser(
                         face_id = face,
