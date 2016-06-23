@@ -1015,8 +1015,8 @@ def Setup():
                                 return  Render.userpage(Form,"Senha alterada com sucesso!", Render)
 
                 #face = Form['Face_id'].get_value()
-                face = web.input()['Face_id']
-                if face:
+                if (web.input()['Face_id'] != ""):
+                    face = web.input()['Face_id']
                     auth = LocS.query(FaceUser).filter(Render.user_id == FaceUser.user_id)
                     if auth.count():
                         return  Render.userpage(Form,"Já existe um usuário conectado a essa conta do Facebook.", Render)
@@ -1027,8 +1027,6 @@ def Setup():
                         )
                         LocS.add(NewFaceLogin)
                         LocS.commit()
-                else:
-                    return  Render.userpage(Form,"Algo deu errado com a conexão com o Facebook! Por favor, tente novamente ou entre em contato.", Render)
 
             raise web.seeother('/user')
 
