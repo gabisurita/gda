@@ -761,8 +761,7 @@ def Setup():
                 if f!=0:
                     j = S.query(User).filter(User.id == aux.one().user_id).one()
                     Session.user_id = j.id
-                else:
-                    raise web.seeother('/')
+                    return "success"
 
 
     class BeginPage:

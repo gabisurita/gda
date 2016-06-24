@@ -78,8 +78,11 @@ function fb_login(){
             }
             else{
               // facebook account is connected, log user
-              jQuery.post( "/facelogin", {"face_id": user_id});
-              location.reload();
+              jQuery.post( "/facelogin", {"face_id": user_id}, function(data){
+                if(data == "success"){
+                  window.location.replace("/index");
+                }
+              });
             }
           });
       } else {
