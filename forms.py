@@ -42,7 +42,6 @@ UserForm = web.form.Form(
     web.form.Password('Current', Class="form-control"),
     web.form.Password('New', Class="form-control"),
     web.form.Password('Repeat', Class="form-control"),
-    web.form.Textbox('Face_id', Class="form-control"),
     web.form.Button('Login', Class="btn btn-primary"),
 )
 
