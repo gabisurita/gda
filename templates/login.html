@@ -66,7 +66,7 @@ function fb_login(){
           console.log(response); // dump complete info
           //access_token = response.authResponse.accessToken; //get access token
           user_id = response.authResponse.userID; //get FB UID
-          jQuery.get( "http://www.gdaunicamp.com/whichra", {"face_id": user_id}, function( data ) {
+          jQuery.get( "/whichra", {"face_id": user_id}, function( data ) {
             if(data == "000000"){
               // facebook not connected, user most log in with password
               jQuery('.btn-facebook').hide();
@@ -78,8 +78,8 @@ function fb_login(){
             }
             else{
               // facebook account is connected, log user
-              jQuery.post( "http://www.gdaunicamp.com/login", {"face_id": user_id});
-              window.location.replace("http://www.gdaunicamp.com/");
+              jQuery.post( "/facelogin", {"face_id": user_id});
+              location.reload();
             }
           });
       } else {

@@ -103,7 +103,7 @@ function fb_connect(){
             //console.log(response); // dump complete info
             //access_token = response.authResponse.accessToken; //get access token
             user_id = response.authResponse.userID; //get FB UID
-            jQuery.post( "http://www.gdaunicamp.com/user", {"Face_id": user_id});
+            jQuery.post( "/user", {"Face_id": user_id});
             location.reload();
         } else {
             //user hit cancel button

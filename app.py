@@ -688,14 +688,14 @@ def Setup():
         def POST(self):
             Form = LoginForm
 
-            if web.input()['face_id']:
-                S = sessionmaker(bind=DB)()
-                face_id = int(web.input()['face_id'])
-                aux = S.query(FaceUser).filter(FaceUser.face_id == face_id)
-                f = aux.count()
-                if f!=0:
-                    j = S.query(User).filter(User.id == aux.one().user_id).one()
-                    Session.user_id = j.id
+#            if web.input()['face_id']:
+#                S = sessionmaker(bind=DB)()
+#                face_id = int(web.input()['face_id'])
+#                aux = S.query(FaceUser).filter(FaceUser.face_id == face_id)
+#                f = aux.count()
+#                if f!=0:
+#                    j = S.query(User).filter(User.id == aux.one().user_id).one()
+#                    Session.user_id = j.id
 
             if not Form.validates():
                 return Render.login(
@@ -749,6 +749,21 @@ def Setup():
                 else:
                     return Render.login(
                         Form, "Usuário não cadastrado.", Render)
+
+
+    class LoginFace:
+        def POST(self):
+            if web.input()['face_id']:
+                S = sessionmaker(bind=DB)()
+                face_id = int(web.input()['face_id'])
+                aux = S.query(FaceUser).filter(FaceUser.face_id == face_id)
+                f = aux.count()
+                if f!=0:
+                    j = S.query(User).filter(User.id == aux.one().user_id).one()
+                    Session.user_id = j.id
+                else:
+                    raise web.seeother('/')
+
 
     class BeginPage:
         def GET(self):
@@ -977,56 +992,58 @@ def Setup():
 
         def POST(self):
             Form = UserForm()
-            if not Form.validates():
-                return Render.userpage(Form,"Algo deu errado! Por favor, tente novamente.", Render)
-            else:
-                LocDB = create_engine(UserDB, echo=False)
-                LocS = sessionmaker(bind=LocDB)()
-                MyUser = LocS.query(User).filter(User.id == Session.user_id).one()
 
-                """
-                check_RA = re.search(r'[\d]', Form['RA'].value)
-                if check_RA == None:
-                    return Render.userpage(Form,"RA inválido!", Render)
-                elif (int(Form['RA'].value) != MyUser.student.ra):
-                    match_ra = LocS.query(Student).filter(Student.ra == Form['RA'].value)
-                    if(match_ra.count() != 0):
-                        return Render.userpage(Form,"Já existe um usuário cadastrado com esse RA!", Render)
-                    else:
-                        update_ra = update(Student).where(Student.id == MyUser.student_id).values(ra=Form['RA'].value)
-                        LocDB.execute(update_ra)
-                        """
-                if (Form['Nome'].value != MyUser.student.name):
-                    update_name = update(Student).where(Student.id == MyUser.student_id).values(name=Form['Nome'].value)
-                    LocDB.execute(update_name)
+            LocDB = create_engine(UserDB, echo=False)
+            LocS = sessionmaker(bind=LocDB)()
+            MyUser = LocS.query(User).filter(User.id == Session.user_id).one()
 
-                if(Form['Current'].value != ""):
-                    if(Form['New'].value == ""):
-                        return  Render.userpage(Form,"Informe uma senha nova!", Render)
-                    else:
-                        if(encode(Form['Current'].value) != MyUser.password):
-                            return Render.userpage(Form,"Senha atual não confere!",Render)
+            #face = Form['Face_id'].get_value()
+            try:
+                face = web.input()['Face_id']
+                auth = LocS.query(FaceUser).filter(Render.user_id == FaceUser.user_id)
+                if auth.count():
+                    return  Render.userpage(Form,"Já existe um usuário conectado a essa conta do Facebook.", Render)
+                else:
+                    NewFaceLogin = FaceUser(
+                    face_id = face,
+                    user_id = Render.user_id
+                    )
+                    LocS.add(NewFaceLogin)
+                    LocS.commit()
+
+            except:
+                if not Form.validates():
+                    return Render.userpage(Form,"Algo deu errado! Por favor, tente novamente.", Render)
+                else:
+                    """
+                    check_RA = re.search(r'[\d]', Form['RA'].value)
+                    if check_RA == None:
+                        return Render.userpage(Form,"RA inválido!", Render)
+                    elif (int(Form['RA'].value) != MyUser.student.ra):
+                        match_ra = LocS.query(Student).filter(Student.ra == Form['RA'].value)
+                        if(match_ra.count() != 0):
+                            return Render.userpage(Form,"Já existe um usuário cadastrado com esse RA!", Render)
                         else:
-                            if(Form['New'].value != Form['Repeat'].value):
-                                return Render.userpage(Form,"Senha nova não confere com a repetição!",Render)
-                            else:
-                                update_password = update(User).where(Render.user_id == User.id).values(password=encode(Form['New'].value))
-                                LocDB.execute(update_password)
-                                return  Render.userpage(Form,"Senha alterada com sucesso!", Render)
+                            update_ra = update(Student).where(Student.id == MyUser.student_id).values(ra=Form['RA'].value)
+                            LocDB.execute(update_ra)
+                            """
+                    if (Form['Nome'].value != MyUser.student.name):
+                        update_name = update(Student).where(Student.id == MyUser.student_id).values(name=Form['Nome'].value)
+                        LocDB.execute(update_name)
 
-                #face = Form['Face_id'].get_value()
-                if (web.input()['Face_id'] != ""):
-                    face = web.input()['Face_id']
-                    auth = LocS.query(FaceUser).filter(Render.user_id == FaceUser.user_id)
-                    if auth.count():
-                        return  Render.userpage(Form,"Já existe um usuário conectado a essa conta do Facebook.", Render)
-                    else:
-                        NewFaceLogin = FaceUser(
-                        face_id = face,
-                        user_id = Render.user_id
-                        )
-                        LocS.add(NewFaceLogin)
-                        LocS.commit()
+                    if(Form['Current'].value != ""):
+                        if(Form['New'].value == ""):
+                            return  Render.userpage(Form,"Informe uma senha nova!", Render)
+                        else:
+                            if(encode(Form['Current'].value) != MyUser.password):
+                                return Render.userpage(Form,"Senha atual não confere!",Render)
+                            else:
+                                if(Form['New'].value != Form['Repeat'].value):
+                                    return Render.userpage(Form,"Senha nova não confere com a repetição!",Render)
+                                else:
+                                    update_password = update(User).where(Render.user_id == User.id).values(password=encode(Form['New'].value))
+                                    LocDB.execute(update_password)
+                                    return  Render.userpage(Form,"Senha alterada com sucesso!", Render)
 
             raise web.seeother('/user')
 
@@ -1853,6 +1870,7 @@ def Setup():
     Map(AboutPage, "/sobre")
     Map(StatsPage, "/estatisticas")
     Map(LoginPage, "/login")
+    Map(LoginFace, "/facelogin")
     Map(RegisterPage, "/registrar")
     Map(LogoutPage, "/logout")
     Map(SearchTeacher, "/docentes")
