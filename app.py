@@ -990,6 +990,7 @@ def Setup():
             return Render.userpage(Form,"",Render)
 
         def POST(self):
+            IsLogged()
             Form = UserForm()
 
             LocDB = create_engine(UserDB, echo=False)
