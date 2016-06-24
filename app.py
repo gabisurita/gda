@@ -68,7 +68,7 @@ def Setup():
         """ Define secure (logged in only) area"""
         try:
             if Session.user_id:
-                Session.user_id = Session.user_id
+                Render.user_id = Session.user_id
                 return True
             else:
                 if Redirect:
