@@ -68,7 +68,7 @@ def Setup():
         """ Define secure (logged in only) area"""
         try:
             if Session.user_id:
-                Render.user_id = Session.user_id
+                Session.user_id = Session.user_id
                 return True
             else:
                 if Redirect:
@@ -730,7 +730,7 @@ def Setup():
                         Session.user_id = UserCall.id
                         if UserCall.confirmed == 1:
                             if face_id:
-                                auth = S.query(FaceUser).filter(Render.user_id == FaceUser.user_id)
+                                auth = S.query(FaceUser).filter(Session.user_id == FaceUser.user_id)
                                 if auth.count():
                                     return  Render.login(Form,"Já existe um usuário conectado a essa conta do Facebook.", Render)
                                 else:
@@ -999,13 +999,13 @@ def Setup():
             #face = Form['Face_id'].get_value()
             try:
                 face = web.input()['Face_id']
-                auth = LocS.query(FaceUser).filter(Render.user_id == FaceUser.user_id)
+                auth = LocS.query(FaceUser).filter(Session.user_id == FaceUser.user_id)
                 if auth.count():
                     return  Render.userpage(Form,"Já existe um usuário conectado a essa conta do Facebook.", Render)
                 else:
                     NewFaceLogin = FaceUser(
                     face_id = face,
-                    user_id = Render.user_id
+                    user_id = Session.user_id
                     )
                     LocS.add(NewFaceLogin)
                     LocS.commit()
@@ -1040,7 +1040,7 @@ def Setup():
                                 if(Form['New'].value != Form['Repeat'].value):
                                     return Render.userpage(Form,"Senha nova não confere com a repetição!",Render)
                                 else:
-                                    update_password = update(User).where(Render.user_id == User.id).values(password=encode(Form['New'].value))
+                                    update_password = update(User).where(Session.user_id == User.id).values(password=encode(Form['New'].value))
                                     LocDB.execute(update_password)
                                     return  Render.userpage(Form,"Senha alterada com sucesso!", Render)
 
