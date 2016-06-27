@@ -28,7 +28,9 @@ $ ThisComments = S.query(TeacherComment).filter(TeacherComment.user == ThisUser)
           <h5>$:StudentInst.name</h4>
           <h6>RA: $:StudentInst.ra</h5>
           $ cr = "%.4f" % (random.gauss(0.65, 0.15))
-          <h6 class="text-muted"> CR:  $cr</h5>
+          <h6 class="text-muted">
+            <a class="black-link" href="/sobre#dados" target="_blank" data-toggle="tooltip" title="CR? Descubra de onde vem nossos dados.">
+            CR:  $cr </a></h6>
         </div>
       </div>
           <br>
@@ -88,7 +90,9 @@ $ ThisComments = S.query(TeacherComment).filter(TeacherComment.user == ThisUser)
         <h6>$:StudentInst.name</h6>
         <h6>RA: $:StudentInst.ra</h6>
         $ cr = "%.4f" % (random.gauss(0.65, 0.15))
-        <h6 class="text-muted"> CR:  $cr</h6>
+        <h6 class="text-muted">
+          <a class="black-link" href="/sobre#dados" target="_blank" data-toggle="tooltip" title="Queremos saber sua opinão, não o seu CR. Descubra de onde vem nossos dados.">
+          CR:  $cr </a></h6>
       </div>
     </div>
     <ul class="nav nav-tabs nav-justified">

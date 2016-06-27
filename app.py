@@ -1667,11 +1667,6 @@ def Setup():
             IsConfirmed()
             return Render.about(Render)
 
-    class StatsPage:
-        def GET(self):
-            IsLogged()
-            IsConfirmed()
-            return Render.stats(Render)
 
     class SemesterPage:
         SemesterInst = Semester()
@@ -1868,7 +1863,6 @@ def Setup():
 
     Map(IndexPage, "/index")
     Map(AboutPage, "/sobre")
-    Map(StatsPage, "/estatisticas")
     Map(LoginPage, "/login")
     Map(LoginFace, "/facelogin")
     Map(RegisterPage, "/registrar")

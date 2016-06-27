@@ -1,5 +1,5 @@
 $def with (Render)
-
+$ S = sessionmaker(bind=DB)()
 
 <!DOCTYPE html>
 <html>
@@ -12,6 +12,8 @@ $def with (Render)
   $:Render.navbar(Render.user_id)
   <!-- Begin page content -->
   <div class="container">
+    <div class="full-height-row">
+      <div class="col-sm-12">
       <div class="row">
         <h4> O que é o GDA?</h4>
         <div class="col-sm-6">
@@ -19,8 +21,6 @@ $def with (Render)
           O Grupo Discente de Avaliação é formado por alunos da Faculdade de Engenharia Elétrica e de Computação da UNICAMP.
           Nosso trabalho é reunir informações sobre as disciplinas ministradas a cada semestre e apresentá-las de forma compreensível e construtiva.
           Essa página foi feita para substituir os antigos guias impressos.
-          Para conhecer mais sobre o que fizemos, visite a página desse projeto no
-          <a class="black-link" href="https://github.com/faraj7/gda" target="_blank"><strong>GitHub</strong></a>.
         </p>
       </div>
       <div class="col-sm-6">
@@ -33,6 +33,44 @@ $def with (Render)
     </div>
   </div>
   <br>
+  <div class="row" id="dados">
+    <div class="col-sm-4">
+      <h4> De onde vem nossos dados?</h4>
+      <a href="http://www.dac.unicamp.br/portal/servicos_online/" target="_blank">
+        <img class="img-responsive" src="static/images/dac.png" alt="DAC">
+      </a>
+      Os dados das avaliações foram fornecidos pela FEEC. Os dados sobre as matrículas em oferecimentos foram obtidos a partir de consultas públicas ao site da
+      <a class="black-link" href="http://www.dac.unicamp.br/portal/servicos_online/" target="_blank">
+      <b>DAC</b></a>. Não temos acesso a dados privados dos alunos.
+    </div>
+    <div class="col-sm-3 col-sm-offset-2">
+      <h3> <i class="fa fa-university fa-2x"></i></h3>
+      <p class="small">
+        2012 - 2016
+      </p>
+      <h5> Estatísticas FEEC</h5>
+      <ul class="fa-ul">
+        <li><i class="fa-li fa fa-book"></i> $S.query(Subject).count() disciplinas</li>
+        <li><i class="fa-li fa fa-child"></i> $S.query(Teacher).count() professores </li>
+        <li><i class="fa-li fa fa-pencil-square-o"></i>$S.query(Offering).count() oferecimentos em $S.query(Semester).count() semestres  </li>
+      </ul>
+    </div>
+    <div class="col-sm-3">
+      <h3> <i class="fa fa-line-chart fa-2x"></i></h3>
+      <br>
+      <h5> Nossos Dados</h5>
+      <ul class="fa-ul">
+        <li><i class="fa-li  fa fa-users"></i>$S.query(Student).count() estudantes cadastrados  </li>
+        <li><i class="fa-li  fa fa-check-square-o"></i> $S.query(StudentRate).count() avaliações submetidas</li>
+        <li><i class="fa-li  fa fa-commenting"></i> $(S.query(TeacherComment).count() + S.query(OfferingComment).count()) comentários</li>
+      </ul>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="full-height-row">
+  <div class="col-sm-12">
     <div class="row">
       <h4>  Avaliação </h4>
       <div class="col-sm-6">
@@ -85,15 +123,24 @@ $def with (Render)
         </p>
       </div>
     </div>
-    <br>
+  </div>
+</div>
+
+
+<div class="full-height-row" id="contato">
+  <div class="col-sm-12">
     <div class="row">
       <h4>  Contato </h4>
       <div class="col-sm-4">
         <p class="text-justify">
-          Estamos só começando e ainda temos muito que melhorar! Precisamos de ajuda para
-          <strong>desenvolvimento</strong>, <strong>design</strong> e <strong>assuntos acadêmicos</strong>.
-          Nenhum conhecimento prévio é necessário, apenas seu interesse e sua disposição.
-          Ficou interessado? Fale conosco.
+          <h5><i class="fa fa-envelope" style="color:#2196f3;"></i> &nbsp; gdaunicamper@gmail.com</h5>
+          Tem alguma crítica ou sugestão?
+          <br>
+          Encontrou alguma coisa errada?
+          <br>
+          Tem interesse em ajudar?
+          <br>
+          Fale conosco.
         </p>
       </div>
       <div class="col-sm-8 text-center">
@@ -101,7 +148,7 @@ $def with (Render)
           <img src="static/images/faraj.png" class="img-circle" alt="" width="50" height="50">
           <h5> Ali Faraj </h5>
             <div class="text-left">
-              <i class="fa fa-facebook-square"></i> &nbsp; facebook.com/faraj7
+              <i class="fa fa-facebook-square"></i> &nbsp; /faraj7
               <br>
               <i class="fa fa-envelope"></i> &nbsp; faraj7g@gmail.com
             </div>
@@ -110,7 +157,7 @@ $def with (Render)
           <img src="static/images/bira.jpg" class="img-circle" alt="" width="50" height="50">
           <h5> Raul Cecato </h5>
           <div class="text-left">
-              <i class="fa fa-facebook-square"></i> &nbsp; facebook.com/raul.cecato
+              <i class="fa fa-facebook-square"></i> &nbsp; /raul.cecato
               <br>
               <i class="fa fa-envelope"></i> &nbsp; raulcecato@gmail.com
               </div>
@@ -119,7 +166,7 @@ $def with (Render)
           <img src="static/images/hu3.png" class="img-circle" alt="" width="50" height="50">
           <h5> Gabriel Luis </h5>
           <div class="text-left">
-              <i class="fa fa-facebook-square"></i> &nbsp; facebook.com/gabriel.luis.felic
+              <i class="fa fa-facebook-square"></i> &nbsp; /gabriel.luis.felic
               <br>
               <i class="fa fa-envelope"></i> &nbsp; xuztaz@gmail.com
               </div>
@@ -129,6 +176,7 @@ $def with (Render)
     <br>
     <div class="row">
       <h4>  Apoio </h4>
+      <div class="col-sm-6">
       <div class="text-center">
         <a href="https://www.facebook.com/IEEE-Student-Branch-Unicamp-274162865931184/" target="_blank">
           <img src="static/images/logoieee.jpg" alt="IEEE" width="100" height="100">
@@ -139,6 +187,16 @@ $def with (Render)
         </a>
       </div>
     </div>
+    <div class="text-center col-sm-6">
+    <a class="black-link" href="http://www.github.com/faraj7/gda" target="_blank">
+     <i class="fa fa-github fa-4x" style="color:#2196f3;"></i>
+     <br>
+     Conheça este projeto no GitHub
+    </a>
+  </div>
+    </div>
+  </div>
+</div>
 
   </div> <!-- container -->
   $:Render.footer()
