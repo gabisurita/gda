@@ -65,7 +65,7 @@ $ ThisComments = S.query(TeacherComment).filter(TeacherComment.user == ThisUser)
                              $if S.query(StudentRate).filter(StudentRate.user_id == ThisUser.id).filter(StudentRate.offering_id == enroll.offering_id).count():
                                 <td> <a href="$URL" class="btn btn-default btn-sm"><i class="fa fa-check-square-o" aria-hidden="true"></i></a></td>
                              $else:
-                                <td> <a href="$enroll.offering.EvaluationURL()" class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>
+                                <td> <a href="$URL" class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>
                            </tr>
                        </tbody>
                      </table>

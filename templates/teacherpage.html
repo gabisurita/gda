@@ -370,15 +370,23 @@ $else:
           }
         }
         for (i =0; i<enroll_array.length; i++){
+          var code = "";
+          for (j=0; j < enroll_array[i][2].length ; j++){
+              code = code + enroll_array[i][2][j][0] + "&nbsp;";
+          }
           img = jQuery('<img/>').attr('src', ProfileUrl(enroll_array[i][0])).addClass("img-responsive img-rounded");
+          img.attr('data-toggle', "tooltip");
+          img.attr('title', code);
           imglink = jQuery('<a/>').attr('href', "/estudantes/" + enroll_array[i][1]).append(img);
           thumbdiv = jQuery('<div/>').addClass("col-lg-3 col-md-4 col-xs-6 thumb").append(imglink);
+          /*
           for (j=0; j < enroll_array[i][2].length ; j++){
               code = enroll_array[i][2][j][0] + "&nbsp;";
               path = "/oferecimentos/" + enroll_array[i][2][j][1] + "/" + enroll_array[i][2][j][0].toLowerCase();
               offerlink = jQuery('<a/>').attr('href',path).html(code).addClass("black-link small text-center");
               offerlink.appendTo(thumbdiv);
           }
+          */
           thumbdiv.appendTo(jQuery('#imagediv'));
         }
       });

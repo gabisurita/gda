@@ -124,3 +124,187 @@ function scatter_trace(yData){
   };
   return trace;
 }
+
+function explainplot(location) {
+
+  var yData = [88, 86, 76, 89, 92, 96, 99, 94, 84, 86, 99, 93, 83, 88, 94, 91, 80, 74, 94, 90, 84, 89, 90,
+     83, 88, 89, 93, 84, 94, 81, 85, 99, 95, 88, 76, 91, 92, 95, 86, 90, 96, 94, 88, 91, 96, 83, 91, 97, 87,
+     91, 79, 82, 91, 96, 94, 85, 73, 94, 95, 92, 82, 86, 85, 97, 91, 87, 89, 96, 76, 94, 99, 94, 92, 92, 85,
+     94, 93, 98, 90, 84, 91, 97, 94, 93, 88, 92, 95, 91, 90, 91, 99, 95, 88, 90, 93, 84, 88, 86, 93];
+
+  var data = [{
+    type: 'box',
+    showlegend: false,
+    y: yData,
+    boxpoints: 'all',
+    jitter: 0.5,
+    pointpos: -1.8,
+    whiskerwidth: 0.8,
+    fillcolor: 'white',
+    marker: {
+      color: '#2196f3',
+      size: 4
+    },
+    line: {
+      width: 2
+    }
+  }];
+
+  var layout = {
+    yaxis: {
+      autorange: true,
+      showgrid: true,
+      zeroline: false,
+      dtick: 5,
+      gridcolor: 'rgb(255, 255, 255)',
+      gridwidth: 1
+    },
+    xaxis: {
+      color: 'white '
+    },
+    margin: {
+      l: 40,
+      r: 30,
+      b: 30,
+      t: 10
+    },
+    annotations: [
+    {
+      y: 99,
+      yref: 'y',
+      text: 'máximo',
+      showarrow: true,
+      font: {
+        family: 'Courier New, monospace',
+        size: 16,
+        color: '#ffffff'
+      },
+      align: 'center',
+      arrowhead: 2,
+      arrowsize: 1,
+      arrowwidth: 2,
+      arrowcolor: '#636363',
+      ax: 20,
+      ay: 0,
+      bordercolor: '#c7c7c7',
+      borderwidth: 2,
+      borderpad: 4,
+      bgcolor: '#2196f3',
+      opacity: 0.8
+    },
+    {
+      y: 94,
+      yref: 'y',
+      text: '75% dos valores até aqui%',
+      showarrow: true,
+      font: {
+        family: 'Courier New, monospace',
+        size: 16,
+        color: '#ffffff'
+      },
+      align: 'center',
+      arrowhead: 2,
+      arrowsize: 1,
+      arrowwidth: 2,
+      arrowcolor: '#636363',
+      ax: 20,
+      ay: 0,
+      bordercolor: '#c7c7c7',
+      borderwidth: 2,
+      borderpad: 4,
+      bgcolor: '#2196f3',
+      opacity: 0.8
+    },
+    {
+      y: 91,
+      yref: 'y',
+      text: '50% dos valores até aqui',
+      showarrow: true,
+      font: {
+        family: 'Courier New, monospace',
+        size: 16,
+        color: '#ffffff'
+      },
+      align: 'center',
+      arrowhead: 2,
+      arrowsize: 1,
+      arrowwidth: 2,
+      arrowcolor: '#636363',
+      ax: 20,
+      ay: 0,
+      bordercolor: '#c7c7c7',
+      borderwidth: 2,
+      borderpad: 4,
+      bgcolor: '#2196f3',
+      opacity: 0.8
+    },
+    {
+      y: 86,
+      yref: 'y',
+      text: '25% dos valores até aqui',
+      showarrow: true,
+      font: {
+        family: 'Courier New, monospace',
+        size: 16,
+        color: '#ffffff'
+      },
+      align: 'center',
+      arrowhead: 2,
+      arrowsize: 1,
+      arrowwidth: 2,
+      arrowcolor: '#636363',
+      ax: 20,
+      ay: 0,
+      bordercolor: '#c7c7c7',
+      borderwidth: 2,
+      borderpad: 4,
+      bgcolor: '#2196f3',
+      opacity: 0.8
+    },
+    {
+      y: 73,
+      yref: 'y',
+      text: 'mínimo',
+      showarrow: true,
+      font: {
+        family: 'Courier New, monospace',
+        size: 16,
+        color: '#ffffff'
+      },
+      align: 'center',
+      arrowhead: 2,
+      arrowsize: 1,
+      arrowwidth: 2,
+      arrowcolor: '#636363',
+      ax: 20,
+      ay: 0,
+      bordercolor: '#c7c7c7',
+      borderwidth: 2,
+      borderpad: 4,
+      bgcolor: '#2196f3',
+      opacity: 0.8
+    }
+  ],
+    legend: {
+      x: 1,
+      y: 1.05,
+      //yanchor: 'middle',
+      traceorder: 'normal',
+      //tracegroupgap: 100,
+      font: {
+        family: 'sans-serif',
+        size: 14,
+        color: '#2196f3'
+      },
+    }
+    //  paper_bgcolor: 'rgb(243, 243, 243)',
+    //  plot_bgcolor: 'rgb(243, 243, 243)',
+    //  width: 700,
+    //  height: 500,
+    //  showlegend: true
+  };
+  plotlocation = document.getElementById(location);
+  Plotly.newPlot(plotlocation, data, layout, {displaylogo: false, displayModeBar: false});
+
+
+}

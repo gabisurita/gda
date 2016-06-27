@@ -21,3 +21,36 @@
     </tr>
   </table>
 </div>
+<a class="black-link" data-toggle="modal" href="#explainModal">
+  <i class="fa fa-question-circle" aria-hidden="true"></i> Não entendi o gráfico
+</a>
+
+<!-- Button trigger modal -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="explainModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Interpretando um gráfico Box-Plot</h4>
+      </div>
+      <div class="modal-body">
+      <div id="explain" style="width: 400px;">
+      </div>
+      </div>
+      <div class="modal-footer">
+        <a href="https://pt.wikipedia.org/wiki/Diagrama_de_caixa" target="_blank" class="btn btn-default"><i class="fa fa-external-link" aria-hidden="true"></i> Ainda não entendi</a>
+        <button type="button" class="btn btn-success" data-dismiss="modal">Entendi</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+
+explainplot("explain")
+
+</script>
