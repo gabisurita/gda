@@ -1,4 +1,4 @@
-# GDA Web App
+# GDA Web App [deprecated]
 #### Grupo de Avaliação Discente (GDA) da Faculdade de Engenharia Elétrica e de Computação (FEEC) da Universidade de Campinas (Unicamp)
 
 Visite nossa página: http://tiny.cc/gda
